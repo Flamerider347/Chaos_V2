@@ -1,7 +1,7 @@
 extends Node
 
 const Player = preload("res://prefabs/player.tscn")
-const PORT_LOCAL = 7778
+const PORT_LOCAL = 443
 const PORT_GLOBAL = 22097
 const SERVER_LOCAL = "10.1.102.48"
 const SERVER_GLOBAL = "understand-uncanny.gl.at.ply.gg"

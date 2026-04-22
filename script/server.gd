@@ -1,6 +1,6 @@
 extends Node
 
-const PORT = 7778
+const PORT = 443
 var rooms = {}
 
 func _ready():
