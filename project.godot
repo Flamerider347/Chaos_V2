@@ -8,12 +8,23 @@
 
 config_version=5
 
+[GD-Sync]
+
+version="0.14"
+
 [application]
 
 config/name="New Game Project"
-run/main_scene="uid://cxbh8ombflcks"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GDSync="*uid://0y6w65gyiw0y"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/GD-Sync/plugin.cfg")
 
 [physics]
 
