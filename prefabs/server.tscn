@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://bx3h8kna82l38"]
+
+[ext_resource type="Script" uid="uid://24orkgof2lmr" path="res://script/server.gd" id="1_7l3y5"]
+
+[node name="Main" type="Node" unique_id=636014671]
+script = ExtResource("1_7l3y5")
+
+[node name="Label" type="Label" parent="." unique_id=895926863]
+offset_left = 450.0
+offset_top = 229.0
+offset_right = 1123.0
+offset_bottom = 455.0
+text = "Server do server things"
