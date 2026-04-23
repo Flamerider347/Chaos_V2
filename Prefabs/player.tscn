@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://clwq3k4knykhf"]
+
+[ext_resource type="Script" uid="uid://bxa4oeybkp46x" path="res://Script/player.gd" id="1_5wxv7"]
+[ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="2_y5hcb"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_3icqa"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_y6xdh"]
+
+[node name="Player" type="CharacterBody3D" unique_id=300991191]
+script = ExtResource("1_5wxv7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=402017432]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_3icqa")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1072467804]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_y6xdh")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=237419948]
+
+[node name="PropertySynchronizer" type="Node" parent="." unique_id=875584009]
+script = ExtResource("2_y5hcb")
+node_path = NodePath("..")
+properties = PackedStringArray()
+interpolated = false
+interpolation_speed = 1.0
+extrapolation = null
+extrapolated = false
+max_extrapolation_time = 0.2
+metadata/_custom_type_script = "uid://b7bt85tck6v7g"

@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://c5t810djhxem1"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_wu5a2"]
+height = 0.5633545
+radius = 20.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_wu5a2"]
+top_radius = 20.0
+bottom_radius = 20.0
+radial_segments = 6
+
+[sub_resource type="Environment" id="Environment_ae5qj"]
+background_mode = 2
+
+[node name="game" type="Node3D" unique_id=448274113]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=480817421]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1114671203]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.71832275, 0)
+shape = SubResource("CylinderShape3D_wu5a2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1133179456]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+mesh = SubResource("CylinderMesh_wu5a2")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1957717521]
+environment = SubResource("Environment_ae5qj")

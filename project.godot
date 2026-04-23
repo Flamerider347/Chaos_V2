@@ -11,10 +11,13 @@ config_version=5
 [GD-Sync]
 
 version="0.14"
+publicKey="60df8e7647b7af20"
+privateKey="a54ba81546b296a8"
 
 [application]
 
 config/name="New Game Project"
+run/main_scene="uid://cxbh8ombflcks"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
