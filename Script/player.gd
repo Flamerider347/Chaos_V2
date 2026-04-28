@@ -1,15 +1,31 @@
 extends CharacterBody3D
 
-var player_id: int = 0
 var is_owned: bool = false
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 const GRAVITY = 9.8
+const MOUSE_SENSITIVITY = 0.003
 
 func _ready() -> void:
-	player_id = name.to_int()
-	is_owned = (player_id == GDSync.get_client_id())
+	GDSync.connect_gdsync_owner_changed(self, owner_changed)
+
+func owner_changed(_owner_id: int) -> void:
+	is_owned = GDSync.is_gdsync_owner(self)
+	print("Owner changed | is_owned: ", is_owned)
+	if is_owned:
+		$Camera3D.make_current()
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	else:
+		$Camera3D.queue_free()
+
+func _input(event: InputEvent) -> void:
+	if not is_owned or GameData.paused:
+		return
+	if event is InputEventMouseMotion:
+		rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
+		$Camera3D.rotate_x(-event.relative.y * MOUSE_SENSITIVITY)
+		$Camera3D.rotation.x = clamp($Camera3D.rotation.x, -PI/2, PI/2)
 
 func _physics_process(delta: float) -> void:
 	if not is_owned:
@@ -18,10 +34,14 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= GRAVITY * delta
 	
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
+	if not GameData.paused:
+		if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+			velocity.y = JUMP_VELOCITY
 	
-	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	var input_dir = Vector2.ZERO
+	if not GameData.paused:
+		input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
 		velocity.x = direction.x * SPEED
