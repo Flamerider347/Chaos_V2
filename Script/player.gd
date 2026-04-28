@@ -10,11 +10,6 @@ const GRAVITY = 9.8
 func _ready() -> void:
 	player_id = name.to_int()
 	is_owned = (player_id == GDSync.get_client_id())
-	
-	if is_owned:
-		$Camera3D.make_current()
-	else:
-		$Camera3D.queue_free()
 
 func _physics_process(delta: float) -> void:
 	if not is_owned:

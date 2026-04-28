@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://cxbh8ombflcks"]
 
 [ext_resource type="Script" uid="uid://tbm6ju1ij2xk" path="res://Script/main.gd" id="1_a5p6j"]
-[ext_resource type="PackedScene" uid="uid://c5t810djhxem1" path="res://Prefabs/game.tscn" id="2_dajsn"]
 [ext_resource type="Script" uid="uid://cpr3cjn4l5i8k" path="res://Script/player_spawner.gd" id="2_g4wyc"]
 [ext_resource type="PackedScene" uid="uid://clwq3k4knykhf" path="res://Prefabs/player.tscn" id="3_7m14q"]
 
@@ -14,8 +13,22 @@ top_radius = 20.0
 bottom_radius = 20.0
 radial_segments = 6
 
+[sub_resource type="Gradient" id="Gradient_dajsn"]
+offsets = PackedFloat32Array(0, 0.5327381, 0.9910714)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_xjs27"]
+gradient = SubResource("Gradient_dajsn")
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_oob7m"]
+panorama = SubResource("GradientTexture1D_xjs27")
+
+[sub_resource type="Sky" id="Sky_fpsi2"]
+sky_material = SubResource("PanoramaSkyMaterial_oob7m")
+
 [sub_resource type="Environment" id="Environment_7m14q"]
 background_mode = 2
+sky = SubResource("Sky_fpsi2")
 
 [node name="Main" type="Node3D" unique_id=2036698157]
 script = ExtResource("1_a5p6j")
@@ -27,7 +40,10 @@ script = ExtResource("2_g4wyc")
 player_scene = ExtResource("3_7m14q")
 
 [node name="floor" type="StaticBody3D" parent="Game" unique_id=1611625833]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -16.659996, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.40322375, 0)
+collision_layer = 3
+collision_mask = 3
+metadata/_edit_group_ = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Game/floor" unique_id=2129468699]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3174365, 0)
@@ -40,5 +56,9 @@ mesh = SubResource("CylinderMesh_g4wyc")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Game" unique_id=1222698476]
 environment = SubResource("Environment_7m14q")
 
-[node name="game" parent="Game" unique_id=448274113 instance=ExtResource("2_dajsn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6920068, -16.688992, -0.80426407)
+[node name="UI" type="CanvasLayer" parent="." unique_id=516443905]
+
+[node name="roomcode" type="Label" parent="UI" unique_id=1665139751]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "SADLKhalkdsjfh"

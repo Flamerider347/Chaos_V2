@@ -15,6 +15,8 @@ background_mode = 2
 [node name="game" type="Node3D" unique_id=448274113]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=480817421]
+collision_layer = 3
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1114671203]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.71832275, 0)
