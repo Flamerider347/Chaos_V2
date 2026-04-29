@@ -25,6 +25,7 @@ config/icon="res://icon.svg"
 
 GDSync="*uid://0y6w65gyiw0y"
 GameData="*uid://m4y852ej0k71"
+TileRunInstancesGlobal="*uid://b6fg6pu2bfi14"
 
 [editor_plugins]
 
@@ -78,5 +79,3 @@ ui_down={
 [rendering]
 
 rendering_device/driver.windows="d3d12"
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
