@@ -28,7 +28,7 @@ GameData="*uid://m4y852ej0k71"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/GD-Sync/plugin.cfg")
+enabled=PackedStringArray("res://addons/GD-Sync/plugin.cfg", "res://addons/tile-run-instances/plugin.cfg")
 
 [input]
 

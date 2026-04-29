@@ -1,20 +1,45 @@
 [gd_scene format=3 uid="uid://clwq3k4knykhf"]
 
 [ext_resource type="Script" uid="uid://bxa4oeybkp46x" path="res://Script/player.gd" id="1_5wxv7"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="2_2nftw"]
 [ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="2_y5hcb"]
+[ext_resource type="ArrayMesh" uid="uid://d0xna0wnnnxeg" path="res://Assets/Models/TopHat.obj" id="3_2nftw"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2nftw"]
+albedo_texture = ExtResource("2_2nftw")
+uv1_scale = Vector3(3, 2.02, 3)
+uv1_offset = Vector3(1.005, 0, 0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_knrd4"]
+material = SubResource("StandardMaterial3D_2nftw")
+size = Vector3(0.5, 0.5, 0.74)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_3icqa"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_y6xdh"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_5wxv7"]
-size = Vector3(0.215, 0.17, 0.065)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hck1p"]
+shading_mode = 0
+albedo_texture = ExtResource("2_2nftw")
+uv1_scale = Vector3(10, 10, 10)
+grow_amount = 0.968
 
 [node name="Player" type="CharacterBody3D" unique_id=300991191]
 process_mode = 1
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_5wxv7")
+
+[node name="Head" type="Node3D" parent="." unique_id=1347343404]
+
+[node name="Camera3D" type="Camera3D" parent="Head" unique_id=237419948]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+current = true
+fov = 90.0
+
+[node name="face" type="MeshInstance3D" parent="Head" unique_id=893005727]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4092526, -0.13082467)
+mesh = SubResource("BoxMesh_knrd4")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=402017432]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -24,25 +49,46 @@ mesh = SubResource("CapsuleMesh_3icqa")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_y6xdh")
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=237419948]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4908824, -0.5303539)
-current = true
-
-[node name="nose" type="MeshInstance3D" parent="." unique_id=881981073]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2357346, -0.54411715)
-mesh = SubResource("BoxMesh_5wxv7")
-
 [node name="username" type="Label3D" parent="." unique_id=2145858136]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -0.10347092, 1.710853, -0.5403644)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 2.2310288, 0)
+billboard = 2
 text = "John"
 
 [node name="PropertySynchronizer" type="Node" parent="." unique_id=1495390822]
 script = ExtResource("2_y5hcb")
 broadcast = 2
 node_path = NodePath("..")
-properties = PackedStringArray("global_position")
+properties = PackedStringArray("global_position", "rotation")
 interpolated = true
 interpolation_speed = 30.0
 extrapolated = false
 max_extrapolation_time = 0.2
 metadata/_custom_type_script = "uid://b7bt85tck6v7g"
+
+[node name="PropertySynchronizer3" type="Node" parent="." unique_id=938941296]
+script = ExtResource("2_y5hcb")
+broadcast = 2
+node_path = NodePath("../Devhat")
+properties = PackedStringArray("visible")
+interpolated = true
+interpolation_speed = 30.0
+extrapolated = false
+max_extrapolation_time = 0.2
+metadata/_custom_type_script = "uid://b7bt85tck6v7g"
+
+[node name="PropertySynchronizer2" type="Node" parent="." unique_id=823516785]
+script = ExtResource("2_y5hcb")
+broadcast = 2
+node_path = NodePath("../username")
+properties = PackedStringArray("text")
+interpolated = true
+interpolation_speed = 30.0
+extrapolated = false
+max_extrapolation_time = 0.2
+metadata/_custom_type_script = "uid://b7bt85tck6v7g"
+
+[node name="Devhat" type="MeshInstance3D" parent="." unique_id=1534305998]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 1.9, 0)
+visible = false
+material_override = SubResource("StandardMaterial3D_hck1p")
+mesh = ExtResource("3_2nftw")

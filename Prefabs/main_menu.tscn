@@ -12,6 +12,7 @@ offset_left = 292.0
 offset_top = 155.0
 offset_right = 549.0
 offset_bottom = 240.0
+disabled = true
 text = "host"
 
 [node name="join_button" type="Button" parent="menu_UI" unique_id=1952092994]
@@ -19,6 +20,7 @@ offset_left = 288.0
 offset_top = 306.0
 offset_right = 552.0
 offset_bottom = 382.0
+disabled = true
 text = "join"
 
 [node name="join_code" type="LineEdit" parent="menu_UI" unique_id=52081474]
@@ -34,3 +36,10 @@ offset_top = 160.0
 offset_right = 890.0
 offset_bottom = 229.0
 placeholder_text = "Enter Username"
+
+[node name="status" type="Label" parent="menu_UI" unique_id=1355674729]
+offset_left = 418.0
+offset_top = 55.0
+offset_right = 681.0
+offset_bottom = 126.0
+text = "Not Connected, Please wait."

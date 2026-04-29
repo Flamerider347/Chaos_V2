@@ -20,6 +20,7 @@ func _on_host_pressed() -> void:
 	# Remove: GDSync.set_client_name(username)
 	var room_code = _generate_room_code()
 	$menu_UI/join_code.text = room_code
+	GDSync.player_set_username(username)
 	GDSync.lobby_create(room_code)
 
 func _on_join_pressed() -> void:
@@ -32,6 +33,7 @@ func _on_join_pressed() -> void:
 		push_error("No room code entered")
 		return
 	GameData.room_code = code
+	GDSync.player_set_username(username)
 	GDSync.lobby_join(code)
 	
 
@@ -44,6 +46,9 @@ func _generate_room_code() -> String:
 
 func _on_connected() -> void:
 	print("Connected to GDSync")
+	$menu_UI/status.text = "Connected!"
+	$menu_UI/host_button.disabled = false
+	$menu_UI/join_button.disabled = false
 
 func _on_connection_failed(error: int) -> void:
 	match error:
