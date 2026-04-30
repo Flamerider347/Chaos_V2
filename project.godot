@@ -16,7 +16,7 @@ privateKey="a54ba81546b296a8"
 
 [application]
 
-config/name="New Game Project"
+config/name="Kitchen Chaos V2"
 run/main_scene="uid://banusvtnmwu18"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
