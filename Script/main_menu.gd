@@ -1,3 +1,4 @@
+@icon("res://icons/node/icon_text_panel.png")
 extends Node
 
 func _ready() -> void:
