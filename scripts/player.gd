@@ -12,20 +12,19 @@ func _ready() -> void:
 
 func owner_changed(_owner_id: int) -> void:
 	is_owned = GDSync.is_gdsync_owner(self)
-	print("Owner changed | is_owned: ", is_owned)
 	if is_owned:
-		$Head/Camera3D.make_current()
+		$head/camera.make_current()
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	else:
-		$Head/Camera3D.queue_free()
+		$head/camera.queue_free()
 
 func _input(event: InputEvent) -> void:
 	if not is_owned or GameData.paused:
 		return
 	if event is InputEventMouseMotion:
 		self.rotation_degrees.y += -event.relative.x * MOUSE_SENSITIVITY * 5
-		$Head/Camera3D.rotation_degrees.x += -event.relative.y * MOUSE_SENSITIVITY * 5
-		$Head/Camera3D.rotation_degrees.x = clamp($Head/Camera3D.rotation_degrees.x, -40, 50)
+		$head.rotation_degrees.x += -event.relative.y * MOUSE_SENSITIVITY * 5
+		$head.rotation_degrees.x = clamp($head.rotation_degrees.x, -40, 50)
 
 func _physics_process(delta: float) -> void:
 	if not is_owned:

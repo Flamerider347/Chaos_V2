@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://clwq3k4knykhf"]
 
 [ext_resource type="Script" uid="uid://bxa4oeybkp46x" path="res://scripts/player.gd" id="1_5wxv7"]
-[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="2_2nftw"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://assets/SFX/icon.svg" id="2_2nftw"]
 [ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="2_y5hcb"]
 [ext_resource type="ArrayMesh" uid="uid://d0xna0wnnnxeg" path="res://assets/models/TopHat.obj" id="3_2nftw"]
+[ext_resource type="Texture2D" uid="uid://cysttpplh4j14" path="res://assets/misc/icon.svg" id="4_ht1c8"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2nftw"]
 albedo_texture = ExtResource("2_2nftw")
@@ -20,28 +21,32 @@ size = Vector3(0.5, 0.5, 0.74)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hck1p"]
 shading_mode = 0
-albedo_texture = ExtResource("2_2nftw")
+albedo_texture = ExtResource("4_ht1c8")
 uv1_scale = Vector3(10, 10, 10)
 grow_amount = 0.968
 
-[node name="Player" type="CharacterBody3D" unique_id=300991191]
+[node name="player" type="CharacterBody3D" unique_id=300991191]
 process_mode = 1
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_5wxv7")
 
-[node name="Head" type="Node3D" parent="." unique_id=1347343404]
+[node name="face" type="MeshInstance3D" parent="." unique_id=893005727]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -0.13169393)
+mesh = SubResource("BoxMesh_knrd4")
 
-[node name="Camera3D" type="Camera3D" parent="Head" unique_id=237419948]
+[node name="head" type="Node3D" parent="." unique_id=1347343404]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="interact_cast" type="RayCast3D" parent="head" unique_id=1105478281]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
+target_position = Vector3(0, 0, -3)
+
+[node name="camera" type="Camera3D" parent="head" unique_id=237419948]
 current = true
 fov = 90.0
 
-[node name="face" type="MeshInstance3D" parent="Head" unique_id=893005727]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4092526, -0.13082467)
-mesh = SubResource("BoxMesh_knrd4")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=402017432]
+[node name="pill" type="MeshInstance3D" parent="." unique_id=402017432]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("CapsuleMesh_3icqa")
 

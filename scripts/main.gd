@@ -4,14 +4,14 @@ var paused: bool = false
 
 func _ready() -> void:
 	$UI/roomcode.text = "Room: " + GameData.room_code
-	$Pause_UI/roomcode.text = "Room: " + GameData.room_code
-	$Pause_UI.visible = false
+	$pause_UI/roomcode.text = "Room: " + GameData.room_code
+	$pause_UI.visible = false
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_TAB:
 			paused = !paused
-			$Pause_UI.visible = paused
+			$pause_UI.visible = paused
 			GameData.paused = paused
 			if paused:
 				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)

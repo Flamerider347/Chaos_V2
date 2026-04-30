@@ -50,15 +50,15 @@ mesh = SubResource("CylinderMesh_g4wyc")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="game" unique_id=1222698476]
 environment = SubResource("Environment_xjs27")
 
-[node name="Pause_UI" type="CanvasLayer" parent="." unique_id=516443905]
+[node name="pause_UI" type="CanvasLayer" parent="." unique_id=516443905]
 visible = false
 
-[node name="roomcode" type="Label" parent="Pause_UI" unique_id=1665139751]
+[node name="roomcode" type="Label" parent="pause_UI" unique_id=1665139751]
 offset_right = 40.0
 offset_bottom = 23.0
 text = "SADLKhalkdsjfh"
 
-[node name="copy_button" type="Button" parent="Pause_UI" unique_id=2034908009]
+[node name="copy_button" type="Button" parent="pause_UI" unique_id=2034908009]
 offset_top = 33.0
 offset_right = 127.0
 offset_bottom = 83.0
@@ -75,4 +75,4 @@ text = "SADLKhalkdsjfh"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.822789, -0.5978743, -2.1433077)
 script = null
 
-[connection signal="pressed" from="Pause_UI/copy_button" to="." method="_on_copy_button_pressed"]
+[connection signal="pressed" from="pause_UI/copy_button" to="." method="_on_copy_button_pressed"]
