@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://m1ql8ttsilmi"
-path="res://.godot/imported/fedora.obj-8ec64302105c966a704d437b1114f922.mesh"
+path="res://.godot/imported/fedora.obj-f5a45a0911c0a8c731101882aff58895.mesh"
 
 [deps]
 
-files=["res://.godot/imported/fedora.obj-8ec64302105c966a704d437b1114f922.mesh"]
+files=["res://.godot/imported/fedora.obj-f5a45a0911c0a8c731101882aff58895.mesh"]
 
-source_file="res://Assets/Models/fedora.obj"
-dest_files=["res://.godot/imported/fedora.obj-8ec64302105c966a704d437b1114f922.mesh", "res://.godot/imported/fedora.obj-8ec64302105c966a704d437b1114f922.mesh"]
+source_file="res://assets/models/fedora.obj"
+dest_files=["res://.godot/imported/fedora.obj-f5a45a0911c0a8c731101882aff58895.mesh", "res://.godot/imported/fedora.obj-f5a45a0911c0a8c731101882aff58895.mesh"]
 
 [params]
 

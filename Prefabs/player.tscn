@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://clwq3k4knykhf"]
 
-[ext_resource type="Script" uid="uid://bxa4oeybkp46x" path="res://Script/player.gd" id="1_5wxv7"]
+[ext_resource type="Script" uid="uid://bxa4oeybkp46x" path="res://scripts/player.gd" id="1_5wxv7"]
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="2_2nftw"]
 [ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="2_y5hcb"]
-[ext_resource type="ArrayMesh" uid="uid://d0xna0wnnnxeg" path="res://Assets/Models/TopHat.obj" id="3_2nftw"]
+[ext_resource type="ArrayMesh" uid="uid://d0xna0wnnnxeg" path="res://assets/models/TopHat.obj" id="3_2nftw"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2nftw"]
 albedo_texture = ExtResource("2_2nftw")
@@ -58,9 +58,21 @@ text = "John"
 script = ExtResource("2_y5hcb")
 broadcast = 2
 node_path = NodePath("..")
-properties = PackedStringArray("global_position", "rotation")
+properties = PackedStringArray("global_position")
 interpolated = true
 interpolation_speed = 30.0
+extrapolated = false
+max_extrapolation_time = 0.2
+metadata/_custom_type_script = "uid://b7bt85tck6v7g"
+
+[node name="PropertySynchronizer4" type="Node" parent="." unique_id=1292649933]
+script = ExtResource("2_y5hcb")
+broadcast = 2
+node_path = NodePath("..")
+properties = PackedStringArray("rotation_degrees")
+interpolated = false
+interpolation_speed = 60.0
+extrapolation = null
 extrapolated = false
 max_extrapolation_time = 0.2
 metadata/_custom_type_script = "uid://b7bt85tck6v7g"

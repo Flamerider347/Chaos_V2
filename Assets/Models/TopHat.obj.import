@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://d0xna0wnnnxeg"
-path="res://.godot/imported/TopHat.obj-d50bf13ac66aa8e923c24c09d9b2370f.mesh"
+path="res://.godot/imported/TopHat.obj-5be615321c06630511d2085407573a31.mesh"
 
 [deps]
 
-files=["res://.godot/imported/TopHat.obj-d50bf13ac66aa8e923c24c09d9b2370f.mesh"]
+files=["res://.godot/imported/TopHat.obj-5be615321c06630511d2085407573a31.mesh"]
 
-source_file="res://Assets/Models/TopHat.obj"
-dest_files=["res://.godot/imported/TopHat.obj-d50bf13ac66aa8e923c24c09d9b2370f.mesh", "res://.godot/imported/TopHat.obj-d50bf13ac66aa8e923c24c09d9b2370f.mesh"]
+source_file="res://assets/models/TopHat.obj"
+dest_files=["res://.godot/imported/TopHat.obj-5be615321c06630511d2085407573a31.mesh", "res://.godot/imported/TopHat.obj-5be615321c06630511d2085407573a31.mesh"]
 
 [params]
 

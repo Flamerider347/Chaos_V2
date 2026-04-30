@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://djl7ef2n605tr"]
+
+[ext_resource type="Script" uid="uid://togfvjn4aqrk" path="res://scripts/cheese_tree.gd" id="1_cf1hr"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_cf1hr"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_cf1hr"]
+properties/0/path = NodePath("Label3D:text")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("cheese_timer:wait_time")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="cheese_tree" type="StaticBody3D" unique_id=68733649]
+script = ExtResource("1_cf1hr")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="." unique_id=515047224]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+radius = 0.2
+sides = 6
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2071637746]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CylinderShape3D_cf1hr")
+
+[node name="Label3D" type="Label3D" parent="." unique_id=1546856357]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3055594, 0)
+billboard = 2
+text = "5"
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=2107319426]
+replication_config = SubResource("SceneReplicationConfig_cf1hr")
+
+[node name="cheese_timer" type="Timer" parent="." unique_id=1312441818]
+one_shot = true
+
+[connection signal="timeout" from="cheese_timer" to="." method="_on_cheese_timer_timeout"]

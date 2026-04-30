@@ -38,7 +38,7 @@ func _on_join_pressed() -> void:
 	
 
 func _generate_room_code() -> String:
-	const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	const CHARS = "ABCDEFGHIJKLMNPQRSTUVWXYZ123456789"
 	var code = "KC_"
 	for i in range(4):
 		code += CHARS[randi() % CHARS.length()]

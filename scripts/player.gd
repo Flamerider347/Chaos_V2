@@ -23,8 +23,8 @@ func _input(event: InputEvent) -> void:
 	if not is_owned or GameData.paused:
 		return
 	if event is InputEventMouseMotion:
-		rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
-		$Head/Camera3D.rotate_x(-event.relative.y * MOUSE_SENSITIVITY)
+		self.rotation_degrees.y += -event.relative.x * MOUSE_SENSITIVITY * 5
+		$Head/Camera3D.rotation_degrees.x += -event.relative.y * MOUSE_SENSITIVITY * 5
 		$Head/Camera3D.rotation_degrees.x = clamp($Head/Camera3D.rotation_degrees.x, -40, 50)
 
 func _physics_process(delta: float) -> void:
