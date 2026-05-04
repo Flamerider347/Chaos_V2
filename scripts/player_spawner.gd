@@ -12,8 +12,8 @@ func _ready() -> void:
 	player.name = "local"
 	spawned_players["local"] = player
 	add_child(player)
-
-func _on_lobby_joined(lobby_name: String) -> void:
+	
+func _on_lobby_joined(_lobby_name: String) -> void:
 	var local = spawned_players.get("local")
 	if local:
 		local.name = str(GDSync.get_client_id())
@@ -22,7 +22,10 @@ func _on_lobby_joined(lobby_name: String) -> void:
 		GDSync.set_gdsync_owner(local, GDSync.get_client_id())
 	
 	for client_id in GDSync.lobby_get_all_clients():
-		if not spawned_players.has(client_id):
+		if client_id != GDSync.get_client_id() and not spawned_players.has(client_id):
+			client_joined(client_id)
+	for client_id in GDSync.lobby_get_all_clients():
+		if client_id != GDSync.get_client_id() and not spawned_players.has(client_id):
 			client_joined(client_id)
 
 func client_joined(client_id: int) -> void:
