@@ -9,6 +9,9 @@ const MOUSE_SENSITIVITY = 0.003
 @onready var interact_cast = $head/interact_cast
 
 func _ready() -> void:
+	is_owned = true
+	$head/camera.make_current()
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	GDSync.connect_gdsync_owner_changed(self, owner_changed)
 
 func owner_changed(_owner_id: int) -> void:

@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://tbm6ju1ij2xk" path="res://scripts/main.gd" id="1_a5p6j"]
 [ext_resource type="Script" uid="uid://cpr3cjn4l5i8k" path="res://scripts/player_spawner.gd" id="2_g4wyc"]
-[ext_resource type="PackedScene" uid="uid://clwq3k4knykhf" path="res://prefabs/player.tscn" id="3_7m14q"]
-[ext_resource type="PackedScene" uid="uid://djl7ef2n605tr" path="res://prefabs/cheese_tree.tscn" id="4_dajsn"]
+[ext_resource type="PackedScene" uid="uid://clwq3k4knykhf" path="res://Prefabs/player.tscn" id="3_7m14q"]
+[ext_resource type="PackedScene" uid="uid://djl7ef2n605tr" path="res://Prefabs/cheese_tree.tscn" id="4_dajsn"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_a5p6j"]
 height = 0.5633545
@@ -58,7 +58,7 @@ offset_right = 40.0
 offset_bottom = 23.0
 text = "SADLKhalkdsjfh"
 
-[node name="copy_button" type="Button" parent="pause_UI" unique_id=2034908009]
+[node name="copybutton" type="Button" parent="pause_UI" unique_id=2034908009]
 offset_top = 33.0
 offset_right = 127.0
 offset_bottom = 83.0
@@ -66,7 +66,12 @@ offset_bottom = 83.0
 [node name="UI" type="CanvasLayer" parent="." unique_id=1896255929]
 visible = false
 
-[node name="roomcode" type="Label" parent="UI" unique_id=1196367339]
+[node name="status" type="Label" parent="UI" unique_id=1196367339]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "SADLKhalkdsjfh"
+
+[node name="roomcode" type="Label" parent="UI" unique_id=1976579815]
 offset_right = 40.0
 offset_bottom = 23.0
 text = "SADLKhalkdsjfh"
@@ -75,4 +80,4 @@ text = "SADLKhalkdsjfh"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.822789, -0.5978743, -2.1433077)
 script = null
 
-[connection signal="pressed" from="pause_UI/copy_button" to="." method="_on_copy_button_pressed"]
+[connection signal="pressed" from="pause_UI/copybutton" to="." method="_on_copy_button_pressed"]

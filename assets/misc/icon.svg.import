@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cysttpplh4j14"
-path.s3tc="res://.godot/imported/icon.svg-f5e98bf8f3fd2a29b304ad4937f24237.s3tc.ctex"
+path.s3tc="res://.godot/imported/icon.svg-498d58392a0381274dbb42e70734fc48.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/misc/icon.svg"
-dest_files=["res://.godot/imported/icon.svg-f5e98bf8f3fd2a29b304ad4937f24237.s3tc.ctex"]
+source_file="res://Assets/misc/icon.svg"
+dest_files=["res://.godot/imported/icon.svg-498d58392a0381274dbb42e70734fc48.s3tc.ctex"]
 
 [params]
 
