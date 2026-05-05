@@ -2,7 +2,9 @@ extends Node3D
 
 var paused: bool = false
 
+
 func _ready() -> void:
+	GameData.in_game = true
 	$Pause_UI.visible = false
 	$Pause_UI/roomcode.text = ""
 	
@@ -32,6 +34,7 @@ func _input(event: InputEvent) -> void:
 			paused = !paused
 			GameData.paused = paused
 			$Pause_UI.visible = paused
+			$UI.visible = !paused
 			if paused:
 				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 			else:

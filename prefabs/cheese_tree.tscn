@@ -1,18 +1,13 @@
 [gd_scene format=3 uid="uid://djl7ef2n605tr"]
 
 [ext_resource type="Script" uid="uid://togfvjn4aqrk" path="res://scripts/cheese_tree.gd" id="1_cf1hr"]
+[ext_resource type="Script" uid="uid://bd8wow75pw1s5" path="res://addons/GD-Sync/Scripts/Types/NodeInstantiator.gd" id="2_t8wxq"]
+[ext_resource type="PackedScene" uid="uid://cqck225nk06m5" path="res://Prefabs/cheese.tscn" id="3_srgio"]
+[ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="4_srgio"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_cf1hr"]
 
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_cf1hr"]
-properties/0/path = NodePath("Label3D:text")
-properties/0/spawn = true
-properties/0/replication_mode = 1
-properties/1/path = NodePath("cheese_timer:wait_time")
-properties/1/spawn = true
-properties/1/replication_mode = 1
-
-[node name="cheese_tree" type="StaticBody3D" unique_id=68733649]
+[node name="cheese_tree" type="StaticBody3D" unique_id=68733649 groups=["punchable"]]
 script = ExtResource("1_cf1hr")
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="." unique_id=515047224]
@@ -29,10 +24,28 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3055594, 0)
 billboard = 2
 text = "5"
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=2107319426]
-replication_config = SubResource("SceneReplicationConfig_cf1hr")
-
 [node name="cheese_timer" type="Timer" parent="." unique_id=1312441818]
 one_shot = true
+
+[node name="Cheeseinstantiator" type="Node" parent="." unique_id=1101772906]
+script = ExtResource("2_t8wxq")
+spawn_type = 0
+target_location = NodePath("../../../items")
+scene = ExtResource("3_srgio")
+replicate_on_join = true
+sync_starting_changes = true
+excluded_properties = PackedStringArray()
+metadata/_custom_type_script = "uid://bd8wow75pw1s5"
+
+[node name="PropertySynchronizer" type="Node" parent="." unique_id=408842399]
+script = ExtResource("4_srgio")
+node_path = NodePath("..")
+properties = PackedStringArray("cheese_left")
+interpolated = false
+interpolation_speed = 1.0
+extrapolation = null
+extrapolated = false
+max_extrapolation_time = 0.2
+metadata/_custom_type_script = "uid://b7bt85tck6v7g"
 
 [connection signal="timeout" from="cheese_timer" to="." method="_on_cheese_timer_timeout"]

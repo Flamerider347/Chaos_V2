@@ -12,7 +12,7 @@ func _ready() -> void:
 	player.name = "local"
 	spawned_players["local"] = player
 	add_child(player)
-	
+
 func _on_lobby_joined(_lobby_name: String) -> void:
 	var local = spawned_players.get("local")
 	if local:
@@ -24,11 +24,10 @@ func _on_lobby_joined(_lobby_name: String) -> void:
 	for client_id in GDSync.lobby_get_all_clients():
 		if client_id != GDSync.get_client_id() and not spawned_players.has(client_id):
 			client_joined(client_id)
-	for client_id in GDSync.lobby_get_all_clients():
-		if client_id != GDSync.get_client_id() and not spawned_players.has(client_id):
-			client_joined(client_id)
 
 func client_joined(client_id: int) -> void:
+	if client_id == GDSync.get_client_id():
+		return
 	if spawned_players.has(client_id):
 		return
 	var player = player_scene.instantiate()

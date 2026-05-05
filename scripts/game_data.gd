@@ -5,6 +5,7 @@ var username: String = ""
 var paused: bool = false
 var connected: bool = false
 var is_joining: bool = false
+var in_game: bool = false
 
 func _ready() -> void:
 	GDSync.connected.connect(_on_connected)
@@ -15,7 +16,11 @@ func _ready() -> void:
 
 func _on_connected() -> void:
 	connected = true
-	print("Connected to GDSync, waiting for player action")
+	if is_joining:
+		GDSync.lobby_join(room_code)
+	else:
+		room_code = generate_room_code()
+		GDSync.lobby_create(room_code)
 
 func _on_connection_failed(_error: int) -> void:
 	print("Multiplayer unavailable")
@@ -26,6 +31,9 @@ func _on_lobby_created(lobby_name: String) -> void:
 func _on_lobby_joined(lobby_name: String) -> void:
 	room_code = lobby_name
 	print("Lobby ready: ", lobby_name)
+	if not in_game:
+		get_node("/root/main_menu/menu_UI/status").text = "Connected!"
+
 
 func generate_room_code() -> String:
 	const CHARS = "ABCDEFGHIJKLMNPQRSTUVWXYZ123456789"

@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://clwq3k4knykhf"]
 
 [ext_resource type="Script" uid="uid://bxa4oeybkp46x" path="res://scripts/player.gd" id="1_5wxv7"]
-[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://assets/SFX/icon.svg" id="2_2nftw"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://Assets/SFX/icon.svg" id="2_2nftw"]
 [ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="2_y5hcb"]
-[ext_resource type="ArrayMesh" uid="uid://d0xna0wnnnxeg" path="res://assets/models/TopHat.obj" id="3_2nftw"]
-[ext_resource type="Texture2D" uid="uid://cysttpplh4j14" path="res://assets/misc/icon.svg" id="4_ht1c8"]
+[ext_resource type="ArrayMesh" uid="uid://d0xna0wnnnxeg" path="res://Assets/Models/TopHat.obj" id="3_2nftw"]
+[ext_resource type="Texture2D" uid="uid://cysttpplh4j14" path="res://Assets/misc/icon.svg" id="4_ht1c8"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2nftw"]
 albedo_texture = ExtResource("2_2nftw")
@@ -30,6 +30,9 @@ process_mode = 1
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_5wxv7")
+
+[node name="hand" type="Node3D" parent="." unique_id=1988752399]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.02, 0.8, -1.173)
 
 [node name="face" type="MeshInstance3D" parent="." unique_id=893005727]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -0.13169393)
@@ -109,3 +112,8 @@ transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 1.9, 0)
 visible = false
 material_override = SubResource("StandardMaterial3D_hck1p")
 mesh = ExtResource("3_2nftw")
+
+[node name="pickup_timer" type="Timer" parent="." unique_id=750239620]
+one_shot = true
+
+[connection signal="timeout" from="pickup_timer" to="." method="_on_pickup_timer_timeout"]

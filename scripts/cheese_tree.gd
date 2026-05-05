@@ -1,7 +1,9 @@
 extends Node3D
 var cheese = load("res://prefabs/cheese.tscn")
 var cheese_left = 5
+@onready var Cheeseinstantiator = $Cheeseinstantiator
 func _on_punched():
+	print("Hello")
 	if multiplayer.is_server():
 		request_cheese_spawn(global_position)  # call directly if server
 	else:
@@ -12,9 +14,9 @@ func request_cheese_spawn(pos: Vector3):
 	if cheese_left > 0:
 		cheese_left -= 1
 		$Label3D.text = str(cheese_left)
-		var spawned_cheese = cheese.instantiate()
+		var spawned_cheese = Cheeseinstantiator.instantiate_node()
 		spawned_cheese.position = pos + Vector3(randf_range(-1, 1), 3, randf_range(-1, 1))
-		get_node("/root/Main/main_world/SpawnContainer").add_child(spawned_cheese, true)
+		GDSync.set_gdsync_owner(spawned_cheese, GDSync.get_client_id())
 		$cheese_timer.start(10)
 
 

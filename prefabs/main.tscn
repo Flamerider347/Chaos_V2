@@ -5,15 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://clwq3k4knykhf" path="res://Prefabs/player.tscn" id="3_7m14q"]
 [ext_resource type="PackedScene" uid="uid://djl7ef2n605tr" path="res://Prefabs/cheese_tree.tscn" id="4_dajsn"]
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_a5p6j"]
-height = 0.5633545
-radius = 20.0
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_g4wyc"]
-top_radius = 20.0
-bottom_radius = 20.0
-radial_segments = 6
-
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7m14q"]
 
 [sub_resource type="Sky" id="Sky_dajsn"]
@@ -23,32 +14,48 @@ sky_material = SubResource("ProceduralSkyMaterial_7m14q")
 background_mode = 2
 sky = SubResource("Sky_dajsn")
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_a5p6j"]
+height = 0.5633545
+radius = 20.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_g4wyc"]
+top_radius = 20.0
+bottom_radius = 20.0
+radial_segments = 6
+
 [node name="main" type="Node3D" unique_id=2036698157]
 process_mode = 3
 script = ExtResource("1_a5p6j")
 
 [node name="game" type="Node3D" parent="." unique_id=1242961268]
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="game" unique_id=1222698476]
+environment = SubResource("Environment_xjs27")
+
 [node name="players" type="Node3D" parent="game" unique_id=1582431357]
 script = ExtResource("2_g4wyc")
 player_scene = ExtResource("3_7m14q")
 
-[node name="floor" type="StaticBody3D" parent="game" unique_id=1611625833]
+[node name="world" type="Node3D" parent="game" unique_id=2057127466]
+
+[node name="floor" type="StaticBody3D" parent="game/world" unique_id=1611625833]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.40322375, 0)
 collision_layer = 3
 collision_mask = 3
 metadata/_edit_group_ = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="game/floor" unique_id=2129468699]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/floor" unique_id=2129468699]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3174365, 0)
 shape = SubResource("CylinderShape3D_a5p6j")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="game/floor" unique_id=1822529053]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="game/world/floor" unique_id=1822529053]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
 mesh = SubResource("CylinderMesh_g4wyc")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="game" unique_id=1222698476]
-environment = SubResource("Environment_xjs27")
+[node name="cheese_tree" parent="game/world" unique_id=68733649 instance=ExtResource("4_dajsn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.665378, -0.63253546, -1.3077796)
+
+[node name="items" type="Node3D" parent="game" unique_id=1381883755]
 
 [node name="Pause_UI" type="CanvasLayer" parent="." unique_id=516443905]
 visible = false
@@ -62,22 +69,13 @@ text = "SADLKhalkdsjfh"
 offset_top = 33.0
 offset_right = 127.0
 offset_bottom = 83.0
+text = "Copy code to clipboard"
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1896255929]
-visible = false
 
 [node name="status" type="Label" parent="UI" unique_id=1196367339]
 offset_right = 40.0
 offset_bottom = 23.0
 text = "SADLKhalkdsjfh"
-
-[node name="roomcode" type="Label" parent="UI" unique_id=1976579815]
-offset_right = 40.0
-offset_bottom = 23.0
-text = "SADLKhalkdsjfh"
-
-[node name="cheese_tree" parent="." unique_id=68733649 instance=ExtResource("4_dajsn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.822789, -0.5978743, -2.1433077)
-script = null
 
 [connection signal="pressed" from="Pause_UI/copybutton" to="." method="_on_copy_button_pressed"]
