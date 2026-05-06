@@ -17,7 +17,7 @@ func _process(_delta: float) -> void:
 
 func _on_punched():
 	if not GDSync.is_host():
-		GDSync.call_func_on(GDSync.get_host(), _on_punched, [])
+		GDSync.call_func_on(GDSync.get_host(), _on_punched)
 		return
 	if cheese_left > 0:
 		cheese_left -= 1
@@ -25,8 +25,6 @@ func _on_punched():
 		$Label3D.text = str(cheese_left)
 		var spawned_cheese = Cheeseinstantiator.instantiate_node()
 		spawned_cheese.position = global_position + Vector3(randf_range(-1, 1), 3, randf_range(-1, 1))
-		spawned_cheese.item_id = str(GDSync.get_client_id()) + "_" + str(Time.get_ticks_msec())
-		GameData.item_registry[spawned_cheese.item_id] = spawned_cheese
 		GDSync.set_gdsync_owner(spawned_cheese, GDSync.get_client_id())
 		$cheese_timer.start(10)
 

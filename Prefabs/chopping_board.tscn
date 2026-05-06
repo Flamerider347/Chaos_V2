@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://cwn8urw430asm"]
+
+[ext_resource type="Script" uid="uid://byp6ni58k3ks1" path="res://scripts/chopping_board.gd" id="1_jyd1a"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_v0sgk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jyd1a"]
+albedo_color = Color(0.9162715, 0.15510386, 0.6794909, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jyd1a"]
+size = Vector3(1, 0.1, 1)
+
+[node name="chopping_board" type="StaticBody3D" unique_id=646814846 groups=["placeable"]]
+script = ExtResource("1_jyd1a")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1298773316]
+shape = SubResource("BoxShape3D_v0sgk")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=765725999]
+material = SubResource("StandardMaterial3D_jyd1a")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1372385084]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1727645548]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5357883, 0)
+shape = SubResource("BoxShape3D_jyd1a")

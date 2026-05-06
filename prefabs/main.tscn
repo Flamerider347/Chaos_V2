@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://clwq3k4knykhf" path="res://Prefabs/player.tscn" id="3_7m14q"]
 [ext_resource type="PackedScene" uid="uid://djl7ef2n605tr" path="res://Prefabs/cheese_tree.tscn" id="4_dajsn"]
 [ext_resource type="Script" uid="uid://bof2t2fwctfbu" path="res://scripts/door.gd" id="5_xjs27"]
+[ext_resource type="PackedScene" uid="uid://cwn8urw430asm" path="res://Prefabs/chopping_board.tscn" id="6_fpsi2"]
 [ext_resource type="Script" uid="uid://ct5pqjn3s72nv" path="res://addons/GD-Sync/Scripts/Types/SynchronizedAnimationPlayer.gd" id="6_oob7m"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7m14q"]
@@ -15,6 +16,8 @@ sky_material = SubResource("ProceduralSkyMaterial_7m14q")
 [sub_resource type="Environment" id="Environment_xjs27"]
 background_mode = 2
 sky = SubResource("Sky_dajsn")
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_oob7m"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_a5p6j"]
 height = 0.5633545
@@ -70,8 +73,13 @@ script = ExtResource("1_a5p6j")
 
 [node name="game" type="Node3D" parent="." unique_id=1242961268]
 
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="game" unique_id=372193635]
+transform = Transform3D(1, 0, 0, 0, 1.1924881e-08, 1, 0, -1, 1.1924881e-08, 0, 3.1417232, 0)
+light_energy = 0.6
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="game" unique_id=1222698476]
 environment = SubResource("Environment_xjs27")
+camera_attributes = SubResource("CameraAttributesPractical_oob7m")
 
 [node name="players" type="Node3D" parent="game" unique_id=1582431357]
 script = ExtResource("2_g4wyc")
@@ -115,7 +123,7 @@ WARNING, OTHERS CAN'T JOIN
 ONCE DOOR IS OPENED"
 
 [node name="wall" type="StaticBody3D" parent="game/world/kitchen" unique_id=1749922591]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.90387666, 1.8784015)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.904, 5)
 metadata/_edit_group_ = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/kitchen/wall" unique_id=559535889]
@@ -125,7 +133,7 @@ shape = SubResource("BoxShape3D_dajsn")
 size = Vector3(10, 3, 0.1)
 
 [node name="wall2" type="StaticBody3D" parent="game/world/kitchen" unique_id=1711697001]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3.9191866, 0.90387666, -1.6871617)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -5, 0.904, 0)
 metadata/_edit_group_ = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/kitchen/wall2" unique_id=1461391999]
@@ -135,7 +143,7 @@ shape = SubResource("BoxShape3D_dajsn")
 size = Vector3(10, 3, 0.1)
 
 [node name="wall3" type="StaticBody3D" parent="game/world/kitchen" unique_id=1770115135]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4.965204, 0.9038762, -1.0358878)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5, 0.904, 0)
 metadata/_edit_group_ = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/kitchen/wall3" unique_id=1891719204]
@@ -143,6 +151,9 @@ shape = SubResource("BoxShape3D_dajsn")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="game/world/kitchen/wall3" unique_id=362666901]
 size = Vector3(10, 3, 0.1)
+
+[node name="chopping_board" parent="game/world/kitchen" unique_id=646814846 instance=ExtResource("6_fpsi2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.428421, -0.0001822114, 4.4373975)
 
 [node name="items" type="Node3D" parent="game" unique_id=1381883755]
 

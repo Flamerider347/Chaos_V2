@@ -2,16 +2,9 @@ extends Node3D
 
 var paused: bool = false
 
-
 func _ready() -> void:
 	GameData.in_game = true
 	$Pause_UI.visible = false
-	$Pause_UI/roomcode.text = ""
-	
-	if GameData.room_code == "":
-		GameData.room_code = GameData.generate_room_code()
-		if GameData.connected:
-			GDSync.lobby_create(GameData.room_code)
 	
 	if GameData.connected and GameData.room_code != "":
 		$UI/status.text = "Room: " + GameData.room_code
@@ -20,7 +13,7 @@ func _ready() -> void:
 		$UI/status.text = "Connecting..."
 		GDSync.lobby_joined.connect(_on_lobby_joined)
 		GDSync.connection_failed.connect(_on_connection_failed)
-		
+
 func _on_lobby_joined(_lobby_name: String) -> void:
 	$UI/status.text = "Room: " + GameData.room_code
 	$Pause_UI/roomcode.text = "Room: " + GameData.room_code

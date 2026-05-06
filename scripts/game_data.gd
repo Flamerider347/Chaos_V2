@@ -6,7 +6,6 @@ var paused: bool = false
 var connected: bool = false
 var is_joining: bool = false
 var in_game: bool = false
-var item_registry: Dictionary = {}
 
 func _ready() -> void:
 	GDSync.connected.connect(_on_connected)
@@ -31,10 +30,8 @@ func _on_lobby_created(lobby_name: String) -> void:
 
 func _on_lobby_joined(lobby_name: String) -> void:
 	room_code = lobby_name
-	print("Lobby ready: ", lobby_name)
 	if not in_game:
 		get_node("/root/main_menu/menu_UI/status").text = "Connected!"
-
 
 func generate_room_code() -> String:
 	const CHARS = "ABCDEFGHIJKLMNPQRSTUVWXYZ123456789"
