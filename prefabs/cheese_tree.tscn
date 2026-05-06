@@ -48,4 +48,15 @@ extrapolated = false
 max_extrapolation_time = 0.2
 metadata/_custom_type_script = "uid://b7bt85tck6v7g"
 
+[node name="PropertySynchronizer2" type="Node" parent="." unique_id=428280907]
+script = ExtResource("4_srgio")
+node_path = NodePath("../Label3D")
+properties = PackedStringArray("text")
+interpolated = false
+interpolation_speed = 1.0
+extrapolation = null
+extrapolated = false
+max_extrapolation_time = 0.2
+metadata/_custom_type_script = "uid://b7bt85tck6v7g"
+
 [connection signal="timeout" from="cheese_timer" to="." method="_on_cheese_timer_timeout"]

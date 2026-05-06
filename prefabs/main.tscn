@@ -4,6 +4,8 @@
 [ext_resource type="Script" uid="uid://cpr3cjn4l5i8k" path="res://scripts/player_spawner.gd" id="2_g4wyc"]
 [ext_resource type="PackedScene" uid="uid://clwq3k4knykhf" path="res://Prefabs/player.tscn" id="3_7m14q"]
 [ext_resource type="PackedScene" uid="uid://djl7ef2n605tr" path="res://Prefabs/cheese_tree.tscn" id="4_dajsn"]
+[ext_resource type="Script" uid="uid://bof2t2fwctfbu" path="res://scripts/door.gd" id="5_xjs27"]
+[ext_resource type="Script" uid="uid://ct5pqjn3s72nv" path="res://addons/GD-Sync/Scripts/Types/SynchronizedAnimationPlayer.gd" id="6_oob7m"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7m14q"]
 
@@ -22,6 +24,45 @@ radius = 20.0
 top_radius = 20.0
 bottom_radius = 20.0
 radial_segments = 6
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dajsn"]
+size = Vector3(10, 3, 0.1)
+
+[sub_resource type="Animation" id="Animation_fpsi2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("game/world/kitchen/door:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.838168, -3.5727391)]
+}
+
+[sub_resource type="Animation" id="Animation_yjdeq"]
+resource_name = "door_open"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("game/world/kitchen/door:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0.913, -3.573), Vector3(0, -2.162, -3.573)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_i6w6j"]
+_data = {
+&"RESET": SubResource("Animation_fpsi2"),
+&"door_open": SubResource("Animation_yjdeq")
+}
 
 [node name="main" type="Node3D" unique_id=2036698157]
 process_mode = 3
@@ -53,7 +94,55 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
 mesh = SubResource("CylinderMesh_g4wyc")
 
 [node name="cheese_tree" parent="game/world" unique_id=68733649 instance=ExtResource("4_dajsn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.665378, -0.63253546, -1.3077796)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.0093117, -0.632535, -8.194194)
+
+[node name="kitchen" type="Node3D" parent="game/world" unique_id=1556216379]
+
+[node name="door" type="StaticBody3D" parent="game/world/kitchen" unique_id=1983404160 groups=["door"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.838168, -3.5727391)
+script = ExtResource("5_xjs27")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/kitchen/door" unique_id=519824282]
+shape = SubResource("BoxShape3D_dajsn")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="game/world/kitchen/door" unique_id=1707687240]
+size = Vector3(10, 3, 0.1)
+
+[node name="Label3D" type="Label3D" parent="game/world/kitchen/door" unique_id=203890966]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.19245076)
+text = "Press \"Left Click to open\"
+WARNING, OTHERS CAN'T JOIN
+ONCE DOOR IS OPENED"
+
+[node name="wall" type="StaticBody3D" parent="game/world/kitchen" unique_id=1749922591]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.90387666, 1.8784015)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/kitchen/wall" unique_id=559535889]
+shape = SubResource("BoxShape3D_dajsn")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="game/world/kitchen/wall" unique_id=1710539006]
+size = Vector3(10, 3, 0.1)
+
+[node name="wall2" type="StaticBody3D" parent="game/world/kitchen" unique_id=1711697001]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3.9191866, 0.90387666, -1.6871617)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/kitchen/wall2" unique_id=1461391999]
+shape = SubResource("BoxShape3D_dajsn")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="game/world/kitchen/wall2" unique_id=625973924]
+size = Vector3(10, 3, 0.1)
+
+[node name="wall3" type="StaticBody3D" parent="game/world/kitchen" unique_id=1770115135]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4.965204, 0.9038762, -1.0358878)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/kitchen/wall3" unique_id=1891719204]
+shape = SubResource("BoxShape3D_dajsn")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="game/world/kitchen/wall3" unique_id=362666901]
+size = Vector3(10, 3, 0.1)
 
 [node name="items" type="Node3D" parent="game" unique_id=1381883755]
 
@@ -77,5 +166,10 @@ text = "Copy code to clipboard"
 offset_right = 40.0
 offset_bottom = 23.0
 text = "SADLKhalkdsjfh"
+
+[node name="SynchronizedAnimationPlayer" type="AnimationPlayer" parent="." unique_id=670073892]
+libraries/ = SubResource("AnimationLibrary_i6w6j")
+script = ExtResource("6_oob7m")
+metadata/_custom_type_script = "uid://ct5pqjn3s72nv"
 
 [connection signal="pressed" from="Pause_UI/copybutton" to="." method="_on_copy_button_pressed"]

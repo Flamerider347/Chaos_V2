@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://m8dtdn28meeu" path="res://scripts/item.gd" id="1_caa3o"]
 [ext_resource type="ArrayMesh" uid="uid://c5s3jo8leob6g" path="res://Assets/Models/food_ingredient_cheese.obj" id="2_ntgvh"]
+[ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="3_by1lt"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_g85ev"]
 
@@ -18,3 +19,15 @@ shape = SubResource("BoxShape3D_a6wpu")
 
 [node name="FoodIngredientCheese" type="MeshInstance3D" parent="." unique_id=1546206734]
 mesh = ExtResource("2_ntgvh")
+
+[node name="PropertySynchronizer" type="Node" parent="." unique_id=1363481936]
+script = ExtResource("3_by1lt")
+broadcast = 2
+node_path = NodePath("..")
+properties = PackedStringArray("global_position", "global_rotation")
+interpolated = false
+interpolation_speed = 1.0
+extrapolation = null
+extrapolated = false
+max_extrapolation_time = 0.2
+metadata/_custom_type_script = "uid://b7bt85tck6v7g"

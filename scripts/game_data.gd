@@ -6,6 +6,7 @@ var paused: bool = false
 var connected: bool = false
 var is_joining: bool = false
 var in_game: bool = false
+var item_registry: Dictionary = {}
 
 func _ready() -> void:
 	GDSync.connected.connect(_on_connected)

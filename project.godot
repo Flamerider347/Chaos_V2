@@ -35,6 +35,7 @@ enabled=PackedStringArray("res://addons/GD-Sync/plugin.cfg", "res://addons/tile-
 
 punchable="Things like trees that can be punched"
 pickupable="items able to be picked up"
+door=""
 
 [input]
 
