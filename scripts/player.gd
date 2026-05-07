@@ -11,6 +11,7 @@ const MOUSE_SENSITIVITY = 0.003
 @onready var interact_cast = $head/interact_cast
 @onready var hand = $hand
 func _ready() -> void:
+	GDSync.expose_func(sync_drop)
 	$username.text = GameData.username
 	is_owned = false
 	GDSync.connect_gdsync_owner_changed(self, owner_changed)
@@ -45,7 +46,7 @@ func _physics_process(_delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= GRAVITY * _delta
 	if held_item != null and interact_cast.is_colliding():
-		if interact_cast.get_collider().is_in_group("placeable"):
+		if interact_cast.get_collider().is_in_group("placeable") and held_item.is_in_group("choppable") and interact_cast.get_collider().can_chop:
 			held_item.global_position = interact_cast.get_collider().global_position + Vector3(0,0.5,0)
 			held_item.show()
 	elif held_item != null:
@@ -67,9 +68,8 @@ func _physics_process(_delta: float) -> void:
 				elif interact_cast.get_collider().is_in_group("door"):
 					interact_cast.get_collider().open_door()
 		var input_dir = Vector2.ZERO
-		if not GameData.paused:
-			input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-		
+		input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	
 		var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		if direction:
 			velocity.x = direction.x * SPEED
@@ -77,6 +77,9 @@ func _physics_process(_delta: float) -> void:
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 			velocity.z = move_toward(velocity.z, 0, SPEED)
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
 
@@ -92,7 +95,7 @@ func pickup_object(object):
 	$hand.visible = true
 	object.hide()
 	if GameData.connected:
-		pass
+		GDSync.set_gdsync_owner(object, GDSync.get_client_id())
 
 func drop_object(object):
 	held_item = null
@@ -103,7 +106,15 @@ func drop_object(object):
 	$hand.visible = false
 	object.show()
 	if GameData.connected:
-		pass
+		GDSync.set_gdsync_owner(object, GDSync.get_host())
+		GDSync.call_func_all(sync_drop, [object.get_path()])
+	
+func sync_drop(params: Array) -> void:
+	var object = get_node_or_null(params[0])
+	if object:
+		object.freeze = false
+		object.find_child("CollisionShape3D").disabled = false
+		object.show()
 
 func _on_pickup_timer_timeout() -> void:
 	can_pickup = true

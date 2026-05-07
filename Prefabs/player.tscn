@@ -34,12 +34,12 @@ script = ExtResource("1_5wxv7")
 [node name="hand" type="MeshInstance3D" parent="." unique_id=517305304]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.02, 0.8, -1.173)
 
-[node name="face" type="MeshInstance3D" parent="." unique_id=893005727]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -0.13169393)
-mesh = SubResource("BoxMesh_knrd4")
-
 [node name="head" type="Node3D" parent="." unique_id=1347343404]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="face" type="MeshInstance3D" parent="head" unique_id=893005727]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.13169393)
+mesh = SubResource("BoxMesh_knrd4")
 
 [node name="interact_cast" type="RayCast3D" parent="head" unique_id=1105478281]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
@@ -62,11 +62,11 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 2
 billboard = 2
 text = "John"
 
-[node name="PropertySynchronizer5" type="Node" parent="." unique_id=639154637]
+[node name="PropertySynchronizer6" type="Node" parent="." unique_id=2122413479]
 script = ExtResource("2_y5hcb")
 broadcast = 2
-node_path = NodePath("../hand")
-properties = PackedStringArray("mesh", "visible")
+node_path = NodePath("../head")
+properties = PackedStringArray("global_rotation")
 interpolated = true
 interpolation_speed = 30.0
 extrapolated = false
