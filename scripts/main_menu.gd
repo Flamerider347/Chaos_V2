@@ -1,5 +1,10 @@
 extends Node
-
+func _ready() -> void:
+	if GameData.connected:
+		$menu_UI/join_button.disabled = false
+		$menu_UI/status.text = "Connected!"
+		if GameData.join_error:
+			$"menu_UI/lobby error".text = GameData.join_error
 func _on_play_pressed() -> void:
 	GameData.username = $menu_UI/username.text.strip_edges()
 	if GameData.username == "":

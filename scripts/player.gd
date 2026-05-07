@@ -11,6 +11,7 @@ const MOUSE_SENSITIVITY = 0.003
 @onready var interact_cast = $head/interact_cast
 @onready var hand = $hand
 func _ready() -> void:
+	$username.text = GameData.username
 	is_owned = false
 	GDSync.connect_gdsync_owner_changed(self, owner_changed)
 	GDSync.expose_node(self)
@@ -81,8 +82,10 @@ func pickup_object(object):
 	can_pickup = false
 	object.reparent(hand)
 	object.freeze = true
+	object.find_child("CollisionShape3D").disabled = true
 	$pickup_timer.start()
 	object.position = Vector3.ZERO
+	object.rotation = Vector3.ZERO
 	if GameData.connected:
 		pass
 
@@ -90,6 +93,7 @@ func drop_object(object):
 	held_item = null
 	can_pickup = false
 	object.freeze = false
+	object.find_child("CollisionShape3D").disabled = false
 	$pickup_timer.start()
 	object.reparent(get_node("/root/main/game/items"))
 	if GameData.connected:

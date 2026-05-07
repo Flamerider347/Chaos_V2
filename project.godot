@@ -37,6 +37,7 @@ punchable="Things like trees that can be punched"
 pickupable="items able to be picked up"
 door=""
 placeable=""
+choppable=""
 
 [input]
 

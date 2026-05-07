@@ -9,7 +9,7 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_a6wpu"]
 size = Vector3(0.9760742, 0.5, 0.72229004)
 
-[node name="cheese" type="RigidBody3D" unique_id=1119285444 groups=["pickupable"]]
+[node name="cheese" type="RigidBody3D" unique_id=1119285444 groups=["choppable", "pickupable"]]
 physics_material_override = SubResource("PhysicsMaterial_g85ev")
 script = ExtResource("1_caa3o")
 

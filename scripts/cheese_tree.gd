@@ -24,6 +24,7 @@ func _on_punched():
 		GDSync.sync_var(self, "cheese_left")
 		$Label3D.text = str(cheese_left)
 		var spawned_cheese = Cheeseinstantiator.instantiate_node()
+		spawned_cheese.type = "cheese"
 		spawned_cheese.position = global_position + Vector3(randf_range(-1, 1), 3, randf_range(-1, 1))
 		GDSync.set_gdsync_owner(spawned_cheese, GDSync.get_client_id())
 		$cheese_timer.start(10)

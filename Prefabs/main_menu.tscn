@@ -12,6 +12,7 @@ offset_left = 288.0
 offset_top = 306.0
 offset_right = 552.0
 offset_bottom = 382.0
+disabled = true
 text = "Join
 "
 
@@ -35,6 +36,12 @@ offset_top = 55.0
 offset_right = 681.0
 offset_bottom = 126.0
 text = "Not Connected, Please wait."
+
+[node name="lobby error" type="Label" parent="menu_UI" unique_id=2141615790]
+offset_left = 289.0
+offset_top = 397.0
+offset_right = 552.0
+offset_bottom = 468.0
 
 [node name="play_button" type="Button" parent="menu_UI" unique_id=759537876]
 offset_left = 305.0
