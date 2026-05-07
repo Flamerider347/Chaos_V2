@@ -11,8 +11,9 @@ const MOUSE_SENSITIVITY = 0.003
 @onready var interact_cast = $head/interact_cast
 @onready var hand = $hand
 func _ready() -> void:
-	GDSync.expose_func(sync_drop)
 	$username.text = GameData.username
+	GDSync.expose_node(self)
+	GDSync.expose_func(sync_drop)
 	is_owned = false
 	GDSync.connect_gdsync_owner_changed(self, owner_changed)
 	GDSync.expose_node(self)

@@ -58,7 +58,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_y6xdh")
 
 [node name="username" type="Label3D" parent="." unique_id=2145858136]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 2.2310288, 0)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 2.5888531, 0)
 billboard = 2
 text = "John"
 
@@ -85,22 +85,11 @@ extrapolated = false
 max_extrapolation_time = 0.2
 metadata/_custom_type_script = "uid://b7bt85tck6v7g"
 
-[node name="PropertySynchronizer3" type="Node" parent="." unique_id=938941296]
+[node name="PropertySynchronizer3" type="Node" parent="." unique_id=1742000546]
 script = ExtResource("2_y5hcb")
 broadcast = 2
 node_path = NodePath("../Devhat")
 properties = PackedStringArray("visible")
-interpolated = true
-interpolation_speed = 30.0
-extrapolated = false
-max_extrapolation_time = 0.2
-metadata/_custom_type_script = "uid://b7bt85tck6v7g"
-
-[node name="PropertySynchronizer2" type="Node" parent="." unique_id=823516785]
-script = ExtResource("2_y5hcb")
-broadcast = 2
-node_path = NodePath("../username")
-properties = PackedStringArray("text")
 interpolated = true
 interpolation_speed = 30.0
 extrapolated = false
@@ -120,7 +109,6 @@ metadata/_custom_type_script = "uid://b7bt85tck6v7g"
 
 [node name="Devhat" type="MeshInstance3D" parent="." unique_id=1534305998]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 1.9, 0)
-visible = false
 material_override = SubResource("StandardMaterial3D_hck1p")
 mesh = ExtResource("3_2nftw")
 

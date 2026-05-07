@@ -33,8 +33,8 @@ func _on_lobby_created(lobby_name: String) -> void:
 
 func _on_lobby_joined(lobby_name: String) -> void:
 	room_code = lobby_name
+	GDSync.player_set_username(username)
 	join_error = null
-
 
 func _on_lobby_join_failed(_thing, error):
 	get_tree().change_scene_to_file("res://Prefabs/main_menu.tscn")
