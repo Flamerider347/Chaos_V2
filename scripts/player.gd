@@ -44,48 +44,53 @@ func _physics_process(_delta: float) -> void:
 	
 	if not is_on_floor():
 		velocity.y -= GRAVITY * _delta
-	
-	if not GameData.paused:
-		if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-			velocity.y = JUMP_VELOCITY
 	if held_item != null and interact_cast.is_colliding():
 		if interact_cast.get_collider().is_in_group("placeable"):
 			held_item.global_position = interact_cast.get_collider().global_position + Vector3(0,0.5,0)
+			held_item.show()
 	elif held_item != null:
-		held_item.position = Vector3.ZERO
-	if Input.is_action_just_pressed("left_click"):
-		if held_item != null and can_pickup:
-			drop_object(held_item)
-		elif interact_cast.is_colliding():
-			if interact_cast.get_collider().is_in_group("punchable"):
-				interact_cast.get_collider()._on_punched()
-			elif interact_cast.get_collider().is_in_group("pickupable") and can_pickup and held_item == null:
-				pickup_object(interact_cast.get_collider())
-			elif interact_cast.get_collider().is_in_group("door"):
-				interact_cast.get_collider().open_door()
-	var input_dir = Vector2.ZERO
+		held_item.global_position = $hand.global_position
+		held_item.hide()
+
 	if not GameData.paused:
-		input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	
-	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
-	
+		if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+			velocity.y = JUMP_VELOCITY
+
+		if Input.is_action_just_pressed("left_click"):
+			if held_item != null and can_pickup:
+				drop_object(held_item)
+			elif interact_cast.is_colliding():
+				if interact_cast.get_collider().is_in_group("punchable"):
+					interact_cast.get_collider()._on_punched()
+				elif interact_cast.get_collider().is_in_group("pickupable") and can_pickup and held_item == null:
+					pickup_object(interact_cast.get_collider())
+				elif interact_cast.get_collider().is_in_group("door"):
+					interact_cast.get_collider().open_door()
+		var input_dir = Vector2.ZERO
+		if not GameData.paused:
+			input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+		
+		var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+		if direction:
+			velocity.x = direction.x * SPEED
+			velocity.z = direction.z * SPEED
+		else:
+			velocity.x = move_toward(velocity.x, 0, SPEED)
+			velocity.z = move_toward(velocity.z, 0, SPEED)
+
 	move_and_slide()
 
 func pickup_object(object):
 	held_item = object
 	can_pickup = false
-	object.reparent(hand)
 	object.freeze = true
 	object.find_child("CollisionShape3D").disabled = true
 	$pickup_timer.start()
-	object.position = Vector3.ZERO
+	object.global_position = $hand.global_position
 	object.rotation = Vector3.ZERO
+	$hand.mesh = object.get_node("mesh").mesh
+	$hand.visible = true
+	object.hide()
 	if GameData.connected:
 		pass
 
@@ -95,7 +100,8 @@ func drop_object(object):
 	object.freeze = false
 	object.find_child("CollisionShape3D").disabled = false
 	$pickup_timer.start()
-	object.reparent(get_node("/root/main/game/items"))
+	$hand.visible = false
+	object.show()
 	if GameData.connected:
 		pass
 
