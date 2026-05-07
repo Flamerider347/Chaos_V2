@@ -38,6 +38,8 @@ pickupable="items able to be picked up"
 door=""
 placeable=""
 choppable=""
+plate=""
+plate_stackable=""
 
 [input]
 

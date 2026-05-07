@@ -47,9 +47,10 @@ func _physics_process(_delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= GRAVITY * _delta
 	if held_item != null and interact_cast.is_colliding():
-		if interact_cast.get_collider().is_in_group("placeable") and held_item.is_in_group("choppable") and interact_cast.get_collider().can_chop:
+		if interact_cast.get_collider().is_in_group("placeable") and held_item.is_in_group("choppable"):
 			held_item.global_position = interact_cast.get_collider().global_position + Vector3(0,0.5,0)
 			held_item.show()
+
 	elif held_item != null:
 		held_item.global_position = $hand.global_position
 		held_item.hide()
@@ -61,6 +62,7 @@ func _physics_process(_delta: float) -> void:
 		if Input.is_action_just_pressed("left_click"):
 			if held_item != null and can_pickup:
 				drop_object(held_item)
+	
 			elif interact_cast.is_colliding():
 				if interact_cast.get_collider().is_in_group("punchable"):
 					interact_cast.get_collider()._on_punched()
@@ -68,6 +70,17 @@ func _physics_process(_delta: float) -> void:
 					pickup_object(interact_cast.get_collider())
 				elif interact_cast.get_collider().is_in_group("door"):
 					interact_cast.get_collider().open_door()
+					
+		if Input.is_action_just_pressed("right_click"):
+			if interact_cast.get_collider().is_in_group("plate") and held_item != null and held_item.is_in_group("plate_stackable"):
+				var plate = interact_cast.get_collider()
+				if GameData.connected:
+					GDSync.call_func_all(held_item)
+				plate.stack_item(held_item)
+				hand.hide()
+				held_item = null
+				
+
 		var input_dir = Vector2.ZERO
 		input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	

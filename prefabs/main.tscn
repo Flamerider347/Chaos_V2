@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://bof2t2fwctfbu" path="res://scripts/door.gd" id="5_xjs27"]
 [ext_resource type="PackedScene" uid="uid://cwn8urw430asm" path="res://Prefabs/chopping_board.tscn" id="6_fpsi2"]
 [ext_resource type="Script" uid="uid://ct5pqjn3s72nv" path="res://addons/GD-Sync/Scripts/Types/SynchronizedAnimationPlayer.gd" id="6_oob7m"]
+[ext_resource type="PackedScene" uid="uid://uqptavxff366" path="res://Prefabs/plate.tscn" id="8_yjdeq"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7m14q"]
 
@@ -182,5 +183,11 @@ text = "SADLKhalkdsjfh"
 libraries/ = SubResource("AnimationLibrary_i6w6j")
 script = ExtResource("6_oob7m")
 metadata/_custom_type_script = "uid://ct5pqjn3s72nv"
+
+[node name="plate" parent="." unique_id=550599860 instance=ExtResource("8_yjdeq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7497581, -0.58253556, 2.4910426)
+
+[node name="plate2" parent="." unique_id=912221458 instance=ExtResource("8_yjdeq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0592837, -0.58253556, 1.1134388)
 
 [connection signal="pressed" from="Pause_UI/copybutton" to="." method="_on_copy_button_pressed"]
