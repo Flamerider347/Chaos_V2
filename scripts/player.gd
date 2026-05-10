@@ -6,7 +6,7 @@ var can_pickup = true
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 const GRAVITY = 9.8
-const MOUSE_SENSITIVITY = 0.003
+var mouse_sensitivity = 0.003
 
 @onready var interact_cast = $head/interact_cast
 @onready var hand = $hand
@@ -36,11 +36,12 @@ func _input(event: InputEvent) -> void:
 	if not is_owned or GameData.paused:
 		return
 	if event is InputEventMouseMotion:
-		self.rotation_degrees.y += -event.relative.x * MOUSE_SENSITIVITY * 5
-		$head.rotation_degrees.x += -event.relative.y * MOUSE_SENSITIVITY * 5
+		self.rotation_degrees.y += -event.relative.x * mouse_sensitivity * 5
+		$head.rotation_degrees.x += -event.relative.y * mouse_sensitivity * 5
 		$head.rotation_degrees.x = clamp($head.rotation_degrees.x, -90, 90)
 
 func _physics_process(_delta: float) -> void:
+	mouse_sensitivity = get_node("/root/main/Pause_UI/sensitivity").value
 	if not is_owned:
 		return
 	
