@@ -105,19 +105,22 @@ func pickup_object(object):
 	$pickup_timer.start()
 	object.global_position = $hand.global_position
 	object.rotation = Vector3.ZERO
-	$hand.mesh = object.get_node("mesh").mesh
-	$hand.visible = true
+	var object2 = object.duplicate()
+	hand.add_child(object2)
+	object2.position = Vector3.ZERO
+	object2.rotation = Vector3.ZERO
 	object.hide()
 	if GameData.connected:
 		GDSync.set_gdsync_owner(object, GDSync.get_client_id())
 
 func drop_object(object):
+	for i in hand.get_children():
+		i.queue_free()
 	held_item = null
 	can_pickup = false
 	object.freeze = false
 	object.find_child("CollisionShape3D").disabled = false
 	$pickup_timer.start()
-	$hand.visible = false
 	object.show()
 	if GameData.connected:
 		GDSync.set_gdsync_owner(object, GDSync.get_host())
