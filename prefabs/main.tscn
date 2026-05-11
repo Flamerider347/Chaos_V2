@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://cpr3cjn4l5i8k" path="res://scripts/player_spawner.gd" id="2_g4wyc"]
 [ext_resource type="PackedScene" uid="uid://clwq3k4knykhf" path="res://Prefabs/player.tscn" id="3_7m14q"]
 [ext_resource type="PackedScene" uid="uid://djl7ef2n605tr" path="res://Prefabs/cheese_tree.tscn" id="4_dajsn"]
-[ext_resource type="PackedScene" path="res://Prefabs/tomato_tree.tscn" id="5_i6w6j"]
+[ext_resource type="PackedScene" uid="uid://b7v3hl5yko217" path="res://Prefabs/tomato_tree.tscn" id="5_i6w6j"]
 [ext_resource type="Script" uid="uid://bof2t2fwctfbu" path="res://scripts/door.gd" id="5_xjs27"]
 [ext_resource type="PackedScene" uid="uid://cwn8urw430asm" path="res://Prefabs/chopping_board.tscn" id="6_fpsi2"]
 [ext_resource type="Script" uid="uid://ct5pqjn3s72nv" path="res://addons/GD-Sync/Scripts/Types/SynchronizedAnimationPlayer.gd" id="6_oob7m"]
