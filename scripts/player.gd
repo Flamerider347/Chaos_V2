@@ -2,13 +2,14 @@ extends CharacterBody3D
 
 var is_owned: bool = false
 var held_item = null
+var hand_item = null
 var can_pickup = true
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 const GRAVITY = 9.8
 var mouse_sensitivity = 0.003
 
-@onready var interact_cast = $head/interact_cast
+@onready var interact_cast : RayCast3D = $head/interact_cast
 @onready var hand = $hand
 func _ready() -> void:
 	$username.text = GameData.username
@@ -47,14 +48,16 @@ func _physics_process(_delta: float) -> void:
 	
 	if not is_on_floor():
 		velocity.y -= GRAVITY * _delta
-	if held_item != null and interact_cast.is_colliding():
+	if held_item != null and interact_cast.is_colliding() and interact_cast.get_collider().is_in_group("placeable") or interact_cast.is_colliding() and interact_cast.get_collider().is_in_group("plate"):
 		if interact_cast.get_collider().is_in_group("placeable") and held_item.is_in_group("choppable"):
 			held_item.global_position = interact_cast.get_collider().global_position + Vector3(0,0.5,0)
+			held_item.show()
+		elif interact_cast.is_in_group("plate") and held_item.is_in_group("stackable_plate"):
+			held_item.global_position = interact_cast.get_collider().global_position + Vector3(0,0.1,0)
 			held_item.show()
 
 	elif held_item != null:
 		held_item.global_position = $hand.global_position
-		held_item.global_rotation = held_item.global_rotation
 		held_item.hide()
 
 	if not GameData.paused:
@@ -96,24 +99,25 @@ func _physics_process(_delta: float) -> void:
 
 func stack_object(plate):
 	if GameData.connected:
-		GDSync.call_func_all(held_item)
+		GDSync.call_func_all(plate.stack_item, held_item)
 	plate.stack_item(held_item)
 	for i in hand.get_children():
 		i.queue_free()
 	held_item = null
-	
+
 func pickup_object(object):
 	held_item = object
 	can_pickup = false
 	object.freeze = true
 	object.find_child("CollisionShape3D").disabled = true
+	object.rotation = Vector3.ZERO
 	$pickup_timer.start()
-	object.global_position = $hand.global_position
 	var object2 = object.duplicate()
 	hand.add_child(object2)
 	object2.position = Vector3.ZERO
-	object2.global_rotation = object.global_rotation
+	object2.rotation = Vector3.ZERO
 	object.hide()
+	hand_item = object2
 	if GameData.connected:
 		GDSync.set_gdsync_owner(object, GDSync.get_client_id())
 
@@ -126,6 +130,7 @@ func drop_object(object):
 	object.find_child("CollisionShape3D").disabled = false
 	$pickup_timer.start()
 	object.show()
+	object.rotation = hand_item.global_rotation
 	if GameData.connected:
 		GDSync.set_gdsync_owner(object, GDSync.get_host())
 		GDSync.call_func_all(sync_drop, [object.get_path()])
