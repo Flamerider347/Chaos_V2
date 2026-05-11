@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://jrc7py36lv24"
-path="res://.godot/imported/dishrack.obj-c9270c219555e74e6711952eecd5e5ad.mesh"
+path="res://.godot/imported/dishrack.obj-aeffebb630c148e3efdb42b386ef61e4.mesh"
 
 [deps]
 
-files=["res://.godot/imported/dishrack.obj-c9270c219555e74e6711952eecd5e5ad.mesh"]
+files=["res://.godot/imported/dishrack.obj-aeffebb630c148e3efdb42b386ef61e4.mesh"]
 
-source_file="res://assets/kitchenassets/dishrack.obj"
-dest_files=["res://.godot/imported/dishrack.obj-c9270c219555e74e6711952eecd5e5ad.mesh", "res://.godot/imported/dishrack.obj-c9270c219555e74e6711952eecd5e5ad.mesh"]
+source_file="res://Assets/Models/kitchenassets/dishrack.obj"
+dest_files=["res://.godot/imported/dishrack.obj-aeffebb630c148e3efdb42b386ef61e4.mesh", "res://.godot/imported/dishrack.obj-aeffebb630c148e3efdb42b386ef61e4.mesh"]
 
 [params]
 

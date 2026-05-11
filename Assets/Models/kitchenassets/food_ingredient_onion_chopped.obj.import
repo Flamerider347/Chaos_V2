@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://5pd7cxnuw2hy"
-path="res://.godot/imported/food_ingredient_onion_chopped.obj-91ed152a83283c2cfe04e39295fc904a.mesh"
+path="res://.godot/imported/food_ingredient_onion_chopped.obj-182926b099d85295ed2d5621f8305c28.mesh"
 
 [deps]
 
-files=["res://.godot/imported/food_ingredient_onion_chopped.obj-91ed152a83283c2cfe04e39295fc904a.mesh"]
+files=["res://.godot/imported/food_ingredient_onion_chopped.obj-182926b099d85295ed2d5621f8305c28.mesh"]
 
-source_file="res://assets/kitchenassets/food_ingredient_onion_chopped.obj"
-dest_files=["res://.godot/imported/food_ingredient_onion_chopped.obj-91ed152a83283c2cfe04e39295fc904a.mesh", "res://.godot/imported/food_ingredient_onion_chopped.obj-91ed152a83283c2cfe04e39295fc904a.mesh"]
+source_file="res://Assets/Models/kitchenassets/food_ingredient_onion_chopped.obj"
+dest_files=["res://.godot/imported/food_ingredient_onion_chopped.obj-182926b099d85295ed2d5621f8305c28.mesh", "res://.godot/imported/food_ingredient_onion_chopped.obj-182926b099d85295ed2d5621f8305c28.mesh"]
 
 [params]
 

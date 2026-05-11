@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://b1g007tevj3g1"
-path="res://.godot/imported/fridge_A_door_top.obj-1b61a83db19a3aaf4d9eb544d2642218.mesh"
+path="res://.godot/imported/fridge_A_door_top.obj-6ba76ea3145e074841cad46faeebfd47.mesh"
 
 [deps]
 
-files=["res://.godot/imported/fridge_A_door_top.obj-1b61a83db19a3aaf4d9eb544d2642218.mesh"]
+files=["res://.godot/imported/fridge_A_door_top.obj-6ba76ea3145e074841cad46faeebfd47.mesh"]
 
-source_file="res://assets/kitchenassets/fridge_A_door_top.obj"
-dest_files=["res://.godot/imported/fridge_A_door_top.obj-1b61a83db19a3aaf4d9eb544d2642218.mesh", "res://.godot/imported/fridge_A_door_top.obj-1b61a83db19a3aaf4d9eb544d2642218.mesh"]
+source_file="res://Assets/Models/kitchenassets/fridge_A_door_top.obj"
+dest_files=["res://.godot/imported/fridge_A_door_top.obj-6ba76ea3145e074841cad46faeebfd47.mesh", "res://.godot/imported/fridge_A_door_top.obj-6ba76ea3145e074841cad46faeebfd47.mesh"]
 
 [params]
 

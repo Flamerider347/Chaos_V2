@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://ldypm6380x36"
-path="res://.godot/imported/food_ingredient_cheese_chopped.obj-753af4c36832be395d24eb9d3eef9f67.mesh"
+path="res://.godot/imported/food_ingredient_cheese_chopped.obj-230db59318c44d283eb7f82e0636b7a2.mesh"
 
 [deps]
 
-files=["res://.godot/imported/food_ingredient_cheese_chopped.obj-753af4c36832be395d24eb9d3eef9f67.mesh"]
+files=["res://.godot/imported/food_ingredient_cheese_chopped.obj-230db59318c44d283eb7f82e0636b7a2.mesh"]
 
-source_file="res://assets/kitchenassets/food_ingredient_cheese_chopped.obj"
-dest_files=["res://.godot/imported/food_ingredient_cheese_chopped.obj-753af4c36832be395d24eb9d3eef9f67.mesh", "res://.godot/imported/food_ingredient_cheese_chopped.obj-753af4c36832be395d24eb9d3eef9f67.mesh"]
+source_file="res://Assets/Models/kitchenassets/food_ingredient_cheese_chopped.obj"
+dest_files=["res://.godot/imported/food_ingredient_cheese_chopped.obj-230db59318c44d283eb7f82e0636b7a2.mesh", "res://.godot/imported/food_ingredient_cheese_chopped.obj-230db59318c44d283eb7f82e0636b7a2.mesh"]
 
 [params]
 

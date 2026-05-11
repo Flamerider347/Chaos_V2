@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://dl51a68mprjm3"
-path="res://.godot/imported/papertowel.obj-2e8268d32b8705fbef7f4edcf31ca1be.mesh"
+path="res://.godot/imported/papertowel.obj-7b0a9996e34dbc20e24af20b4836afbc.mesh"
 
 [deps]
 
-files=["res://.godot/imported/papertowel.obj-2e8268d32b8705fbef7f4edcf31ca1be.mesh"]
+files=["res://.godot/imported/papertowel.obj-7b0a9996e34dbc20e24af20b4836afbc.mesh"]
 
-source_file="res://assets/kitchenassets/papertowel.obj"
-dest_files=["res://.godot/imported/papertowel.obj-2e8268d32b8705fbef7f4edcf31ca1be.mesh", "res://.godot/imported/papertowel.obj-2e8268d32b8705fbef7f4edcf31ca1be.mesh"]
+source_file="res://Assets/Models/kitchenassets/papertowel.obj"
+dest_files=["res://.godot/imported/papertowel.obj-7b0a9996e34dbc20e24af20b4836afbc.mesh", "res://.godot/imported/papertowel.obj-7b0a9996e34dbc20e24af20b4836afbc.mesh"]
 
 [params]
 

@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://dodfdfkndbmla"
-path="res://.godot/imported/cuttingboard.obj-b56e822c48e93f71951dc1a26e03884f.mesh"
+path="res://.godot/imported/cuttingboard.obj-45e67f6dfc8cdc7800a66d54b628ab6d.mesh"
 
 [deps]
 
-files=["res://.godot/imported/cuttingboard.obj-b56e822c48e93f71951dc1a26e03884f.mesh"]
+files=["res://.godot/imported/cuttingboard.obj-45e67f6dfc8cdc7800a66d54b628ab6d.mesh"]
 
-source_file="res://assets/kitchenassets/cuttingboard.obj"
-dest_files=["res://.godot/imported/cuttingboard.obj-b56e822c48e93f71951dc1a26e03884f.mesh", "res://.godot/imported/cuttingboard.obj-b56e822c48e93f71951dc1a26e03884f.mesh"]
+source_file="res://Assets/Models/kitchenassets/cuttingboard.obj"
+dest_files=["res://.godot/imported/cuttingboard.obj-45e67f6dfc8cdc7800a66d54b628ab6d.mesh", "res://.godot/imported/cuttingboard.obj-45e67f6dfc8cdc7800a66d54b628ab6d.mesh"]
 
 [params]
 

@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://gt8gfv365fd8"
-path="res://.godot/imported/bowl_dirty.obj-bfc1138e69425535b336be187abd0608.mesh"
+path="res://.godot/imported/bowl_dirty.obj-1531ad720ab9d8fe01b2d2f7c7fa8e34.mesh"
 
 [deps]
 
-files=["res://.godot/imported/bowl_dirty.obj-bfc1138e69425535b336be187abd0608.mesh"]
+files=["res://.godot/imported/bowl_dirty.obj-1531ad720ab9d8fe01b2d2f7c7fa8e34.mesh"]
 
-source_file="res://assets/kitchenassets/bowl_dirty.obj"
-dest_files=["res://.godot/imported/bowl_dirty.obj-bfc1138e69425535b336be187abd0608.mesh", "res://.godot/imported/bowl_dirty.obj-bfc1138e69425535b336be187abd0608.mesh"]
+source_file="res://Assets/Models/kitchenassets/bowl_dirty.obj"
+dest_files=["res://.godot/imported/bowl_dirty.obj-1531ad720ab9d8fe01b2d2f7c7fa8e34.mesh", "res://.godot/imported/bowl_dirty.obj-1531ad720ab9d8fe01b2d2f7c7fa8e34.mesh"]
 
 [params]
 

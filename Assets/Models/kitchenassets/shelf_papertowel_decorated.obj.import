@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://w7lm7fx27cut"
-path="res://.godot/imported/shelf_papertowel_decorated.obj-84aadc6cb9fa9083492157593a9a334d.mesh"
+path="res://.godot/imported/shelf_papertowel_decorated.obj-f829b71d358691ed4b736c90328f5f10.mesh"
 
 [deps]
 
-files=["res://.godot/imported/shelf_papertowel_decorated.obj-84aadc6cb9fa9083492157593a9a334d.mesh"]
+files=["res://.godot/imported/shelf_papertowel_decorated.obj-f829b71d358691ed4b736c90328f5f10.mesh"]
 
-source_file="res://assets/kitchenassets/shelf_papertowel_decorated.obj"
-dest_files=["res://.godot/imported/shelf_papertowel_decorated.obj-84aadc6cb9fa9083492157593a9a334d.mesh", "res://.godot/imported/shelf_papertowel_decorated.obj-84aadc6cb9fa9083492157593a9a334d.mesh"]
+source_file="res://Assets/Models/kitchenassets/shelf_papertowel_decorated.obj"
+dest_files=["res://.godot/imported/shelf_papertowel_decorated.obj-f829b71d358691ed4b736c90328f5f10.mesh", "res://.godot/imported/shelf_papertowel_decorated.obj-f829b71d358691ed4b736c90328f5f10.mesh"]
 
 [params]
 

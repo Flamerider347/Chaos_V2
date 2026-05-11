@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://bf1u8yreeaubp"
-path="res://.godot/imported/ketchup.obj-7720da00503e88757dbbb7387f08d2da.mesh"
+path="res://.godot/imported/ketchup.obj-073cce620a0ff28ba9ecb7471d74dc71.mesh"
 
 [deps]
 
-files=["res://.godot/imported/ketchup.obj-7720da00503e88757dbbb7387f08d2da.mesh"]
+files=["res://.godot/imported/ketchup.obj-073cce620a0ff28ba9ecb7471d74dc71.mesh"]
 
-source_file="res://assets/kitchenassets/ketchup.obj"
-dest_files=["res://.godot/imported/ketchup.obj-7720da00503e88757dbbb7387f08d2da.mesh", "res://.godot/imported/ketchup.obj-7720da00503e88757dbbb7387f08d2da.mesh"]
+source_file="res://Assets/Models/kitchenassets/ketchup.obj"
+dest_files=["res://.godot/imported/ketchup.obj-073cce620a0ff28ba9ecb7471d74dc71.mesh", "res://.godot/imported/ketchup.obj-073cce620a0ff28ba9ecb7471d74dc71.mesh"]
 
 [params]
 

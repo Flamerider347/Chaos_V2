@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://b8vba1t313a87"
-path="res://.godot/imported/crate_onions.obj-07338edc491bdf85d6002d782de0a69c.mesh"
+path="res://.godot/imported/crate_onions.obj-8485be7fae4abdb99614f3ffbc539d41.mesh"
 
 [deps]
 
-files=["res://.godot/imported/crate_onions.obj-07338edc491bdf85d6002d782de0a69c.mesh"]
+files=["res://.godot/imported/crate_onions.obj-8485be7fae4abdb99614f3ffbc539d41.mesh"]
 
-source_file="res://assets/kitchenassets/crate_onions.obj"
-dest_files=["res://.godot/imported/crate_onions.obj-07338edc491bdf85d6002d782de0a69c.mesh", "res://.godot/imported/crate_onions.obj-07338edc491bdf85d6002d782de0a69c.mesh"]
+source_file="res://Assets/Models/kitchenassets/crate_onions.obj"
+dest_files=["res://.godot/imported/crate_onions.obj-8485be7fae4abdb99614f3ffbc539d41.mesh", "res://.godot/imported/crate_onions.obj-8485be7fae4abdb99614f3ffbc539d41.mesh"]
 
 [params]
 

@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://44m7lf2hxyyk"
-path="res://.godot/imported/kitchencabinet.obj-938f93e2b38bedb74a8fa341d44cc6bf.mesh"
+path="res://.godot/imported/kitchencabinet.obj-e264bf46b0cb8f09c67b79ea903762c0.mesh"
 
 [deps]
 
-files=["res://.godot/imported/kitchencabinet.obj-938f93e2b38bedb74a8fa341d44cc6bf.mesh"]
+files=["res://.godot/imported/kitchencabinet.obj-e264bf46b0cb8f09c67b79ea903762c0.mesh"]
 
-source_file="res://assets/kitchenassets/kitchencabinet.obj"
-dest_files=["res://.godot/imported/kitchencabinet.obj-938f93e2b38bedb74a8fa341d44cc6bf.mesh", "res://.godot/imported/kitchencabinet.obj-938f93e2b38bedb74a8fa341d44cc6bf.mesh"]
+source_file="res://Assets/Models/kitchenassets/kitchencabinet.obj"
+dest_files=["res://.godot/imported/kitchencabinet.obj-e264bf46b0cb8f09c67b79ea903762c0.mesh", "res://.godot/imported/kitchencabinet.obj-e264bf46b0cb8f09c67b79ea903762c0.mesh"]
 
 [params]
 

@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://dncwc5px4srsq"
-path="res://.godot/imported/kitchencounter_straight_A_decorated.obj-80921778a05051f2e898ea7570374487.mesh"
+path="res://.godot/imported/kitchencounter_straight_A_decorated.obj-e496066b45df3353ce098c4d796722b7.mesh"
 
 [deps]
 
-files=["res://.godot/imported/kitchencounter_straight_A_decorated.obj-80921778a05051f2e898ea7570374487.mesh"]
+files=["res://.godot/imported/kitchencounter_straight_A_decorated.obj-e496066b45df3353ce098c4d796722b7.mesh"]
 
-source_file="res://assets/kitchenassets/kitchencounter_straight_A_decorated.obj"
-dest_files=["res://.godot/imported/kitchencounter_straight_A_decorated.obj-80921778a05051f2e898ea7570374487.mesh", "res://.godot/imported/kitchencounter_straight_A_decorated.obj-80921778a05051f2e898ea7570374487.mesh"]
+source_file="res://Assets/Models/kitchenassets/kitchencounter_straight_A_decorated.obj"
+dest_files=["res://.godot/imported/kitchencounter_straight_A_decorated.obj-e496066b45df3353ce098c4d796722b7.mesh", "res://.godot/imported/kitchencounter_straight_A_decorated.obj-e496066b45df3353ce098c4d796722b7.mesh"]
 
 [params]
 

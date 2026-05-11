@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://devptyx3lb5i3"
-path="res://.godot/imported/stew_pot.obj-5fe94fe4555365238faccb8da4c11dcb.mesh"
+path="res://.godot/imported/stew_pot.obj-369b272d6c3c8d37c12a0093ce0b4180.mesh"
 
 [deps]
 
-files=["res://.godot/imported/stew_pot.obj-5fe94fe4555365238faccb8da4c11dcb.mesh"]
+files=["res://.godot/imported/stew_pot.obj-369b272d6c3c8d37c12a0093ce0b4180.mesh"]
 
-source_file="res://assets/kitchenassets/stew_pot.obj"
-dest_files=["res://.godot/imported/stew_pot.obj-5fe94fe4555365238faccb8da4c11dcb.mesh", "res://.godot/imported/stew_pot.obj-5fe94fe4555365238faccb8da4c11dcb.mesh"]
+source_file="res://Assets/Models/kitchenassets/stew_pot.obj"
+dest_files=["res://.godot/imported/stew_pot.obj-369b272d6c3c8d37c12a0093ce0b4180.mesh", "res://.godot/imported/stew_pot.obj-369b272d6c3c8d37c12a0093ce0b4180.mesh"]
 
 [params]
 

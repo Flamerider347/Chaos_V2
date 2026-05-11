@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://d4knmcxxhxk20"
-path="res://.godot/imported/kitchentable_B.obj-a7ee3d14382a2519b7e0b182b1243390.mesh"
+path="res://.godot/imported/kitchentable_B.obj-e7a054d4a58ceebf8cf52306b0e68876.mesh"
 
 [deps]
 
-files=["res://.godot/imported/kitchentable_B.obj-a7ee3d14382a2519b7e0b182b1243390.mesh"]
+files=["res://.godot/imported/kitchentable_B.obj-e7a054d4a58ceebf8cf52306b0e68876.mesh"]
 
-source_file="res://assets/kitchenassets/kitchentable_B.obj"
-dest_files=["res://.godot/imported/kitchentable_B.obj-a7ee3d14382a2519b7e0b182b1243390.mesh", "res://.godot/imported/kitchentable_B.obj-a7ee3d14382a2519b7e0b182b1243390.mesh"]
+source_file="res://Assets/Models/kitchenassets/kitchentable_B.obj"
+dest_files=["res://.godot/imported/kitchentable_B.obj-e7a054d4a58ceebf8cf52306b0e68876.mesh", "res://.godot/imported/kitchentable_B.obj-e7a054d4a58ceebf8cf52306b0e68876.mesh"]
 
 [params]
 

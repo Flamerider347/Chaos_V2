@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://cydnny2apdhta"
-path="res://.godot/imported/food_ingredient_potato_mashed.obj-8c52ae92507c5645197ef2224e9f9d39.mesh"
+path="res://.godot/imported/food_ingredient_potato_mashed.obj-ece0fa51c243f4bf4c1a08d8084fef8d.mesh"
 
 [deps]
 
-files=["res://.godot/imported/food_ingredient_potato_mashed.obj-8c52ae92507c5645197ef2224e9f9d39.mesh"]
+files=["res://.godot/imported/food_ingredient_potato_mashed.obj-ece0fa51c243f4bf4c1a08d8084fef8d.mesh"]
 
-source_file="res://assets/kitchenassets/food_ingredient_potato_mashed.obj"
-dest_files=["res://.godot/imported/food_ingredient_potato_mashed.obj-8c52ae92507c5645197ef2224e9f9d39.mesh", "res://.godot/imported/food_ingredient_potato_mashed.obj-8c52ae92507c5645197ef2224e9f9d39.mesh"]
+source_file="res://Assets/Models/kitchenassets/food_ingredient_potato_mashed.obj"
+dest_files=["res://.godot/imported/food_ingredient_potato_mashed.obj-ece0fa51c243f4bf4c1a08d8084fef8d.mesh", "res://.godot/imported/food_ingredient_potato_mashed.obj-ece0fa51c243f4bf4c1a08d8084fef8d.mesh"]
 
 [params]
 

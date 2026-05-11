@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://iwrrk2ci74kj"
-path="res://.godot/imported/crate_steak.obj-a3ee5f48fb736edae5a91e1df4f3ae6a.mesh"
+path="res://.godot/imported/crate_steak.obj-1d225590ffdcbfa95e2f600656218f80.mesh"
 
 [deps]
 
-files=["res://.godot/imported/crate_steak.obj-a3ee5f48fb736edae5a91e1df4f3ae6a.mesh"]
+files=["res://.godot/imported/crate_steak.obj-1d225590ffdcbfa95e2f600656218f80.mesh"]
 
-source_file="res://assets/kitchenassets/crate_steak.obj"
-dest_files=["res://.godot/imported/crate_steak.obj-a3ee5f48fb736edae5a91e1df4f3ae6a.mesh", "res://.godot/imported/crate_steak.obj-a3ee5f48fb736edae5a91e1df4f3ae6a.mesh"]
+source_file="res://Assets/Models/kitchenassets/crate_steak.obj"
+dest_files=["res://.godot/imported/crate_steak.obj-1d225590ffdcbfa95e2f600656218f80.mesh", "res://.godot/imported/crate_steak.obj-1d225590ffdcbfa95e2f600656218f80.mesh"]
 
 [params]
 

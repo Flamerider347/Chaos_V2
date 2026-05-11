@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://coitlmbh6oe7p"
-path="res://.godot/imported/wall_half.obj-3280737784ce5d0292a8dc13610b939a.mesh"
+path="res://.godot/imported/wall_half.obj-67f59b85b8ed494770b9cbcaa48ba269.mesh"
 
 [deps]
 
-files=["res://.godot/imported/wall_half.obj-3280737784ce5d0292a8dc13610b939a.mesh"]
+files=["res://.godot/imported/wall_half.obj-67f59b85b8ed494770b9cbcaa48ba269.mesh"]
 
-source_file="res://assets/kitchenassets/wall_half.obj"
-dest_files=["res://.godot/imported/wall_half.obj-3280737784ce5d0292a8dc13610b939a.mesh", "res://.godot/imported/wall_half.obj-3280737784ce5d0292a8dc13610b939a.mesh"]
+source_file="res://Assets/Models/kitchenassets/wall_half.obj"
+dest_files=["res://.godot/imported/wall_half.obj-67f59b85b8ed494770b9cbcaa48ba269.mesh", "res://.godot/imported/wall_half.obj-67f59b85b8ed494770b9cbcaa48ba269.mesh"]
 
 [params]
 

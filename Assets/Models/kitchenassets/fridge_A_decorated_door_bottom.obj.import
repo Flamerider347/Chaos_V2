@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://cdrd2h2iiooj5"
-path="res://.godot/imported/fridge_A_decorated_door_bottom.obj-b690d2d7628b18c28403aaa2533c5520.mesh"
+path="res://.godot/imported/fridge_A_decorated_door_bottom.obj-6550bf8d116710e9dbbd647f54eb3d11.mesh"
 
 [deps]
 
-files=["res://.godot/imported/fridge_A_decorated_door_bottom.obj-b690d2d7628b18c28403aaa2533c5520.mesh"]
+files=["res://.godot/imported/fridge_A_decorated_door_bottom.obj-6550bf8d116710e9dbbd647f54eb3d11.mesh"]
 
-source_file="res://assets/kitchenassets/fridge_A_decorated_door_bottom.obj"
-dest_files=["res://.godot/imported/fridge_A_decorated_door_bottom.obj-b690d2d7628b18c28403aaa2533c5520.mesh", "res://.godot/imported/fridge_A_decorated_door_bottom.obj-b690d2d7628b18c28403aaa2533c5520.mesh"]
+source_file="res://Assets/Models/kitchenassets/fridge_A_decorated_door_bottom.obj"
+dest_files=["res://.godot/imported/fridge_A_decorated_door_bottom.obj-6550bf8d116710e9dbbd647f54eb3d11.mesh", "res://.godot/imported/fridge_A_decorated_door_bottom.obj-6550bf8d116710e9dbbd647f54eb3d11.mesh"]
 
 [params]
 

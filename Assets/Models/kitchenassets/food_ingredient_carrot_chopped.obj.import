@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://o6t1a6ctfklr"
-path="res://.godot/imported/food_ingredient_carrot_chopped.obj-9be0d667cf30e5626063ba1b7127299f.mesh"
+path="res://.godot/imported/food_ingredient_carrot_chopped.obj-85be0f9586fb414f47918811dcc1cc7e.mesh"
 
 [deps]
 
-files=["res://.godot/imported/food_ingredient_carrot_chopped.obj-9be0d667cf30e5626063ba1b7127299f.mesh"]
+files=["res://.godot/imported/food_ingredient_carrot_chopped.obj-85be0f9586fb414f47918811dcc1cc7e.mesh"]
 
-source_file="res://assets/kitchenassets/food_ingredient_carrot_chopped.obj"
-dest_files=["res://.godot/imported/food_ingredient_carrot_chopped.obj-9be0d667cf30e5626063ba1b7127299f.mesh", "res://.godot/imported/food_ingredient_carrot_chopped.obj-9be0d667cf30e5626063ba1b7127299f.mesh"]
+source_file="res://Assets/Models/kitchenassets/food_ingredient_carrot_chopped.obj"
+dest_files=["res://.godot/imported/food_ingredient_carrot_chopped.obj-85be0f9586fb414f47918811dcc1cc7e.mesh", "res://.godot/imported/food_ingredient_carrot_chopped.obj-85be0f9586fb414f47918811dcc1cc7e.mesh"]
 
 [params]
 

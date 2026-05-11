@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://5nymc23ada81"
-path="res://.godot/imported/food_ingredient_lettuce_chopped.obj-a5771acfa017d940e856a893c97e71b5.mesh"
+path="res://.godot/imported/food_ingredient_lettuce_chopped.obj-ae28ccd9ffd45091577c187b2601affd.mesh"
 
 [deps]
 
-files=["res://.godot/imported/food_ingredient_lettuce_chopped.obj-a5771acfa017d940e856a893c97e71b5.mesh"]
+files=["res://.godot/imported/food_ingredient_lettuce_chopped.obj-ae28ccd9ffd45091577c187b2601affd.mesh"]
 
-source_file="res://assets/kitchenassets/food_ingredient_lettuce_chopped.obj"
-dest_files=["res://.godot/imported/food_ingredient_lettuce_chopped.obj-a5771acfa017d940e856a893c97e71b5.mesh", "res://.godot/imported/food_ingredient_lettuce_chopped.obj-a5771acfa017d940e856a893c97e71b5.mesh"]
+source_file="res://Assets/Models/kitchenassets/food_ingredient_lettuce_chopped.obj"
+dest_files=["res://.godot/imported/food_ingredient_lettuce_chopped.obj-ae28ccd9ffd45091577c187b2601affd.mesh", "res://.godot/imported/food_ingredient_lettuce_chopped.obj-ae28ccd9ffd45091577c187b2601affd.mesh"]
 
 [params]
 

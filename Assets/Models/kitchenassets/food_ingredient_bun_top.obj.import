@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://b3uhykyjujrl4"
-path="res://.godot/imported/food_ingredient_bun_top.obj-9667956dd36919831dd5827caccf5fc5.mesh"
+path="res://.godot/imported/food_ingredient_bun_top.obj-67bc5912123982eec67689188843630f.mesh"
 
 [deps]
 
-files=["res://.godot/imported/food_ingredient_bun_top.obj-9667956dd36919831dd5827caccf5fc5.mesh"]
+files=["res://.godot/imported/food_ingredient_bun_top.obj-67bc5912123982eec67689188843630f.mesh"]
 
-source_file="res://assets/kitchenassets/food_ingredient_bun_top.obj"
-dest_files=["res://.godot/imported/food_ingredient_bun_top.obj-9667956dd36919831dd5827caccf5fc5.mesh", "res://.godot/imported/food_ingredient_bun_top.obj-9667956dd36919831dd5827caccf5fc5.mesh"]
+source_file="res://Assets/Models/kitchenassets/food_ingredient_bun_top.obj"
+dest_files=["res://.godot/imported/food_ingredient_bun_top.obj-67bc5912123982eec67689188843630f.mesh", "res://.godot/imported/food_ingredient_bun_top.obj-67bc5912123982eec67689188843630f.mesh"]
 
 [params]
 

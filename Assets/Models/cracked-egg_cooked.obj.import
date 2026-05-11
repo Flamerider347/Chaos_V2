@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bgs0o6v7vbvtb"
+path="res://.godot/imported/cracked-egg_cooked.obj-6206a8e298c1a6cdef1df827fb7c755b.mesh"
+
+[deps]
+
+files=["res://.godot/imported/cracked-egg_cooked.obj-6206a8e298c1a6cdef1df827fb7c755b.mesh"]
+
+source_file="res://Assets/Models/cracked-egg_cooked.obj"
+dest_files=["res://.godot/imported/cracked-egg_cooked.obj-6206a8e298c1a6cdef1df827fb7c755b.mesh", "res://.godot/imported/cracked-egg_cooked.obj-6206a8e298c1a6cdef1df827fb7c755b.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

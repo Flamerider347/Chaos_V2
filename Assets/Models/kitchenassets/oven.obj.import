@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://blx8xg86yj77w"
-path="res://.godot/imported/oven.obj-a20b78cd40a0f8a887c3afc3ce3d6007.mesh"
+path="res://.godot/imported/oven.obj-4ef314ceb69af14072007bb7ec132a1b.mesh"
 
 [deps]
 
-files=["res://.godot/imported/oven.obj-a20b78cd40a0f8a887c3afc3ce3d6007.mesh"]
+files=["res://.godot/imported/oven.obj-4ef314ceb69af14072007bb7ec132a1b.mesh"]
 
-source_file="res://assets/kitchenassets/oven.obj"
-dest_files=["res://.godot/imported/oven.obj-a20b78cd40a0f8a887c3afc3ce3d6007.mesh", "res://.godot/imported/oven.obj-a20b78cd40a0f8a887c3afc3ce3d6007.mesh"]
+source_file="res://Assets/Models/kitchenassets/oven.obj"
+dest_files=["res://.godot/imported/oven.obj-4ef314ceb69af14072007bb7ec132a1b.mesh", "res://.godot/imported/oven.obj-4ef314ceb69af14072007bb7ec132a1b.mesh"]
 
 [params]
 

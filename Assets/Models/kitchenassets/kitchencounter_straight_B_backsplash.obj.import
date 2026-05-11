@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://bbisykest8ls2"
-path="res://.godot/imported/kitchencounter_straight_B_backsplash.obj-46901008c7bad5cb685cd7d893f77671.mesh"
+path="res://.godot/imported/kitchencounter_straight_B_backsplash.obj-e4e58e3bfda468be283b8fef16f91eab.mesh"
 
 [deps]
 
-files=["res://.godot/imported/kitchencounter_straight_B_backsplash.obj-46901008c7bad5cb685cd7d893f77671.mesh"]
+files=["res://.godot/imported/kitchencounter_straight_B_backsplash.obj-e4e58e3bfda468be283b8fef16f91eab.mesh"]
 
-source_file="res://assets/kitchenassets/kitchencounter_straight_B_backsplash.obj"
-dest_files=["res://.godot/imported/kitchencounter_straight_B_backsplash.obj-46901008c7bad5cb685cd7d893f77671.mesh", "res://.godot/imported/kitchencounter_straight_B_backsplash.obj-46901008c7bad5cb685cd7d893f77671.mesh"]
+source_file="res://Assets/Models/kitchenassets/kitchencounter_straight_B_backsplash.obj"
+dest_files=["res://.godot/imported/kitchencounter_straight_B_backsplash.obj-e4e58e3bfda468be283b8fef16f91eab.mesh", "res://.godot/imported/kitchencounter_straight_B_backsplash.obj-e4e58e3bfda468be283b8fef16f91eab.mesh"]
 
 [params]
 

@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://cbjsc3uj8gxj4"
-path="res://.godot/imported/food_ingredient_lettuce.obj-b8ff78bee880bd44f7411d19b5176c68.mesh"
+path="res://.godot/imported/food_ingredient_lettuce.obj-844045e15383f79b979eba4d77e123a5.mesh"
 
 [deps]
 
-files=["res://.godot/imported/food_ingredient_lettuce.obj-b8ff78bee880bd44f7411d19b5176c68.mesh"]
+files=["res://.godot/imported/food_ingredient_lettuce.obj-844045e15383f79b979eba4d77e123a5.mesh"]
 
-source_file="res://assets/kitchenassets/food_ingredient_lettuce.obj"
-dest_files=["res://.godot/imported/food_ingredient_lettuce.obj-b8ff78bee880bd44f7411d19b5176c68.mesh", "res://.godot/imported/food_ingredient_lettuce.obj-b8ff78bee880bd44f7411d19b5176c68.mesh"]
+source_file="res://Assets/Models/kitchenassets/food_ingredient_lettuce.obj"
+dest_files=["res://.godot/imported/food_ingredient_lettuce.obj-844045e15383f79b979eba4d77e123a5.mesh", "res://.godot/imported/food_ingredient_lettuce.obj-844045e15383f79b979eba4d77e123a5.mesh"]
 
 [params]
 

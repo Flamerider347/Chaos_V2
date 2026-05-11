@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://bja6wsds8k0cf"
-path="res://.godot/imported/fridge_A_decorated.obj-c144d98146be31f8853f68293fe37839.mesh"
+path="res://.godot/imported/fridge_A_decorated.obj-11aa952983a115ee35e998d3e3850f99.mesh"
 
 [deps]
 
-files=["res://.godot/imported/fridge_A_decorated.obj-c144d98146be31f8853f68293fe37839.mesh"]
+files=["res://.godot/imported/fridge_A_decorated.obj-11aa952983a115ee35e998d3e3850f99.mesh"]
 
-source_file="res://assets/kitchenassets/fridge_A_decorated.obj"
-dest_files=["res://.godot/imported/fridge_A_decorated.obj-c144d98146be31f8853f68293fe37839.mesh", "res://.godot/imported/fridge_A_decorated.obj-c144d98146be31f8853f68293fe37839.mesh"]
+source_file="res://Assets/Models/kitchenassets/fridge_A_decorated.obj"
+dest_files=["res://.godot/imported/fridge_A_decorated.obj-11aa952983a115ee35e998d3e3850f99.mesh", "res://.godot/imported/fridge_A_decorated.obj-11aa952983a115ee35e998d3e3850f99.mesh"]
 
 [params]
 

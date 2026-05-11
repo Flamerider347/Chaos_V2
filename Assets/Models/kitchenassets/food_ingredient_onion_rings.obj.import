@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://beiw6o1ykl2tt"
-path="res://.godot/imported/food_ingredient_onion_rings.obj-d46920add540709351c617439af0843c.mesh"
+path="res://.godot/imported/food_ingredient_onion_rings.obj-5052382d6c4c639731a53075224cdaab.mesh"
 
 [deps]
 
-files=["res://.godot/imported/food_ingredient_onion_rings.obj-d46920add540709351c617439af0843c.mesh"]
+files=["res://.godot/imported/food_ingredient_onion_rings.obj-5052382d6c4c639731a53075224cdaab.mesh"]
 
-source_file="res://assets/kitchenassets/food_ingredient_onion_rings.obj"
-dest_files=["res://.godot/imported/food_ingredient_onion_rings.obj-d46920add540709351c617439af0843c.mesh", "res://.godot/imported/food_ingredient_onion_rings.obj-d46920add540709351c617439af0843c.mesh"]
+source_file="res://Assets/Models/kitchenassets/food_ingredient_onion_rings.obj"
+dest_files=["res://.godot/imported/food_ingredient_onion_rings.obj-5052382d6c4c639731a53075224cdaab.mesh", "res://.godot/imported/food_ingredient_onion_rings.obj-5052382d6c4c639731a53075224cdaab.mesh"]
 
 [params]
 

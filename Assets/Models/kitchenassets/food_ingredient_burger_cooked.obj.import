@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://b1nwbvgilns86"
-path="res://.godot/imported/food_ingredient_burger_cooked.obj-5bc73eec0cde93352b5a240f9bf7949b.mesh"
+path="res://.godot/imported/food_ingredient_burger_cooked.obj-9bd0c0df9561286ddf8b74d39a62fef6.mesh"
 
 [deps]
 
-files=["res://.godot/imported/food_ingredient_burger_cooked.obj-5bc73eec0cde93352b5a240f9bf7949b.mesh"]
+files=["res://.godot/imported/food_ingredient_burger_cooked.obj-9bd0c0df9561286ddf8b74d39a62fef6.mesh"]
 
-source_file="res://assets/kitchenassets/food_ingredient_burger_cooked.obj"
-dest_files=["res://.godot/imported/food_ingredient_burger_cooked.obj-5bc73eec0cde93352b5a240f9bf7949b.mesh", "res://.godot/imported/food_ingredient_burger_cooked.obj-5bc73eec0cde93352b5a240f9bf7949b.mesh"]
+source_file="res://Assets/Models/kitchenassets/food_ingredient_burger_cooked.obj"
+dest_files=["res://.godot/imported/food_ingredient_burger_cooked.obj-9bd0c0df9561286ddf8b74d39a62fef6.mesh", "res://.godot/imported/food_ingredient_burger_cooked.obj-9bd0c0df9561286ddf8b74d39a62fef6.mesh"]
 
 [params]
 

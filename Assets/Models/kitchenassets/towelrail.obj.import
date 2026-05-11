@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://dbq0fal6du25x"
-path="res://.godot/imported/towelrail.obj-1123bf98960d160ceba1fec6f120c978.mesh"
+path="res://.godot/imported/towelrail.obj-af1da3574f1d27dc5390c102bbdf8ea3.mesh"
 
 [deps]
 
-files=["res://.godot/imported/towelrail.obj-1123bf98960d160ceba1fec6f120c978.mesh"]
+files=["res://.godot/imported/towelrail.obj-af1da3574f1d27dc5390c102bbdf8ea3.mesh"]
 
-source_file="res://assets/kitchenassets/towelrail.obj"
-dest_files=["res://.godot/imported/towelrail.obj-1123bf98960d160ceba1fec6f120c978.mesh", "res://.godot/imported/towelrail.obj-1123bf98960d160ceba1fec6f120c978.mesh"]
+source_file="res://Assets/Models/kitchenassets/towelrail.obj"
+dest_files=["res://.godot/imported/towelrail.obj-af1da3574f1d27dc5390c102bbdf8ea3.mesh", "res://.godot/imported/towelrail.obj-af1da3574f1d27dc5390c102bbdf8ea3.mesh"]
 
 [params]
 

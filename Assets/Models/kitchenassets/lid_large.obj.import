@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://db860u8g60thw"
-path="res://.godot/imported/lid_large.obj-67fe80f555fedaf7e332b50fe93a6f2e.mesh"
+path="res://.godot/imported/lid_large.obj-89d7e01bbdd222213592a0c7081c4f78.mesh"
 
 [deps]
 
-files=["res://.godot/imported/lid_large.obj-67fe80f555fedaf7e332b50fe93a6f2e.mesh"]
+files=["res://.godot/imported/lid_large.obj-89d7e01bbdd222213592a0c7081c4f78.mesh"]
 
-source_file="res://assets/kitchenassets/lid_large.obj"
-dest_files=["res://.godot/imported/lid_large.obj-67fe80f555fedaf7e332b50fe93a6f2e.mesh", "res://.godot/imported/lid_large.obj-67fe80f555fedaf7e332b50fe93a6f2e.mesh"]
+source_file="res://Assets/Models/kitchenassets/lid_large.obj"
+dest_files=["res://.godot/imported/lid_large.obj-89d7e01bbdd222213592a0c7081c4f78.mesh", "res://.godot/imported/lid_large.obj-89d7e01bbdd222213592a0c7081c4f78.mesh"]
 
 [params]
 

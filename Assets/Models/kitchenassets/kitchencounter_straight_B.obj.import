@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://chytia7sek7ru"
-path="res://.godot/imported/kitchencounter_straight_B.obj-952a3ee3f7f290314c160473d6845072.mesh"
+path="res://.godot/imported/kitchencounter_straight_B.obj-c1da7cb8d0578c5405a00a5bab7c9ffa.mesh"
 
 [deps]
 
-files=["res://.godot/imported/kitchencounter_straight_B.obj-952a3ee3f7f290314c160473d6845072.mesh"]
+files=["res://.godot/imported/kitchencounter_straight_B.obj-c1da7cb8d0578c5405a00a5bab7c9ffa.mesh"]
 
-source_file="res://assets/kitchenassets/kitchencounter_straight_B.obj"
-dest_files=["res://.godot/imported/kitchencounter_straight_B.obj-952a3ee3f7f290314c160473d6845072.mesh", "res://.godot/imported/kitchencounter_straight_B.obj-952a3ee3f7f290314c160473d6845072.mesh"]
+source_file="res://Assets/Models/kitchenassets/kitchencounter_straight_B.obj"
+dest_files=["res://.godot/imported/kitchencounter_straight_B.obj-c1da7cb8d0578c5405a00a5bab7c9ffa.mesh", "res://.godot/imported/kitchencounter_straight_B.obj-c1da7cb8d0578c5405a00a5bab7c9ffa.mesh"]
 
 [params]
 

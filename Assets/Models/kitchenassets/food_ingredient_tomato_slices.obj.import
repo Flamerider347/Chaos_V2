@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://ciso35peutmbv"
-path="res://.godot/imported/food_ingredient_tomato_slices.obj-60f20a5fa4540050b158dff64a60953d.mesh"
+path="res://.godot/imported/food_ingredient_tomato_slices.obj-ad9f40f16570eb289cb5ff18729d0659.mesh"
 
 [deps]
 
-files=["res://.godot/imported/food_ingredient_tomato_slices.obj-60f20a5fa4540050b158dff64a60953d.mesh"]
+files=["res://.godot/imported/food_ingredient_tomato_slices.obj-ad9f40f16570eb289cb5ff18729d0659.mesh"]
 
-source_file="res://assets/kitchenassets/food_ingredient_tomato_slices.obj"
-dest_files=["res://.godot/imported/food_ingredient_tomato_slices.obj-60f20a5fa4540050b158dff64a60953d.mesh", "res://.godot/imported/food_ingredient_tomato_slices.obj-60f20a5fa4540050b158dff64a60953d.mesh"]
+source_file="res://Assets/Models/kitchenassets/food_ingredient_tomato_slices.obj"
+dest_files=["res://.godot/imported/food_ingredient_tomato_slices.obj-ad9f40f16570eb289cb5ff18729d0659.mesh", "res://.godot/imported/food_ingredient_tomato_slices.obj-ad9f40f16570eb289cb5ff18729d0659.mesh"]
 
 [params]
 

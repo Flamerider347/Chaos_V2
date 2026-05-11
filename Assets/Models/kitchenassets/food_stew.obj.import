@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://c84uuiaa1qccr"
-path="res://.godot/imported/food_stew.obj-c7a6f47a6d6fac33608bdf841800305e.mesh"
+path="res://.godot/imported/food_stew.obj-99002ec9389b2e18c2eef51945641bfd.mesh"
 
 [deps]
 
-files=["res://.godot/imported/food_stew.obj-c7a6f47a6d6fac33608bdf841800305e.mesh"]
+files=["res://.godot/imported/food_stew.obj-99002ec9389b2e18c2eef51945641bfd.mesh"]
 
-source_file="res://assets/kitchenassets/food_stew.obj"
-dest_files=["res://.godot/imported/food_stew.obj-c7a6f47a6d6fac33608bdf841800305e.mesh", "res://.godot/imported/food_stew.obj-c7a6f47a6d6fac33608bdf841800305e.mesh"]
+source_file="res://Assets/Models/kitchenassets/food_stew.obj"
+dest_files=["res://.godot/imported/food_stew.obj-99002ec9389b2e18c2eef51945641bfd.mesh", "res://.godot/imported/food_stew.obj-99002ec9389b2e18c2eef51945641bfd.mesh"]
 
 [params]
 

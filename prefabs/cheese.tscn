@@ -2,12 +2,16 @@
 
 [ext_resource type="Script" uid="uid://m8dtdn28meeu" path="res://scripts/item.gd" id="1_caa3o"]
 [ext_resource type="ArrayMesh" uid="uid://c5s3jo8leob6g" path="res://Assets/Models/food_ingredient_cheese.obj" id="2_ntgvh"]
+[ext_resource type="Texture2D" uid="uid://ckwrj4w1xthnd" path="res://Assets/Models/restaurantbits_texture.png" id="2_qayy5"]
 [ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="3_by1lt"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_g85ev"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_a6wpu"]
 size = Vector3(0.9760742, 0.5, 0.72229004)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v8sh7"]
+albedo_texture = ExtResource("2_qayy5")
 
 [node name="cheese" type="RigidBody3D" unique_id=1119285444 groups=["choppable", "pickupable"]]
 physics_material_override = SubResource("PhysicsMaterial_g85ev")
@@ -18,6 +22,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15307617, 0.25101966, 0.004
 shape = SubResource("BoxShape3D_a6wpu")
 
 [node name="mesh" type="MeshInstance3D" parent="." unique_id=1546206734]
+material_override = SubResource("StandardMaterial3D_v8sh7")
 mesh = ExtResource("2_ntgvh")
 
 [node name="PropertySynchronizer" type="Node" parent="." unique_id=1363481936]

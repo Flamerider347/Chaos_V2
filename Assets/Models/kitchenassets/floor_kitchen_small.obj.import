@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://38pv6eb2bv2b"
-path="res://.godot/imported/floor_kitchen_small.obj-7ab234e3bb7a28a47ee549ca60176b7f.mesh"
+path="res://.godot/imported/floor_kitchen_small.obj-16eb8ae36b4804f71ce7a9007a1ea64b.mesh"
 
 [deps]
 
-files=["res://.godot/imported/floor_kitchen_small.obj-7ab234e3bb7a28a47ee549ca60176b7f.mesh"]
+files=["res://.godot/imported/floor_kitchen_small.obj-16eb8ae36b4804f71ce7a9007a1ea64b.mesh"]
 
-source_file="res://assets/kitchenassets/floor_kitchen_small.obj"
-dest_files=["res://.godot/imported/floor_kitchen_small.obj-7ab234e3bb7a28a47ee549ca60176b7f.mesh", "res://.godot/imported/floor_kitchen_small.obj-7ab234e3bb7a28a47ee549ca60176b7f.mesh"]
+source_file="res://Assets/Models/kitchenassets/floor_kitchen_small.obj"
+dest_files=["res://.godot/imported/floor_kitchen_small.obj-16eb8ae36b4804f71ce7a9007a1ea64b.mesh", "res://.godot/imported/floor_kitchen_small.obj-16eb8ae36b4804f71ce7a9007a1ea64b.mesh"]
 
 [params]
 

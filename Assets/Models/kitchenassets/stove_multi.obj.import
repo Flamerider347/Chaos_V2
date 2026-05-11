@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://bs8twwhe8x11g"
-path="res://.godot/imported/stove_multi.obj-1be76b249bd187b4c815919586236895.mesh"
+path="res://.godot/imported/stove_multi.obj-2039de5bd1827d9df28ae65a05149776.mesh"
 
 [deps]
 
-files=["res://.godot/imported/stove_multi.obj-1be76b249bd187b4c815919586236895.mesh"]
+files=["res://.godot/imported/stove_multi.obj-2039de5bd1827d9df28ae65a05149776.mesh"]
 
-source_file="res://assets/kitchenassets/stove_multi.obj"
-dest_files=["res://.godot/imported/stove_multi.obj-1be76b249bd187b4c815919586236895.mesh", "res://.godot/imported/stove_multi.obj-1be76b249bd187b4c815919586236895.mesh"]
+source_file="res://Assets/Models/kitchenassets/stove_multi.obj"
+dest_files=["res://.godot/imported/stove_multi.obj-2039de5bd1827d9df28ae65a05149776.mesh", "res://.godot/imported/stove_multi.obj-2039de5bd1827d9df28ae65a05149776.mesh"]
 
 [params]
 

@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://c6331aasowlq0"
-path="res://.godot/imported/kitchentable_A_large_decorated.obj-ecc36191963f8ea63e7647f5c579e40d.mesh"
+path="res://.godot/imported/kitchentable_A_large_decorated.obj-59d9119d338891c6bc37b05f37ae83d0.mesh"
 
 [deps]
 
-files=["res://.godot/imported/kitchentable_A_large_decorated.obj-ecc36191963f8ea63e7647f5c579e40d.mesh"]
+files=["res://.godot/imported/kitchentable_A_large_decorated.obj-59d9119d338891c6bc37b05f37ae83d0.mesh"]
 
-source_file="res://assets/kitchenassets/kitchentable_A_large_decorated.obj"
-dest_files=["res://.godot/imported/kitchentable_A_large_decorated.obj-ecc36191963f8ea63e7647f5c579e40d.mesh", "res://.godot/imported/kitchentable_A_large_decorated.obj-ecc36191963f8ea63e7647f5c579e40d.mesh"]
+source_file="res://Assets/Models/kitchenassets/kitchentable_A_large_decorated.obj"
+dest_files=["res://.godot/imported/kitchentable_A_large_decorated.obj-59d9119d338891c6bc37b05f37ae83d0.mesh", "res://.godot/imported/kitchentable_A_large_decorated.obj-59d9119d338891c6bc37b05f37ae83d0.mesh"]
 
 [params]
 

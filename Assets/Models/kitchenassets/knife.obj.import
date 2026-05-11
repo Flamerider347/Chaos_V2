@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://dnw6ln86toimb"
-path="res://.godot/imported/knife.obj-fc611b9965a3cfc9ee11a039c3429060.mesh"
+path="res://.godot/imported/knife.obj-de4508a9e99651e852ee63a3be5c771d.mesh"
 
 [deps]
 
-files=["res://.godot/imported/knife.obj-fc611b9965a3cfc9ee11a039c3429060.mesh"]
+files=["res://.godot/imported/knife.obj-de4508a9e99651e852ee63a3be5c771d.mesh"]
 
-source_file="res://assets/kitchenassets/knife.obj"
-dest_files=["res://.godot/imported/knife.obj-fc611b9965a3cfc9ee11a039c3429060.mesh", "res://.godot/imported/knife.obj-fc611b9965a3cfc9ee11a039c3429060.mesh"]
+source_file="res://Assets/Models/kitchenassets/knife.obj"
+dest_files=["res://.godot/imported/knife.obj-de4508a9e99651e852ee63a3be5c771d.mesh", "res://.godot/imported/knife.obj-de4508a9e99651e852ee63a3be5c771d.mesh"]
 
 [params]
 

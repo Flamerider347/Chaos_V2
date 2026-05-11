@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://drikv23nat2el"
-path="res://.godot/imported/door_B.obj-13e4cea949cbc2118eb95b6b4a571c6b.mesh"
+path="res://.godot/imported/door_B.obj-990a8ca879629433dcfd0ada25721078.mesh"
 
 [deps]
 
-files=["res://.godot/imported/door_B.obj-13e4cea949cbc2118eb95b6b4a571c6b.mesh"]
+files=["res://.godot/imported/door_B.obj-990a8ca879629433dcfd0ada25721078.mesh"]
 
-source_file="res://assets/kitchenassets/door_B.obj"
-dest_files=["res://.godot/imported/door_B.obj-13e4cea949cbc2118eb95b6b4a571c6b.mesh", "res://.godot/imported/door_B.obj-13e4cea949cbc2118eb95b6b4a571c6b.mesh"]
+source_file="res://Assets/Models/kitchenassets/door_B.obj"
+dest_files=["res://.godot/imported/door_B.obj-990a8ca879629433dcfd0ada25721078.mesh", "res://.godot/imported/door_B.obj-990a8ca879629433dcfd0ada25721078.mesh"]
 
 [params]
 

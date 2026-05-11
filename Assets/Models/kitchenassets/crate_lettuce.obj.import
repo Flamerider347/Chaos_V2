@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://d4gdhsjx8snti"
-path="res://.godot/imported/crate_lettuce.obj-fc53d837f8d55dba494fab8578495c0e.mesh"
+path="res://.godot/imported/crate_lettuce.obj-151dd01418c877551028c1d63b198d28.mesh"
 
 [deps]
 
-files=["res://.godot/imported/crate_lettuce.obj-fc53d837f8d55dba494fab8578495c0e.mesh"]
+files=["res://.godot/imported/crate_lettuce.obj-151dd01418c877551028c1d63b198d28.mesh"]
 
-source_file="res://assets/kitchenassets/crate_lettuce.obj"
-dest_files=["res://.godot/imported/crate_lettuce.obj-fc53d837f8d55dba494fab8578495c0e.mesh", "res://.godot/imported/crate_lettuce.obj-fc53d837f8d55dba494fab8578495c0e.mesh"]
+source_file="res://Assets/Models/kitchenassets/crate_lettuce.obj"
+dest_files=["res://.godot/imported/crate_lettuce.obj-151dd01418c877551028c1d63b198d28.mesh", "res://.godot/imported/crate_lettuce.obj-151dd01418c877551028c1d63b198d28.mesh"]
 
 [params]
 

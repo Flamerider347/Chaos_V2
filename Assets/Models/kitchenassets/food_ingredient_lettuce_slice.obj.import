@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://dvmkw7ri5y6u8"
-path="res://.godot/imported/food_ingredient_lettuce_slice.obj-2c9c34c39e80cc0a947397c18b6d3e87.mesh"
+path="res://.godot/imported/food_ingredient_lettuce_slice.obj-d80d608e58d28f37f6e11e1107146dee.mesh"
 
 [deps]
 
-files=["res://.godot/imported/food_ingredient_lettuce_slice.obj-2c9c34c39e80cc0a947397c18b6d3e87.mesh"]
+files=["res://.godot/imported/food_ingredient_lettuce_slice.obj-d80d608e58d28f37f6e11e1107146dee.mesh"]
 
-source_file="res://assets/kitchenassets/food_ingredient_lettuce_slice.obj"
-dest_files=["res://.godot/imported/food_ingredient_lettuce_slice.obj-2c9c34c39e80cc0a947397c18b6d3e87.mesh", "res://.godot/imported/food_ingredient_lettuce_slice.obj-2c9c34c39e80cc0a947397c18b6d3e87.mesh"]
+source_file="res://Assets/Models/kitchenassets/food_ingredient_lettuce_slice.obj"
+dest_files=["res://.godot/imported/food_ingredient_lettuce_slice.obj-d80d608e58d28f37f6e11e1107146dee.mesh", "res://.godot/imported/food_ingredient_lettuce_slice.obj-d80d608e58d28f37f6e11e1107146dee.mesh"]
 
 [params]
 

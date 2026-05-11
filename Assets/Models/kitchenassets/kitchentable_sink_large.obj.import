@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://dcqkh6cjiniom"
-path="res://.godot/imported/kitchentable_sink_large.obj-6fb0f985affc550a60c672b7a2e6bc9e.mesh"
+path="res://.godot/imported/kitchentable_sink_large.obj-d761e13cfd2eaeb4e50fb42747124964.mesh"
 
 [deps]
 
-files=["res://.godot/imported/kitchentable_sink_large.obj-6fb0f985affc550a60c672b7a2e6bc9e.mesh"]
+files=["res://.godot/imported/kitchentable_sink_large.obj-d761e13cfd2eaeb4e50fb42747124964.mesh"]
 
-source_file="res://assets/kitchenassets/kitchentable_sink_large.obj"
-dest_files=["res://.godot/imported/kitchentable_sink_large.obj-6fb0f985affc550a60c672b7a2e6bc9e.mesh", "res://.godot/imported/kitchentable_sink_large.obj-6fb0f985affc550a60c672b7a2e6bc9e.mesh"]
+source_file="res://Assets/Models/kitchenassets/kitchentable_sink_large.obj"
+dest_files=["res://.godot/imported/kitchentable_sink_large.obj-d761e13cfd2eaeb4e50fb42747124964.mesh", "res://.godot/imported/kitchentable_sink_large.obj-d761e13cfd2eaeb4e50fb42747124964.mesh"]
 
 [params]
 

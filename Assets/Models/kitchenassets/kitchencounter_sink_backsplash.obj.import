@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://twoqmjchptia"
-path="res://.godot/imported/kitchencounter_sink_backsplash.obj-b3f6d9dd6dff84dc64198365775def1b.mesh"
+path="res://.godot/imported/kitchencounter_sink_backsplash.obj-9b436cb0bfb06451a45e5dbc76b0ca22.mesh"
 
 [deps]
 
-files=["res://.godot/imported/kitchencounter_sink_backsplash.obj-b3f6d9dd6dff84dc64198365775def1b.mesh"]
+files=["res://.godot/imported/kitchencounter_sink_backsplash.obj-9b436cb0bfb06451a45e5dbc76b0ca22.mesh"]
 
-source_file="res://assets/kitchenassets/kitchencounter_sink_backsplash.obj"
-dest_files=["res://.godot/imported/kitchencounter_sink_backsplash.obj-b3f6d9dd6dff84dc64198365775def1b.mesh", "res://.godot/imported/kitchencounter_sink_backsplash.obj-b3f6d9dd6dff84dc64198365775def1b.mesh"]
+source_file="res://Assets/Models/kitchenassets/kitchencounter_sink_backsplash.obj"
+dest_files=["res://.godot/imported/kitchencounter_sink_backsplash.obj-9b436cb0bfb06451a45e5dbc76b0ca22.mesh", "res://.godot/imported/kitchencounter_sink_backsplash.obj-9b436cb0bfb06451a45e5dbc76b0ca22.mesh"]
 
 [params]
 

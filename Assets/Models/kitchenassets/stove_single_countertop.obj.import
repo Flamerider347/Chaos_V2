@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://c1gyiccqncgsw"
-path="res://.godot/imported/stove_single_countertop.obj-b7816b50b725112d9217287d050f8a4c.mesh"
+path="res://.godot/imported/stove_single_countertop.obj-a550c80cd2ba7944c4559c4ea33f0ae0.mesh"
 
 [deps]
 
-files=["res://.godot/imported/stove_single_countertop.obj-b7816b50b725112d9217287d050f8a4c.mesh"]
+files=["res://.godot/imported/stove_single_countertop.obj-a550c80cd2ba7944c4559c4ea33f0ae0.mesh"]
 
-source_file="res://assets/kitchenassets/stove_single_countertop.obj"
-dest_files=["res://.godot/imported/stove_single_countertop.obj-b7816b50b725112d9217287d050f8a4c.mesh", "res://.godot/imported/stove_single_countertop.obj-b7816b50b725112d9217287d050f8a4c.mesh"]
+source_file="res://Assets/Models/kitchenassets/stove_single_countertop.obj"
+dest_files=["res://.godot/imported/stove_single_countertop.obj-a550c80cd2ba7944c4559c4ea33f0ae0.mesh", "res://.godot/imported/stove_single_countertop.obj-a550c80cd2ba7944c4559c4ea33f0ae0.mesh"]
 
 [params]
 

@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://b1o7kmxs0q7t6"
-path="res://.godot/imported/kitchencounter_innercorner_backsplash.obj-87677a8c48f7d3cae0bd9a3d69aebb52.mesh"
+path="res://.godot/imported/kitchencounter_innercorner_backsplash.obj-b064f0f0186fd56669c07d4ad24a6bfb.mesh"
 
 [deps]
 
-files=["res://.godot/imported/kitchencounter_innercorner_backsplash.obj-87677a8c48f7d3cae0bd9a3d69aebb52.mesh"]
+files=["res://.godot/imported/kitchencounter_innercorner_backsplash.obj-b064f0f0186fd56669c07d4ad24a6bfb.mesh"]
 
-source_file="res://assets/kitchenassets/kitchencounter_innercorner_backsplash.obj"
-dest_files=["res://.godot/imported/kitchencounter_innercorner_backsplash.obj-87677a8c48f7d3cae0bd9a3d69aebb52.mesh", "res://.godot/imported/kitchencounter_innercorner_backsplash.obj-87677a8c48f7d3cae0bd9a3d69aebb52.mesh"]
+source_file="res://Assets/Models/kitchenassets/kitchencounter_innercorner_backsplash.obj"
+dest_files=["res://.godot/imported/kitchencounter_innercorner_backsplash.obj-b064f0f0186fd56669c07d4ad24a6bfb.mesh", "res://.godot/imported/kitchencounter_innercorner_backsplash.obj-b064f0f0186fd56669c07d4ad24a6bfb.mesh"]
 
 [params]
 

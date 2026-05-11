@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://b3yrokh8w85cr"
-path="res://.godot/imported/kitchencounter_sink.obj-ff7117fa568931b5045d00afff7776d9.mesh"
+path="res://.godot/imported/kitchencounter_sink.obj-e2c76996bc31cc7226c653563ab236e5.mesh"
 
 [deps]
 
-files=["res://.godot/imported/kitchencounter_sink.obj-ff7117fa568931b5045d00afff7776d9.mesh"]
+files=["res://.godot/imported/kitchencounter_sink.obj-e2c76996bc31cc7226c653563ab236e5.mesh"]
 
-source_file="res://assets/kitchenassets/kitchencounter_sink.obj"
-dest_files=["res://.godot/imported/kitchencounter_sink.obj-ff7117fa568931b5045d00afff7776d9.mesh", "res://.godot/imported/kitchencounter_sink.obj-ff7117fa568931b5045d00afff7776d9.mesh"]
+source_file="res://Assets/Models/kitchenassets/kitchencounter_sink.obj"
+dest_files=["res://.godot/imported/kitchencounter_sink.obj-e2c76996bc31cc7226c653563ab236e5.mesh", "res://.godot/imported/kitchencounter_sink.obj-e2c76996bc31cc7226c653563ab236e5.mesh"]
 
 [params]
 

@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://w85y02rn7d12"
-path="res://.godot/imported/food_ingredient_steak.obj-1a7ae01eb73e715e8224c3dc7a418250.mesh"
+path="res://.godot/imported/food_ingredient_steak.obj-54e512533dbf43ae29355e02ea705576.mesh"
 
 [deps]
 
-files=["res://.godot/imported/food_ingredient_steak.obj-1a7ae01eb73e715e8224c3dc7a418250.mesh"]
+files=["res://.godot/imported/food_ingredient_steak.obj-54e512533dbf43ae29355e02ea705576.mesh"]
 
-source_file="res://assets/kitchenassets/food_ingredient_steak.obj"
-dest_files=["res://.godot/imported/food_ingredient_steak.obj-1a7ae01eb73e715e8224c3dc7a418250.mesh", "res://.godot/imported/food_ingredient_steak.obj-1a7ae01eb73e715e8224c3dc7a418250.mesh"]
+source_file="res://Assets/Models/kitchenassets/food_ingredient_steak.obj"
+dest_files=["res://.godot/imported/food_ingredient_steak.obj-54e512533dbf43ae29355e02ea705576.mesh", "res://.godot/imported/food_ingredient_steak.obj-54e512533dbf43ae29355e02ea705576.mesh"]
 
 [params]
 

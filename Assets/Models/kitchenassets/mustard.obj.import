@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://cfkfqvrgkqjgd"
-path="res://.godot/imported/mustard.obj-faa7bf53bea97436d0b538ee56832c8b.mesh"
+path="res://.godot/imported/mustard.obj-31613aa3d1d1c7229c92fdd392882ffe.mesh"
 
 [deps]
 
-files=["res://.godot/imported/mustard.obj-faa7bf53bea97436d0b538ee56832c8b.mesh"]
+files=["res://.godot/imported/mustard.obj-31613aa3d1d1c7229c92fdd392882ffe.mesh"]
 
-source_file="res://assets/kitchenassets/mustard.obj"
-dest_files=["res://.godot/imported/mustard.obj-faa7bf53bea97436d0b538ee56832c8b.mesh", "res://.godot/imported/mustard.obj-faa7bf53bea97436d0b538ee56832c8b.mesh"]
+source_file="res://Assets/Models/kitchenassets/mustard.obj"
+dest_files=["res://.godot/imported/mustard.obj-31613aa3d1d1c7229c92fdd392882ffe.mesh", "res://.godot/imported/mustard.obj-31613aa3d1d1c7229c92fdd392882ffe.mesh"]
 
 [params]
 

@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://7omfg3kg6vwh"
-path="res://.godot/imported/food_vegetableburger.obj-90245cd885dd674df80866695497b174.mesh"
+path="res://.godot/imported/food_vegetableburger.obj-b60abe26da3e35159a424b48e7872db4.mesh"
 
 [deps]
 
-files=["res://.godot/imported/food_vegetableburger.obj-90245cd885dd674df80866695497b174.mesh"]
+files=["res://.godot/imported/food_vegetableburger.obj-b60abe26da3e35159a424b48e7872db4.mesh"]
 
-source_file="res://assets/kitchenassets/food_vegetableburger.obj"
-dest_files=["res://.godot/imported/food_vegetableburger.obj-90245cd885dd674df80866695497b174.mesh", "res://.godot/imported/food_vegetableburger.obj-90245cd885dd674df80866695497b174.mesh"]
+source_file="res://Assets/Models/kitchenassets/food_vegetableburger.obj"
+dest_files=["res://.godot/imported/food_vegetableburger.obj-b60abe26da3e35159a424b48e7872db4.mesh", "res://.godot/imported/food_vegetableburger.obj-b60abe26da3e35159a424b48e7872db4.mesh"]
 
 [params]
 

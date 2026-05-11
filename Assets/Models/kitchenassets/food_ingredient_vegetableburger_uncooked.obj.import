@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://bxre6k3rpknfw"
-path="res://.godot/imported/food_ingredient_vegetableburger_uncooked.obj-b913f6e5ff47a3d320634d20b688130c.mesh"
+path="res://.godot/imported/food_ingredient_vegetableburger_uncooked.obj-fb39a92544c6b4927ee73fb8a674ac3e.mesh"
 
 [deps]
 
-files=["res://.godot/imported/food_ingredient_vegetableburger_uncooked.obj-b913f6e5ff47a3d320634d20b688130c.mesh"]
+files=["res://.godot/imported/food_ingredient_vegetableburger_uncooked.obj-fb39a92544c6b4927ee73fb8a674ac3e.mesh"]
 
-source_file="res://assets/kitchenassets/food_ingredient_vegetableburger_uncooked.obj"
-dest_files=["res://.godot/imported/food_ingredient_vegetableburger_uncooked.obj-b913f6e5ff47a3d320634d20b688130c.mesh", "res://.godot/imported/food_ingredient_vegetableburger_uncooked.obj-b913f6e5ff47a3d320634d20b688130c.mesh"]
+source_file="res://Assets/Models/kitchenassets/food_ingredient_vegetableburger_uncooked.obj"
+dest_files=["res://.godot/imported/food_ingredient_vegetableburger_uncooked.obj-fb39a92544c6b4927ee73fb8a674ac3e.mesh", "res://.godot/imported/food_ingredient_vegetableburger_uncooked.obj-fb39a92544c6b4927ee73fb8a674ac3e.mesh"]
 
 [params]
 

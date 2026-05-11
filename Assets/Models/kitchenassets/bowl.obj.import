@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://dku845kqwnd76"
-path="res://.godot/imported/bowl.obj-53aa7ef88900177324ea5a55975f9e7b.mesh"
+path="res://.godot/imported/bowl.obj-efd7706d84d45dace30478daec4b3387.mesh"
 
 [deps]
 
-files=["res://.godot/imported/bowl.obj-53aa7ef88900177324ea5a55975f9e7b.mesh"]
+files=["res://.godot/imported/bowl.obj-efd7706d84d45dace30478daec4b3387.mesh"]
 
-source_file="res://assets/kitchenassets/bowl.obj"
-dest_files=["res://.godot/imported/bowl.obj-53aa7ef88900177324ea5a55975f9e7b.mesh", "res://.godot/imported/bowl.obj-53aa7ef88900177324ea5a55975f9e7b.mesh"]
+source_file="res://Assets/Models/kitchenassets/bowl.obj"
+dest_files=["res://.godot/imported/bowl.obj-efd7706d84d45dace30478daec4b3387.mesh", "res://.godot/imported/bowl.obj-efd7706d84d45dace30478daec4b3387.mesh"]
 
 [params]
 

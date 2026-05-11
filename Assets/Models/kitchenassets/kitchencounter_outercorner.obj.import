@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://ckjn3c4fqvj1q"
-path="res://.godot/imported/kitchencounter_outercorner.obj-39e21ff6a12d4f5dc6ab101320562903.mesh"
+path="res://.godot/imported/kitchencounter_outercorner.obj-fcce6b5558642206acce5dd4b2557d27.mesh"
 
 [deps]
 
-files=["res://.godot/imported/kitchencounter_outercorner.obj-39e21ff6a12d4f5dc6ab101320562903.mesh"]
+files=["res://.godot/imported/kitchencounter_outercorner.obj-fcce6b5558642206acce5dd4b2557d27.mesh"]
 
-source_file="res://assets/kitchenassets/kitchencounter_outercorner.obj"
-dest_files=["res://.godot/imported/kitchencounter_outercorner.obj-39e21ff6a12d4f5dc6ab101320562903.mesh", "res://.godot/imported/kitchencounter_outercorner.obj-39e21ff6a12d4f5dc6ab101320562903.mesh"]
+source_file="res://Assets/Models/kitchenassets/kitchencounter_outercorner.obj"
+dest_files=["res://.godot/imported/kitchencounter_outercorner.obj-fcce6b5558642206acce5dd4b2557d27.mesh", "res://.godot/imported/kitchencounter_outercorner.obj-fcce6b5558642206acce5dd4b2557d27.mesh"]
 
 [params]
 

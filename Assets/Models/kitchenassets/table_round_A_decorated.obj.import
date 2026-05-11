@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://cpbuwn75vmwpf"
-path="res://.godot/imported/table_round_A_decorated.obj-5b8c48b58cf467c4928d7a546f1143fb.mesh"
+path="res://.godot/imported/table_round_A_decorated.obj-ec6861704ac62a9ac60a66c6ea2c8d1e.mesh"
 
 [deps]
 
-files=["res://.godot/imported/table_round_A_decorated.obj-5b8c48b58cf467c4928d7a546f1143fb.mesh"]
+files=["res://.godot/imported/table_round_A_decorated.obj-ec6861704ac62a9ac60a66c6ea2c8d1e.mesh"]
 
-source_file="res://assets/kitchenassets/table_round_A_decorated.obj"
-dest_files=["res://.godot/imported/table_round_A_decorated.obj-5b8c48b58cf467c4928d7a546f1143fb.mesh", "res://.godot/imported/table_round_A_decorated.obj-5b8c48b58cf467c4928d7a546f1143fb.mesh"]
+source_file="res://Assets/Models/kitchenassets/table_round_A_decorated.obj"
+dest_files=["res://.godot/imported/table_round_A_decorated.obj-ec6861704ac62a9ac60a66c6ea2c8d1e.mesh", "res://.godot/imported/table_round_A_decorated.obj-ec6861704ac62a9ac60a66c6ea2c8d1e.mesh"]
 
 [params]
 

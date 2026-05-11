@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://df4ujrunto248"
-path="res://.godot/imported/crate_tomatoes.obj-87974c3240710d4518767662eb6c5e00.mesh"
+path="res://.godot/imported/crate_tomatoes.obj-8a696e4651453b877a7e3d2f312d37b7.mesh"
 
 [deps]
 
-files=["res://.godot/imported/crate_tomatoes.obj-87974c3240710d4518767662eb6c5e00.mesh"]
+files=["res://.godot/imported/crate_tomatoes.obj-8a696e4651453b877a7e3d2f312d37b7.mesh"]
 
-source_file="res://assets/kitchenassets/crate_tomatoes.obj"
-dest_files=["res://.godot/imported/crate_tomatoes.obj-87974c3240710d4518767662eb6c5e00.mesh", "res://.godot/imported/crate_tomatoes.obj-87974c3240710d4518767662eb6c5e00.mesh"]
+source_file="res://Assets/Models/kitchenassets/crate_tomatoes.obj"
+dest_files=["res://.godot/imported/crate_tomatoes.obj-8a696e4651453b877a7e3d2f312d37b7.mesh", "res://.godot/imported/crate_tomatoes.obj-8a696e4651453b877a7e3d2f312d37b7.mesh"]
 
 [params]
 

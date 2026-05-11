@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://bl8yipnonf2ud"
-path="res://.godot/imported/food_ingredient_potato_chopped.obj-00e980f9da5ded7d2793af3dc665847d.mesh"
+path="res://.godot/imported/food_ingredient_potato_chopped.obj-2702238493eb23e012a76b7695d2ae31.mesh"
 
 [deps]
 
-files=["res://.godot/imported/food_ingredient_potato_chopped.obj-00e980f9da5ded7d2793af3dc665847d.mesh"]
+files=["res://.godot/imported/food_ingredient_potato_chopped.obj-2702238493eb23e012a76b7695d2ae31.mesh"]
 
-source_file="res://assets/kitchenassets/food_ingredient_potato_chopped.obj"
-dest_files=["res://.godot/imported/food_ingredient_potato_chopped.obj-00e980f9da5ded7d2793af3dc665847d.mesh", "res://.godot/imported/food_ingredient_potato_chopped.obj-00e980f9da5ded7d2793af3dc665847d.mesh"]
+source_file="res://Assets/Models/kitchenassets/food_ingredient_potato_chopped.obj"
+dest_files=["res://.godot/imported/food_ingredient_potato_chopped.obj-2702238493eb23e012a76b7695d2ae31.mesh", "res://.godot/imported/food_ingredient_potato_chopped.obj-2702238493eb23e012a76b7695d2ae31.mesh"]
 
 [params]
 

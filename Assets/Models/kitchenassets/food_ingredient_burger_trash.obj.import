@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://c1pdfk8u2620m"
-path="res://.godot/imported/food_ingredient_burger_trash.obj-73aec7a7952737826059e69a8ef400f9.mesh"
+path="res://.godot/imported/food_ingredient_burger_trash.obj-1a93aa736af33204d1b20654fe26f42c.mesh"
 
 [deps]
 
-files=["res://.godot/imported/food_ingredient_burger_trash.obj-73aec7a7952737826059e69a8ef400f9.mesh"]
+files=["res://.godot/imported/food_ingredient_burger_trash.obj-1a93aa736af33204d1b20654fe26f42c.mesh"]
 
-source_file="res://assets/kitchenassets/food_ingredient_burger_trash.obj"
-dest_files=["res://.godot/imported/food_ingredient_burger_trash.obj-73aec7a7952737826059e69a8ef400f9.mesh", "res://.godot/imported/food_ingredient_burger_trash.obj-73aec7a7952737826059e69a8ef400f9.mesh"]
+source_file="res://Assets/Models/kitchenassets/food_ingredient_burger_trash.obj"
+dest_files=["res://.godot/imported/food_ingredient_burger_trash.obj-1a93aa736af33204d1b20654fe26f42c.mesh", "res://.godot/imported/food_ingredient_burger_trash.obj-1a93aa736af33204d1b20654fe26f42c.mesh"]
 
 [params]
 
