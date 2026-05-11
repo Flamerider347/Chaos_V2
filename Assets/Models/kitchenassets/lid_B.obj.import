@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dgqi2p7r44f1q"
+path="res://.godot/imported/lid_B.obj-b9aea6ab0dd2886005c6b73183f20976.mesh"
+
+[deps]
+
+files=["res://.godot/imported/lid_B.obj-b9aea6ab0dd2886005c6b73183f20976.mesh"]
+
+source_file="res://assets/kitchenassets/lid_B.obj"
+dest_files=["res://.godot/imported/lid_B.obj-b9aea6ab0dd2886005c6b73183f20976.mesh", "res://.godot/imported/lid_B.obj-b9aea6ab0dd2886005c6b73183f20976.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

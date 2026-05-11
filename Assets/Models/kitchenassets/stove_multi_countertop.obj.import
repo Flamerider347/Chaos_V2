@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://c6pgwb8xy18w1"
+path="res://.godot/imported/stove_multi_countertop.obj-395b1c98651211e37fcf4a6de2aebe6c.mesh"
+
+[deps]
+
+files=["res://.godot/imported/stove_multi_countertop.obj-395b1c98651211e37fcf4a6de2aebe6c.mesh"]
+
+source_file="res://assets/kitchenassets/stove_multi_countertop.obj"
+dest_files=["res://.godot/imported/stove_multi_countertop.obj-395b1c98651211e37fcf4a6de2aebe6c.mesh", "res://.godot/imported/stove_multi_countertop.obj-395b1c98651211e37fcf4a6de2aebe6c.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

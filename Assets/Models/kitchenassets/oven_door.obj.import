@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://ch57621gqlvcg"
+path="res://.godot/imported/oven_door.obj-46de68af1b53a93c2bf342e800e18ccf.mesh"
+
+[deps]
+
+files=["res://.godot/imported/oven_door.obj-46de68af1b53a93c2bf342e800e18ccf.mesh"]
+
+source_file="res://assets/kitchenassets/oven_door.obj"
+dest_files=["res://.godot/imported/oven_door.obj-46de68af1b53a93c2bf342e800e18ccf.mesh", "res://.godot/imported/oven_door.obj-46de68af1b53a93c2bf342e800e18ccf.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false
