@@ -54,6 +54,7 @@ func _physics_process(_delta: float) -> void:
 
 	elif held_item != null:
 		held_item.global_position = $hand.global_position
+		held_item.global_rotation = held_item.global_rotation
 		held_item.hide()
 
 	if not GameData.paused:
@@ -73,14 +74,9 @@ func _physics_process(_delta: float) -> void:
 					interact_cast.get_collider().open_door()
 					
 		if Input.is_action_just_pressed("right_click"):
-			if interact_cast.get_collider().is_in_group("plate") and held_item != null and held_item.is_in_group("plate_stackable"):
-				var plate = interact_cast.get_collider()
-				if GameData.connected:
-					GDSync.call_func_all(held_item)
-				plate.stack_item(held_item)
-				hand.hide()
-				held_item = null
-				
+			if interact_cast.is_colliding():
+				if interact_cast.get_collider().is_in_group("plate") and held_item != null and held_item.is_in_group("plate_stackable"):
+					stack_object(interact_cast.get_collider())
 
 		var input_dir = Vector2.ZERO
 		input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
@@ -98,6 +94,14 @@ func _physics_process(_delta: float) -> void:
 
 	move_and_slide()
 
+func stack_object(plate):
+	if GameData.connected:
+		GDSync.call_func_all(held_item)
+	plate.stack_item(held_item)
+	for i in hand.get_children():
+		i.queue_free()
+	held_item = null
+	
 func pickup_object(object):
 	held_item = object
 	can_pickup = false
@@ -105,11 +109,10 @@ func pickup_object(object):
 	object.find_child("CollisionShape3D").disabled = true
 	$pickup_timer.start()
 	object.global_position = $hand.global_position
-	object.rotation = Vector3.ZERO
 	var object2 = object.duplicate()
 	hand.add_child(object2)
 	object2.position = Vector3.ZERO
-	object2.rotation = Vector3.ZERO
+	object2.global_rotation = object.global_rotation
 	object.hide()
 	if GameData.connected:
 		GDSync.set_gdsync_owner(object, GDSync.get_client_id())
