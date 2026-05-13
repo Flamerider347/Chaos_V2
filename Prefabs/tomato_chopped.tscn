@@ -5,18 +5,18 @@
 [ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="3_qijp5"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_tcipr"]
-height = 0.13317871
-radius = 0.69384766
+height = 0.04901123
+radius = 0.34765625
 
 [node name="cheese_chopped" type="RigidBody3D" unique_id=842069250 groups=["pickupable", "plate_stackable"]]
 script = ExtResource("1_tcipr")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1919428917]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06915283, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.024574049, 0)
 shape = SubResource("CylinderShape3D_tcipr")
 
 [node name="mesh" type="MeshInstance3D" parent="." unique_id=1157095276]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.029027492, 0)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 
 [node name="composite_mesh" type="MeshInstance3D" parent="mesh" unique_id=1223852272]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.185, 0, -0.32)

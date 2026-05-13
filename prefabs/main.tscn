@@ -8,7 +8,6 @@
 [ext_resource type="Script" uid="uid://bof2t2fwctfbu" path="res://scripts/door.gd" id="5_xjs27"]
 [ext_resource type="PackedScene" uid="uid://cwn8urw430asm" path="res://Prefabs/chopping_board.tscn" id="6_fpsi2"]
 [ext_resource type="Script" uid="uid://ct5pqjn3s72nv" path="res://addons/GD-Sync/Scripts/Types/SynchronizedAnimationPlayer.gd" id="6_oob7m"]
-[ext_resource type="Script" uid="uid://bd8wow75pw1s5" path="res://addons/GD-Sync/Scripts/Types/NodeInstantiator.gd" id="8_asxxo"]
 [ext_resource type="Script" uid="uid://b55ss7d6s1qyy" path="res://scripts/thing.gd" id="8_e4ce6"]
 [ext_resource type="PackedScene" uid="uid://uqptavxff366" path="res://Prefabs/plate.tscn" id="8_yjdeq"]
 
@@ -169,15 +168,6 @@ size = Vector3(10, 3, 0.1)
 
 [node name="chopping_board" parent="game/world/kitchen" unique_id=646814846 instance=ExtResource("6_fpsi2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.428421, -0.0001822114, 4.4373975)
-
-[node name="item_chopper" type="Node" parent="game/world/kitchen" unique_id=1843351419]
-script = ExtResource("8_asxxo")
-target_location = NodePath("")
-scene = null
-replicate_on_join = true
-sync_starting_changes = true
-excluded_properties = PackedStringArray()
-metadata/_custom_type_script = "uid://bd8wow75pw1s5"
 
 [node name="thing" type="Area3D" parent="game/world" unique_id=965717664]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.917039, -5.04197, -1.4639413)

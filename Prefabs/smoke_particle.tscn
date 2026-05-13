@@ -24,8 +24,10 @@ vertex_color_use_as_albedo = true
 material = SubResource("StandardMaterial3D_1qv7y")
 
 [node name="smoke_particle" type="GPUParticles3D" unique_id=403456921]
+emitting = false
 amount = 30
 lifetime = 1.5
+one_shot = true
 explosiveness = 0.8
 process_material = SubResource("ParticleProcessMaterial_4samp")
 draw_pass_1 = SubResource("SphereMesh_vyapm")

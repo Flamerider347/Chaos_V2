@@ -100,3 +100,4 @@ right_click={
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+environment/ssao/quality=1

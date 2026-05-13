@@ -61,10 +61,12 @@ func _physics_process(_delta: float) -> void:
 			held_item.show()
 		else:
 			held_item.global_position = hand.global_position
+			held_item.global_rotation = hand_item.global_rotation
 			held_item.hide()
 
 	elif held_item != null:
 		held_item.global_position = hand.global_position
+		held_item.global_rotation = hand_item.global_rotation
 		held_item.hide()
 
 	if not GameData.paused:
