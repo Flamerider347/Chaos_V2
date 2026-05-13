@@ -48,16 +48,23 @@ func _physics_process(_delta: float) -> void:
 	
 	if not is_on_floor():
 		velocity.y -= GRAVITY * _delta
-	if held_item != null and interact_cast.is_colliding() and interact_cast.get_collider().is_in_group("placeable") or interact_cast.is_colliding() and interact_cast.get_collider().is_in_group("plate"):
+
+
+	if held_item != null and interact_cast.is_colliding():
+		print(held_item.get_groups())
 		if interact_cast.get_collider().is_in_group("placeable") and held_item.is_in_group("choppable"):
 			held_item.global_position = interact_cast.get_collider().global_position + Vector3(0,0.5,0)
 			held_item.show()
-		elif interact_cast.is_in_group("plate") and held_item.is_in_group("stackable_plate"):
+		elif interact_cast.get_collider().is_in_group("plate") and held_item.is_in_group("plate_stackable"):
+			print("hello")
 			held_item.global_position = interact_cast.get_collider().global_position + Vector3(0,0.1,0)
 			held_item.show()
+		else:
+			held_item.global_position = hand.global_position
+			held_item.hide()
 
 	elif held_item != null:
-		held_item.global_position = $hand.global_position
+		held_item.global_position = hand.global_position
 		held_item.hide()
 
 	if not GameData.paused:

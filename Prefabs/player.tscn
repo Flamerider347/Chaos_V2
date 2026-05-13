@@ -6,6 +6,12 @@
 [ext_resource type="ArrayMesh" uid="uid://d0xna0wnnnxeg" path="res://Assets/Models/TopHat.obj" id="3_2nftw"]
 [ext_resource type="Texture2D" uid="uid://cysttpplh4j14" path="res://Assets/misc/icon.svg" id="4_ht1c8"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hck1p"]
+shading_mode = 0
+albedo_texture = ExtResource("4_ht1c8")
+uv1_scale = Vector3(10, 10, 10)
+grow_amount = 0.968
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2nftw"]
 albedo_texture = ExtResource("2_2nftw")
 uv1_scale = Vector3(3, 2.02, 3)
@@ -19,15 +25,9 @@ size = Vector3(0.5, 0.5, 0.74)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_y6xdh"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hck1p"]
-shading_mode = 0
-albedo_texture = ExtResource("4_ht1c8")
-uv1_scale = Vector3(10, 10, 10)
-grow_amount = 0.968
-
-[node name="player" type="CharacterBody3D" unique_id=300991191]
+[node name="player" type="CharacterBody3D" unique_id=300991191 groups=["player"]]
 process_mode = 1
-collision_layer = 2
+collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_5wxv7")
 
@@ -40,6 +40,11 @@ text = "H"
 
 [node name="head" type="Node3D" parent="." unique_id=1347343404]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="devhat" type="MeshInstance3D" parent="head" unique_id=1534305998]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.39999998, 0)
+material_override = SubResource("StandardMaterial3D_hck1p")
+mesh = ExtResource("3_2nftw")
 
 [node name="face" type="MeshInstance3D" parent="head" unique_id=893005727]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.13169393)
@@ -92,7 +97,7 @@ metadata/_custom_type_script = "uid://b7bt85tck6v7g"
 [node name="PropertySynchronizer3" type="Node" parent="." unique_id=1742000546]
 script = ExtResource("2_y5hcb")
 broadcast = 2
-node_path = NodePath("../Devhat")
+node_path = NodePath("../head/devhat")
 properties = PackedStringArray("visible")
 interpolated = true
 interpolation_speed = 30.0
@@ -110,11 +115,6 @@ interpolation_speed = 30.0
 extrapolated = false
 max_extrapolation_time = 0.2
 metadata/_custom_type_script = "uid://b7bt85tck6v7g"
-
-[node name="Devhat" type="MeshInstance3D" parent="." unique_id=1534305998]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 1.9, 0)
-material_override = SubResource("StandardMaterial3D_hck1p")
-mesh = ExtResource("3_2nftw")
 
 [node name="pickup_timer" type="Timer" parent="." unique_id=750239620]
 one_shot = true
