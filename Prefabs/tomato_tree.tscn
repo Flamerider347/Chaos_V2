@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://b7v3hl5yko217"]
 
-[ext_resource type="Script" uid="uid://togfvjn4aqrk" path="res://scripts/cheese_tree.gd" id="1_mkai2"]
+[ext_resource type="Script" uid="uid://b845s5q4k70mu" path="res://scripts/tomato_tree.gd" id="1_mkai2"]
 [ext_resource type="Script" uid="uid://bd8wow75pw1s5" path="res://addons/GD-Sync/Scripts/Types/NodeInstantiator.gd" id="2_s05be"]
-[ext_resource type="PackedScene" uid="uid://cqck225nk06m5" path="res://Prefabs/cheese.tscn" id="3_27ow7"]
+[ext_resource type="PackedScene" uid="uid://0ms6tvtkkd3n" path="res://Prefabs/tomato.tscn" id="3_mkai2"]
 [ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="4_wk3ir"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_cf1hr"]
@@ -24,14 +24,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3055594, 0)
 billboard = 2
 text = "5"
 
-[node name="cheese_timer" type="Timer" parent="." unique_id=1312441818]
+[node name="tomato_timer" type="Timer" parent="." unique_id=1312441818]
 one_shot = true
 
-[node name="Cheeseinstantiator" type="Node" parent="." unique_id=1101772906]
+[node name="TomatoInstantiator" type="Node" parent="." unique_id=1101772906]
 script = ExtResource("2_s05be")
 spawn_type = 0
 target_location = NodePath("../../../items")
-scene = ExtResource("3_27ow7")
+scene = ExtResource("3_mkai2")
 replicate_on_join = true
 sync_starting_changes = true
 excluded_properties = PackedStringArray()
@@ -40,7 +40,7 @@ metadata/_custom_type_script = "uid://bd8wow75pw1s5"
 [node name="PropertySynchronizer" type="Node" parent="." unique_id=408842399]
 script = ExtResource("4_wk3ir")
 node_path = NodePath("..")
-properties = PackedStringArray("cheese_left")
+properties = PackedStringArray("tomato_left")
 interpolated = false
 interpolation_speed = 1.0
 extrapolation = null
@@ -59,4 +59,4 @@ extrapolated = false
 max_extrapolation_time = 0.2
 metadata/_custom_type_script = "uid://b7bt85tck6v7g"
 
-[connection signal="timeout" from="cheese_timer" to="." method="_on_cheese_timer_timeout"]
+[connection signal="timeout" from="tomato_timer" to="." method="_on_cheese_timer_timeout"]
