@@ -13,26 +13,26 @@ size = Vector3(1, 0.1, 1)
 [node name="chopping_board" type="StaticBody3D" unique_id=646814846 groups=["placeable"]]
 script = ExtResource("1_jyd1a")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1298773316]
+[node name="solid_collision" type="CollisionShape3D" parent="." unique_id=1298773316]
 shape = SubResource("BoxShape3D_v0sgk")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=765725999]
 material = SubResource("StandardMaterial3D_jyd1a")
 
+[node name="Label3D" type="Label3D" parent="." unique_id=197673341]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -4.373635e-08, 0, -0.5002855)
+text = "CHOPPING
+BOARD"
+
+[node name="Label3D2" type="Label3D" parent="." unique_id=1965377416]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, -0.5033837, 0, 4.40072e-08)
+text = "CHOPPING
+BOARD"
+
 [node name="Area3D" type="Area3D" parent="." unique_id=1372385084]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
 
-[node name="Label3D" type="Label3D" parent="Area3D" unique_id=197673341]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5002855)
-text = "CHOPPING
-BOARD"
-
-[node name="Label3D2" type="Label3D" parent="Area3D" unique_id=1965377416]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.5033837, 0, 0)
-text = "CHOPPING
-BOARD"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1727645548]
+[node name="item_detector" type="CollisionShape3D" parent="Area3D" unique_id=1727645548]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5357883, 0)
 shape = SubResource("BoxShape3D_jyd1a")
 

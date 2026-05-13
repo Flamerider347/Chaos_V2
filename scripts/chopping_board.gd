@@ -1,7 +1,7 @@
 extends StaticBody3D
 const CHOPPED_SCENES = {
 	"cheese": preload("res://Prefabs/cheese_chopped.tscn"),
-	"tomato": preload("res://Prefabs/cheese_chopped.tscn")
+	"tomato": preload("res://Prefabs/tomato_chopped.tscn")
 }
 
 
