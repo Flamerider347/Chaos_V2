@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://daq8fmipi3ycw"]
+
+[node name="credits" type="Node3D" unique_id=1328802882]
+
+[node name="main_credit" type="Label3D" parent="." unique_id=1596742889]
+text = "\"It's really hard to program in a straightjacket.\" - Hayden"

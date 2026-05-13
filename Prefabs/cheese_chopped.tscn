@@ -14,6 +14,10 @@ script = ExtResource("1_es73f")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15144409, 0.12650476, 0)
 shape = SubResource("BoxShape3D_bky3v")
 
+[node name="mesh" type="MeshInstance3D" parent="." unique_id=1157095276]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.029027492, 0)
+mesh = ExtResource("3_es73f")
+
 [node name="PropertySynchronizer" type="Node" parent="." unique_id=515839190]
 script = ExtResource("2_es73f")
 broadcast = 2
@@ -37,7 +41,3 @@ extrapolation = null
 extrapolated = false
 max_extrapolation_time = 0.2
 metadata/_custom_type_script = "uid://b7bt85tck6v7g"
-
-[node name="mesh" type="MeshInstance3D" parent="." unique_id=1157095276]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.029027492, 0)
-mesh = ExtResource("3_es73f")
