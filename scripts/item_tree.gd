@@ -27,7 +27,8 @@ func _on_punched():
 		
 		spawned_item.type = self.name.left(-5)
 		
-		spawned_item.position = global_position + Vector3(sin(randf_range(0, 2*PI)), 3, cos(randf_range(0, 2*PI)))*randf_range(1, 3)
+		var angle: float = randf_range(0, 2*PI)
+		spawned_item.position = global_position + Vector3(sin(angle), 0.2, cos(angle))*randf_range(1, 3)
 		GDSync.set_gdsync_owner(spawned_item, GDSync.get_client_id())
 		$item_timer.start(10)
 
