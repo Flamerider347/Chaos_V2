@@ -2,6 +2,7 @@ extends Node
 
 var room_code: String = ""
 var username: String = ""
+var closed_lobby= false
 var paused: bool = false
 var connected: bool = false
 var is_joining: bool = false
@@ -30,6 +31,8 @@ func _on_connection_failed(_error: int) -> void:
 
 func _on_lobby_created(lobby_name: String) -> void:
 	GDSync.lobby_join(lobby_name)
+	if closed_lobby:
+		GDSync.lobby_close()
 
 func _on_lobby_joined(lobby_name: String) -> void:
 	room_code = lobby_name

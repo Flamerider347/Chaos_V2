@@ -20,8 +20,9 @@ mesh = ExtResource("1_mchhu")
 
 [node name="PropertySynchronizer" type="Node" parent="." unique_id=272914693]
 script = ExtResource("1_evlx7")
+broadcast = 2
 node_path = NodePath("..")
-properties = PackedStringArray("global_position", "global_rotation", "freeze")
+properties = PackedStringArray("global_position", "global_rotation", "freeze", "visible")
 interpolated = false
 interpolation_speed = 1.0
 extrapolation = null
@@ -31,6 +32,7 @@ metadata/_custom_type_script = "uid://b7bt85tck6v7g"
 
 [node name="PropertySynchronizer2" type="Node" parent="." unique_id=1629252780]
 script = ExtResource("1_evlx7")
+broadcast = 2
 node_path = NodePath("../CollisionShape3D")
 properties = PackedStringArray("disabled")
 interpolated = false
