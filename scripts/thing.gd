@@ -5,12 +5,16 @@ func _ready() -> void:
 	GDSync.expose_func(_spawn_smoke)
 func _on_body_entered(body) -> void:
 	if body.is_in_group("player"):
-		GDSync.call_func_all(_spawn_smoke, [body.global_position])
+		if GameData.connected:
+			GDSync.call_func_all(_spawn_smoke, [body.global_position])
+		_spawn_smoke(body.global_position)
 		body.position = Vector3(0, 5, 0)
 	elif body.is_in_group("plate"):
 		print(body.stacked_items)
+		body.queue_free()
 	elif body.is_in_group("pickupable"):
 		print(body.type)
+		body.queue_free()
 
 func _spawn_smoke(pos: Vector3) -> void:
 	var p = smoke_particle.instantiate()
