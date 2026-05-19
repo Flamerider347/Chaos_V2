@@ -121,7 +121,7 @@ max_extrapolation_time = 0.2
 metadata/_custom_type_script = "uid://b7bt85tck6v7g"
 
 [node name="pickup_timer" type="Timer" parent="." unique_id=750239620]
-wait_time = 0.25
+wait_time = 0.1
 one_shot = true
 
 [connection signal="timeout" from="pickup_timer" to="." method="_on_pickup_timer_timeout"]
