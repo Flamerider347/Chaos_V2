@@ -1,5 +1,7 @@
 extends Node3D
 
+@export var score: int = 0
+@export var power: float = 0
 var paused: bool = false
 
 func _ready() -> void:

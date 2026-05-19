@@ -10,6 +10,8 @@
 [ext_resource type="Script" uid="uid://ct5pqjn3s72nv" path="res://addons/GD-Sync/Scripts/Types/SynchronizedAnimationPlayer.gd" id="6_oob7m"]
 [ext_resource type="Script" uid="uid://b55ss7d6s1qyy" path="res://scripts/thing.gd" id="8_e4ce6"]
 [ext_resource type="PackedScene" uid="uid://uqptavxff366" path="res://Prefabs/plate.tscn" id="8_yjdeq"]
+[ext_resource type="Script" uid="uid://bavxckwopedl" path="res://scripts/score.gd" id="9_m7hx3"]
+[ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="11_asxxo"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7m14q"]
 
@@ -296,6 +298,12 @@ offset_top = 556.915
 offset_right = 847.0
 offset_bottom = 579.915
 text = "4"
+[node name="score" type="Label" parent="UI" unique_id=1003719063]
+offset_left = 18.0
+offset_top = 615.0
+offset_right = 58.0
+offset_bottom = 638.0
+script = ExtResource("9_m7hx3")
 
 [node name="SynchronizedAnimationPlayer" type="AnimationPlayer" parent="." unique_id=670073892]
 libraries/ = SubResource("AnimationLibrary_i6w6j")
@@ -311,6 +319,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0592837, -0.58253556, 1.11
 [node name="Cake_Cake_0" type="MeshInstance3D" parent="." unique_id=960872629]
 transform = Transform3D(1, 0, 0, 0, 1.1924881e-08, 1, 0, -1, 1.1924881e-08, -2.949092, 0.10661429, -1.481688)
 mesh = SubResource("ArrayMesh_m7hx3")
+[node name="PropertySynchronizer" type="Node" parent="." unique_id=1858396248]
+script = ExtResource("11_asxxo")
+node_path = NodePath("..")
+properties = PackedStringArray("score")
+interpolated = false
+interpolation_speed = 1.0
+extrapolation = null
+extrapolated = false
+max_extrapolation_time = 0.2
+metadata/_custom_type_script = "uid://b7bt85tck6v7g"
 
 [connection signal="body_entered" from="game/world/thing" to="game/world/thing" method="_on_body_entered"]
 [connection signal="pressed" from="Pause_UI/copybutton" to="." method="_on_copy_button_pressed"]
