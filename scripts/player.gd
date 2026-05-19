@@ -51,24 +51,51 @@ func _physics_process(_delta: float) -> void:
 
 	if not is_on_floor(): velocity.y -= GRAVITY * _delta
 
-	# MANAGING POSITIONS (The Simplified Hybrid Logic)
+	# 1. TRACK THE PLACEMENT TARGET FOR THE REAL OBJECT
+	var active_slot_node = hand.find_child("slot" + current_slot)
+	var target_transform : Transform3D
+	var is_colliding_with_placeable: bool = false
+
+	if is_instance_valid(active_slot_node):
+		target_transform = active_slot_node.global_transform
+		
+		if is_owned and interact_cast.is_colliding():
+			var collider = interact_cast.get_collider()
+			if is_instance_valid(collider):
+				if collider.is_in_group("placeable") and is_instance_valid(held_item) and held_item.is_in_group("choppable"):
+					target_transform.origin = collider.global_position + Vector3(0, 0.5, 0)
+					target_transform.basis = Basis.IDENTITY
+					is_colliding_with_placeable = true
+				elif collider.is_in_group("plate") and is_instance_valid(held_item) and held_item.is_in_group("plate_stackable") and "calculate_stack_height" in collider:
+					target_transform.origin = collider.global_position + Vector3(0, collider.calculate_stack_height(), 0)
+					target_transform.basis = Basis.IDENTITY
+					is_colliding_with_placeable = true
+
+	# UI HUD Crosshair Indicators
+	if is_owned:
+		if interact_cast.is_colliding() and is_colliding_with_placeable:
+			get_node("/root/main/UI/colliding").show()
+		else:
+			get_node("/root/main/UI/colliding").hide()
+
+	# 2. MANAGE THE REAL OBJECT OVER THE NETWORK (PREVIEW MECHANIC)
 	for slot_key in inventory:
 		var stack = inventory[slot_key][3]
 		if stack.size() > 0:
-			var active_slot_node = hand.find_child("slot" + current_slot)
-			
 			if slot_key == current_slot and is_instance_valid(active_slot_node):
 				for item in stack:
 					if is_instance_valid(item):
-						# Snap the real item exactly to your hand node for EVERYONE
-						item.global_transform = active_slot_node.global_transform
+						item.global_transform = target_transform
 						item.show()
 						
-						# Hide meshes on YOUR screen recursively so nested plate foods disappear,
-						# but leave them completely untouched and visible on other players' viewports.
-						set_meshes_visible_recursive(item, !is_owned)
+						if is_owned:
+							# On YOUR screen: Only render real meshes if you are actively previewing a placement
+							set_meshes_visible_recursive(item, is_colliding_with_placeable)
+						else:
+							# On OTHER player screens: Always show the real object moving with your puppet hand/preview
+							set_meshes_visible_recursive(item, true)
 			else:
-				# If the slot is inactive, push it into the sky pool out of the way
+				# Exiles inactive items to the sky pool
 				for item in stack:
 					if is_instance_valid(item):
 						item.global_position = Vector3(0, 50, 0)
@@ -76,20 +103,11 @@ func _physics_process(_delta: float) -> void:
 
 	if not is_owned: return
 
-	# Local placement preview raycast logic
-	if is_instance_valid(hand_item) and interact_cast.is_colliding():
-		var collider = interact_cast.get_collider()
-		if is_instance_valid(collider):
-			if collider.is_in_group("placeable") and hand_item.is_in_group("choppable"):
-				hand_item.global_position = collider.global_position + Vector3(0, 0.5, 0)
-			elif collider.is_in_group("plate") and hand_item.is_in_group("plate_stackable") and "calculate_stack_height" in collider:
-				hand_item.global_position = collider.global_position + Vector3(0, collider.calculate_stack_height(), 0)
-			else:
-				hand_item.position = Vector3.ZERO; hand_item.rotation = Vector3.ZERO
-		else:
-			hand_item.position = Vector3.ZERO; hand_item.rotation = Vector3.ZERO
-	elif is_instance_valid(hand_item):
-		hand_item.position = Vector3.ZERO; hand_item.rotation = Vector3.ZERO
+	# 3. LOCAL DUPLICATE HAND VISUAL WRANGLER (Always stands still in your hand view)
+	if is_instance_valid(hand_item):
+		hand_item.show()
+		hand_item.position = Vector3.ZERO
+		hand_item.rotation = Vector3.ZERO
 
 	handle_inventory_slots(); handle_interactions(); handle_movement()
 	move_and_slide()
@@ -114,13 +132,11 @@ func update_hand_visuals():
 	if current_stack.size() > 0 and is_instance_valid(current_stack[-1]):
 		held_item = current_stack[-1]
 		
-		# Duplicate locally for your own camera view (Lag-free)
+		# Put the local copy back into your view framework
 		hand_item = held_item.duplicate()
 		active_slot_node.add_child(hand_item)
-		
-		# Ensure your local duplicate's visual meshes are 100% visible
 		set_meshes_visible_recursive(hand_item, true)
-				
+		
 		hand_item.position = Vector3.ZERO; hand_item.rotation = Vector3.ZERO; hand_item.show()
 		if hand_item is RigidBody3D: hand_item.freeze = true
 		var col = hand_item.find_child("CollisionShape3D")
@@ -190,13 +206,11 @@ func stack_object(plate):
 	var slot_is_empty = inventory[current_slot][1] <= 0
 	if slot_is_empty: 
 		inventory[current_slot][2] = null
-	
+		
 	if slot_is_empty and is_instance_valid(hand_item): 
 		hand_item.queue_free()
 		
-	# Restore visual mesh system recursively before pinning it onto the plate
 	set_meshes_visible_recursive(item, true)
-	
 	plate.stack_item(item)
 	update_hand_visuals(); update_inventory_ui()
 
@@ -210,7 +224,6 @@ func drop_object():
 	
 	can_pickup = false; pickup_timer.start()
 	
-	# Only free the visual duplicate asset if we are completely out of items in this slot
 	if slot_is_empty and is_instance_valid(hand_item): 
 		hand_item.queue_free()
 	
@@ -221,7 +234,6 @@ func drop_object():
 		if target_col.is_in_group("placeable") and item.is_in_group("choppable"):
 			drop_pos = target_col.global_position + Vector3(0, 0.5, 0); drop_rot = Vector3.ZERO 
 	
-	# Force visibility of the actual dropped node back to true so you see it on the ground
 	set_meshes_visible_recursive(item, true)
 
 	item.global_position = drop_pos; item.global_rotation = drop_rot
@@ -244,7 +256,6 @@ func sync_drop(params: Array) -> void:
 		object.global_position = params[1]; object.global_rotation = params[2]
 		object.show()
 
-# Recursive Helper to drill down into objects (like food items pinned onto a plate node)
 func set_meshes_visible_recursive(node: Node, visible_state: bool) -> void:
 	if not is_instance_valid(node): return
 	if node is MeshInstance3D:

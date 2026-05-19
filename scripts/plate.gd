@@ -33,7 +33,7 @@ func execute_stack(item: Node, offset: float) -> void:
 	if p and p.has_method("update_inventory_ui"): p.update_inventory_ui()
 
 func calculate_stack_height() -> float:
-	var h: float = 0.0
+	var h: float = 0.1
 	for node in stacked_items:
 		if not is_instance_valid(node): continue
 		var col = node.find_child("CollisionShape3D")

@@ -26,6 +26,9 @@ sky = SubResource("Sky_dajsn")
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_oob7m"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_18m2x"]
+albedo_texture = ExtResource("13_cgc31")
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_i6w6j"]
 size = Vector3(6.4873047, 1, 4.4298096)
 
@@ -71,9 +74,6 @@ _data = {
 &"door_open": SubResource("Animation_yjdeq")
 }
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_18m2x"]
-albedo_texture = ExtResource("13_cgc31")
-
 [node name="main" type="Node3D" unique_id=2036698157]
 process_mode = 3
 script = ExtResource("1_a5p6j")
@@ -94,6 +94,11 @@ player_scene = ExtResource("3_7m14q")
 
 [node name="world" type="Node3D" parent="game" unique_id=2057127466]
 
+[node name="Basicland" type="MeshInstance3D" parent="game/world" unique_id=521936701]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.4360065, -0.60614705, 0.78292537)
+material_override = SubResource("StandardMaterial3D_18m2x")
+mesh = ExtResource("14_h808o")
+
 [node name="floor" type="StaticBody3D" parent="game/world" unique_id=1611625833]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.40322375, 0)
 collision_layer = 3
@@ -101,26 +106,18 @@ collision_mask = 3
 metadata/_edit_group_ = true
 
 [node name="CollisionPolygon3D2" type="CollisionPolygon3D" parent="game/world/floor" unique_id=510971833]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, -3.5623176, 0)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, -3.4743629, 0)
 depth = 5.0
-polygon = PackedVector2Array(6.9522853, 17.814573, -16.881739, 17.76055, -15.083389, -1.4774796, -4.401706, -0.071474366, -2.9824743, 0.4984532, -1.5408931, -0.08264964, -0.9597903, -1.4907061, -1.5520682, -2.9434626, -2.9601245, -3.5133903, -4.3346562, -2.965813, -4.971634, -1.468356, -4.4128814, -0.18322498, -14.772903, -1.4428943, -14.960222, -19.078157, 29.219616, -36.054604, 35.483353, 17.377415)
+polygon = PackedVector2Array(9.367628, 23.559235, -34.21996, 23.770313, -35.833767, -6.5726147, -4.401706, -0.071474366, -2.9824743, 0.4984532, -1.5408931, -0.08264964, -0.9597903, -1.4907061, -1.5520682, -2.9434626, -2.9601245, -3.5133903, -4.3346562, -2.965813, -4.971634, -1.468356, -4.4128814, -0.18322498, -35.833767, -6.6703863, -38.441517, -53.58972, 62.55924, -57.389122, 36.91328, 24.19247)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/floor" unique_id=28228566]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7436523, -6.5371084, -1.3305054)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7436523, -6.449154, -1.3305054)
 shape = SubResource("BoxShape3D_i6w6j")
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="game/world/floor" unique_id=643047669]
 
-[node name="CSGMesh3D" type="CSGBox3D" parent="game/world/floor/CSGCombiner3D" unique_id=226760581]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.42089844, -3.2264404, -1.1726685)
-size = Vector3(17.970703, 4.5910645, 18.234741)
-
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="game/world/floor/CSGCombiner3D" unique_id=532458581]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1837351, -3.7907372, -1.8090708)
-operation = 2
-radius = 2.0
-height = 5.739258
-sides = 6
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="game/world/floor/CSGCombiner3D" unique_id=1181355459]
+mesh = ExtResource("14_h808o")
 
 [node name="plate_tree" parent="game/world" unique_id=68733649 instance=ExtResource("4_m7hx3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1809967, -0.6590934, -10.731653)
@@ -132,6 +129,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.0093117, -0.632535, -8.1941
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.9407244, -0.6633359, -9.483263)
 
 [node name="kitchen" type="Node3D" parent="game/world" unique_id=1556216379]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0926044, 0)
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="game/world/kitchen" unique_id=456083879]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.40322375, 0)
+
+[node name="CSGMesh3D" type="CSGBox3D" parent="game/world/kitchen/CSGCombiner3D" unique_id=1841902045]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.42089844, -3.2264404, -1.1726685)
+size = Vector3(17.970703, 4.5910645, 18.234741)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="game/world/kitchen/CSGCombiner3D" unique_id=2092834140]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.9029174, -3.7907372, -1.746204)
+operation = 2
+radius = 2.0
+height = 5.739258
+sides = 6
 
 [node name="door" type="StaticBody3D" parent="game/world/kitchen" unique_id=1983404160 groups=["door"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.838168, -3.5727391)
@@ -274,6 +286,13 @@ offset_right = 58.0
 offset_bottom = 638.0
 script = ExtResource("9_m7hx3")
 
+[node name="colliding" type="Label" parent="UI" unique_id=2114114295]
+offset_left = 924.0
+offset_top = 2.0
+offset_right = 1150.0
+offset_bottom = 87.0
+text = "Left click to do something"
+
 [node name="SynchronizedAnimationPlayer" type="AnimationPlayer" parent="." unique_id=670073892]
 libraries/ = SubResource("AnimationLibrary_i6w6j")
 script = ExtResource("6_oob7m")
@@ -289,12 +308,6 @@ extrapolation = null
 extrapolated = false
 max_extrapolation_time = 0.2
 metadata/_custom_type_script = "uid://b7bt85tck6v7g"
-
-[node name="Basicland" type="MeshInstance3D" parent="." unique_id=521936701]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.4360065, -0.60614705, 0.78292537)
-visible = false
-material_override = SubResource("StandardMaterial3D_18m2x")
-mesh = ExtResource("14_h808o")
 
 [connection signal="body_entered" from="game/world/thing" to="game/world/thing" method="_on_body_entered"]
 [connection signal="pressed" from="Pause_UI/copybutton" to="." method="_on_copy_button_pressed"]
