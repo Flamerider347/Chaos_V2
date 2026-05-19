@@ -76,7 +76,6 @@ _data = {
 }
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_e4ce6"]
-load_path = "res://.godot/imported/Cake_baseColor.png-2de40e87d4529cef38522ca5a9f2d356.s3tc.ctex"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ekhh6"]
 resource_name = "Cake"
@@ -298,6 +297,7 @@ offset_top = 556.915
 offset_right = 847.0
 offset_bottom = 579.915
 text = "4"
+
 [node name="score" type="Label" parent="UI" unique_id=1003719063]
 offset_left = 18.0
 offset_top = 615.0
@@ -319,6 +319,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0592837, -0.58253556, 1.11
 [node name="Cake_Cake_0" type="MeshInstance3D" parent="." unique_id=960872629]
 transform = Transform3D(1, 0, 0, 0, 1.1924881e-08, 1, 0, -1, 1.1924881e-08, -2.949092, 0.10661429, -1.481688)
 mesh = SubResource("ArrayMesh_m7hx3")
+
 [node name="PropertySynchronizer" type="Node" parent="." unique_id=1858396248]
 script = ExtResource("11_asxxo")
 node_path = NodePath("..")

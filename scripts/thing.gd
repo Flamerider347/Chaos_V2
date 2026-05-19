@@ -20,12 +20,14 @@ func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("player"):
 		body.position = Vector3(0, 5, 0)
 	elif body.is_in_group("plate"):
-		var items: Array = body.stacked_items
-		if len(items) > 1:
-			for item_name in items:
-				if scores.has(item_name):
-					score.score += scores[item_name]
-		print(body.stacked_items)
+		var item_nodes: Array = body.stacked_items
+		var items: Array = []
+		for item in item_nodes:
+			items.append(item.type)
+		for item_name in items:
+			if scores.has(item_name):
+				score.score += scores[item_name]
+		print(items)
 		body.queue_free()
 	elif body.is_in_group("pickupable"):
 		if scores.has(body.type):
