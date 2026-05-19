@@ -4,10 +4,18 @@ var is_owned: bool = false
 var held_item = null
 var hand_item = null
 var can_pickup = true
+var current_slot = "1"
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 const GRAVITY = 9.8
 var mouse_sensitivity = 0.003
+var can_swap_item = true
+var inventory = {
+	"1" : [$UI/item_slots/slot1, 0, null],
+	"2" : [$UI/item_slots/slot2, 0, null],
+	"3" : [$UI/item_slots/slot3, 0, null],
+	"4" : [$UI/item_slots/slot4, 0, null],
+}
 
 @onready var interact_cast : RayCast3D = $head/interact_cast
 @onready var hand = $hand
@@ -51,12 +59,10 @@ func _physics_process(_delta: float) -> void:
 
 
 	if held_item != null and interact_cast.is_colliding():
-		print(held_item.get_groups())
 		if interact_cast.get_collider().is_in_group("placeable") and held_item.is_in_group("choppable"):
 			held_item.global_position = interact_cast.get_collider().global_position + Vector3(0,0.5,0)
 			held_item.show()
 		elif interact_cast.get_collider().is_in_group("plate") and held_item.is_in_group("plate_stackable"):
-			print("hello")
 			held_item.global_position = interact_cast.get_collider().global_position + Vector3(0,0.1,0)
 			held_item.show()
 		else:
@@ -70,25 +76,43 @@ func _physics_process(_delta: float) -> void:
 		held_item.hide()
 
 	if not GameData.paused:
+		var change_slot = false
+		if Input.is_action_just_pressed("1") and current_slot != "1":
+			current_slot = "1"
+			change_slot = true
+		if Input.is_action_just_pressed("2") and current_slot != "2":
+			current_slot = "2"
+			change_slot = true
+		if Input.is_action_just_pressed("3") and current_slot != "3":
+			current_slot = "3"
+			change_slot = true
+		if Input.is_action_just_pressed("4") and current_slot != "4":
+			current_slot = "4"
+			change_slot = true
+
+		if change_slot:
+			if inventory[current_slot][2]:
+				print(inventory[current_slot][2])
+
 		if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 			velocity.y = JUMP_VELOCITY
 
 		if Input.is_action_just_pressed("left_click"):
-			if held_item != null and can_pickup:
-				drop_object(held_item)
-	
-			elif interact_cast.is_colliding():
+			if interact_cast.is_colliding():
 				if interact_cast.get_collider().is_in_group("punchable"):
 					interact_cast.get_collider()._on_punched()
-				elif interact_cast.get_collider().is_in_group("pickupable") and can_pickup and held_item == null:
+				elif interact_cast.get_collider().is_in_group("pickupable") and can_pickup:
 					pickup_object(interact_cast.get_collider())
 				elif interact_cast.get_collider().is_in_group("door"):
 					interact_cast.get_collider().open_door()
-					
+
 		if Input.is_action_just_pressed("right_click"):
-			if interact_cast.is_colliding():
-				if interact_cast.get_collider().is_in_group("plate") and held_item != null and held_item.is_in_group("plate_stackable"):
-					stack_object(interact_cast.get_collider())
+			if interact_cast.is_colliding() and interact_cast.get_collider().is_in_group("plate") and held_item != null and held_item.is_in_group("plate_stackable"):
+				stack_object(interact_cast.get_collider())
+
+			elif held_item != null and can_pickup:
+				drop_object(held_item)
+	
 
 		var input_dir = Vector2.ZERO
 		input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
@@ -115,6 +139,16 @@ func stack_object(plate):
 	held_item = null
 
 func pickup_object(object):
+	for i in inventory:
+		if inventory[i][2] == object.type:
+			inventory[i][1] += 1
+			print(inventory)
+			break
+		elif inventory[i][2] == null:
+			inventory[i][2] = object.type
+			inventory[i][1] += 1
+			print(inventory)
+			break
 	held_item = object
 	can_pickup = false
 	object.freeze = true
@@ -131,6 +165,11 @@ func pickup_object(object):
 		GDSync.set_gdsync_owner(object, GDSync.get_client_id())
 
 func drop_object(object):
+	if inventory[current_slot][2]:
+		inventory[current_slot][1] -= 1
+		if inventory[current_slot][1] <= 0:
+			inventory[current_slot][2] = null
+	print(inventory)
 	for i in hand.get_children():
 		i.queue_free()
 	held_item = null
