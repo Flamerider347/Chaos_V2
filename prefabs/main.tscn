@@ -35,7 +35,7 @@ size = Vector3(6.4873047, 1, 4.4298096)
 size = Vector3(10, 3, 0.1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_asxxo"]
-size = Vector3(4.7180176, 1, 4.3255615)
+size = Vector3(100, 1, 100)
 
 [sub_resource type="Animation" id="Animation_fpsi2"]
 length = 0.001
