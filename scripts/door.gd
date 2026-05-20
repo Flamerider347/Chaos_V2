@@ -13,3 +13,4 @@ func open_door() -> void:
 	GDSync.call_func_all(open_door)
 	if GDSync.is_host():
 		GDSync.lobby_close()
+		GameData.closed_lobby = true
