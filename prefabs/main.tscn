@@ -38,6 +38,14 @@ size = Vector3(10, 3, 0.1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_asxxo"]
 size = Vector3(100, 1, 100)
 
+[sub_resource type="Gradient" id="Gradient_cgc31"]
+offsets = PackedFloat32Array(0.33894232)
+colors = PackedColorArray(0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_h808o"]
+gradient = SubResource("Gradient_cgc31")
+width = 1
+
 [sub_resource type="Animation" id="Animation_fpsi2"]
 length = 0.001
 tracks/0/type = "value"
@@ -113,11 +121,6 @@ polygon = PackedVector2Array(9.367628, 23.559235, -34.21996, 23.770313, -35.8337
 [node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/floor" unique_id=28228566]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7436523, -6.449154, -1.3305054)
 shape = SubResource("BoxShape3D_i6w6j")
-
-[node name="CSGCombiner3D" type="CSGCombiner3D" parent="game/world/floor" unique_id=643047669]
-
-[node name="CSGMesh3D2" type="CSGMesh3D" parent="game/world/floor/CSGCombiner3D" unique_id=1181355459]
-mesh = ExtResource("14_h808o")
 
 [node name="plate_tree" parent="game/world" unique_id=68733649 instance=ExtResource("4_m7hx3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1809967, -0.6590934, -10.731653)
@@ -292,6 +295,11 @@ offset_top = 2.0
 offset_right = 1150.0
 offset_bottom = 87.0
 text = "Left click to do something"
+
+[node name="Sprite2D" type="Sprite2D" parent="UI" unique_id=1162775405]
+position = Vector2(576, 324)
+scale = Vector2(10, 10)
+texture = SubResource("GradientTexture1D_h808o")
 
 [node name="SynchronizedAnimationPlayer" type="AnimationPlayer" parent="." unique_id=670073892]
 libraries/ = SubResource("AnimationLibrary_i6w6j")
