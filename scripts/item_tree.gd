@@ -36,3 +36,4 @@ func _on_item_timer_timeout() -> void:
 	item_left += 1
 	GDSync.sync_var(self, "item_left")
 	$Label3D.text = str(item_left)
+	$item_timer.start(10)
