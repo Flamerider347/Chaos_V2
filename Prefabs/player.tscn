@@ -57,6 +57,7 @@ mesh = SubResource("BoxMesh_knrd4")
 [node name="interact_cast" type="RayCast3D" parent="head" unique_id=1105478281]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 target_position = Vector3(0, 0, -1.8)
+collide_with_areas = true
 
 [node name="camera" type="Camera3D" parent="head" unique_id=237419948]
 current = true
