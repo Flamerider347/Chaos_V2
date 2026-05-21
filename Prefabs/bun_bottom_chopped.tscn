@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://cep1ugpmjc2p2"]
+
+[ext_resource type="Script" uid="uid://m8dtdn28meeu" path="res://scripts/item.gd" id="1_m67m8"]
+[ext_resource type="ArrayMesh" uid="uid://drk3np67577f0" path="res://Assets/Models/kitchenassets/food_ingredient_bun_bottom.obj" id="2_m67m8"]
+[ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="3_efgmk"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_m67m8"]
+height = 0.2
+radius = 0.346878
+
+[node name="bun_chopped_bottom" type="RigidBody3D" unique_id=2106783148 groups=["pickupable", "placeable", "plate_stackable"]]
+script = ExtResource("1_m67m8")
+
+[node name="mesh" type="MeshInstance3D" parent="." unique_id=1798572584]
+mesh = ExtResource("2_m67m8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=898677070]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+shape = SubResource("CylinderShape3D_m67m8")
+
+[node name="PropertySynchronizer" type="Node" parent="." unique_id=272914693]
+script = ExtResource("3_efgmk")
+broadcast = 2
+node_path = NodePath("..")
+properties = PackedStringArray("global_position", "global_rotation", "freeze", "visible")
+interpolated = false
+interpolation_speed = 1.0
+extrapolation = null
+extrapolated = false
+max_extrapolation_time = 0.2
+metadata/_custom_type_script = "uid://b7bt85tck6v7g"
+
+[node name="PropertySynchronizer2" type="Node" parent="." unique_id=1629252780]
+script = ExtResource("3_efgmk")
+broadcast = 2
+node_path = NodePath("../CollisionShape3D")
+properties = PackedStringArray("disabled")
+interpolated = false
+interpolation_speed = 1.0
+extrapolation = null
+extrapolated = false
+max_extrapolation_time = 0.2
+metadata/_custom_type_script = "uid://b7bt85tck6v7g"

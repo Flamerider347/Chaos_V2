@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://b55ss7d6s1qyy" path="res://scripts/thing.gd" id="8_e4ce6"]
 [ext_resource type="Script" uid="uid://bavxckwopedl" path="res://scripts/score.gd" id="9_m7hx3"]
 [ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="11_asxxo"]
+[ext_resource type="PackedScene" uid="uid://bdi1ju62g1fdu" path="res://Prefabs/bun_tree.tscn" id="12_h808o"]
 [ext_resource type="Texture2D" uid="uid://bnfkdd630vql2" path="res://Assets/Models/hexagons_medieval.png" id="13_cgc31"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7m14q"]
@@ -217,6 +218,11 @@ metadata/_edit_group_ = true
 [node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/thing" unique_id=688455270]
 shape = SubResource("BoxShape3D_asxxo")
 
+[node name="bun_tree" parent="game/world" unique_id=890879246 instance=ExtResource("12_h808o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.394499, -0.5711365, -11.345516)
+
+[node name="items" type="Node3D" parent="game" unique_id=1381883755]
+
 [node name="Pause_UI" type="CanvasLayer" parent="." unique_id=516443905]
 
 [node name="roomcode" type="Label" parent="Pause_UI" unique_id=1665139751]
@@ -316,7 +322,7 @@ libraries/ = SubResource("AnimationLibrary_i6w6j")
 script = ExtResource("6_oob7m")
 metadata/_custom_type_script = "uid://ct5pqjn3s72nv"
 
-[node name="PropertySynchronizer" type="Node" parent="." unique_id=1858396248]
+[node name="score_synchroniser" type="Node" parent="." unique_id=1858396248]
 script = ExtResource("11_asxxo")
 node_path = NodePath("..")
 properties = PackedStringArray("score")
