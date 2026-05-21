@@ -66,6 +66,10 @@ func _physics_process(_delta: float) -> void:
 					target_transform.origin = collider.global_position + Vector3(0, 0.5, 0)
 					target_transform.basis = Basis.IDENTITY
 					is_colliding_with_placeable = true
+				elif collider.is_in_group("THE_THING") and is_instance_valid(held_item):
+					target_transform.origin = collider.global_position + Vector3(0, 0.5, 0)
+					target_transform.basis = Basis.IDENTITY
+					is_colliding_with_placeable = true
 				elif collider.is_in_group("plate") and is_instance_valid(held_item) and held_item.is_in_group("plate_stackable") and "calculate_stack_height" in collider:
 					target_transform.origin = collider.global_position + Vector3(0, collider.calculate_stack_height(), 0)
 					target_transform.basis = Basis.IDENTITY
@@ -231,8 +235,11 @@ func drop_object():
 	var drop_rot = hand.global_rotation
 	if interact_cast.is_colliding():
 		var target_col = interact_cast.get_collider()
-		if target_col.is_in_group("placeable") and item.is_in_group("choppable"):
-			drop_pos = target_col.global_position + Vector3(0, 0.5, 0); drop_rot = Vector3.ZERO 
+		if target_col.is_in_group("placeable"):
+			if target_col.is_in_group("chopping_board") and item.is_in_group("choppable"):
+				drop_pos = target_col.global_position + Vector3(0, 0.5, 0); drop_rot = Vector3.ZERO 
+			elif target_col.is_in_group("THE_THING"):
+				drop_pos = target_col.global_position + Vector3(0, 0.5, 0); drop_rot = Vector3.ZERO
 	
 	set_meshes_visible_recursive(item, true)
 

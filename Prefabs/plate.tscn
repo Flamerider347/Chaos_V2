@@ -7,7 +7,7 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_ho3ci"]
 size = Vector3(1, 0.1, 1)
 
-[node name="plate" type="RigidBody3D" unique_id=550599860 groups=["pickupable", "plate"]]
+[node name="plate" type="RigidBody3D" unique_id=550599860 groups=["pickupable", "placeable", "plate"]]
 script = ExtResource("1_khefw")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=162948857]

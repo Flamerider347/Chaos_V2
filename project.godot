@@ -27,6 +27,10 @@ GDSync="*uid://0y6w65gyiw0y"
 GameData="*uid://m4y852ej0k71"
 TileRunInstancesGlobal="*uid://b6fg6pu2bfi14"
 
+[display]
+
+window/stretch/mode="canvas_items"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/GD-Sync/plugin.cfg", "res://addons/tile-run-instances/plugin.cfg")
@@ -45,6 +49,8 @@ choppable=""
 plate=""
 plate_stackable=""
 player=""
+chopping_board=""
+THE_THING=""
 
 [input]
 

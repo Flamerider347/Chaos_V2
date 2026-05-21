@@ -202,7 +202,7 @@ ONCE DOOR IS OPENED"
 [node name="chopping_board" parent="game/world/kitchen" unique_id=646814846 instance=ExtResource("6_fpsi2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.428421, -0.0001822114, 4.4373975)
 
-[node name="thing_placement" type="StaticBody3D" parent="game/world/kitchen" unique_id=604275614 groups=["placeable"]]
+[node name="thing_placement" type="StaticBody3D" parent="game/world/kitchen" unique_id=604275614 groups=["THE_THING", "placeable"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.883929, -0.3230961, -2.8422596)
 collision_layer = 4
 collision_mask = 4
@@ -221,7 +221,7 @@ shape = SubResource("BoxShape3D_asxxo")
 [node name="bun_tree" parent="game/world" unique_id=890879246 instance=ExtResource("12_h808o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.394499, -0.5711365, -11.345516)
 
-[node name="items" type="Node3D" parent="game" unique_id=1381883755]
+[node name="items2" type="Node3D" parent="game" unique_id=563350228]
 
 [node name="Pause_UI" type="CanvasLayer" parent="." unique_id=516443905]
 
