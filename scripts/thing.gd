@@ -7,6 +7,9 @@ var scores: Dictionary = {
 	"cheese_chopped": 10,
 	"tomato": 6,
 	"tomato_chopped": 12,
+	"bun": 50,
+	"bun_bottom_chopped": 40,
+	"bun_top_chopped": 30,
 }
 
 

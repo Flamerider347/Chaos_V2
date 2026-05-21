@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://bdi1ju62g1fdu"]
+
+[ext_resource type="Script" uid="uid://togfvjn4aqrk" path="res://scripts/item_tree.gd" id="1_dtyhy"]
+[ext_resource type="Script" uid="uid://bd8wow75pw1s5" path="res://addons/GD-Sync/Scripts/Types/NodeInstantiator.gd" id="2_4nf7s"]
+[ext_resource type="ArrayMesh" uid="uid://bthlco7r3n27t" path="res://Assets/Models/kitchenassets/food_ingredient_bun.obj" id="2_hjqq3"]
+[ext_resource type="PackedScene" uid="uid://dsl2m7ay3lnn5" path="res://Prefabs/bun.tscn" id="3_dtyhy"]
+[ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="4_x4rqv"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_4nf7s"]
+points = PackedVector3Array(0.05320945, 0.026732588, 0.29798627, -0.032189064, 0.22875828, -0.3432604, -0.032095637, 0.25024116, -0.34226415, -0.343313, 0.22875416, 0.032126784, 0.1909878, 0.4836862, 0.06361828, 0.23322183, 0.02759901, -0.21203192, -0.26521125, 0.027500441, -0.15912676, -0.21000932, 0.47080463, 0.073490106, -0.13803048, 0.33513406, 0.3079244, 0.26592025, 0.23964885, 0.23399651, 0.2220792, 0.38774022, -0.22214547, -0.22207756, 0.38773924, -0.22214383, -0.2446783, 0.069408864, 0.2446783, 0.3319784, 0.078867026, 0.042805623, -0.11504135, 0.48033166, -0.16732097, 0.3289759, 0.33514214, -0.03178061, 0.11653801, 0.3879259, 0.2859694, -0.13880962, 0.06872594, -0.30966252, -0.2230942, 0.005818709, 0.10625435, 0.22317532, 0.016390065, 0.18068476, -0.30791336, 0.33514842, 0.13805537, 0.13879634, 0.0687438, -0.3096329, 0.021241194, 0.0057759057, -0.23378631, -0.30758595, 0.32447246, -0.14847602, 0.01067141, 0.14307997, 0.34282744, -0.010333099, 0.4681731, 0.21783993, 0.31899902, 0.2289879, -0.14883956, 0.031846646, 0.335141, -0.3289712, -0.33034253, 0.06909839, -0.031912636, 0.11501941, 0.4803369, -0.16728906, 0.3078832, 0.33518946, 0.13804184, 0.010578791, 0.50513434, 0.010578791)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_cf1hr"]
+
+[node name="bun_tree" type="StaticBody3D" unique_id=68733649 groups=["punchable"]]
+script = ExtResource("1_dtyhy")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="." unique_id=515047224]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+radius = 0.2
+sides = 6
+
+[node name="bun_decorator" type="MeshInstance3D" parent="." unique_id=204626617]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+mesh = ExtResource("2_hjqq3")
+
+[node name="bun_collider" type="CollisionShape3D" parent="." unique_id=1092164731]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("ConvexPolygonShape3D_4nf7s")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2071637746]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CylinderShape3D_cf1hr")
+
+[node name="Label3D" type="Label3D" parent="." unique_id=1546856357]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8490634, 0)
+billboard = 2
+text = "5"
+
+[node name="item_timer" type="Timer" parent="." unique_id=1312441818]
+one_shot = true
+
+[node name="iteminstantiator" type="Node" parent="." unique_id=1101772906]
+script = ExtResource("2_4nf7s")
+spawn_type = 0
+target_location = NodePath("../../../items")
+scene = ExtResource("3_dtyhy")
+replicate_on_join = true
+sync_starting_changes = true
+excluded_properties = PackedStringArray()
+metadata/_custom_type_script = "uid://bd8wow75pw1s5"
+
+[node name="PropertySynchronizer" type="Node" parent="." unique_id=408842399]
+script = ExtResource("4_x4rqv")
+node_path = NodePath("..")
+properties = PackedStringArray("item_left")
+interpolated = false
+interpolation_speed = 1.0
+extrapolation = null
+extrapolated = false
+max_extrapolation_time = 0.2
+metadata/_custom_type_script = "uid://b7bt85tck6v7g"
+
+[node name="PropertySynchronizer2" type="Node" parent="." unique_id=428280907]
+script = ExtResource("4_x4rqv")
+node_path = NodePath("../Label3D")
+properties = PackedStringArray("text")
+interpolated = false
+interpolation_speed = 1.0
+extrapolation = null
+extrapolated = false
+max_extrapolation_time = 0.2
+metadata/_custom_type_script = "uid://b7bt85tck6v7g"
+
+[connection signal="timeout" from="item_timer" to="." method="_on_item_timer_timeout"]
