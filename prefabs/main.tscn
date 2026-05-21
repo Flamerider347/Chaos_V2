@@ -201,10 +201,12 @@ ONCE DOOR IS OPENED"
 [node name="chopping_board" parent="game/world/kitchen" unique_id=646814846 instance=ExtResource("6_fpsi2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.428421, -0.0001822114, 4.4373975)
 
-[node name="Area3D" type="Area3D" parent="game/world/kitchen" unique_id=1406293813]
+[node name="thing_placement" type="StaticBody3D" parent="game/world/kitchen" unique_id=604275614 groups=["placeable"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.883929, -0.3230961, -2.8422596)
+collision_layer = 4
+collision_mask = 4
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/kitchen/Area3D" unique_id=1715452083]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8684347, 0, -2.900233)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/kitchen/thing_placement" unique_id=1715452083]
 shape = SubResource("CylinderShape3D_cgc31")
 
 [node name="thing" type="Area3D" parent="game/world" unique_id=965717664]
@@ -236,7 +238,7 @@ offset_bottom = 106.0
 min_value = 0.001
 max_value = 0.3
 step = 0.001
-value = 0.05
+value = 0.006
 
 [node name="sensitivity_label" type="Label" parent="Pause_UI" unique_id=635804600]
 offset_left = 6.0

@@ -31,6 +31,10 @@ TileRunInstancesGlobal="*uid://b6fg6pu2bfi14"
 
 enabled=PackedStringArray("res://addons/GD-Sync/plugin.cfg", "res://addons/tile-run-instances/plugin.cfg")
 
+[filesystem]
+
+import/blender/enabled=false
+
 [global_group]
 
 punchable="Things like trees that can be punched"
