@@ -221,8 +221,6 @@ shape = SubResource("BoxShape3D_asxxo")
 [node name="bun_tree" parent="game/world" unique_id=890879246 instance=ExtResource("12_h808o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.394499, -0.5711365, -11.345516)
 
-[node name="items" type="Node3D" parent="game" unique_id=1381883755]
-
 [node name="Pause_UI" type="CanvasLayer" parent="." unique_id=516443905]
 
 [node name="roomcode" type="Label" parent="Pause_UI" unique_id=1665139751]

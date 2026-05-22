@@ -26,6 +26,7 @@ config/icon="uid://djwvfah1ycrcy"
 GDSync="*uid://0y6w65gyiw0y"
 GameData="*uid://m4y852ej0k71"
 TileRunInstancesGlobal="*uid://b6fg6pu2bfi14"
+RecipeManager="*uid://cxemb85k3ycss"
 
 [editor_plugins]
 
