@@ -2,6 +2,7 @@ extends StaticBody3D
 const CHOPPED_SCENES = {
 	"cheese": [[preload("res://Prefabs/cheese_chopped.tscn"), "cheese_chopped"]],
 	"tomato": [[preload("res://Prefabs/tomato_chopped.tscn"), "tomato_chopped"]],
+	"meat_chopped": [[preload("res://Prefabs/tomato_chopped.tscn"), "meat_chopped"]],
 	"bun": [
 		[preload("res://Prefabs/bun_bottom_chopped.tscn"), "bun_bottom_chopped"], 
 		[preload("res://Prefabs/bun_top_chopped.tscn"), "bun_top_chopped"]

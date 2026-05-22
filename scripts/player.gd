@@ -2,9 +2,10 @@ extends CharacterBody3D
 
 var is_owned: bool = false
 var held_item: RigidBody3D = null  
-var hand_item = null # Tracks our local visual duplicate clone
+var hand_item = null 
 var can_pickup = true
 var current_slot = "1"
+var holding_two_handed: bool = false
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
@@ -51,7 +52,7 @@ func _physics_process(_delta: float) -> void:
 
 	if not is_on_floor(): velocity.y -= GRAVITY * _delta
 
-	# 1. TRACK THE PLACEMENT TARGET FOR THE REAL OBJECT
+	# 1. TRACK THE PLACEMENT TARGET FOR THE REAL OBJECT (PREVIEW MECHANIC)
 	var active_slot_node = hand.find_child("slot" + current_slot)
 	var target_transform : Transform3D
 	var is_colliding_with_placeable: bool = false
@@ -61,16 +62,20 @@ func _physics_process(_delta: float) -> void:
 		
 		if is_owned and interact_cast.is_colliding():
 			var collider = interact_cast.get_collider()
-			if is_instance_valid(collider):
-				if collider.is_in_group("placeable") and is_instance_valid(held_item) and held_item.is_in_group("choppable"):
+			if is_instance_valid(collider) and is_instance_valid(held_item):
+				if collider.is_in_group("placeable") and held_item.is_in_group("choppable"):
 					target_transform.origin = collider.global_position + Vector3(0, 0.5, 0)
 					target_transform.basis = Basis.IDENTITY
 					is_colliding_with_placeable = true
-				elif collider.is_in_group("THE_THING") and is_instance_valid(held_item):
+				elif collider.is_in_group("placeable") and not collider.is_in_group("chopping_board") and held_item.is_in_group("meat"):
+					target_transform.origin = collider.global_position + Vector3(0, 0.5, 0)
+					target_transform.basis = Basis.IDENTITY
+					is_colliding_with_placeable = true 
+				elif collider.is_in_group("THE_THING"):
 					target_transform.origin = collider.global_position + Vector3(0, 0.5, 0)
 					target_transform.basis = Basis.IDENTITY
 					is_colliding_with_placeable = true
-				elif collider.is_in_group("plate") and is_instance_valid(held_item) and held_item.is_in_group("plate_stackable") and "calculate_stack_height" in collider:
+				elif collider.is_in_group("plate") and held_item.is_in_group("plate_stackable") and "calculate_stack_height" in collider:
 					target_transform.origin = collider.global_position + Vector3(0, collider.calculate_stack_height(), 0)
 					target_transform.basis = Basis.IDENTITY
 					is_colliding_with_placeable = true
@@ -82,7 +87,7 @@ func _physics_process(_delta: float) -> void:
 		else:
 			get_node("/root/main/UI/colliding").hide()
 
-	# 2. MANAGE THE REAL OBJECT OVER THE NETWORK (PREVIEW MECHANIC)
+	# 2. MANAGE THE REAL OBJECT OVER THE NETWORK (PREVIEW VISIBILITY TOTE)
 	for slot_key in inventory:
 		var stack = inventory[slot_key][3]
 		if stack.size() > 0:
@@ -90,24 +95,16 @@ func _physics_process(_delta: float) -> void:
 				for item in stack:
 					if is_instance_valid(item):
 						item.global_transform = target_transform
-						item.show()
-						
-						if is_owned:
-							# On YOUR screen: Only render real meshes if you are actively previewing a placement
-							set_meshes_visible_recursive(item, is_colliding_with_placeable)
-						else:
-							# On OTHER player screens: Always show the real object moving with your puppet hand/preview
-							set_meshes_visible_recursive(item, true)
+						item.visible = is_colliding_with_placeable if is_owned else true
 			else:
-				# Exiles inactive items to the sky pool
 				for item in stack:
 					if is_instance_valid(item):
 						item.global_position = Vector3(0, 50, 0)
-						set_meshes_visible_recursive(item, true)
+						item.show()
 
 	if not is_owned: return
 
-	# 3. LOCAL DUPLICATE HAND VISUAL WRANGLER (Always stands still in your hand view)
+	# 3. LOCAL DUPLICATE VISUAL WRANGLER
 	if is_instance_valid(hand_item):
 		hand_item.show()
 		hand_item.position = Vector3.ZERO
@@ -116,14 +113,25 @@ func _physics_process(_delta: float) -> void:
 	handle_inventory_slots(); handle_interactions(); handle_movement()
 	move_and_slide()
 
+func check_two_handed_status() -> void:
+	if is_instance_valid(held_item) and "is_two_handed" in held_item:
+		holding_two_handed = held_item.is_two_handed
+	else:
+		holding_two_handed = false
+
 func handle_inventory_slots():
-	if is_instance_valid(held_item) and held_item.is_in_group("plate"): return 
+	if holding_two_handed: return 
+	if is_instance_valid(held_item) and held_item.is_in_group("plate") and held_item.is_two_handed: return 
+	
 	var prev = current_slot
 	if Input.is_action_just_pressed("1"): current_slot = "1"
 	elif Input.is_action_just_pressed("2"): current_slot = "2"
 	elif Input.is_action_just_pressed("3"): current_slot = "3"
 	elif Input.is_action_just_pressed("4"): current_slot = "4"
-	if prev != current_slot: update_hand_visuals(); update_inventory_ui()
+	if prev != current_slot: 
+		update_hand_visuals()
+		check_two_handed_status()
+		update_inventory_ui()
 
 func update_hand_visuals():
 	var active_slot_node = hand.find_child("slot" + current_slot)
@@ -136,10 +144,13 @@ func update_hand_visuals():
 	if current_stack.size() > 0 and is_instance_valid(current_stack[-1]):
 		held_item = current_stack[-1]
 		
-		# Put the local copy back into your view framework
 		hand_item = held_item.duplicate()
+		
+		# Transfer generic variables to duplicate if they exist
+		if "state" in held_item: hand_item.state = held_item.state
+		if "type" in held_item: hand_item.type = held_item.type
+		
 		active_slot_node.add_child(hand_item)
-		set_meshes_visible_recursive(hand_item, true)
 		
 		hand_item.position = Vector3.ZERO; hand_item.rotation = Vector3.ZERO; hand_item.show()
 		if hand_item is RigidBody3D: hand_item.freeze = true
@@ -147,6 +158,8 @@ func update_hand_visuals():
 		if col: col.disabled = true
 	else:
 		hand_item = null; held_item = null
+	
+	check_two_handed_status()
 
 func update_inventory_ui():
 	for i in inventory:
@@ -157,17 +170,27 @@ func update_inventory_ui():
 		var stack = inventory[i][3]
 		
 		if type_str != null and qty > 0:
-			if type_str == "plate" and stack.size() > 0 and is_instance_valid(stack[-1]) and stack[-1].stacked_items.size() > 0:
+			if is_instance_valid(stack[-1]) and "state" in stack[-1]:
+				slot_label.text = "%s\n%s [%s] (%d)" % [i, type_str, stack[-1].state, qty]
+			elif type_str == "plate" and stack.size() > 0 and is_instance_valid(stack[-1]) and stack[-1].stacked_items.size() > 0:
 				var names = []
 				for item in stack[-1].stacked_items: 
 					if is_instance_valid(item): names.append(item.type if "type" in item else item.name)
 				slot_label.text = "%s\n%s (%s) (%d)" % [i, type_str, ", ".join(names), qty]
-			else: slot_label.text = "%s\n%s (%d)" % [i, type_str, qty]
-		else: slot_label.text = str(i) + "\nempty"
+			else: 
+				slot_label.text = "%s\n%s (%d)" % [i, type_str, qty]
+		else: 
+			slot_label.text = str(i) + "\nempty"
 		slot_label.scale = Vector2(1.2, 1.2) if str(i) == current_slot else Vector2(1.0, 1.0)
 
 func handle_interactions():
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor(): velocity.y = JUMP_VELOCITY
+	
+	if holding_two_handed:
+		if Input.is_action_just_pressed("right_click"):
+			drop_object()
+		return
+
 	if Input.is_action_just_pressed("left_click") and interact_cast.is_colliding():
 		var col = interact_cast.get_collider()
 		if col.is_in_group("punchable"): col._on_punched()
@@ -188,8 +211,28 @@ func handle_movement():
 	velocity.z = dir.z * SPEED if dir else move_toward(velocity.z, 0, SPEED)
 
 func pickup_object(object):
+	var object_is_two_handed = object.is_two_handed if "is_two_handed" in object else object.is_in_group("two_handed")
+
+	if object_is_two_handed:
+		var has_empty_slot = false
+		for slot in inventory:
+			if inventory[slot][2] == null or inventory[slot][1] == 0:
+				has_empty_slot = true
+				break
+		if not has_empty_slot: return
+
 	for i in inventory:
-		if inventory[i][2] == object.type or inventory[i][2] == null:
+		var slot_match_type = inventory[i][2] == object.type
+		var slot_is_empty = inventory[i][2] == null
+		
+		var state_matches = true
+		if slot_match_type and inventory[i][3].size() > 0:
+			var existing_item = inventory[i][3][-1]
+			if "state" in existing_item and "state" in object:
+				if existing_item.state != object.state:
+					state_matches = false 
+
+		if slot_is_empty or (slot_match_type and state_matches):
 			inventory[i][2] = object.type; inventory[i][1] += 1; inventory[i][3].append(object)
 			current_slot = str(i)
 			can_pickup = false; pickup_timer.start()
@@ -214,7 +257,6 @@ func stack_object(plate):
 	if slot_is_empty and is_instance_valid(hand_item): 
 		hand_item.queue_free()
 		
-	set_meshes_visible_recursive(item, true)
 	plate.stack_item(item)
 	update_hand_visuals(); update_inventory_ui()
 
@@ -238,21 +280,22 @@ func drop_object():
 		if target_col.is_in_group("placeable"):
 			if target_col.is_in_group("chopping_board") and item.is_in_group("choppable"):
 				drop_pos = target_col.global_position + Vector3(0, 0.5, 0); drop_rot = Vector3.ZERO 
+			elif not target_col.is_in_group("chopping_board") and item.is_in_group("meat"):
+				drop_pos = target_col.global_position + Vector3(0, 0.5, 0); drop_rot = Vector3.ZERO
 			elif target_col.is_in_group("THE_THING"):
 				drop_pos = target_col.global_position + Vector3(0, 0.5, 0); drop_rot = Vector3.ZERO
 	
-	set_meshes_visible_recursive(item, true)
-
+	item.show()
 	item.global_position = drop_pos; item.global_rotation = drop_rot
 	item.freeze = false
 	var col = item.find_child("CollisionShape3D")
 	if col: col.disabled = false
-	item.show()
 	
 	if GameData.connected:
 		GDSync.set_gdsync_owner(item, GDSync.get_host())
 		GDSync.call_func_all(sync_drop, [item.get_path(), drop_pos, drop_rot])
-	update_hand_visuals(); update_inventory_ui()
+		
+	update_hand_visuals(); check_two_handed_status(); update_inventory_ui()
 	
 func sync_drop(params: Array) -> void:
 	var object = get_node_or_null(params[0])
@@ -263,11 +306,5 @@ func sync_drop(params: Array) -> void:
 		object.global_position = params[1]; object.global_rotation = params[2]
 		object.show()
 
-func set_meshes_visible_recursive(node: Node, visible_state: bool) -> void:
-	if not is_instance_valid(node): return
-	if node is MeshInstance3D:
-		node.visible = visible_state
-	for child in node.get_children():
-		set_meshes_visible_recursive(child, visible_state)
-
-func _on_pickup_timer_timeout() -> void: can_pickup = true
+func _on_pickup_timer_timeout() -> void: 
+	can_pickup = true

@@ -1,11 +1,10 @@
 [gd_scene format=3 uid="uid://bmeca04rgopj7"]
 
 [ext_resource type="Script" uid="uid://c33eh3bfst8vs" path="res://scripts/stove.gd" id="1_qlxa1"]
+[ext_resource type="ArrayMesh" uid="uid://d3hkf5s5qkh65" path="res://Assets/Models/kitchenassets/stove_single.obj" id="2_i81m4"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_v0sgk"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jyd1a"]
-albedo_color = Color(0.9162715, 0.15510386, 0.6794909, 1)
+size = Vector3(1, 0.55352783, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jyd1a"]
 size = Vector3(1, 0.1, 1)
@@ -14,25 +13,27 @@ size = Vector3(1, 0.1, 1)
 script = ExtResource("1_qlxa1")
 
 [node name="solid_collision" type="CollisionShape3D" parent="." unique_id=1298773316]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.22323608, 0)
 shape = SubResource("BoxShape3D_v0sgk")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=765725999]
-material = SubResource("StandardMaterial3D_jyd1a")
-
 [node name="Label3D" type="Label3D" parent="." unique_id=197673341]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -4.373635e-08, 0, -0.5002855)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0.0375448, -0.28792396, -0.5865015)
 text = "Stove"
 
 [node name="Label3D2" type="Label3D" parent="." unique_id=1965377416]
-transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, -0.5033837, 0, 4.40072e-08)
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, -0.51173943, -0.35487208, 0.28100732)
 text = "Stove"
 
 [node name="Area3D" type="Area3D" parent="." unique_id=1372385084]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
 
 [node name="item_detector" type="CollisionShape3D" parent="Area3D" unique_id=1727645548]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5357883, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.10383141, 0)
 shape = SubResource("BoxShape3D_jyd1a")
+
+[node name="StoveSingle" type="MeshInstance3D" parent="." unique_id=1412189060]
+transform = Transform3D(-0.5, 0, -4.371139e-08, 0, 0.5, 0, 4.371139e-08, 0, -0.5, -0.0034515858, -0.49679664, -0.0026267804)
+mesh = ExtResource("2_i81m4")
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
