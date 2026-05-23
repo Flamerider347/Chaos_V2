@@ -1,7 +1,7 @@
 extends Area3D
 
 @onready var smoke_particle: PackedScene = preload("res://Prefabs/smoke_particle.tscn")
-@onready var score: Node = $"../../.."
+@onready var game: Node = $"../../.."
 var scores: Dictionary = {
 	"cheese": 5,
 	"cheese_chopped": 10,
@@ -27,14 +27,38 @@ func _on_body_entered(body: Node) -> void:
 		var items: Array = []
 		for item in item_nodes:
 			items.append(item.type)
+		
+		var valid_burger := false
+		if items:
+			if items[0] == "bun_bottom_chopped" and items[-1] == "bun_top_chopped":
+				valid_burger = true
+		
+		# Breaks item order information
+		items.sort()
+		var parsed_key := ""
+		for item in items:
+			parsed_key += item + ","
+		parsed_key = parsed_key.rstrip(",")
+		if parsed_key in RecipeManager.recipes:
+			print(RecipeManager.recipes[parsed_key].recipe_internal	)
+			if RecipeManager.recipes[parsed_key].is_burger:
+				if valid_burger:
+					game.score += RecipeManager.recipes[parsed_key].value
+					body.queue_free()
+					return
+			else:
+				game.score += RecipeManager.recipes[parsed_key].value
+				body.queue_free()
+				return
+		
 		for item_name in items:
 			if scores.has(item_name):
-				score.score += scores[item_name]
+				game.score += scores[item_name]
 		print(items)
 		body.queue_free()
 	elif body.is_in_group("pickupable"):
 		if scores.has(body.type):
-			score.score += scores[body.type]
+			game.score += scores[body.type]
 		print(body.type)
 		body.queue_free()
 

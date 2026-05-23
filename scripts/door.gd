@@ -9,7 +9,7 @@ func open_door() -> void:
 	if is_open:
 		return
 	is_open = true
-	$"../../../../SynchronizedAnimationPlayer".play("door_open")
+	$"../../../../door_animation_player".play("door_open")
 	GDSync.call_func_all(open_door)
 	if GDSync.is_host():
 		GDSync.lobby_close()

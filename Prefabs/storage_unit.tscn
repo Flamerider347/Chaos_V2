@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://c3u05loyvf8k3"]
+
+[ext_resource type="ArrayMesh" uid="uid://bqgmppusg7adl" path="res://Assets/Models/kitchenassets/food_ingredient_tomato.obj" id="1_wy42j"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b11uu"]
+size = Vector3(0.7640991, 0.8569336, 0.001)
+
+[node name="storage_unit" type="StaticBody3D" unique_id=199859682]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=46983974]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+size = Vector3(10, 2, 0.5)
+
+[node name="tomato" type="StaticBody3D" parent="." unique_id=74586773]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.6254654, 1.2846725, 0.30449295)
+collision_layer = 4
+collision_mask = 4
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="tomato" unique_id=1230405924]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.01, 0, 0, 0)
+mesh = ExtResource("1_wy42j")
+
+[node name="Label3D" type="Label3D" parent="tomato" unique_id=618390345]
+editor_description = "
+"
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.10300815, 0)
+text = "tomato"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="tomato" unique_id=1384323079]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.005218506, 0.25316572, 0.02212274)
+shape = SubResource("BoxShape3D_b11uu")

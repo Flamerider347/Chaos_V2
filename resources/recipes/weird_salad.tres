@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeData" format=3 uid="uid://bybyluwr7tw6h"]
+
+[ext_resource type="Script" uid="uid://dtjxcw3h8b2jk" path="res://resources/recipes/recipe_template.gd" id="1_qwg5j"]
+
+[resource]
+script = ExtResource("1_qwg5j")
+recipe_internal = "weird_salad"
+recipe_display = "Tomato Cheese?"
+value = 30
+components = Array[String](["tomato_chopped", "cheese_chopped"])
+metadata/_custom_type_script = "uid://dtjxcw3h8b2jk"

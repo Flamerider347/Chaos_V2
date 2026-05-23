@@ -29,11 +29,13 @@ func _on_punched():
 		
 		var angle: float = randf_range(0, 2*PI)
 		spawned_item.position = global_position + Vector3(sin(angle), 0.2, cos(angle))*randf_range(1, 3)
-		GDSync.set_gdsync_owner(spawned_item, GDSync.get_client_id())
+		if GameData.connected:
+			GDSync.set_gdsync_owner(spawned_item, GDSync.get_client_id())
 		$item_timer.start(10)
 
 func _on_item_timer_timeout() -> void:
 	item_left += 1
 	GDSync.sync_var(self, "item_left")
 	$Label3D.text = str(item_left)
-	$item_timer.start(10)
+	if item_left < 5:
+		$item_timer.start(10)

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="RecipeData" format=3 uid="uid://c1kd5ipdfrvco"]
+
+[ext_resource type="Script" uid="uid://dtjxcw3h8b2jk" path="res://resources/recipes/recipe_template.gd" id="1_8a6n3"]
+
+[resource]
+script = ExtResource("1_8a6n3")
+recipe_internal = "cheese_burger"
+recipe_display = "Cheeseburger"
+value = 200
+components = Array[String](["bun_bottom_chopped", "cheese_chopped", "cheese_chopped", "bun_top_chopped"])
+is_burger = true
+metadata/_custom_type_script = "uid://dtjxcw3h8b2jk"
