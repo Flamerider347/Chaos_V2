@@ -14,6 +14,7 @@ func _on_area_3d_body_exited(body: Node3D) -> void:
 	if body == current_cooking_item:
 		current_cooking_item = null
 		cookedness = 0.0
+	$time_left.text = "Not cooking rn"
 
 func _physics_process(delta: float) -> void:
 	# Only the host should handle tracking cooking timers and swapping network items
@@ -25,6 +26,7 @@ func _physics_process(delta: float) -> void:
 		
 		if state != "burnt":
 			cookedness += 1.0 * delta
+			$time_left.text = str(round(cookedness * 10)/10)
 			
 			if state == "raw" and cookedness > 5.0:
 				cook_swap(cooked_meat_scene, "cooked")
@@ -32,19 +34,24 @@ func _physics_process(delta: float) -> void:
 				cook_swap(burnt_meat_scene, "burnt")
 
 func cook_swap(new_scene: PackedScene, new_state_string: String) -> void:
+	
 	var old_pos = current_cooking_item.global_position
 	var old_rot = current_cooking_item.global_rotation
 	
-	# FIX: Use GD-Sync's network wide deletion so it disappears for non-hosts instantly!
 	GDSync.multiplayer_queue_free(current_cooking_item)
 	current_cooking_item = null
 	
+	if not GDSync.is_host():
+		return
+		
 	if new_scene:
-		# Use GDSync's multiplayer instantiation to spawn it globally 
 		var new_item = GDSync.multiplayer_instantiate(new_scene, get_node("/root/main/game/items"), true, [], true)
 		new_item.global_position = old_pos
 		new_item.global_rotation = old_rot
-		new_item.state = new_state_string
 		
-		# Relock the loop tracking pointer for the host
+		# FORCE the state change immediately so _physics_process ignores it next frame
+		new_item.state = new_state_string 
+		new_item.type = "meat_" + new_state_string
+		
 		current_cooking_item = new_item
+		cookedness = 0.0 # Reset the timer explicitly on swap!

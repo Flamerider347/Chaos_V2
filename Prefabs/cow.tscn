@@ -10,7 +10,7 @@
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_dtg7r"]
 
-[node name="cow" type="StaticBody3D" unique_id=68733649 groups=["punchable"]]
+[node name="meat_raw_tree" type="StaticBody3D" unique_id=68733649 groups=["punchable"]]
 script = ExtResource("1_i1edc")
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="." unique_id=515047224]

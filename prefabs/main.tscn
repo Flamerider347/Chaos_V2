@@ -136,6 +136,8 @@ player_scene = ExtResource("3_7m14q")
 
 [node name="floor" type="StaticBody3D" parent="game/world" unique_id=62039052]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2838614, 0)
+collision_layer = 3
+collision_mask = 3
 
 [node name="Basicland2" type="MeshInstance3D" parent="game/world/floor" unique_id=1257339244]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7272744, -0.9198594, 15.420015)
@@ -149,7 +151,7 @@ shape = SubResource("ConcavePolygonShape3D_h808o")
 [node name="plate_tree" parent="game/world" unique_id=68733649 instance=ExtResource("4_m7hx3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1809967, -0.6590934, -10.731653)
 
-[node name="cow" parent="game/world" unique_id=1765559756 instance=ExtResource("16_18m2x")]
+[node name="meat_raw_tree" parent="game/world" unique_id=1765559756 instance=ExtResource("16_18m2x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7653377, -0.6359942, -7.849082)
 
 [node name="cheese_tree" parent="game/world" unique_id=2004034440 instance=ExtResource("4_dajsn")]
@@ -164,6 +166,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4981697, 0, 0.8215187)
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="game/world/kitchen" unique_id=456083879]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.40322375, 0)
 use_collision = true
+collision_layer = 3
+collision_mask = 3
 
 [node name="CSGMesh3D" type="CSGBox3D" parent="game/world/kitchen/CSGCombiner3D" unique_id=1841902045]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.010650635, -3.2264404, -1.0198021)
@@ -189,6 +193,8 @@ size = Vector3(10, 3, 0.1)
 
 [node name="door" type="StaticBody3D" parent="game/world/kitchen" unique_id=1983404160 groups=["door"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -5)
+collision_layer = 3
+collision_mask = 3
 script = ExtResource("5_xjs27")
 metadata/_edit_group_ = true
 
@@ -223,6 +229,8 @@ shape = SubResource("CylinderShape3D_cgc31")
 
 [node name="thing" type="Area3D" parent="game/world" unique_id=965717664]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.917039, -5.04197, -1.4639413)
+collision_layer = 3
+collision_mask = 3
 script = ExtResource("8_e4ce6")
 metadata/_edit_group_ = true
 

@@ -10,7 +10,7 @@
 height = 0.20275879
 radius = 0.34960938
 
-[node name="meat_chopped_cooked" type="RigidBody3D" unique_id=1119285444 groups=["meat", "pickupable"]]
+[node name="meat_chopped_cooked" type="RigidBody3D" unique_id=1119285444 groups=["meat", "pickupable", "plate_stackable"]]
 physics_material_override = SubResource("PhysicsMaterial_g85ev")
 script = ExtResource("1_mnepe")
 

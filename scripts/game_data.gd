@@ -2,7 +2,7 @@ extends Node
 
 var room_code: String = ""
 var username: String = ""
-var closed_lobby= false
+var closed_lobby = false
 var paused: bool = false
 var connected: bool = false
 var is_joining: bool = false
@@ -20,9 +20,11 @@ func _ready() -> void:
 func _on_connected() -> void:
 	connected = true
 	if not in_game:
-		get_node("/root/main_menu/menu_UI/status").text = "Connected!"
-		get_node("/root/main_menu/menu_UI/join_button").disabled = false
-	if in_game:
+		var status_node = get_node_or_null("/root/main_menu/menu_UI/status")
+		var join_btn = get_node_or_null("/root/main_menu/menu_UI/join_button")
+		if status_node: status_node.text = "Connected!"
+		if join_btn: join_btn.disabled = false
+	else:
 		room_code = generate_room_code()
 		GDSync.lobby_create(room_code)
 
@@ -36,8 +38,12 @@ func _on_lobby_created(lobby_name: String) -> void:
 
 func _on_lobby_joined(lobby_name: String) -> void:
 	room_code = lobby_name
-	GDSync.player_set_username(username)
 	join_error = null
+	
+	# --- FIX: Wait 1 frame for peer IDs to stabilize before setting username ---
+	await get_tree().process_frame
+	if username != "":
+		GDSync.player_set_username(username)
 
 func _on_lobby_join_failed(_thing, error):
 	get_tree().change_scene_to_file("res://Prefabs/main_menu.tscn")
@@ -45,8 +51,10 @@ func _on_lobby_join_failed(_thing, error):
 		join_error = "Lobby closed"
 	else:
 		join_error = "Lobby full"
+		
 	if not in_game:
-		get_node("/root/main_menu/menu_UI/status").text = "Unable to join lobby :( "
+		var status_node = get_node_or_null("/root/main_menu/menu_UI/status")
+		if status_node: status_node.text = "Unable to join lobby :("
 
 func generate_room_code() -> String:
 	const CHARS = "ABCDEFGHIJKLMNPQRSTUVWXYZ123456789"

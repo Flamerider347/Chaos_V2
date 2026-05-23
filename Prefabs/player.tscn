@@ -27,8 +27,8 @@ size = Vector3(0.5, 0.5, 0.74)
 
 [node name="player" type="CharacterBody3D" unique_id=300991191 groups=["player"]]
 process_mode = 1
-collision_layer = 3
-collision_mask = 3
+collision_layer = 2
+collision_mask = 2
 script = ExtResource("1_5wxv7")
 
 [node name="hand" type="Node3D" parent="." unique_id=153702939]
@@ -76,20 +76,10 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 2
 billboard = 2
 text = "John"
 
-[node name="PropertySynchronizer6" type="Node" parent="." unique_id=2122413479]
-script = ExtResource("2_y5hcb")
-broadcast = 2
-node_path = NodePath("../head")
-properties = PackedStringArray("global_rotation")
-interpolated = true
-interpolation_speed = 30.0
-extrapolated = false
-max_extrapolation_time = 0.2
-metadata/_custom_type_script = "uid://b7bt85tck6v7g"
-
 [node name="PropertySynchronizer4" type="Node" parent="." unique_id=1292649933]
 script = ExtResource("2_y5hcb")
 broadcast = 2
+refresh_rate = 60
 node_path = NodePath("..")
 properties = PackedStringArray("rotation_degrees")
 interpolated = false
@@ -99,20 +89,10 @@ extrapolated = false
 max_extrapolation_time = 0.2
 metadata/_custom_type_script = "uid://b7bt85tck6v7g"
 
-[node name="PropertySynchronizer3" type="Node" parent="." unique_id=1742000546]
-script = ExtResource("2_y5hcb")
-broadcast = 2
-node_path = NodePath("../head/devhat")
-properties = PackedStringArray("visible")
-interpolated = true
-interpolation_speed = 30.0
-extrapolated = false
-max_extrapolation_time = 0.2
-metadata/_custom_type_script = "uid://b7bt85tck6v7g"
-
 [node name="PropertySynchronizer" type="Node" parent="." unique_id=1495390822]
 script = ExtResource("2_y5hcb")
 broadcast = 2
+refresh_rate = 60
 node_path = NodePath("..")
 properties = PackedStringArray("global_position")
 interpolated = true

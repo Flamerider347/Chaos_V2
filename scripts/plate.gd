@@ -8,7 +8,6 @@ var is_two_handed: bool:
 		return stacked_items.size() > 0
 
 func _ready() -> void:
-
 	GDSync.expose_node(self)
 	GDSync.expose_func(sync_stack)
 
@@ -36,20 +35,20 @@ func execute_stack(item: Node, offset: float, forced_state: String, forced_cooke
 	if item.has_method("update_mesh_visibility_by_state"):
 		item.update_mesh_visibility_by_state()
 	
-	if item is RigidBody3D: item.freeze = true
+	if item is RigidBody3D: 
+		item.freeze = true
+		
+	# REMOVED: Hitbox duplication that allowed players to steal from the plate
 	var col = item.find_child("CollisionShape3D")
-	
 	if col:
-		var plate_hitbox = col.duplicate()
-		add_child(plate_hitbox)
-		plate_hitbox.global_transform = col.global_transform
-		plate_hitbox.disabled = false
 		col.disabled = true
 	
 	if not stacked_items.has(item): stacked_items.append(item)
 	if item.get_parent() != self: item.reparent(self)
 	
-	item.position = Vector3(0, offset, 0); item.rotation = Vector3.ZERO; item.show() 
+	item.position = Vector3(0, offset, 0)
+	item.rotation = Vector3.ZERO
+	item.show() 
 	
 	var p = get_tree().get_first_node_in_group("player")
 	if p:
