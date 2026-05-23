@@ -62,7 +62,8 @@ func _physics_process(_delta: float) -> void:
 		
 		if is_owned and interact_cast.is_colliding():
 			var collider = interact_cast.get_collider()
-			if is_instance_valid(collider) and is_instance_valid(held_item):
+			# FIX: Added is_instance_valid(held_item) guards to prevent the null instance crash
+			if is_instance_valid(collider) and is_instance_valid(held_item) and held_item.is_inside_tree():
 				if collider.is_in_group("placeable") and held_item.is_in_group("choppable"):
 					target_transform.origin = collider.global_position + Vector3(0, 0.5, 0)
 					target_transform.basis = Basis.IDENTITY
@@ -79,7 +80,6 @@ func _physics_process(_delta: float) -> void:
 					target_transform.origin = collider.global_position + Vector3(0, collider.calculate_stack_height(), 0)
 					target_transform.basis = Basis.IDENTITY
 					is_colliding_with_placeable = true
-
 	# UI HUD Crosshair Indicators
 	if is_owned:
 		if interact_cast.is_colliding() and is_colliding_with_placeable:
@@ -184,6 +184,15 @@ func update_inventory_ui():
 		slot_label.scale = Vector2(1.2, 1.2) if str(i) == current_slot else Vector2(1.0, 1.0)
 
 func handle_interactions():
+	# CRASH FIX: If the held item was destroyed by a stove/board, clean up the slot immediately
+	if inventory[current_slot][1] > 0 and not is_instance_valid(held_item):
+		inventory[current_slot][3].clear()
+		inventory[current_slot][1] = 0
+		inventory[current_slot][2] = null
+		if is_instance_valid(hand_item): hand_item.queue_free()
+		update_hand_visuals()
+		update_inventory_ui()
+
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor(): velocity.y = JUMP_VELOCITY
 	
 	if holding_two_handed:
@@ -200,6 +209,7 @@ func handle_interactions():
 	if Input.is_action_just_pressed("right_click"):
 		if interact_cast.is_colliding():
 			var col = interact_cast.get_collider()
+			# Added check to ensure held_item is valid before testing groups
 			if col.is_in_group("plate") and is_instance_valid(held_item) and held_item.is_in_group("plate_stackable"):
 				stack_object(col); return
 		if inventory[current_slot][2] != null and can_pickup: drop_object()
