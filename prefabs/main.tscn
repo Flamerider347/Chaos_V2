@@ -212,6 +212,12 @@ camera_attributes = SubResource("CameraAttributesPractical_oob7m")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="game/environment_controller" unique_id=376592696]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9388933, 0, 0.70682615)
 
+[node name="nightlight" type="OmniLight3D" parent="game/environment_controller" unique_id=830527040]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8970528, 0)
+shadow_enabled = true
+shadow_caster_mask = 4293918722
+omni_range = 15.462516
+
 [node name="players" type="Node3D" parent="game" unique_id=1582431357]
 script = ExtResource("2_g4wyc")
 player_scene = ExtResource("3_7m14q")
@@ -557,7 +563,19 @@ metadata/_custom_type_script = "uid://b7bt85tck6v7g"
 script = ExtResource("11_asxxo")
 refresh_rate = 60
 node_path = NodePath("../game/environment_controller")
-properties = PackedStringArray("current_time", "is_cycle_started")
+properties = PackedStringArray("current_time", "is_cycle_started", "current_day")
+interpolated = false
+interpolation_speed = 1.0
+extrapolation = null
+extrapolated = false
+max_extrapolation_time = 0.2
+metadata/_custom_type_script = "uid://b7bt85tck6v7g"
+
+[node name="ui_synchroniser" type="Node" parent="." unique_id=2102799190]
+script = ExtResource("11_asxxo")
+refresh_rate = 60
+node_path = NodePath("../game/world/kitchen/thing_placement/thing_UI")
+properties = PackedStringArray("text")
 interpolated = false
 interpolation_speed = 1.0
 extrapolation = null

@@ -1,7 +1,9 @@
 extends Node3D
 
 @export var score: int = 0
-@export var power: float = -1
+@export var power: float = 100
+@export var total_power_cost = 0
+var current_day = 0
 var paused: bool = false
 
 func _ready() -> void:
@@ -47,14 +49,21 @@ func _notification(what: int) -> void:
 
 
 func _on_environment_controller_new_day(day) -> void:
+	current_day = day
 	if day != 1:
-		power -= 10 + day * 2
+		total_power_cost += 10 * day 
+	thing_ui_update()
 	if power <0:
 		if not GameData.connected:
 			burn_it_all_down()
 		if GameData.connected:
 			GDSync.call_func_all(burn_it_all_down)
-	var power_req = power - (10+(day+1)*2)
+
+
+func thing_ui_update():
+	var next_night_cost = 10 * (current_day+1)
+	power = 100 + score - total_power_cost
+	var power_req = power - next_night_cost
 	if power_req < 0:
 		power_req = abs(power_req)
 	else:
@@ -62,9 +71,8 @@ func _on_environment_controller_new_day(day) -> void:
 	$game/world/kitchen/thing_placement/thing_UI.text = "
 	Score:" + str(score) + "
 	Power left: " +str(power) + "
-	Power needed to survive next night: " +str(10 + day * 2) + "
+	Power needed to survive next night: " +str(next_night_cost) + "
 	You need " +str(power_req) + " more Power to survive tonight"
-	
 func burn_it_all_down():
 	GameData.lost = true
 	GameData.in_game = false

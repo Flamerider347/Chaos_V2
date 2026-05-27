@@ -182,10 +182,14 @@ func _process_item_carrying_logic(target: Node3D) -> void:
 						item.global_position = Vector3(0, -20, 0)
 						item.show()
 						
+	# Update the actual visual item node sitting in your hands
 	if is_instance_valid(hand_item):
-		hand_item.show()
-		hand_item.position = Vector3.ZERO
-		hand_item.rotation = Vector3.ZERO
+		if is_owned and is_colliding_with_placeable:
+			hand_item.hide() # Hide visual hand representation if placing/stacking preview is active
+		else:
+			hand_item.show()
+			hand_item.position = Vector3.ZERO
+			hand_item.rotation = Vector3.ZERO
 
 
 # ==========================================

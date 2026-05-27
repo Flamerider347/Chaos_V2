@@ -1,9 +1,10 @@
 extends Node3D
 
-@export var day_length_seconds: float = 12
+@export var day_length_seconds: float = 180.0
 
 @onready var sun_light: DirectionalLight3D = $DirectionalLight3D
 @onready var world_env: WorldEnvironment = $WorldEnvironment
+@onready var night_light : OmniLight3D = $nightlight
 @onready var ingredients = {
 	"tomato_chopped" : preload("res://Prefabs/tomato_chopped.tscn"),
 	"cheese_chopped" : preload("res://Prefabs/cheese_chopped.tscn"),
@@ -14,7 +15,7 @@ extends Node3D
 }
 
 var ui_time_label: Label = null
-var current_time: float = 0.25 # Starts at 5:30 AM
+var current_time: float = 0.25
 var is_cycle_started: bool = false 
 var current_day = 0
 var changed_day = false
@@ -223,7 +224,11 @@ func update_sky_and_lighting() -> void:
 		env.ambient_light_color = Color(0.6, 0.7, 0.8).lerp(Color(0.2, 0.25, 0.35), night_weight)
 		env.ambient_light_energy = lerp(1.0, 0.6, night_weight)
 
-
+	# --- FADE NIGHTLIGHT IN AND OUT ---
+	if is_instance_valid(night_light):
+		var night_weight = 1.0 - (sun_fade / 1.2)
+		# Multiplied by 2.0 for max brightness at midnight. Adjust this value as needed.
+		night_light.light_energy = night_weight * 2.0
 func update_ui_clock() -> void:
 	var total_minutes = int(current_time * 24.0 * 60.0)
 	var hours = int(total_minutes / 60.0) % 24
@@ -235,3 +240,4 @@ func update_ui_clock() -> void:
 		display_hour = 12
 		
 	ui_time_label.text = "%02d:%02d %s" % [display_hour, minutes, am_pm]
+	$"../../UI/current_day".text = "Day: " +str(current_day)

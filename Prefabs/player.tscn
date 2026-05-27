@@ -43,7 +43,7 @@ collision_mask = 2
 script = ExtResource("1_5wxv7")
 
 [node name="hand" type="Node3D" parent="." unique_id=153702939]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.02, 0.8, -1.173)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, -1.173)
 
 [node name="slot1" type="Node3D" parent="hand" unique_id=327549096]
 

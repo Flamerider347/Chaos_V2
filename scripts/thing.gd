@@ -48,6 +48,7 @@ func _on_body_entered(body: Node) -> void:
 			if score_to_add > 0:
 				game.score += score_to_add
 				game.power += score_to_add
+				$"../../..".thing_ui_update()
 				if GameData.connected:
 					GDSync.call_func_all(sync_score_to_all, [game.score])
 					GDSync.call_func_all(_spawn_smoke, [body.global_position])
