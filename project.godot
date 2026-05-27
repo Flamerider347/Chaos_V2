@@ -127,6 +127,12 @@ right_click={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="items/floor"
+3d_physics/layer_2="player"
+3d_physics/layer_3="interactions/raycasts"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

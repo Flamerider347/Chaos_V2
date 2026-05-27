@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://b40mw3jwwby2f"]
+
+[ext_resource type="Script" uid="uid://1tm70vo1mjck" path="res://storage_display.gd" id="1_dwqd6"]
+[ext_resource type="ArrayMesh" uid="uid://bqgmppusg7adl" path="res://Assets/Models/kitchenassets/food_ingredient_tomato.obj" id="3_vmtpt"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_dwqd6"]
+data = PackedVector3Array(-0.05, -0.45, 0.45, -0.05, -0.45, -0.45, -0.05, 0.45, -0.45, 0.05, -0.45, -0.45, -0.05, -0.45, -0.45, -0.05, -0.45, 0.45, -0.05, 0.45, -0.45, -0.05, -0.45, -0.45, 0.05, -0.45, -0.45, -0.05, 0.45, -0.45, -0.05, 0.45, 0.45, -0.05, -0.45, 0.45, -0.05, -0.45, 0.45, -0.05, 0.45, 0.45, 0.05, 0.45, 0.45, 0.05, 0.45, 0.45, -0.05, 0.45, 0.45, -0.05, 0.45, -0.45, -0.05, -0.45, 0.45, 0.05, -0.45, 0.45, 0.05, -0.45, -0.45, 0.05, 0.45, 0.45, 0.05, -0.45, 0.45, -0.05, -0.45, 0.45, 0.05, -0.45, -0.45, 0.05, -0.45, 0.45, 0.05, 0.45, 0.45, 0.05, -0.45, -0.45, 0.05, 0.45, -0.45, -0.05, 0.45, -0.45, -0.05, 0.45, -0.45, 0.05, 0.45, -0.45, 0.05, 0.45, 0.45, 0.05, 0.45, 0.45, 0.05, 0.45, -0.45, 0.05, -0.45, -0.45)
+
+[node name="storage_display" type="StaticBody3D" unique_id=100480277]
+script = ExtResource("1_dwqd6")
+display_mesh = ExtResource("3_vmtpt")
+
+[node name="mesh" type="CSGBox3D" parent="." unique_id=301589440]
+size = Vector3(0.1, 0.9, 0.9)
+
+[node name="collider" type="CollisionShape3D" parent="." unique_id=1694201877]
+shape = SubResource("ConcavePolygonShape3D_dwqd6")
+
+[node name="Label3D" type="Label3D" parent="." unique_id=1048421593]
+
+[node name="item_mesh" type="MeshInstance3D" parent="." unique_id=1513333337]
+transform = Transform3D(0.01, 0, 0, 0, 1, 0, 0, 0, 1, 0.06, -0.4, 0)
