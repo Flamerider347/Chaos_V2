@@ -7,24 +7,24 @@
 [ext_resource type="ArrayMesh" uid="uid://cmye5rd0ns0xl" path="res://Assets/Models/kitchenassets/pan_B.obj" id="5_sejvw"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_v0sgk"]
-size = Vector3(1, 0.55352783, 1)
+size = Vector3(1, 1.3147659, 1)
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_f14ac"]
 height = 0.10974121
-radius = 0.28710938
+radius = 0.12060547
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ai0vs"]
 albedo_color = Color(0.22056547, 0.50721943, 0.18147677, 1)
 
 [node name="stove" type="StaticBody3D" unique_id=646814846 groups=["placeable"]]
-collision_layer = 4
-collision_mask = 4
+collision_layer = 12
+collision_mask = 12
 script = ExtResource("1_qlxa1")
 cooked_meat_scene = ExtResource("2_bvogq")
 burnt_meat_scene = ExtResource("3_4b127")
 
 [node name="solid_collision" type="CollisionShape3D" parent="." unique_id=1298773316]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.11085866, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5541456, 0)
 shape = SubResource("BoxShape3D_v0sgk")
 
 [node name="time_left" type="Label3D" parent="." unique_id=197673341]
