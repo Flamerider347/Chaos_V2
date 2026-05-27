@@ -51,7 +51,6 @@ func _spawn_night_wave() -> void:
 			active_enemies.append(enemy_instance)
 
 func _despawn_clear_daytime() -> void:
-	print("Day breaks... Despawning remaining monsters.")
 	for enemy in active_enemies:
 		if is_instance_valid(enemy):
 			# If the enemy has our script, tell it to handle its own death sequence

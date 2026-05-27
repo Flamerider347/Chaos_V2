@@ -2,7 +2,8 @@ extends Node
 
 var recipes: Dictionary[String, Dictionary] = {}
 var recipe_key_lookup: Dictionary[String, String] = {}
-
+var recipe_of_the_day = null
+var recipe_of_the_day2 = null
 func _ready():
 	load_all_recipes_from_folder("res://resources/recipes/")
 
@@ -26,5 +27,3 @@ func load_all_recipes_from_folder(path: String) -> void:
 				"components": loaded_resource.components,
 				"is_burger": loaded_resource.is_burger,
 			}
-	print(recipes)
-	

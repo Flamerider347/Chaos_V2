@@ -266,15 +266,35 @@ ONCE DOOR IS OPENED"
 collision_layer = 8
 collision_mask = 8
 
+[node name="thing_UI" type="Label3D" parent="game/world/kitchen/thing_placement" unique_id=1844602340]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5212898, 0)
+billboard = 2
+text = "Daily recipes give 50% more score!
+Total score: 0
+Power left: 100
+Power required: 10"
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/kitchen/thing_placement" unique_id=1715452083]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85870254, 0)
 shape = SubResource("CylinderShape3D_cgc31")
 
 [node name="recipe_of_the_day" type="Label3D" parent="game/world/kitchen/thing_placement" unique_id=527199740]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.318508, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.4290032, 1.5212898, -3.1607852)
 billboard = 2
 text = "RECIPE OF THE DAY
 Classic Burger (750)"
+
+[node name="recipe_of_the_day2" type="Label3D" parent="game/world/kitchen/thing_placement" unique_id=646557600]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.4837146, 1.5212898, -3.3520794)
+billboard = 2
+text = "RECIPE OF THE DAY
+Classic Burger (750)"
+
+[node name="daily_recipe" type="Node3D" parent="game/world/kitchen/thing_placement" unique_id=2042847121]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.6739874, 0.14791095, -3.4643784)
+
+[node name="daily_recipe2" type="Node3D" parent="game/world/kitchen/thing_placement" unique_id=1543471595]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.6237845, 0.14791095, -3.373325)
 
 [node name="main_kitchen" type="StaticBody3D" parent="game/world/kitchen" unique_id=1465915122]
 collision_layer = 3

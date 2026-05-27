@@ -1,10 +1,10 @@
 extends Node3D
 
-@export var day_length_seconds: float = 240.0
+@export var day_length_seconds: float = 240
 
 @onready var sun_light: DirectionalLight3D = $DirectionalLight3D
 @onready var world_env: WorldEnvironment = $WorldEnvironment
-@onready var ingredients =  {
+@onready var ingredients = {
 	"tomato_chopped" : preload("res://Prefabs/tomato_chopped.tscn"),
 	"cheese_chopped" : preload("res://Prefabs/cheese_chopped.tscn"),
 	"bun_top_chopped" : preload("res://Prefabs/bun_top_chopped.tscn"),
@@ -13,14 +13,8 @@ extends Node3D
 	"plate" : preload("res://Prefabs/plate.tscn")
 }
 
-var unlocked_recipes = {
-	"classic_burger" : ["Classic Burger", true ,["plate"]]
-	
-	
-}
-
 var ui_time_label: Label = null
-var current_time: float = 0.20 # Starts at 5:30 AM
+var current_time: float = 0.25 # Starts at 5:30 AM
 var is_cycle_started: bool = false 
 var current_day = 0
 var changed_day = false
@@ -29,6 +23,7 @@ var changed_day = false
 func _ready() -> void:
 	GDSync.expose_func(sync_time_from_host)
 	GDSync.expose_func(sync_start_trigger)
+	GDSync.expose_func(sync_daily_specials_to_all)
 	
 	if has_node("/root/main/UI/day_timer"):
 		ui_time_label = get_node("/root/main/UI/day_timer") as Label
@@ -36,6 +31,7 @@ func _ready() -> void:
 		ui_time_label = get_tree().current_scene.find_child("day_timer", true, false) as Label
 
 	update_sky_and_lighting()
+
 
 func _process(delta: float) -> void:
 	if not is_cycle_started:
@@ -47,20 +43,18 @@ func _process(delta: float) -> void:
 	if not GameData.connected or GDSync.is_host():
 		current_time += delta / day_length_seconds
 		
-		# FIX: Custom Night Trigger (10:00 PM / 22:00 to 6:00 AM)
-		# 22/24 = 0.9167, 6/24 = 0.25
-		if current_time >= 0.8333333 or current_time < 0.25:
-			GameData.is_night = true
-		else:
-			GameData.is_night = false
+		GameData.is_night = (current_time >= 0.8333333 or current_time < 0.25)
+			
 		if current_time > 0.25 and not changed_day:
+			create_daily_special()
 			changed_day = true
 			current_day += 1
-		if current_time > 1.0:
-			current_time = 0.0
-			changed_day = false
 			$"../../UI/current_day".text = "Day: " + str(current_day)
 			
+		if current_time > 1.0 and changed_day:
+			current_time = 0.0
+			changed_day = false
+
 		if GameData.connected:
 			GDSync.call_func(sync_time_from_host, [current_time])
 			
@@ -70,12 +64,13 @@ func _process(delta: float) -> void:
 	if is_instance_valid(ui_time_label):
 		update_ui_clock()
 
+
 func start_day_cycle() -> void:
-	if GameData.connected:
-		if GDSync.is_host():
-			GDSync.call_func_all(sync_start_trigger, [1])
-	else:
+	if GameData.connected and GDSync.is_host():
+		GDSync.call_func_all(sync_start_trigger, [1])
+	elif not GameData.connected:
 		is_cycle_started = true
+
 
 func sync_time_from_host(args) -> void:
 	if GDSync.is_host():
@@ -85,81 +80,155 @@ func sync_time_from_host(args) -> void:
 	elif typeof(args) == TYPE_FLOAT or typeof(args) == TYPE_INT:
 		current_time = float(args)
 
+
 func sync_start_trigger(_dummy = null) -> void:
 	is_cycle_started = true
 
+
+func create_daily_special():
+	var recipe_size = RecipeManager.recipes.size()
+	if recipe_size == 0:
+		return
+
+	var keys = RecipeManager.recipes.keys()
+	var random_recipe_1 = keys[randi_range(0, recipe_size - 1)]
+	var random_recipe_2 = random_recipe_1
+	
+	if recipe_size > 1:
+		while random_recipe_2 == random_recipe_1:
+			random_recipe_2 = keys[randi_range(0, recipe_size - 1)]
+
+	if GameData.connected:
+		GDSync.call_func_all(sync_daily_specials_to_all, [random_recipe_1, random_recipe_2])
+	else:
+		sync_daily_specials_to_all([random_recipe_1, random_recipe_2])
+
+
+func sync_daily_specials_to_all(args) -> void:
+	if typeof(args) != TYPE_ARRAY or args.size() < 2:
+		return
+
+	var recipe_1_key = args[0]
+	var recipe_2_key = args[1]
+
+	RecipeManager.recipe_of_the_day = recipe_1_key
+	RecipeManager.recipe_of_the_day2 = recipe_2_key
+
+	var setups = [
+		{
+			"display_node": $"../world/kitchen/thing_placement/daily_recipe",
+			"label_node": $"../world/kitchen/thing_placement/recipe_of_the_day",
+			"data": RecipeManager.recipes.get(recipe_1_key)
+		},
+		{
+			"display_node": $"../world/kitchen/thing_placement/daily_recipe2",
+			"label_node": $"../world/kitchen/thing_placement/recipe_of_the_day2",
+			"data": RecipeManager.recipes.get(recipe_2_key)
+		}
+	]
+
+	for setup in setups:
+		var display_node = setup["display_node"]
+		var recipe_label = setup["label_node"]
+		var chosen_recipe_data = setup["data"]
+		
+		if not is_instance_valid(display_node) or chosen_recipe_data == null:
+			continue
+
+		for child in display_node.get_children():
+			child.queue_free()
+			
+		var stack_height: float = 0.0
+		var ingredient_gap: float = 0.1 
+		
+		var spawned_plate = ingredients["plate"].instantiate()
+		if "freeze" in spawned_plate:
+			spawned_plate.freeze = true
+
+		display_node.add_child(spawned_plate)
+		spawned_plate.global_position = display_node.global_position 
+		stack_height += get_node_height(spawned_plate) + ingredient_gap
+		
+		var components_list: Array = chosen_recipe_data.components if chosen_recipe_data is Resource else chosen_recipe_data["components"]
+		
+		for item_key in components_list:
+			if not ingredients.has(item_key):
+				continue
+				
+			var spawned_item = ingredients[item_key].instantiate()
+			spawned_item.type = item_key
+			if "freeze" in spawned_item:
+				spawned_item.freeze = true
+				
+			display_node.add_child(spawned_item)
+			spawned_item.global_position = display_node.global_position + Vector3(0, stack_height, 0)
+			stack_height += get_node_height(spawned_item) + ingredient_gap
+
+		if is_instance_valid(recipe_label):
+			recipe_label.text = "RECIPE OF THE DAY:\n%s ($%d)" % [
+				chosen_recipe_data.get("display_name", "Unknown"), 
+				int(chosen_recipe_data.get("value", 0)) * 1.5
+			]
+			recipe_label.global_position = display_node.global_position + Vector3(0, stack_height + 0.6, 0)
+
+
+func get_node_height(node: Node) -> float:
+	if not is_instance_valid(node): 
+		return 0.1
+	var col = node.find_child("CollisionShape3D", true, false)
+	if col and col.shape:
+		if col.shape is BoxShape3D: return col.shape.size.y
+		elif col.shape is CylinderShape3D or col.shape is CapsuleShape3D: return col.shape.height
+		elif col.shape is SphereShape3D: return col.shape.radius * 2.0
+	return 0.1
+
+
 func update_sky_and_lighting() -> void:
-	# Calculate a normal rotation angle based on standard linear time progress
 	var sun_angle = current_time * TAU - (TAU / 4.0) + (TAU / 2.0)
 	sun_light.rotation.x = sun_angle
 	sun_light.rotation.y = deg_to_rad(25.0) 
 	
-	# Determine solar curves based on your exact timestamp schedules
 	var sun_fade: float = 0.0
 	var sunset_blend: float = 0.0
 	
-	# --- CUSTOM SCHEDULE LIGHT MAPPING ---
 	if current_time >= 0.25 and current_time < 0.3333:
-		# Early Dawn (6 AM to 8 AM): Rising light values
 		sun_fade = smoothstep(0.25, 0.3333, current_time) * 0.4
 		sunset_blend = 1.0
 	elif current_time >= 0.3333 and current_time < 0.4167:
-		# Golden Dawn Peak (8 AM to 10 AM): Blending out sunset hues into crisp daylight
 		sun_fade = lerp(0.4, 1.2, smoothstep(0.3333, 0.4167, current_time))
 		sunset_blend = smoothstep(0.4167, 0.3333, current_time)
 	elif current_time >= 0.4167 and current_time < 0.6667:
-		# Full Bright Daylight (10 AM to 4 PM)
 		sun_fade = 1.2
 		sunset_blend = 0.0
 	elif current_time >= 0.6667 and current_time < 0.75:
-		# Dusk Transition (4 PM to 6 PM): Setting sun colors ignite
 		sun_fade = 1.2
 		sunset_blend = smoothstep(0.6667, 0.75, current_time)
 	elif current_time >= 0.75 and current_time < 0.9167:
-		# Late Dusk Twilight (6 PM to 10 PM): Light levels drop off to dark night
 		sun_fade = smoothstep(0.9167, 0.75, current_time) * 0.3
 		sunset_blend = smoothstep(0.9167, 0.75, current_time)
-	else:
-		# Pitch Black Night (10 PM to 6 AM)
-		sun_fade = 0.0
-		sunset_blend = 0.0
 
-	# --- ENVIRONMENT COLOUR ASSIGNMENTS ---
 	sun_light.light_energy = sun_fade
 	
 	var day_color = Color(1.0, 0.95, 0.85)
 	var sunset_color = Color(0.95, 0.45, 0.15)
-	var night_light_color = Color(0.05, 0.05, 0.15)
 	
-	# Mix environment targets smoothly based on schedule weight parameters
-	if GameData.is_night:
-		sun_light.light_color = night_light_color
-	else:
-		sun_light.light_color = day_color.lerp(sunset_color, sunset_blend)
+	sun_light.light_color = Color(0.05, 0.05, 0.15) if GameData.is_night else day_color.lerp(sunset_color, sunset_blend)
 
 	var env = world_env.environment
 	if env:
 		env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-		var ambient_day_color = Color(0.6, 0.7, 0.8)
-		var ambient_night_color = Color(0.2, 0.25, 0.35) # Darker ambient backdrop for scary nights
-		
-		# Base the room environment brightness directly on whether players are in daylight blocks
 		var night_weight = 1.0 - (sun_fade / 1.2)
-		env.ambient_light_color = ambient_day_color.lerp(ambient_night_color, night_weight)
+		env.ambient_light_color = Color(0.6, 0.7, 0.8).lerp(Color(0.2, 0.25, 0.35), night_weight)
 		env.ambient_light_energy = lerp(1.0, 0.6, night_weight)
 
+
 func update_ui_clock() -> void:
-	# Keep time tracking matching the standard accurate linear hours
 	var total_minutes = int(current_time * 24.0 * 60.0)
 	var hours = int(total_minutes / 60.0) % 24
 	var minutes = total_minutes % 60
 	
-	var am_pm = "AM"
-	var display_hour = hours
-	if hours >= 12:
-		am_pm = "PM"
-		if hours > 12:
-			display_hour = hours - 12
+	var am_pm = "PM" if hours >= 12 else "AM"
+	var display_hour = hours % 12
 	if display_hour == 0:
 		display_hour = 12
 		

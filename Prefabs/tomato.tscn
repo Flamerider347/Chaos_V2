@@ -4,27 +4,27 @@
 [ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="1_evlx7"]
 [ext_resource type="ArrayMesh" uid="uid://bqgmppusg7adl" path="res://Assets/Models/kitchenassets/food_ingredient_tomato.obj" id="1_mchhu"]
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_5f6i5"]
-height = 0.6699219
-radius = 0.3774414
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_g85ev"]
 
-[node name="tomato" type="RigidBody3D" unique_id=2106783148 groups=["choppable", "pickupable"]]
-collision_layer = 5
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_5f6i5"]
+height = 0.51586914
+radius = 0.3720703
+
+[node name="tomato" type="RigidBody3D" unique_id=1119285444 groups=["choppable", "pickupable"]]
+collision_layer = 69
 collision_mask = 5
+physics_material_override = SubResource("PhysicsMaterial_g85ev")
 script = ExtResource("1_5f6i5")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=556081950]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35723656, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1058205028]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.26171905, 0)
 shape = SubResource("CylinderShape3D_5f6i5")
 
-[node name="mesh" type="MeshInstance3D" parent="." unique_id=1798572584]
-mesh = ExtResource("1_mchhu")
-
-[node name="PropertySynchronizer" type="Node" parent="." unique_id=272914693]
+[node name="PropertySynchronizer" type="Node" parent="." unique_id=1363481936]
 script = ExtResource("1_evlx7")
 broadcast = 2
 node_path = NodePath("..")
-properties = PackedStringArray("global_position", "global_rotation", "freeze", "visible")
+properties = PackedStringArray("global_position", "global_rotation", "freeze")
 interpolated = false
 interpolation_speed = 1.0
 extrapolation = null
@@ -32,7 +32,7 @@ extrapolated = false
 max_extrapolation_time = 0.2
 metadata/_custom_type_script = "uid://b7bt85tck6v7g"
 
-[node name="PropertySynchronizer2" type="Node" parent="." unique_id=1629252780]
+[node name="PropertySynchronizer2" type="Node" parent="." unique_id=132012561]
 script = ExtResource("1_evlx7")
 broadcast = 2
 node_path = NodePath("../CollisionShape3D")
@@ -43,3 +43,6 @@ extrapolation = null
 extrapolated = false
 max_extrapolation_time = 0.2
 metadata/_custom_type_script = "uid://b7bt85tck6v7g"
+
+[node name="FoodIngredientTomato" type="MeshInstance3D" parent="." unique_id=73133390]
+mesh = ExtResource("1_mchhu")
