@@ -8,6 +8,7 @@ var connected: bool = false
 var is_joining: bool = false
 var in_game: bool = false
 var join_error = null
+var is_night = false
 
 func _ready() -> void:
 	GDSync.connected.connect(_on_connected)

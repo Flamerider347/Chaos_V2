@@ -14,6 +14,8 @@ size = Vector3(0.9760742, 0.5, 0.72229004)
 albedo_texture = ExtResource("2_qayy5")
 
 [node name="cheese" type="RigidBody3D" unique_id=1119285444 groups=["choppable", "pickupable"]]
+collision_layer = 69
+collision_mask = 5
 physics_material_override = SubResource("PhysicsMaterial_g85ev")
 script = ExtResource("1_caa3o")
 

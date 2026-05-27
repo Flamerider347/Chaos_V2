@@ -14,7 +14,7 @@ func _on_area_3d_body_exited(body: Node3D) -> void:
 	if body == current_cooking_item:
 		current_cooking_item = null
 		cookedness = 0.0
-	$time_left.text = "Not cooking rn"
+	$time_left.text = "Empty"
 
 func _physics_process(delta: float) -> void:
 	# Only the host should handle tracking cooking timers and swapping network items

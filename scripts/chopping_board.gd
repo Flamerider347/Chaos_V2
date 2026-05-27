@@ -22,6 +22,7 @@ func chop(body: Node3D) -> void:
 		var things_to_spawn = CHOPPED_SCENES[body.type]
 		for item_collection in things_to_spawn:
 			var chopped = GDSync.multiplayer_instantiate(item_collection[0], get_node("/root/main/game/items"), true, [], true)
-			chopped.global_position = global_position + Vector3(0, 0.5, 0)
+			chopped.global_position = global_position + Vector3(0, 1.2, 0)
 			chopped.add_to_group("plate_stackable")
+			chopped.add_to_group("pickupable")
 			chopped.type = item_collection[1]

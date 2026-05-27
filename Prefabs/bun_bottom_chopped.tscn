@@ -8,7 +8,9 @@
 height = 0.2
 radius = 0.346878
 
-[node name="bun_chopped_bottom" type="RigidBody3D" unique_id=2106783148 groups=["pickupable", "placeable", "plate_stackable"]]
+[node name="bun_chopped_bottom" type="RigidBody3D" unique_id=2106783148 groups=["pickupable", "plate_stackable"]]
+collision_layer = 5
+collision_mask = 5
 script = ExtResource("1_m67m8")
 
 [node name="mesh" type="MeshInstance3D" parent="." unique_id=1798572584]

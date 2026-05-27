@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="2_y5hcb"]
 [ext_resource type="ArrayMesh" uid="uid://d0xna0wnnnxeg" path="res://Assets/Models/TopHat.obj" id="3_2nftw"]
 [ext_resource type="Texture2D" uid="uid://cysttpplh4j14" path="res://Assets/misc/icon.svg" id="4_ht1c8"]
+[ext_resource type="Shader" uid="uid://bc5wx8x6gio6q" path="res://Assets/misc/global_outline.gdshader" id="5_hck1p"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hck1p"]
 shading_mode = 0
@@ -20,6 +21,16 @@ uv1_offset = Vector3(1.005, 0, 0)
 [sub_resource type="BoxMesh" id="BoxMesh_knrd4"]
 material = SubResource("StandardMaterial3D_2nftw")
 size = Vector3(0.5, 0.5, 0.74)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_juxdh"]
+render_priority = 0
+shader = ExtResource("5_hck1p")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_thickness = 2.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_knrd4"]
+material = SubResource("ShaderMaterial_juxdh")
+size = Vector2(2, 2)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_3icqa"]
 
@@ -57,11 +68,14 @@ mesh = SubResource("BoxMesh_knrd4")
 [node name="interact_cast" type="RayCast3D" parent="head" unique_id=1105478281]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 target_position = Vector3(0, 0, -1.8)
-collision_mask = 5
+collision_mask = 12
 
 [node name="camera" type="Camera3D" parent="head" unique_id=237419948]
 current = true
 fov = 90.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="head/camera" unique_id=1450347014]
+mesh = SubResource("QuadMesh_knrd4")
 
 [node name="pill" type="MeshInstance3D" parent="." unique_id=402017432]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

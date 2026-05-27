@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cwn8urw430asm"]
 
 [ext_resource type="Script" uid="uid://byp6ni58k3ks1" path="res://scripts/chopping_board.gd" id="1_jyd1a"]
+[ext_resource type="ArrayMesh" uid="uid://dodfdfkndbmla" path="res://Assets/Models/kitchenassets/cuttingboard.obj" id="2_v0sgk"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_v0sgk"]
 
@@ -8,35 +9,44 @@
 albedo_color = Color(0.9162715, 0.15510386, 0.6794909, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jyd1a"]
-size = Vector3(1, 0.1, 1)
+size = Vector3(1, 0.57584226, 1)
 
 [node name="chopping_board" type="StaticBody3D" unique_id=646814846 groups=["chopping_board", "placeable"]]
-collision_layer = 3
-collision_mask = 3
+collision_layer = 4
+collision_mask = 4
 script = ExtResource("1_jyd1a")
 
 [node name="solid_collision" type="CollisionShape3D" parent="." unique_id=1298773316]
+transform = Transform3D(1.4, 0, 0, 0, 1.4, 0, 0, 0, 1.4, 0, 0, 0)
 shape = SubResource("BoxShape3D_v0sgk")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=765725999]
+transform = Transform3D(1.4, 0, 0, 0, 1.4, 0, 0, 0, 1.4, 0, 0, 0)
+visible = false
 material = SubResource("StandardMaterial3D_jyd1a")
 
 [node name="Label3D" type="Label3D" parent="." unique_id=197673341]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -4.373635e-08, 0, -0.5002855)
+transform = Transform3D(-1.4, 0, -2.1139412e-07, 0, 1.4, 0, 2.1139412e-07, 0, -1.4, -4.373635e-08, 0, -0.5002855)
+visible = false
 text = "CHOPPING
 BOARD"
 
 [node name="Label3D2" type="Label3D" parent="." unique_id=1965377416]
-transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, -0.5033837, 0, 4.40072e-08)
+transform = Transform3D(1.0569706e-07, 0, -1.4, 0, 1.4, 0, 1.4, 0, 1.0569706e-07, -0.5033837, 0, 4.40072e-08)
+visible = false
 text = "CHOPPING
 BOARD"
 
 [node name="Area3D" type="Area3D" parent="." unique_id=1372385084]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+transform = Transform3D(-1.4, 0, -2.1139412e-07, 0, 1.4, 0, 2.1139412e-07, 0, -1.4, 0, 0, 0)
 
 [node name="item_detector" type="CollisionShape3D" parent="Area3D" unique_id=1727645548]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5357883, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7737094, 0)
 shape = SubResource("BoxShape3D_jyd1a")
+
+[node name="Cuttingboard" type="MeshInstance3D" parent="." unique_id=1926925528]
+transform = Transform3D(-0.7, 0, -6.119594e-08, 0, 0.7, 0, 6.119594e-08, 0, -0.7, 0, 1.08, 0.1)
+mesh = ExtResource("2_v0sgk")
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

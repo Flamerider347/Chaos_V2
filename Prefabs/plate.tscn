@@ -8,6 +8,8 @@
 size = Vector3(1, 0.1, 1)
 
 [node name="plate" type="RigidBody3D" unique_id=550599860 groups=["pickupable", "plate", "two_handed"]]
+collision_layer = 5
+collision_mask = 5
 script = ExtResource("1_khefw")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=162948857]

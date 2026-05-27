@@ -2,45 +2,46 @@
 
 [ext_resource type="Script" uid="uid://c33eh3bfst8vs" path="res://scripts/stove.gd" id="1_qlxa1"]
 [ext_resource type="PackedScene" uid="uid://cao3wt67jo38s" path="res://Prefabs/meat_chopped_cooked.tscn" id="2_bvogq"]
-[ext_resource type="ArrayMesh" uid="uid://d3hkf5s5qkh65" path="res://Assets/Models/kitchenassets/stove_single.obj" id="2_i81m4"]
 [ext_resource type="PackedScene" uid="uid://bx6l7j13v0r1o" path="res://Prefabs/meat_chopped_burnt.tscn" id="3_4b127"]
 [ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="5_4b127"]
+[ext_resource type="ArrayMesh" uid="uid://cmye5rd0ns0xl" path="res://Assets/Models/kitchenassets/pan_B.obj" id="5_sejvw"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_v0sgk"]
 size = Vector3(1, 0.55352783, 1)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_jyd1a"]
-size = Vector3(1, 0.1, 1)
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_f14ac"]
+height = 0.10974121
+radius = 0.28710938
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ai0vs"]
+albedo_color = Color(0.22056547, 0.50721943, 0.18147677, 1)
 
 [node name="stove" type="StaticBody3D" unique_id=646814846 groups=["placeable"]]
-collision_layer = 3
-collision_mask = 3
+collision_layer = 4
+collision_mask = 4
 script = ExtResource("1_qlxa1")
 cooked_meat_scene = ExtResource("2_bvogq")
 burnt_meat_scene = ExtResource("3_4b127")
 
 [node name="solid_collision" type="CollisionShape3D" parent="." unique_id=1298773316]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.22323608, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.11085866, 0)
 shape = SubResource("BoxShape3D_v0sgk")
 
 [node name="time_left" type="Label3D" parent="." unique_id=197673341]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0.0375448, -0.28792396, -0.5865015)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -0.3862319, -0.5101658, -0.71244335)
 text = "Stove"
 
 [node name="Label3D2" type="Label3D" parent="." unique_id=1965377416]
 transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, -0.51173943, -0.35487208, 0.28100732)
+visible = false
 text = "Stove"
 
 [node name="Area3D" type="Area3D" parent="." unique_id=1372385084]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
 
 [node name="item_detector" type="CollisionShape3D" parent="Area3D" unique_id=1727645548]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.10383141, 0)
-shape = SubResource("BoxShape3D_jyd1a")
-
-[node name="StoveSingle" type="MeshInstance3D" parent="." unique_id=1412189060]
-transform = Transform3D(-0.5, 0, -4.371139e-08, 0, 0.5, 0, 4.371139e-08, 0, -0.5, -0.0034515858, -0.49679664, -0.0026267804)
-mesh = ExtResource("2_i81m4")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.18995202, 0)
+shape = SubResource("CylinderShape3D_f14ac")
 
 [node name="PropertySynchronizer" type="Node" parent="." unique_id=723303455]
 script = ExtResource("5_4b127")
@@ -52,6 +53,14 @@ extrapolation = null
 extrapolated = false
 max_extrapolation_time = 0.2
 metadata/_custom_type_script = "uid://b7bt85tck6v7g"
+
+[node name="PanB" type="MeshInstance3D" parent="." unique_id=810313042]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.10168105, 0)
+mesh = ExtResource("5_sejvw")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=642270549]
+visible = false
+material_override = SubResource("StandardMaterial3D_ai0vs")
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

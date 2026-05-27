@@ -14,3 +14,8 @@ func open_door() -> void:
 	if GDSync.is_host():
 		GDSync.lobby_close()
 		GameData.closed_lobby = true
+	var env_controller = $"../../../environment_controller" # Change path to match your scene layout
+
+	if env_controller and env_controller.has_method("start_day_cycle"):
+		# If utilizing GDSync RPCs, ensure this triggers across the network or is called by the Host
+		env_controller.start_day_cycle()

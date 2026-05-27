@@ -4,16 +4,6 @@ var recipes: Dictionary[String, RecipeData] = {}
 
 func _ready():
 	load_all_recipes_from_folder("res://resources/recipes/")
-	print(recipes)
-	print(typeof(recipes))
-	for recipe in recipes.values():
-		print(recipe.recipe_internal)
-		print(recipe.recipe_display)
-		print(recipe.unlock_day)
-		print(recipe.value)
-		print(recipe.components)
-		print(recipe.is_burger)
-		print("-------")
 
 func load_all_recipes_from_folder(path: String) -> void:
 	var resources: PackedStringArray = ResourceLoader.list_directory(path)

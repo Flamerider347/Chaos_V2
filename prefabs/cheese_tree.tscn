@@ -5,12 +5,18 @@
 [ext_resource type="PackedScene" uid="uid://cqck225nk06m5" path="res://Prefabs/cheese.tscn" id="3_srgio"]
 [ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="4_srgio"]
 [ext_resource type="ArrayMesh" uid="uid://c5s3jo8leob6g" path="res://Assets/Models/food_ingredient_cheese.obj" id="5_30svy"]
+[ext_resource type="Texture2D" uid="uid://ckwrj4w1xthnd" path="res://Assets/Models/restaurantbits_texture.png" id="5_dtg7r"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_cf1hr"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_dtg7r"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fipcs"]
+albedo_texture = ExtResource("5_dtg7r")
+
 [node name="cheese_tree" type="StaticBody3D" unique_id=68733649 groups=["punchable"]]
+collision_layer = 7
+collision_mask = 7
 script = ExtResource("1_cf1hr")
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="." unique_id=515047224]
@@ -66,8 +72,9 @@ extrapolated = false
 max_extrapolation_time = 0.2
 metadata/_custom_type_script = "uid://b7bt85tck6v7g"
 
-[node name="FoodIngredientCheese" type="MeshInstance3D" parent="." unique_id=2113868573]
+[node name="FoodIngredientCheese" type="MeshInstance3D" parent="." unique_id=2113868573 groups=["punchable"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+material_override = SubResource("StandardMaterial3D_fipcs")
 mesh = ExtResource("5_30svy")
 
 [connection signal="timeout" from="item_timer" to="." method="_on_item_timer_timeout"]
