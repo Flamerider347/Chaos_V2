@@ -59,9 +59,6 @@ ambient_light_color = Color(0.74283826, 0.7617583, 0.93109804, 1)
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_oob7m"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cgc31"]
-albedo_texture = ExtResource("13_cgc31")
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_ybnlm"]
 size = Vector3(7.861206, 2.420044, 7.305786)
 
@@ -88,6 +85,9 @@ data = PackedVector3Array(-2.0854504, -0.13747643, -1.8231586e-07, -1.5868851, -
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_iocbj"]
 size = Vector3(17.28125, 2.506958, 12.798309)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cgc31"]
+albedo_texture = ExtResource("13_cgc31")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_asxxo"]
 size = Vector3(100, 1, 100)
@@ -224,35 +224,6 @@ spawn_points = [NodePath("../../nav_region/Marker3D"), NodePath("../../nav_regio
 
 [node name="world" type="Node3D" parent="game" unique_id=2057127466]
 
-[node name="floor" type="StaticBody3D" parent="game/world" unique_id=62039052]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2838614, 0)
-collision_layer = 3
-collision_mask = 3
-
-[node name="Basicland2" type="MeshInstance3D" parent="game/world/floor" unique_id=1257339244]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.788381, -0.9198594, 16.126842)
-material_override = SubResource("StandardMaterial3D_cgc31")
-mesh = ExtResource("5_cgc31")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/floor" unique_id=172038262]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.788381, -0.9198594, 16.126842)
-shape = ExtResource("6_18m2x")
-
-[node name="plate_tree" parent="game/world" unique_id=68733649 instance=ExtResource("4_m7hx3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.589111, -0.6590934, -9.2650795)
-
-[node name="meat_raw_tree" parent="game/world" unique_id=1765559756 instance=ExtResource("16_18m2x")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5357704, -0.6359937, -12.835987)
-
-[node name="cheese_tree" parent="game/world" unique_id=2004034440 instance=ExtResource("4_dajsn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.0711904, -0.63253546, -9.765546)
-
-[node name="tomato_tree" parent="game/world" unique_id=663506654 instance=ExtResource("5_i6w6j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.670643, -0.6633359, -9.545401)
-
-[node name="bun_tree" parent="game/world" unique_id=890879246 instance=ExtResource("12_h808o")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8213272, -0.5711365, -12.487915)
-
 [node name="kitchen" type="Node3D" parent="game/world" unique_id=1556216379]
 
 [node name="door" type="StaticBody3D" parent="game/world/kitchen" unique_id=1983404160 groups=["door"]]
@@ -298,6 +269,12 @@ collision_mask = 8
 [node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/kitchen/thing_placement" unique_id=1715452083]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85870254, 0)
 shape = SubResource("CylinderShape3D_cgc31")
+
+[node name="recipe_of_the_day" type="Label3D" parent="game/world/kitchen/thing_placement" unique_id=527199740]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.318508, 0)
+billboard = 2
+text = "RECIPE OF THE DAY
+Classic Burger (750)"
 
 [node name="main_kitchen" type="StaticBody3D" parent="game/world/kitchen" unique_id=1465915122]
 collision_layer = 3
@@ -361,6 +338,35 @@ script = ExtResource("24_oxfvy")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/kitchen/kitchen_area" unique_id=704029932]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.015625, 0.753479, 1.0382233)
 shape = SubResource("BoxShape3D_iocbj")
+
+[node name="floor" type="StaticBody3D" parent="game/world" unique_id=62039052]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2838614, 0)
+collision_layer = 3
+collision_mask = 3
+
+[node name="Basicland2" type="MeshInstance3D" parent="game/world/floor" unique_id=1257339244]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.788381, -0.9198594, 16.126842)
+material_override = SubResource("StandardMaterial3D_cgc31")
+mesh = ExtResource("5_cgc31")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/floor" unique_id=172038262]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.788381, -0.9198594, 16.126842)
+shape = ExtResource("6_18m2x")
+
+[node name="plate_tree" parent="game/world" unique_id=68733649 instance=ExtResource("4_m7hx3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.589111, -0.6590934, -9.2650795)
+
+[node name="meat_raw_tree" parent="game/world" unique_id=1765559756 instance=ExtResource("16_18m2x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5357704, -0.6359937, -12.835987)
+
+[node name="cheese_tree" parent="game/world" unique_id=2004034440 instance=ExtResource("4_dajsn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.0711904, -0.63253546, -9.765546)
+
+[node name="tomato_tree" parent="game/world" unique_id=663506654 instance=ExtResource("5_i6w6j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.670643, -0.6633359, -9.545401)
+
+[node name="bun_tree" parent="game/world" unique_id=890879246 instance=ExtResource("12_h808o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8213272, -0.5711365, -12.487915)
 
 [node name="thing" type="Area3D" parent="game/world" unique_id=965717664]
 collision_layer = 3

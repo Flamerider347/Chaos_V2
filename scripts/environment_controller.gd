@@ -4,11 +4,27 @@ extends Node3D
 
 @onready var sun_light: DirectionalLight3D = $DirectionalLight3D
 @onready var world_env: WorldEnvironment = $WorldEnvironment
+@onready var ingredients =  {
+	"tomato_chopped" : preload("res://Prefabs/tomato_chopped.tscn"),
+	"cheese_chopped" : preload("res://Prefabs/cheese_chopped.tscn"),
+	"bun_top_chopped" : preload("res://Prefabs/bun_top_chopped.tscn"),
+	"bun_bottom_chopped" : preload("res://Prefabs/bun_bottom_chopped.tscn"),
+	"meat_cooked" : preload("res://Prefabs/meat_chopped_cooked.tscn"),
+	"plate" : preload("res://Prefabs/plate.tscn")
+}
+
+var unlocked_recipes = {
+	"classic_burger" : ["Classic Burger", true ,["plate"]]
+	
+	
+}
 
 var ui_time_label: Label = null
-var current_time: float = 0.75 # Starts at 6:00 PM
+var current_time: float = 0.20 # Starts at 5:30 AM
 var is_cycle_started: bool = false 
 var current_day = 0
+var changed_day = false
+
 
 func _ready() -> void:
 	GDSync.expose_func(sync_time_from_host)
@@ -37,10 +53,12 @@ func _process(delta: float) -> void:
 			GameData.is_night = true
 		else:
 			GameData.is_night = false
-			
+		if current_time > 0.25 and not changed_day:
+			changed_day = true
+			current_day += 1
 		if current_time > 1.0:
 			current_time = 0.0
-			current_day += 1
+			changed_day = false
 			$"../../UI/current_day".text = "Day: " + str(current_day)
 			
 		if GameData.connected:

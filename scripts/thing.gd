@@ -67,16 +67,18 @@ func _on_body_entered(body: Node) -> void:
 			parsed_key += item + ","
 		parsed_key = parsed_key.rstrip(" ,")
 		
-		if parsed_key in RecipeManager.recipes:
-			print(RecipeManager.recipes[parsed_key].recipe_internal)
-			if RecipeManager.recipes[parsed_key].is_burger:
+		if parsed_key in RecipeManager.recipe_key_lookup:
+			var name = RecipeManager.recipe_key_lookup[parsed_key]
+			if RecipeManager.recipes[name]["is_burger"]:
 				if valid_burger:
-					game.score += RecipeManager.recipes[parsed_key].value
+					game.score += RecipeManager.recipes[name]["value"]
 					body.queue_free()
+					print(name)
 					return
 			else:
-				game.score += RecipeManager.recipes[parsed_key].value
+				game.score += RecipeManager.recipes[name]["value"]
 				body.queue_free()
+				print(name)
 				return
 		
 		for item_name in items:
