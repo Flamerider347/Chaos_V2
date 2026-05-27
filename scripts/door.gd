@@ -11,9 +11,9 @@ func open_door() -> void:
 	is_open = true
 	$"../../../../door_animation_player".play("door_open")
 	GDSync.call_func_all(open_door)
-	if GDSync.is_host():
+	if GameData.connected and GDSync.is_host():
 		GDSync.lobby_close()
-		GameData.closed_lobby = true
+	GameData.closed_lobby = true
 	var env_controller = $"../../../environment_controller" # Change path to match your scene layout
 
 	if env_controller and env_controller.has_method("start_day_cycle"):

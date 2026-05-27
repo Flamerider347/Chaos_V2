@@ -1,11 +1,13 @@
 extends Node3D
 
 @export var score: int = 0
-@export var power: float = 0
+@export var power: float = -1
 var paused: bool = false
 
 func _ready() -> void:
+	GDSync.expose_func(burn_it_all_down)
 	GameData.in_game = true
+	GameData.lost = false
 	$Pause_UI.visible = false
 	
 	if GameData.connected and GameData.room_code != "":
@@ -42,3 +44,30 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_FOCUS_IN:
 		if not GameData.paused:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+
+func _on_environment_controller_new_day(day) -> void:
+	if day != 1:
+		power -= 10 + day * 2
+	if power <0:
+		if not GameData.connected:
+			burn_it_all_down()
+		if GameData.connected:
+			GDSync.call_func_all(burn_it_all_down)
+	var power_req = power - (10+(day+1)*2)
+	if power_req < 0:
+		power_req = abs(power_req)
+	else:
+		power_req = 0
+	$game/world/kitchen/thing_placement/thing_UI.text = "
+	Score:" + str(score) + "
+	Power left: " +str(power) + "
+	Power needed to survive next night: " +str(10 + day * 2) + "
+	You need " +str(power_req) + " more Power to survive tonight"
+	
+func burn_it_all_down():
+	GameData.lost = true
+	GameData.in_game = false
+	GDSync.lobby_leave()
+	get_tree().change_scene_to_file("res://Prefabs/main_menu.tscn")
+	

@@ -565,6 +565,7 @@ extrapolated = false
 max_extrapolation_time = 0.2
 metadata/_custom_type_script = "uid://b7bt85tck6v7g"
 
+[connection signal="new_day" from="game/environment_controller" to="." method="_on_environment_controller_new_day"]
 [connection signal="body_entered" from="game/world/kitchen/kitchen_area" to="game/world/kitchen/kitchen_area" method="_on_body_entered"]
 [connection signal="body_exited" from="game/world/kitchen/kitchen_area" to="game/world/kitchen/kitchen_area" method="_on_body_exited"]
 [connection signal="body_entered" from="game/world/thing" to="game/world/thing" method="_on_body_entered"]

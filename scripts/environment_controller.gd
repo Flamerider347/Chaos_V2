@@ -1,6 +1,6 @@
 extends Node3D
 
-@export var day_length_seconds: float = 240
+@export var day_length_seconds: float = 12
 
 @onready var sun_light: DirectionalLight3D = $DirectionalLight3D
 @onready var world_env: WorldEnvironment = $WorldEnvironment
@@ -18,6 +18,7 @@ var current_time: float = 0.25 # Starts at 5:30 AM
 var is_cycle_started: bool = false 
 var current_day = 0
 var changed_day = false
+signal new_day
 
 
 func _ready() -> void:
@@ -49,6 +50,7 @@ func _process(delta: float) -> void:
 			create_daily_special()
 			changed_day = true
 			current_day += 1
+			new_day.emit(current_day)
 			$"../../UI/current_day".text = "Day: " + str(current_day)
 			
 		if current_time > 1.0 and changed_day:

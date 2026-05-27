@@ -9,6 +9,7 @@ var is_joining: bool = false
 var in_game: bool = false
 var join_error = null
 var is_night = false
+var lost = false
 
 func _ready() -> void:
 	GDSync.connected.connect(_on_connected)
@@ -45,6 +46,10 @@ func _on_lobby_joined(lobby_name: String) -> void:
 	await get_tree().process_frame
 	if username != "":
 		GDSync.player_set_username(username)
+	if lost:
+		GDSync.lobby_leave()
+		room_code = generate_room_code()
+		GDSync.lobby_create(room_code)
 
 func _on_lobby_join_failed(_thing, error):
 	get_tree().change_scene_to_file("res://Prefabs/main_menu.tscn")
