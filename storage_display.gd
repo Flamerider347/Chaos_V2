@@ -1,7 +1,12 @@
 extends StaticBody3D
 
 @export var capacity: int
-@export var display_mesh : Mesh = get_node("item_mesh").mesh
+@export var display_mesh: Mesh: 
+	set(value): 
+		display_mesh = value
+		if is_node_ready():
+			$"/item_mesh".mesh = display_mesh
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
