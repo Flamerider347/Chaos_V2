@@ -55,6 +55,7 @@ THE_THING=""
 meat=""
 two_handed=""
 enemy=""
+storage_button=""
 
 [input]
 

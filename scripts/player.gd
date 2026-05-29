@@ -147,7 +147,7 @@ func _process_item_carrying_logic(target: Node3D) -> void:
 				if target.is_in_group("chopping_board") and held_item.is_in_group("choppable"):
 					target_transform.origin = target.global_position + Vector3(0, 1.2, 0)
 				elif target.is_in_group("THE_THING"):
-					target_transform.origin = target.global_position + Vector3(0, 0, 0)
+					target_transform.origin = target.global_position + Vector3(0, 0.2, 0)
 				elif not target.is_in_group("chopping_board") and held_item.is_in_group("meat"):
 					target_transform.origin = target.global_position + Vector3(0, 0.4, 0)
 				else:
@@ -354,13 +354,10 @@ func drop_object(forced_position: Vector3 = Vector3.ZERO, forced_rotation: Vecto
 		if target_collider.is_in_group("placeable"):
 			if target_collider.is_in_group("chopping_board") and item.is_in_group("choppable"):
 				drop_position = target_collider.global_position + Vector3(0, 1.2, 0)
-				drop_rotation = Vector3.ZERO
 			elif target_collider.is_in_group("THE_THING"):
-				drop_position = target_collider.global_position + Vector3(0, 0, 0)
-				drop_rotation = Vector3.ZERO
+				drop_position = target_collider.global_position + Vector3(0, 0.2, 0)
 			elif not target_collider.is_in_group("chopping_board") and item.is_in_group("meat"):
 				drop_position = target_collider.global_position + Vector3(0, 0.4, 0)
-				drop_rotation = Vector3.ZERO
 				
 	item.show()
 	item.global_position = drop_position

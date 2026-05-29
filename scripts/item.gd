@@ -7,7 +7,3 @@ var item_id: String = ""
 
 func _ready() -> void:
 	GDSync.expose_node(self)
-
-func _physics_process(_delta: float) -> void:
-	if self.position.y < -10:
-		self.queue_free()
