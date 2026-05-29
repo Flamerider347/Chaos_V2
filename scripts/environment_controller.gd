@@ -15,7 +15,7 @@ extends Node3D
 }
 
 var ui_time_label: Label = null
-var current_time: float = 0.85
+var current_time: float = 0.25
 var is_cycle_started: bool = false 
 var current_day = 0
 var changed_day = false
