@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://banusvtnmwu18"]
 
 [ext_resource type="Script" uid="uid://b5o36fv0otbm2" path="res://scripts/main_menu.gd" id="1_1n3ne"]
+[ext_resource type="Script" uid="uid://hf56gk47qld4" path="res://scripts/tutorial.gd" id="2_7do1g"]
 
 [node name="main_menu" type="Node" unique_id=46663014]
 script = ExtResource("1_1n3ne")
@@ -49,6 +50,36 @@ offset_top = 157.0
 offset_right = 540.0
 offset_bottom = 228.0
 text = "PLAY"
+
+[node name="Tutorial" type="Control" parent="menu_UI" unique_id=378982451]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 172.0
+offset_bottom = 94.0
+script = ExtResource("2_7do1g")
+
+[node name="Label" type="Label" parent="menu_UI/Tutorial" unique_id=1066118453]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 6.0
+offset_right = 359.0
+offset_bottom = 159.0
+text = "Welcome to CHAOS V2!
+To get started, you can press \"play\" to join singleplayer or host a world, or you can input a valid world code and press \"Join\"
+
+
+
+
+
+
+
+
+
+
+
+
+Be aware that connecting may take some time, and there's a maximum lobby size of 4. If the door has been opened you won't be able to join the lobby."
+autowrap_mode = 3
 
 [connection signal="pressed" from="menu_UI/join_button" to="." method="_on_join_pressed"]
 [connection signal="pressed" from="menu_UI/play_button" to="." method="_on_play_pressed"]

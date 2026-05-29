@@ -147,6 +147,7 @@ func sync_daily_specials_to_all(args) -> void:
 		var spawned_plate = ingredients["plate"].instantiate()
 		if "freeze" in spawned_plate:
 			spawned_plate.freeze = true
+			spawned_plate.remove_from_group("plate")
 
 		display_node.add_child(spawned_plate)
 		spawned_plate.global_position = display_node.global_position 
