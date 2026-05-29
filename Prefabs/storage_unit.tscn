@@ -60,25 +60,21 @@ shape = SubResource("ConcavePolygonShape3D_0c86a")
 
 [node name="tomato" parent="main_display" unique_id=100480277 instance=ExtResource("3_r5g5x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 1.5, 3.45)
-stored = 0
 display_mesh = ExtResource("4_r5g5x")
 y_offset = 0.1
 
 [node name="cheese" parent="main_display" unique_id=1280047261 instance=ExtResource("3_r5g5x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 1.5, 2.45)
-stored = 0
 display_mesh = ExtResource("5_g3ifc")
 y_offset = 0.15
 
 [node name="bun" parent="main_display" unique_id=1267031584 instance=ExtResource("3_r5g5x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 1.5, 1.45)
-stored = 0
 display_mesh = ExtResource("6_710h6")
 y_offset = 0.2
 
 [node name="meat_raw" parent="main_display" unique_id=1343648376 instance=ExtResource("3_r5g5x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 1.5, 0.45)
-stored = 0
 display_mesh = ExtResource("6_1xajb")
 y_offset = 0.25
 
