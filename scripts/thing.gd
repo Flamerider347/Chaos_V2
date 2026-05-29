@@ -40,6 +40,8 @@ func _on_body_entered(body: Node) -> void:
 		if body.is_in_group("plate"):
 			score_to_add = _calculate_plate_score(body)
 			is_valid_delivery = true
+			GameData.current_plates -= 1
+			$"../kitchen/storage_unit/main_display/plate".stored = 20 - GameData.current_plates
 		elif body.is_in_group("pickupable") and scores.has(body.type):
 			score_to_add = scores[body.type]
 			is_valid_delivery = true

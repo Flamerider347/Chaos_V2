@@ -10,6 +10,7 @@ var in_game: bool = false
 var join_error = null
 var is_night = false
 var lost = false
+var current_plates = 0
 
 func _ready() -> void:
 	GDSync.connected.connect(_on_connected)

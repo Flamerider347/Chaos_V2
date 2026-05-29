@@ -16,6 +16,8 @@ func _process(_delta: float) -> void:
 		$Label3D.text = str(item_left)
 
 func _on_punched():
+	if not GameData.closed_lobby:
+		return
 	if not GDSync.is_host():
 		GDSync.call_func_on(GDSync.get_host(), _on_punched)
 		return

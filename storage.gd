@@ -38,18 +38,32 @@ func _on_input_body_entered(body):
 				print("static")
 
 func spawn_item(item_type):
+	if not GameData.closed_lobby:
+		return
 	if (GameData.connected and not GDSync.is_host()):
 		GDSync.call_func_on(GDSync.get_host(), spawn_item, item_type)
 		return
 	
 	if item_type == "plate":
-		var spawned_item = $plate_instantiator.instantiate_node()
-		if GameData.connected:
-			GDSync.set_gdsync_owner(spawned_item, GDSync.get_client_id())
-		spawned_item.position = item_spawn_pos
+		if GameData.current_plates < 20:
+			var spawned_item = $plate_instantiator.instantiate_node()
+			if GameData.connected:
+				GDSync.set_gdsync_owner(spawned_item, GDSync.get_client_id())
+			spawned_item.position = item_spawn_pos
+			GameData.current_plates += 1
+			get_node("main_display/" + item_type).stored = 20 - GameData.current_plates
+		else:
+			$main_display/plate_warning.show()
+			$warning_timer.start(1.5)
+			return
+
 	elif len(stocks[item_type]) > 0:
 		var item_to_spawn = stocks[item_type].pop_back()
 		item_to_spawn.freeze = false
 		item_to_spawn.visible = true
 		item_to_spawn.position = item_spawn_pos
 		get_node("main_display/" + item_type).stored = len(stocks[item_type])
+
+
+func _on_warning_timer_timeout() -> void:
+	$main_display/plate_warning.hide()
