@@ -38,13 +38,13 @@ size = Vector2(2, 2)
 
 [node name="player" type="CharacterBody3D" unique_id=300991191 groups=["player"]]
 process_mode = 1
-transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0)
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("1_5wxv7")
 
 [node name="hand" type="Node3D" parent="." unique_id=153702939]
-transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 0, 0.9, -1.173)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -1.173)
 
 [node name="slot1" type="Node3D" parent="hand" unique_id=327549096]
 
