@@ -468,6 +468,54 @@ func check_two_handed_status() -> void:
 # MOVEMENT & UTILITIES
 # ==========================================
 
+func handle_interactions(target: Node3D):
+	var current_target: Node3D = target if (is_instance_valid(target) and _can_interact_with(target)) else null
+
+	# Manage visual overlay swaps efficiently
+	if current_target != last_highlighted_target:
+		if is_instance_valid(last_highlighted_target):
+			_set_mesh_outline(last_highlighted_target, false)
+		if is_instance_valid(current_target):
+			_set_mesh_outline(current_target, true)
+		last_highlighted_target = current_target
+
+	# Clean up ghost references safely 
+	if inventory[current_slot][1] > 0 and not is_instance_valid(held_item):
+		inventory[current_slot][3].clear()
+		inventory[current_slot][1] = 0
+		inventory[current_slot][2] = null
+		if is_instance_valid(hand_item): hand_item.queue_free()
+		update_hand_visuals()
+		update_inventory_ui()
+		
+	if Input.is_action_pressed("ui_accept") and is_on_floor(): 
+		velocity.y = JUMP_VELOCITY
+		
+	if holding_two_handed:
+		if Input.is_action_just_pressed("right_click"): drop_object()
+		return
+
+	# Action Executions
+	if is_instance_valid(current_target):
+		if Input.is_action_just_pressed("left_click"):
+			if current_target.is_in_group("punchable"): 
+				current_target._on_punched()
+			elif current_target.is_in_group("storage_button"):
+				current_target.spawn_item.emit(current_target.name)
+			elif current_target.is_in_group("pickupable") and can_pickup: 
+				if "freeze" in current_target and current_target.freeze: return 
+				pickup_object(current_target)
+			elif current_target.is_in_group("door"): 
+				current_target.open_door()
+				
+		if Input.is_action_just_pressed("right_click"):
+			if current_target.is_in_group("plate") and is_instance_valid(held_item) and held_item.is_in_group("plate_stackable"):
+				stack_object(current_target)
+				return
+				
+	if Input.is_action_just_pressed("right_click") and inventory[current_slot][2] != null and can_pickup and not holding_two_handed: 
+		drop_object()
+
 func handle_movement():
 	var input_direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	speed_multiplier = 1.5 if Input.is_action_pressed("sprint") else 1.0

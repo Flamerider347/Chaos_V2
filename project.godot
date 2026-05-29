@@ -27,7 +27,6 @@ GDSync="*uid://0y6w65gyiw0y"
 GameData="*uid://m4y852ej0k71"
 TileRunInstancesGlobal="*uid://b6fg6pu2bfi14"
 RecipeManager="*uid://cxemb85k3ycss"
-Storage="*uid://tbbdfx8bkjkn"
 
 [display]
 
@@ -152,6 +151,12 @@ close_tutorial={
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":84,"key_label":0,"unicode":116,"location":0,"echo":false,"script":null)
 ]
 }
+
+[layer_names]
+
+3d_physics/layer_1="items/floor"
+3d_physics/layer_2="player"
+3d_physics/layer_3="interactions/raycasts"
 
 [physics]
 
