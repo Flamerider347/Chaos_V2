@@ -15,7 +15,7 @@ func _ready():
 	$main_display/plate.spawn_item.connect(spawn_item)
 	
 	GDSync.expose_func(spawn_item)
-	GDSync.expose_func(despawn_plate)
+
 
 func _on_input_body_entered(body):
 	if (GameData.connected and GDSync.is_host()) or not GameData.connected:
@@ -29,10 +29,7 @@ func _on_input_body_entered(body):
 					body.visible = false
 					get_node("main_display/" + type).stored = len(stocks[type])
 				elif type == "plate" and len(body.stacked_items) == 0:
-					if GameData.connected and GDSync.is_host():
-						GDSync.call_func_all(despawn_plate, [body.get_path()])
-					else:
-						despawn_plate(body)
+					body.position = Vector3(0,0,0)
 				else:
 					body.linear_velocity.y = 4
 					body.linear_velocity.x = randf_range(-3, 3)
@@ -40,14 +37,6 @@ func _on_input_body_entered(body):
 			else:
 				print("static")
 
-func despawn_plate(params: Array) -> void:
-	var plate_path = params[0] 
-	var plate = get_node_or_null(plate_path)
-	
-	if is_instance_valid(plate):
-		# Safely schedules queue_free to run outside the physics step
-		plate.call_deferred("queue_free")
-		
 func spawn_item(item_type):
 	if (GameData.connected and not GDSync.is_host()):
 		GDSync.call_func_on(GDSync.get_host(), spawn_item, item_type)
