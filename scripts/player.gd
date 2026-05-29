@@ -252,6 +252,8 @@ func handle_interactions():
 		var interaction_target = interact_cast.get_collider()
 		if interaction_target.is_in_group("punchable"): 
 			interaction_target._on_punched()
+		elif interaction_target.is_in_group("storage_button"):
+			interaction_target.spawn_item.emit(interaction_target.name)
 			
 		elif interaction_target.is_in_group("pickupable") and can_pickup: 
 			if "freeze" in interaction_target and interaction_target.freeze:

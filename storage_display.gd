@@ -1,18 +1,41 @@
+@tool
 extends StaticBody3D
 
-@export var capacity: int
+@export var stored: int:
+	set(value):
+		stored = value
+		if is_inside_tree():
+			_update_stored()
 @export var display_mesh: Mesh: 
 	set(value): 
 		display_mesh = value
-		if is_node_ready():
-			$"/item_mesh".mesh = display_mesh
+		if is_inside_tree():
+			_update_mesh()
+@export var y_offset: float:
+	set(value):
+		y_offset = value
+		if is_inside_tree():
+			_update_mesh_pos()
+
+@warning_ignore("unused_signal") signal spawn_item(type: String)
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	_update_mesh()
+	_update_mesh_pos()
+	_update_stored()
 
+func _update_mesh():
+	var item_mesh = $item_mesh
+	if is_inside_tree() and item_mesh:
+		item_mesh.mesh = display_mesh
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func _update_mesh_pos():
+	var item_mesh = $item_mesh
+	if is_inside_tree() and item_mesh:
+		item_mesh.position.y = -0.4 + y_offset 
+
+func _update_stored():
+	var stored_label = $stored
+	if is_inside_tree() and stored_label:
+		stored_label.text = str(stored)

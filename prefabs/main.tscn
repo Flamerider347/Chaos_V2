@@ -134,7 +134,7 @@ player_scene = ExtResource("3_7m14q")
 [node name="world" type="Node3D" parent="game" unique_id=2057127466]
 
 [node name="storage_unit" parent="game/world" unique_id=199859682 instance=ExtResource("7_ihn02")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5654812, -0.081395745, 3.7537708)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.820637, -0.60901415, -12.147491)
 
 [node name="floor" type="StaticBody3D" parent="game/world" unique_id=62039052]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2838614, 0)
