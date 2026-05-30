@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c3u05loyvf8k3"]
 
-[ext_resource type="Script" uid="uid://chvi7ovuc52c6" path="res://storage.gd" id="1_b11uu"]
+[ext_resource type="Script" uid="uid://chvi7ovuc52c6" path="res://scripts/storage.gd" id="1_b11uu"]
 [ext_resource type="ArrayMesh" uid="uid://s6dxpx2ietsv" path="res://Assets/Models/kitchenassets/crate.obj" id="1_wy42j"]
 [ext_resource type="ArrayMesh" uid="uid://cn7qtwf1v1psi" path="res://Assets/Models/kitchenassets/kitchencounter_straight_A.obj" id="3_0c86a"]
 [ext_resource type="PackedScene" uid="uid://b40mw3jwwby2f" path="res://Prefabs/storage_display.tscn" id="3_r5g5x"]
