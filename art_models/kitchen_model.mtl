@@ -1,7 +1,7 @@
 # Blender 4.5.3 LTS MTL File: 'kitchen_model.blend'
 # www.blender.org
 
-newmtl restaurant.009
+newmtl restaurant.030
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -11,7 +11,7 @@ illum 2
 map_Kd S:/KayKit_Restaurant_Bits_1.0_FREE/Assets/fbx/restaurantbits_texture.png
 map_d S:/KayKit_Restaurant_Bits_1.0_FREE/Assets/fbx/restaurantbits_texture.png
 
-newmtl restaurant.015
+newmtl restaurant.031
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -21,7 +21,7 @@ illum 2
 map_Kd S:/KayKit_Restaurant_Bits_1.0_FREE/Assets/fbx/restaurantbits_texture.png
 map_d S:/KayKit_Restaurant_Bits_1.0_FREE/Assets/fbx/restaurantbits_texture.png
 
-newmtl restaurant.035
+newmtl restaurant.033
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -31,7 +31,7 @@ illum 2
 map_Kd S:/KayKit_Restaurant_Bits_1.0_FREE/Assets/fbx/restaurantbits_texture.png
 map_d S:/KayKit_Restaurant_Bits_1.0_FREE/Assets/fbx/restaurantbits_texture.png
 
-newmtl restaurant.043
+newmtl restaurant.036
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
@@ -40,23 +40,3 @@ Ni 1.500000
 illum 2
 map_Kd S:/KayKit_Restaurant_Bits_1.0_FREE/Assets/fbx/restaurantbits_texture.png
 map_d S:/KayKit_Restaurant_Bits_1.0_FREE/Assets/fbx/restaurantbits_texture.png
-
-newmtl restaurant.051
-Ns 250.000000
-Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.500000
-illum 2
-map_Kd KayKit_Restaurant_Bits_1.0_FREE/Assets/fbx/restaurantbits_texture.png
-map_d KayKit_Restaurant_Bits_1.0_FREE/Assets/fbx/restaurantbits_texture.png
-
-newmtl restaurant.052
-Ns 250.000000
-Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.500000
-illum 2
-map_Kd KayKit_Restaurant_Bits_1.0_FREE/Assets/fbx/restaurantbits_texture.png
-map_d KayKit_Restaurant_Bits_1.0_FREE/Assets/fbx/restaurantbits_texture.png
