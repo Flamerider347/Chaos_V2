@@ -208,8 +208,16 @@ _data = {
 process_mode = 3
 script = ExtResource("1_a5p6j")
 
+[node name="Node" type="Node" parent="." unique_id=930827023]
+
 [node name="game" type="NavigationRegion3D" parent="." unique_id=1302834535]
 navigation_mesh = SubResource("NavigationMesh_2mmg3")
+
+[node name="spawners" type="Node" parent="game" unique_id=1765000316]
+
+[node name="item_spawner" type="MultiplayerSpawner" parent="game/spawners" unique_id=639190437]
+_spawnable_scenes = PackedStringArray("uid://uqptavxff366", "uid://cqck225nk06m5", "uid://cx4og0ilatgfw", "uid://0ms6tvtkkd3n", "uid://b7sxvewfa0b1o", "uid://iugp2tnvimft", "uid://bx6l7j13v0r1o", "uid://cao3wt67jo38s", "uid://dsl2m7ay3lnn5", "uid://cep1ugpmjc2p2", "uid://c6tjmwl31tk6g")
+spawn_path = NodePath("../../items")
 
 [node name="world" type="Node3D" parent="game" unique_id=2057127466]
 

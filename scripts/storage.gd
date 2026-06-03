@@ -4,6 +4,10 @@ var valid_food_types : Array[String] = ["cheese", "tomato", "bun", "meat_raw"]
 @export var stocks : Dictionary[String, Array] = {}
 var item_spawn_pos : Vector3
 
+var plate := preload("res://Prefabs/plate.tscn")
+
+var item_destination = "/root/main/game/items"
+
 func _ready():
 	for food_type in valid_food_types:
 		stocks[food_type] = []
@@ -46,9 +50,7 @@ func spawn_item(item_type):
 	
 	if item_type == "plate":
 		if GameData.current_plates < 20:
-			var spawned_item = $plate_instantiator.instantiate_node()
-			if GameData.connected:
-				GDSync.set_gdsync_owner(spawned_item, GDSync.get_client_id())
+			var spawned_item := plate.instantiate()
 			spawned_item.position = item_spawn_pos
 			GameData.current_plates += 1
 			get_node("main_display/" + item_type).stored = 20 - GameData.current_plates

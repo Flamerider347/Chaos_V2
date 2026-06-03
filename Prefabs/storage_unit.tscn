@@ -159,6 +159,10 @@ extrapolated = false
 max_extrapolation_time = 0.2
 metadata/_custom_type_script = "uid://b7bt85tck6v7g"
 
+[node name="plate_spawner" type="MultiplayerSpawner" parent="." unique_id=580419553]
+_spawnable_scenes = PackedStringArray("uid://uqptavxff366")
+spawn_path = NodePath("../../../../items")
+
 [connection signal="body_entered" from="input/input_detection" to="." method="_on_input_body_entered"]
 [connection signal="body_entered" from="input2/input_detection" to="." method="_on_input_body_entered"]
 [connection signal="timeout" from="warning_timer" to="." method="_on_warning_timer_timeout"]
