@@ -134,13 +134,49 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 		
-	var raycast_target: Node3D = null
+	var target: Node3D = null
 	if interact_cast.is_colliding():
-		raycast_target = interact_cast.get_collider()
+		target = interact_cast.get_collider()
+	
+	if not is_instance_valid(target):
+		target = null
+
+	if target != last_highlighted_target:
+		if is_instance_valid(last_highlighted_target):
+			_set_mesh_outline(last_highlighted_target, false)
+		if is_instance_valid(target):
+			_set_mesh_outline(target, true)
+		last_highlighted_target = target
 		
-	_process_ui_context_labels(raycast_target)
+	if Input.is_action_pressed("ui_accept") and is_on_floor():
+		velocity.y = JUMP_VELOCITY
+		
+	if holding_two_handed:
+		if Input.is_action_just_pressed("right_click"):
+			drop_object()
+		return
+
+	if is_instance_valid(target):
+		if Input.is_action_just_pressed("left_click"):
+			if target.is_in_group("punchable"):
+				target._on_punched()
+			elif target.is_in_group("storage_button"):
+				target.spawn_item.emit(target.name)
+			elif target.is_in_group("pickupable") and can_pickup: 
+				pickup_object(target)
+			elif target.is_in_group("door"):
+				target.open_door()
+				
+		if Input.is_action_just_pressed("right_click") and target.is_in_group("plate") and is_instance_valid(held_item) and held_item.is_in_group("plate_stackable"):
+			stack_object(target)
+			return
+				
+	if Input.is_action_just_pressed("right_click") and inventory[current_slot][2] != null and can_pickup: 
+		drop_object()
+
+
+	#_process_ui_context_labels(raycast_target)
 	handle_inventory_slots() 
-	handle_interactions(raycast_target)
 	handle_movement()
 	move_and_slide()
 
@@ -366,45 +402,6 @@ func _process_ui_context_labels(target: Node3D) -> void:
 			ui_colliding_label.text = context_text
 
 
-func handle_interactions(target: Node3D) -> void:
-	var current_target: Node3D = null
-	if is_instance_valid(target) and _can_interact_with(target):
-		current_target = target
-
-	if current_target != last_highlighted_target:
-		if is_instance_valid(last_highlighted_target):
-			_set_mesh_outline(last_highlighted_target, false)
-		if is_instance_valid(current_target):
-			_set_mesh_outline(current_target, true)
-		last_highlighted_target = current_target
-		
-	if Input.is_action_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-		
-	if holding_two_handed:
-		if Input.is_action_just_pressed("right_click"):
-			drop_object()
-		return
-
-	if is_instance_valid(current_target):
-		if Input.is_action_just_pressed("left_click"):
-			if current_target.is_in_group("punchable"):
-				current_target._on_punched()
-			elif current_target.is_in_group("storage_button"):
-				current_target.spawn_item.emit(current_target.name)
-			elif current_target.is_in_group("pickupable") and can_pickup: 
-				pickup_object(current_target)
-			elif current_target.is_in_group("door"):
-				current_target.open_door()
-				
-		if Input.is_action_just_pressed("right_click") and current_target.is_in_group("plate") and is_instance_valid(held_item) and held_item.is_in_group("plate_stackable"):
-			stack_object(current_target)
-			return
-				
-	if Input.is_action_just_pressed("right_click") and inventory[current_slot][2] != null and can_pickup: 
-		drop_object()
-
-
 func _can_interact_with(target: Node3D) -> bool:
 	if not is_instance_valid(target):
 		return false
@@ -472,9 +469,9 @@ func update_inventory_ui() -> void:
 			if inventory[s][3].size() > 0:
 				last_item = inventory[s][3][-1]
 			
-			var type_string: String = str(item_type)
+			var item_type_string: String = str(item_type)
 			
-			if type_string == "plate" and is_instance_valid(last_item) and "stacked_items" in last_item and last_item.stacked_items.size() > 0:
+			if item_type_string == "plate" and is_instance_valid(last_item) and "stacked_items" in last_item and last_item.stacked_items.size() > 0:
 				var contents: Array = []
 				for item in last_item.stacked_items:
 					if is_instance_valid(item):
@@ -484,7 +481,7 @@ func update_inventory_ui() -> void:
 				var multiplier_text: String = ""
 				if count > 1:
 					multiplier_text = " x" + str(count)
-				lbl.text = "%s\n%s%s" % [s, type_string.capitalize(), multiplier_text]
+				lbl.text = "%s\n%s%s" % [s, item_type_string.capitalize(), multiplier_text]
 		else:
 			lbl.text = "%s\nEmpty" % s
 			
