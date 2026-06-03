@@ -2,7 +2,6 @@
 
 [ext_resource type="ArrayMesh" uid="uid://bewc7hpqqbqd8" path="res://Assets/Models/kitchenassets/food_ingredient_tomato_slice.obj" id="1_rws8n"]
 [ext_resource type="Script" uid="uid://m8dtdn28meeu" path="res://scripts/item.gd" id="1_tcipr"]
-[ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="3_qijp5"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_tcipr"]
 height = 0.04901123
@@ -31,27 +30,3 @@ mesh = ExtResource("1_rws8n")
 [node name="composite_mesh_3" type="MeshInstance3D" parent="mesh" unique_id=580945086]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.37, 0, 0)
 mesh = ExtResource("1_rws8n")
-
-[node name="PropertySynchronizer" type="Node" parent="." unique_id=515839190]
-script = ExtResource("3_qijp5")
-broadcast = 2
-node_path = NodePath("..")
-properties = PackedStringArray("global_position", "global_rotation", "freeze", "type")
-interpolated = false
-interpolation_speed = 1.0
-extrapolation = null
-extrapolated = false
-max_extrapolation_time = 0.2
-metadata/_custom_type_script = "uid://b7bt85tck6v7g"
-
-[node name="PropertySynchronizer2" type="Node" parent="." unique_id=1064610053]
-script = ExtResource("3_qijp5")
-broadcast = 2
-node_path = NodePath("../CollisionShape3D")
-properties = PackedStringArray("disabled")
-interpolated = false
-interpolation_speed = 1.0
-extrapolation = null
-extrapolated = false
-max_extrapolation_time = 0.2
-metadata/_custom_type_script = "uid://b7bt85tck6v7g"

@@ -87,5 +87,12 @@ To get started, you can press \"play\" to join singleplayer or host a world, or 
 Be aware that connecting may take some time, and there's a maximum lobby size of 4. If the door has been opened you won't be able to join the lobby."
 autowrap_mode = 3
 
+[node name="lan_check" type="CheckButton" parent="menu_UI" unique_id=1277900329]
+offset_left = 59.0
+offset_top = 166.0
+offset_right = 212.0
+offset_bottom = 235.0
+text = "Lan/Online"
+
 [connection signal="pressed" from="menu_UI/join_button" to="." method="_on_join_pressed"]
 [connection signal="pressed" from="menu_UI/play_button" to="." method="_on_play_pressed"]

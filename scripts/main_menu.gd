@@ -7,8 +7,7 @@ func _ready() -> void:
 		if GameData.join_error:
 			$"menu_UI/lobby error".text = GameData.join_error
 	if GameData.lost:
-		$menu_UI/status.text = "Game lost, sorry you can't rejoin lobbies yet.
-		To play again, relauch the game."
+		$menu_UI/status.text = "Game lost, sorry you can't rejoin lobbies yet. To play again, relauch the game."
 
 func _on_play_pressed() -> void:
 	GameData.username = $menu_UI/username.text.strip_edges()

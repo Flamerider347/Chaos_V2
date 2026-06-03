@@ -13,12 +13,10 @@
 [ext_resource type="PackedScene" uid="uid://b7v3hl5yko217" path="res://Prefabs/tomato_tree.tscn" id="5_i6w6j"]
 [ext_resource type="Script" uid="uid://bof2t2fwctfbu" path="res://scripts/door.gd" id="5_xjs27"]
 [ext_resource type="PackedScene" uid="uid://cwn8urw430asm" path="res://Prefabs/chopping_board.tscn" id="6_fpsi2"]
-[ext_resource type="Script" uid="uid://ct5pqjn3s72nv" path="res://addons/GD-Sync/Scripts/Types/SynchronizedAnimationPlayer.gd" id="6_oob7m"]
 [ext_resource type="PackedScene" uid="uid://c3u05loyvf8k3" path="res://Prefabs/storage_unit.tscn" id="7_ihn02"]
 [ext_resource type="Script" uid="uid://b55ss7d6s1qyy" path="res://scripts/thing.gd" id="8_e4ce6"]
 [ext_resource type="Script" uid="uid://b8dg7dl0ay2uf" path="res://scripts/enemy_manager.gd" id="9_1lqda"]
 [ext_resource type="Script" uid="uid://bavxckwopedl" path="res://scripts/score.gd" id="9_m7hx3"]
-[ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="11_asxxo"]
 [ext_resource type="PackedScene" uid="uid://bdi1ju62g1fdu" path="res://Prefabs/bun_tree.tscn" id="12_h808o"]
 [ext_resource type="Texture2D" uid="uid://bnfkdd630vql2" path="res://Assets/Models/hexagons_medieval.png" id="13_cgc31"]
 [ext_resource type="PackedScene" uid="uid://c7isve8b3s6cd" path="res://Prefabs/meat_raw_tree.tscn" id="16_18m2x"]
@@ -647,43 +645,7 @@ autowrap_mode = 3
 
 [node name="door_animation_player" type="AnimationPlayer" parent="." unique_id=670073892]
 libraries/ = SubResource("AnimationLibrary_i6w6j")
-script = ExtResource("6_oob7m")
 metadata/_custom_type_script = "uid://ct5pqjn3s72nv"
-
-[node name="score_synchroniser" type="Node" parent="." unique_id=1858396248]
-script = ExtResource("11_asxxo")
-node_path = NodePath("..")
-properties = PackedStringArray("score")
-interpolated = false
-interpolation_speed = 1.0
-extrapolation = null
-extrapolated = false
-max_extrapolation_time = 0.2
-metadata/_custom_type_script = "uid://b7bt85tck6v7g"
-
-[node name="day_synchroniser" type="Node" parent="." unique_id=1831108001]
-script = ExtResource("11_asxxo")
-refresh_rate = 60
-node_path = NodePath("../game/environment_controller")
-properties = PackedStringArray("current_time", "is_cycle_started", "current_day")
-interpolated = false
-interpolation_speed = 1.0
-extrapolation = null
-extrapolated = false
-max_extrapolation_time = 0.2
-metadata/_custom_type_script = "uid://b7bt85tck6v7g"
-
-[node name="ui_synchroniser" type="Node" parent="." unique_id=2102799190]
-script = ExtResource("11_asxxo")
-refresh_rate = 60
-node_path = NodePath("../game/world/kitchen/thing_placement/thing_UI")
-properties = PackedStringArray("text")
-interpolated = false
-interpolation_speed = 1.0
-extrapolation = null
-extrapolated = false
-max_extrapolation_time = 0.2
-metadata/_custom_type_script = "uid://b7bt85tck6v7g"
 
 [connection signal="body_entered" from="game/world/kitchen/kitchen_area" to="game/world/kitchen/kitchen_area" method="_on_body_entered"]
 [connection signal="body_exited" from="game/world/kitchen/kitchen_area" to="game/world/kitchen/kitchen_area" method="_on_body_exited"]
