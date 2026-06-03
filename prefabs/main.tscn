@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://bvqbfglt3hhej" path="res://scripts/environment_controller.gd" id="2_6ph5j"]
 [ext_resource type="Script" uid="uid://cpr3cjn4l5i8k" path="res://scripts/player_spawner.gd" id="2_g4wyc"]
 [ext_resource type="Shader" uid="uid://b4owg11v8s30w" path="res://Assets/misc/sky_shader.gdshader" id="2_ihn02"]
-[ext_resource type="PackedScene" uid="uid://clwq3k4knykhf" path="res://Prefabs/player.tscn" id="3_7m14q"]
 [ext_resource type="PackedScene" uid="uid://djl7ef2n605tr" path="res://Prefabs/cheese_tree.tscn" id="4_dajsn"]
 [ext_resource type="Texture2D" uid="uid://dk7scqa85ri4g" path="res://Assets/misc/PNdtb.jpg" id="4_eednf"]
 [ext_resource type="Texture2D" uid="uid://dm0a5vhk82c5s" path="res://Assets/misc/unnamed.png" id="4_lcyuj"]
@@ -214,7 +213,9 @@ navigation_mesh = SubResource("NavigationMesh_2mmg3")
 [node name="spawners" type="Node" parent="game" unique_id=1765000316]
 
 [node name="item_spawner" type="MultiplayerSpawner" parent="game/spawners" unique_id=639190437]
-_spawnable_scenes = PackedStringArray("uid://uqptavxff366", "uid://cqck225nk06m5", "uid://cx4og0ilatgfw", "uid://0ms6tvtkkd3n", "uid://b7sxvewfa0b1o", "uid://iugp2tnvimft", "uid://bx6l7j13v0r1o", "uid://cao3wt67jo38s", "uid://dsl2m7ay3lnn5", "uid://cep1ugpmjc2p2", "uid://c6tjmwl31tk6g")
+spawn_path = NodePath("../../items")
+
+[node name="enemy_spawner" type="MultiplayerSpawner" parent="game/spawners" unique_id=856044069]
 spawn_path = NodePath("../../items")
 
 [node name="world" type="Node3D" parent="game" unique_id=2057127466]
@@ -462,11 +463,13 @@ omni_range = 15.462516
 
 [node name="players" type="Node3D" parent="game" unique_id=1582431357]
 script = ExtResource("2_g4wyc")
-player_scene = ExtResource("3_7m14q")
 
-[node name="enemies" type="Node3D" parent="game" unique_id=2006808970 node_paths=PackedStringArray("spawn_points")]
+[node name="player_spawner" type="MultiplayerSpawner" parent="game/players" unique_id=1476604135]
+_spawnable_scenes = PackedStringArray("uid://clwq3k4knykhf", "uid://bd52y75iy5rbf")
+spawn_path = NodePath("..")
+
+[node name="enemies" type="Node3D" parent="game" unique_id=2006808970]
 script = ExtResource("9_1lqda")
-spawn_points = [NodePath("../navigation_nodes/Marker3D"), NodePath("../navigation_nodes/Marker3D2"), NodePath("../navigation_nodes/Marker3D3")]
 
 [node name="items" type="Node3D" parent="game" unique_id=1381883755]
 

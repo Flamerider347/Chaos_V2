@@ -8,9 +8,7 @@ var is_two_handed: bool:
 		return stacked_items.size() > 0
 
 func _ready() -> void:
-	GDSync.expose_node(self)
-	GDSync.expose_func(sync_stack)
-
+	pass
 func stack_item(item: Node) -> void:
 	if not is_instance_valid(item): return
 	var offset = calculate_stack_height()
@@ -18,10 +16,8 @@ func stack_item(item: Node) -> void:
 	var item_state = item.state if "state" in item else ""
 	var item_cookedness = item.cookedness if "cookedness" in item else 0.0
 
-	if GameData.connected:
-		GDSync.call_func_all(sync_stack, [item.get_path(), offset, item_state, item_cookedness])
-	else:
-		execute_stack(item, offset, item_state, item_cookedness)
+
+	execute_stack(item, offset, item_state, item_cookedness)
 
 func sync_stack(params: Array) -> void:
 	var item = get_node_or_null(params[0])

@@ -1,41 +1,30 @@
 extends Node3D
 
-@export var player_scene: PackedScene
-var spawned_players: Dictionary = {}
+@export var player_scene: PackedScene = preload("res://Prefabs/player.tscn")
+@onready var player_spawner: MultiplayerSpawner = $player_spawner
 
 func _ready() -> void:
-	GDSync.client_left.connect(client_left)
-	GDSync.client_joined.connect(client_joined)
-	GDSync.lobby_joined.connect(_on_lobby_joined)
+	# CRITICAL FIX: Every single machine (host AND client) MUST register 
+	# the spawn function, or the engine cannot unpack incoming network players!
+	player_spawner.spawn_function = _on_player_custom_spawn
 	
-	var player = player_scene.instantiate()
-	player.name = "local"
-	spawned_players["local"] = player
-	add_child(player)
+	if not multiplayer.is_server(): return
+	
+	multiplayer.peer_connected.connect(_spawn_player)
+	multiplayer.peer_disconnected.connect(_remove_player)
+	
+	# Spawn host player
+	_spawn_player(1)
 
-func _on_lobby_joined(_lobby_name: String) -> void:
-	var local = spawned_players.get("local")
-	if local:
-		local.name = str(GDSync.get_client_id())
-		spawned_players.erase("local")
-		spawned_players[GDSync.get_client_id()] = local
-		GDSync.set_gdsync_owner(local, GDSync.get_client_id())
-	for client_id in GDSync.lobby_get_all_clients():
-		if client_id != GDSync.get_client_id() and not spawned_players.has(client_id):
-			client_joined(client_id)
+func _spawn_player(id: int) -> void:
+	if has_node(str(id)): return
+	player_spawner.spawn(id)
 
-func client_joined(client_id: int) -> void:
-	if client_id == GDSync.get_client_id():
-		return
-	if spawned_players.has(client_id):
-		return
-	var player = player_scene.instantiate()
-	player.name = str(client_id)
-	spawned_players[client_id] = player
-	add_child(player)
-	GDSync.set_gdsync_owner(player, client_id)
+func _remove_player(id: int) -> void:
+	if has_node(str(id)):
+		get_node(str(id)).queue_free()
 
-func client_left(client_id: int) -> void:
-	if spawned_players.has(client_id):
-		spawned_players[client_id].queue_free()
-		spawned_players.erase(client_id)
+func _on_player_custom_spawn(id: int) -> Node:
+	var player_instance = player_scene.instantiate()
+	player_instance.name = str(id)
+	return player_instance

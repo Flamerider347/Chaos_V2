@@ -35,6 +35,14 @@ size = Vector2(2, 2)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_y6xdh"]
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_knrd4"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+
 [node name="player" type="CharacterBody3D" unique_id=300991191 groups=["player"]]
 process_mode = 1
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0)
@@ -93,5 +101,8 @@ text = "John"
 [node name="pickup_timer" type="Timer" parent="." unique_id=750239620]
 wait_time = 0.1
 one_shot = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1984760006]
+replication_config = SubResource("SceneReplicationConfig_knrd4")
 
 [connection signal="timeout" from="pickup_timer" to="." method="_on_pickup_timer_timeout"]

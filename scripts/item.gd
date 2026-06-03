@@ -6,4 +6,4 @@ var item_id: String = ""
 @export var item_mesh: Mesh
 
 func _ready() -> void:
-	GDSync.expose_node(self)
+	pass

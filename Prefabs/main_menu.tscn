@@ -19,7 +19,6 @@ offset_left = 288.0
 offset_top = 306.0
 offset_right = 552.0
 offset_bottom = 382.0
-disabled = true
 text = "Join
 "
 
@@ -92,7 +91,9 @@ offset_left = 59.0
 offset_top = 166.0
 offset_right = 212.0
 offset_bottom = 235.0
+button_pressed = true
 text = "Lan/Online"
 
 [connection signal="pressed" from="menu_UI/join_button" to="." method="_on_join_pressed"]
 [connection signal="pressed" from="menu_UI/play_button" to="." method="_on_play_pressed"]
+[connection signal="toggled" from="menu_UI/lan_check" to="." method="_on_lan_check_toggled"]

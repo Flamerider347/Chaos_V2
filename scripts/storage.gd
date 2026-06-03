@@ -1,71 +1,85 @@
 extends Node3D
 
-var valid_food_types : Array[String] = ["cheese", "tomato", "bun", "meat_raw"]
-@export var stocks : Dictionary[String, Array] = {}
-var item_spawn_pos : Vector3
+var valid_food_types: Array[String] = ["cheese", "tomato", "bun", "meat_raw"]
+@export var stocks: Dictionary = {}
+var item_spawn_pos: Vector3
 
-var plate := preload("res://Prefabs/plate.tscn")
-
-var item_destination = "/root/main/game/items"
+@onready var item_spawner: MultiplayerSpawner = get_node("/root/main/game/spawners/item_spawner")
 
 func _ready():
 	for food_type in valid_food_types:
 		stocks[food_type] = []
 	item_spawn_pos = $output/spawn_point.global_position
-	$main_display/cheese.spawn_item.connect(spawn_item)
-	$main_display/tomato.spawn_item.connect(spawn_item)
-	$main_display/bun.spawn_item.connect(spawn_item)
-	$main_display/meat_raw.spawn_item.connect(spawn_item)
-	$main_display/plate.spawn_item.connect(spawn_item)
 	
-	GDSync.expose_func(spawn_item)
-
+	# Connect UI buttons dynamically to trigger local request handlers
+	for type in valid_food_types:
+		var display_node = get_node_or_null("main_display/" + type)
+		if display_node: display_node.spawn_item.connect(request_spawn_item)
+		
+	if get_node_or_null("main_display/plate"):
+		$main_display/plate.spawn_item.connect(request_spawn_item)
 
 func _on_input_body_entered(body):
-	if (GameData.connected and GDSync.is_host()) or not GameData.connected:
-		var type = body.get("type")
-		if type != null:
-			if body.is_class("RigidBody3D"):
-				if type in valid_food_types:
-					stocks[type].append(body)
-					body.position = Vector3(0, -50 , 0)
-					body.freeze = true
-					body.visible = false
-					get_node("main_display/" + type).stored = len(stocks[type])
-				elif type == "plate" and len(body.stacked_items) == 0:
-					body.position = Vector3(0,0,0)
-				else:
-					body.linear_velocity.y = 4
-					body.linear_velocity.x = randf_range(-3, 3)
-					body.linear_velocity.z = randf_range(-3, 3)
-			else:
-				print("static")
+	# Only the server registers items entering the storage unit
+	if not multiplayer.is_server(): return
+	if not is_instance_valid(body) or not "type" in body: return
+	
+	var type = body.type
+	if body is RigidBody3D:
+		if type in valid_food_types:
+			stocks[type].append(body)
+			body.position = Vector3(0, -50, 0)
+			body.freeze = true
+			body.visible = false
+			rpc("sync_display_count", type, stocks[type].size())
+		elif type == "plate" and ("stacked_items" in body and body.stacked_items.size() == 0):
+			# Recycle empty plates dropped back into storage
+			body.queue_free()
+			GameData.current_plates = max(0, GameData.current_plates - 1)
+			rpc("sync_display_count", "plate", 20 - GameData.current_plates)
+		else:
+			# Reject invalid items with physical recoil bounce
+			body.linear_velocity = Vector3(randf_range(-3, 3), 4, randf_range(-3, 3))
 
-func spawn_item(item_type):
-	if not GameData.closed_lobby:
-		return
-	if (GameData.connected and not GDSync.is_host()):
-		GDSync.call_func_on(GDSync.get_host(), spawn_item, item_type)
-		return
+func request_spawn_item(item_type: String):
+	if not GameData.closed_lobby: return
+	
+	if not multiplayer.is_server():
+		rpc_id(1, "server_spawn_item", item_type, multiplayer.get_unique_id())
+	else:
+		server_spawn_item(item_type, 1)
+
+@rpc("any_peer", "reliable")
+func server_spawn_item(item_type: String, requester_id: int):
+	if not multiplayer.is_server(): return
 	
 	if item_type == "plate":
 		if GameData.current_plates < 20:
-			var spawned_item := plate.instantiate()
-			spawned_item.position = item_spawn_pos
 			GameData.current_plates += 1
-			get_node("main_display/" + item_type).stored = 20 - GameData.current_plates
+			var spawned_plate = item_spawner.spawn(["plate", requester_id])
+			spawned_plate.global_position = item_spawn_pos
+			rpc("sync_display_count", "plate", 20 - GameData.current_plates)
 		else:
-			$main_display/plate_warning.show()
-			$warning_timer.start(1.5)
-			return
-
-	elif len(stocks[item_type]) > 0:
+			rpc_id(requester_id, "show_plate_warning")
+	elif stocks.has(item_type) and stocks[item_type].size() > 0:
 		var item_to_spawn = stocks[item_type].pop_back()
 		item_to_spawn.freeze = false
 		item_to_spawn.visible = true
-		item_to_spawn.position = item_spawn_pos
-		get_node("main_display/" + item_type).stored = len(stocks[item_type])
+		item_to_spawn.global_position = item_spawn_pos
+		item_to_spawn.set_multiplayer_authority(requester_id)
+		rpc("sync_display_count", item_type, stocks[item_type].size())
 
+@rpc("any_peer", "call_local", "reliable")
+func sync_display_count(item_type: String, count: int):
+	var display_node = get_node_or_null("main_display/" + item_type)
+	if display_node: display_node.stored = count
+
+@rpc("any_peer", "reliable")
+func show_plate_warning():
+	if has_node("main_display/plate_warning"):
+		$main_display/plate_warning.show()
+		$warning_timer.start(1.5)
 
 func _on_warning_timer_timeout() -> void:
-	$main_display/plate_warning.hide()
+	if has_node("main_display/plate_warning"):
+		$main_display/plate_warning.hide()

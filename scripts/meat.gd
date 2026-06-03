@@ -4,4 +4,4 @@ extends RigidBody3D
 @export var state: String = "raw"
 
 func _ready() -> void:
-	GDSync.expose_node(self)
+	pass

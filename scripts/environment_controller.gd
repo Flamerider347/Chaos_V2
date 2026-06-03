@@ -23,10 +23,6 @@ signal new_day
 
 
 func _ready() -> void:
-	GDSync.expose_func(sync_time_from_host)
-	GDSync.expose_func(sync_start_trigger)
-	GDSync.expose_func(sync_daily_specials_to_all)
-	
 	if has_node("/root/main/UI/day_timer"):
 		ui_time_label = get_node("/root/main/UI/day_timer") as Label
 	else:
@@ -42,7 +38,7 @@ func _process(delta: float) -> void:
 	if GameData.paused and not GameData.connected:
 		return
 		
-	if not GameData.connected or GDSync.is_host():
+	if not GameData.connected:
 		current_time += delta / day_length_seconds
 		
 		GameData.is_night = (current_time >= 0.8333333 or current_time < 0.25)
@@ -58,8 +54,6 @@ func _process(delta: float) -> void:
 			current_time = 0.0
 			changed_day = false
 
-		if GameData.connected:
-			GDSync.call_func(sync_time_from_host, [current_time])
 			
 	if is_instance_valid(sun_light) and is_instance_valid(world_env):
 		update_sky_and_lighting()
@@ -69,15 +63,10 @@ func _process(delta: float) -> void:
 
 
 func start_day_cycle() -> void:
-	if GameData.connected and GDSync.is_host():
-		GDSync.call_func_all(sync_start_trigger, [1])
-	elif not GameData.connected:
-		is_cycle_started = true
+	is_cycle_started = true
 
 
 func sync_time_from_host(args) -> void:
-	if GDSync.is_host():
-		return
 	if typeof(args) == TYPE_ARRAY and args.size() > 0:
 		current_time = float(args[0])
 	elif typeof(args) == TYPE_FLOAT or typeof(args) == TYPE_INT:
@@ -101,8 +90,6 @@ func create_daily_special():
 		while random_recipe_2 == random_recipe_1:
 			random_recipe_2 = keys[randi_range(0, recipe_size - 1)]
 
-	if GameData.connected:
-		GDSync.call_func_all(sync_daily_specials_to_all, [random_recipe_1, random_recipe_2])
 	else:
 		sync_daily_specials_to_all([random_recipe_1, random_recipe_2])
 

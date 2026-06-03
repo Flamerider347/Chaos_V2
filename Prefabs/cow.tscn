@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://wpr3ykcn4i4e" path="res://scripts/cow.gd" id="1_r8l8l"]
 [ext_resource type="Texture2D" uid="uid://djwvfah1ycrcy" path="res://Assets/misc/temp_icon.png" id="1_xp0v8"]
-[ext_resource type="ArrayMesh" uid="uid://jjc6tg2y02a5" path="res://Assets/MinecraftCow_Cow/MinecraftCow/Cow.obj" id="2_r8l8l"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x3su6"]
 albedo_texture = ExtResource("1_xp0v8")
@@ -18,7 +17,6 @@ script = ExtResource("1_r8l8l")
 [node name="Cow" type="MeshInstance3D" parent="." unique_id=1455868616]
 transform = Transform3D(0.003, 0, 0, 0, 0.003, 0, 0, 0, 0.003, 0, 1.0318322, 0)
 material_override = SubResource("StandardMaterial3D_x3su6")
-mesh = ExtResource("2_r8l8l")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=866646642]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18075562, 0.7636719, -0.0012207031)

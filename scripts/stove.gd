@@ -1,57 +1,54 @@
 extends StaticBody3D
 
-@export var cooked_meat_scene: PackedScene
-@export var burnt_meat_scene: PackedScene
-
 var current_cooking_item: RigidBody3D = null
 var cookedness: float = 0.0
 
+@onready var item_spawner: MultiplayerSpawner = get_node("/root/main/game/spawners/item_spawner")
+
 func _on_area_3d_body_entered(body: Node3D) -> void:
+	if not multiplayer.is_server(): return
 	if body.is_in_group("pickupable") and "state" in body:
 		current_cooking_item = body
 
 func _on_area_3d_body_exited(body: Node3D) -> void:
+	if not multiplayer.is_server(): return
 	if body == current_cooking_item:
 		current_cooking_item = null
 		cookedness = 0.0
-	$time_left.text = "Empty"
+		rpc("sync_cooking_text", "Empty")
 
 func _physics_process(delta: float) -> void:
-	# Only the host should handle tracking cooking timers and swapping network items
-	if not GDSync.is_host(): 
-		return
+	if not multiplayer.is_server() or not is_instance_valid(current_cooking_item): return
 
-	if is_instance_valid(current_cooking_item):
-		var state = current_cooking_item.state
+	var state = current_cooking_item.state
+	if state != "burnt":
+		cookedness += delta
+		rpc("sync_cooking_text", str(snapped(cookedness, 0.1)))
 		
-		if state != "burnt":
-			cookedness += 1.0 * delta
-			$time_left.text = str(round(cookedness * 10)/10)
-			
-			if state == "raw" and cookedness > 5.0:
-				cook_swap(cooked_meat_scene, "cooked")
-			elif state == "cooked" and cookedness > 10.0:
-				cook_swap(burnt_meat_scene, "burnt")
+		if state == "raw" and cookedness > 5.0:
+			cook_swap("meat_cooked", "cooked")
+		elif state == "cooked" and cookedness > 10.0:
+			cook_swap("meat_burnt", "burnt")
 
-func cook_swap(new_scene: PackedScene, new_state_string: String) -> void:
-	
+func cook_swap(spawn_name: String, new_state_string: String) -> void:
 	var old_pos = current_cooking_item.global_position
 	var old_rot = current_cooking_item.global_rotation
 	
-	GDSync.multiplayer_queue_free(current_cooking_item)
+	# Native removal auto-replicates deletion to clients
+	current_cooking_item.queue_free()
 	current_cooking_item = null
+	cookedness = 0.0 
 	
-	if not GDSync.is_host():
-		return
-		
-	if new_scene:
-		var new_item = GDSync.multiplayer_instantiate(new_scene, get_node("/root/main/game/items"), true, [], true)
-		new_item.global_position = old_pos
-		new_item.global_rotation = old_rot
-		
-		# FORCE the state change immediately so _physics_process ignores it next frame
-		new_item.state = new_state_string 
-		new_item.type = "meat_" + new_state_string
-		
-		current_cooking_item = new_item
-		cookedness = 0.0 # Reset the timer explicitly on swap!
+	# Spawn cooked version via MultiplayerSpawner (1 = server/neutral ownership)
+	var new_item = item_spawner.spawn([spawn_name, 1])
+	new_item.global_position = old_pos
+	new_item.global_rotation = old_rot
+	
+	new_item.state = new_state_string 
+	new_item.type = spawn_name
+	
+	current_cooking_item = new_item
+
+@rpc("any_peer", "call_local", "unreliable")
+func sync_cooking_text(text_val: String) -> void:
+	$time_left.text = text_val
