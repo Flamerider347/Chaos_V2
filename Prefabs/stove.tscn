@@ -1,8 +1,6 @@
 [gd_scene format=3 uid="uid://bmeca04rgopj7"]
 
 [ext_resource type="Script" uid="uid://c33eh3bfst8vs" path="res://scripts/stove.gd" id="1_qlxa1"]
-[ext_resource type="PackedScene" uid="uid://cao3wt67jo38s" path="res://Prefabs/meat_chopped_cooked.tscn" id="2_bvogq"]
-[ext_resource type="PackedScene" uid="uid://bx6l7j13v0r1o" path="res://Prefabs/meat_chopped_burnt.tscn" id="3_4b127"]
 [ext_resource type="ArrayMesh" uid="uid://cmye5rd0ns0xl" path="res://Assets/Models/kitchenassets/pan_B.obj" id="5_sejvw"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_v0sgk"]
@@ -19,8 +17,6 @@ albedo_color = Color(0.22056547, 0.50721943, 0.18147677, 1)
 collision_layer = 12
 collision_mask = 12
 script = ExtResource("1_qlxa1")
-cooked_meat_scene = ExtResource("2_bvogq")
-burnt_meat_scene = ExtResource("3_4b127")
 
 [node name="solid_collision" type="CollisionShape3D" parent="." unique_id=1298773316]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5541456, 0)

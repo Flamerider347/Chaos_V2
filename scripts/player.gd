@@ -14,6 +14,7 @@ var held_item = null
 var can_pickup: bool = true
 var current_slot: String = "1"
 var holding_two_handed: bool = false
+var changed_slot = false
 
 # Expanded inventory layout tracks: [UI_Slot_Label, Stack_Count, Item_Type_String, Array_Of_Physical_Nodes]
 var inventory: Dictionary = {
@@ -196,7 +197,7 @@ func _physics_process(delta: float) -> void:
 
 	if holding_two_handed:
 		return 
-	var changed_slot = false
+	changed_slot = false
 	if Input.is_action_just_pressed("1") and current_slot != "1":
 		current_slot = "1"
 		changed_slot = true
@@ -210,7 +211,11 @@ func _physics_process(delta: float) -> void:
 		current_slot = "4"
 		changed_slot = true
 	if changed_slot:
-		held_item = inventory[current_slot][3][0]
+		print(current_slot)
+		if inventory[current_slot][1] > 0:
+			held_item = inventory[current_slot][3][0]
+		else:
+			held_item = null
 		for i in hand.get_children():
 			i.hide()
 		hand.find_child("slot" + str(current_slot)).show()
@@ -233,7 +238,6 @@ func pickup_object(object):
 			picked_up = i
 			break
 	if int(picked_up) != 0:
-		update_inventory_ui()
 		object.freeze = true
 		object.set_multiplayer_authority(multiplayer.get_unique_id())
 		var shape: CollisionShape3D = object.find_child("CollisionShape3D")
@@ -249,9 +253,15 @@ func pickup_object(object):
 			object_2.show()
 			object_2.position = Vector3.ZERO
 			object_2.rotation = Vector3.ZERO
+		current_slot = picked_up
+		for i in hand.get_children():
+			i.hide()
+		hand.find_child("slot" + str(current_slot)).show()
+		update_inventory_ui()
 
 func drop_object():
 	var dropped = null
+	held_item = null
 	if inventory[current_slot][2] == null:
 		return
 	if inventory[current_slot][2]:
