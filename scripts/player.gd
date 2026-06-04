@@ -10,9 +10,7 @@ var is_dead: bool = false
 var is_in_kitchen: bool = false
 var is_owned: bool = false
 var speed_multiplier: float = 1.0
-
-var held_item: Node3D = null          # References the REAL physical item on the floor
-var client_dummy_mesh: Node3D = null  # Legacy reference variable (kept for structural safety)
+var held_item = null
 var can_pickup: bool = true
 var current_slot: String = "1"
 var holding_two_handed: bool = false
@@ -113,7 +111,8 @@ func _input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	if not is_owned: 
 		return
-		
+	if is_instance_valid(held_item) and held_item.get_multiplayer_authority() == multiplayer.get_unique_id():
+		held_item.global_position = hand.global_position
 	if Input.is_action_just_pressed("debug_toggle"):
 		GameData.is_night = true
 		
@@ -133,7 +132,9 @@ func _physics_process(delta: float) -> void:
 		velocity.z = 0
 		move_and_slide()
 		return
-		
+
+#Pickup/put down stuff
+
 	var target: Node3D = null
 	if interact_cast.is_colliding():
 		target = interact_cast.get_collider()
@@ -175,91 +176,103 @@ func _physics_process(delta: float) -> void:
 		drop_object()
 
 
-	#_process_ui_context_labels(raycast_target)
-	handle_inventory_slots() 
-	handle_movement()
+#Movement Stuff
+
+	var vec: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	if Input.is_action_pressed("sprint"):
+		speed_multiplier = 1.5
+	else:
+		speed_multiplier = 1.0
+		
+	var dir: Vector3 = (transform.basis * Vector3(vec.x, 0, vec.y)).normalized()
+	if dir:
+		velocity.x = dir.x * SPEED * speed_multiplier
+		velocity.z = dir.z * SPEED * speed_multiplier
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.z = move_toward(velocity.z, 0, SPEED)
+
+#Inventory slots
+
+	if holding_two_handed:
+		return 
+	var changed_slot = false
+	if Input.is_action_just_pressed("1") and current_slot != "1":
+		current_slot = "1"
+		changed_slot = true
+	elif Input.is_action_just_pressed("2") and current_slot != "2":
+		current_slot = "2"
+		changed_slot = true
+	elif Input.is_action_just_pressed("3") and current_slot != "3":
+		current_slot = "3"
+		changed_slot = true
+	elif Input.is_action_just_pressed("4") and current_slot != "4":
+		current_slot = "4"
+		changed_slot = true
+	if changed_slot:
+		held_item = inventory[current_slot][3][0]
+		for i in hand.get_children():
+			i.hide()
+		hand.find_child("slot" + str(current_slot)).show()
+
 	move_and_slide()
 
-# ==========================================
-# MASTER LOGIC BLOCK: PICKUP, DROP, STACK & NET
-# ==========================================
+func pickup_object(object):
+	var picked_up = 0
+	for i in inventory.keys():
+		print(inventory[i][2])
+		if inventory[i][2] == null:
+			inventory[i][1] += 1
+			inventory[i][2] = object.type
+			inventory[i][3].append(object)
+			picked_up = i
+			break
+		elif inventory[i][2] == object.type:
+			inventory[i][1] += 1
+			inventory[i][3].append(object)
+			picked_up = i
+			break
+	if int(picked_up) != 0:
+		update_inventory_ui()
+		object.freeze = true
+		object.set_multiplayer_authority(multiplayer.get_unique_id())
+		var shape: CollisionShape3D = object.find_child("CollisionShape3D")
+		if shape:
+			shape.disabled = true
+		object.hide()
+		if inventory[picked_up][1] <= 1:
+			var object_2 = object.duplicate()
+			for child in object_2.get_children():
+				if child is MultiplayerSynchronizer:
+					child.queue_free()
+			find_child("slot"+str(picked_up)).add_child(object_2)
+			object_2.show()
+			object_2.position = Vector3.ZERO
+			object_2.rotation = Vector3.ZERO
 
-func pickup_object(object: Node3D) -> void:
-	var actual_target: Node3D = object
-	if not "type" in object and object.get_parent() and "type" in object.get_parent():
-		actual_target = object.get_parent()
-		
-	rpc_id(1, "server_pickup", actual_target.get_path(), current_slot)
-
-
-@rpc("any_peer", "call_local", "reliable")
-func server_pickup(item_path: NodePath, target_slot: String) -> void:
-	if not multiplayer.is_server():
+func drop_object():
+	var dropped = null
+	if inventory[current_slot][2] == null:
 		return
-		
-	var item: Node3D = get_node_or_null(item_path)
-	if not is_instance_valid(item):
-		return
-	
-	var target_type: String = ""
-	if "type" in item and item.type != null:
-		target_type = str(item.type)
-	else:
-		target_type = item.name
-	
-	if item is RigidBody3D:
-		item.freeze = true
-		
-	var shape: CollisionShape3D = item.find_child("CollisionShape3D")
-	if shape:
-		shape.disabled = true
-	
-	rpc("sync_inventory_pickup", target_slot, target_type, item_path)
-
-
-func drop_object() -> void:
-	if inventory[current_slot][3].size() == 0:
-		return
-	
-	var drop_pos: Vector3 = hand.global_position
-	var drop_rot: Vector3 = hand.global_rotation
-	
-	if interact_cast.is_colliding():
-		var col: Node3D = interact_cast.get_collider()
-		if col.is_in_group("placeable"):
-			var item: Node3D = inventory[current_slot][3][-1]
-			if is_instance_valid(item):
-				if col.is_in_group("chopping_board") and item.is_in_group("choppable"):
-					drop_pos = col.global_position + Vector3(0, 1.2, 0)
-				elif col.is_in_group("THE_THING"):
-					drop_pos = col.global_position + Vector3(0, 0.2, 0)
-				elif not col.is_in_group("chopping_board") and item.is_in_group("meat"):
-					drop_pos = col.global_position + Vector3(0, 0.4, 0)
-
-	rpc_id(1, "server_drop", current_slot, drop_pos, drop_rot)
-
-
-@rpc("any_peer", "call_local", "reliable")
-func server_drop(slot: String, drop_pos: Vector3, drop_rot: Vector3) -> void:
-	if not multiplayer.is_server():
-		return
-	if inventory[slot][3].size() == 0:
-		return
-	
-	var item: Node3D = inventory[slot][3][-1]
-	if is_instance_valid(item):
-		item.global_position = drop_pos
-		item.global_rotation = drop_rot
-		if item is RigidBody3D:
-			item.freeze = false
-			item.linear_velocity = Vector3.ZERO
-			item.angular_velocity = Vector3.ZERO
-		var shape: CollisionShape3D = item.find_child("CollisionShape3D")
+	if inventory[current_slot][2]:
+		if inventory[current_slot][3].size() >=1:
+			inventory[current_slot][1] -= 1
+			dropped = inventory[current_slot][3][-1]
+			inventory[current_slot][3].erase(dropped)
+	if dropped != null:
+		update_inventory_ui()
+		dropped.set_multiplayer_authority(1)
+		dropped.freeze = false
+		var shape: CollisionShape3D = dropped.find_child("CollisionShape3D")
 		if shape:
 			shape.disabled = false
-		
-	rpc("sync_inventory_drop", slot, drop_pos, drop_rot)
-
+		dropped.global_position = hand.global_position
+		dropped.global_rotation = Vector3.ZERO
+		dropped.show()
+		if inventory[current_slot][1] <1:
+			inventory[current_slot][2] = null
+			for i in find_child("slot" +str(current_slot)).get_children():
+				i.queue_free()
 
 func stack_object(plate: Node3D) -> void:
 	if not is_instance_valid(held_item):
@@ -278,179 +291,6 @@ func stack_object(plate: Node3D) -> void:
 		
 	_refresh_held_references()
 	update_inventory_ui()
-
-
-@rpc("any_peer", "call_local", "reliable")
-func sync_inventory_pickup(slot: String, type_str: String, item_path: NodePath) -> void:
-	if not is_inside_tree():
-		await get_tree().process_frame
-		if not is_inside_tree():
-			return
-
-	if not has_node(item_path):
-		await get_tree().process_frame
-		if not has_node(item_path):
-			return
-			
-	var item_node: Node3D = get_node_or_null(item_path)
-	if not is_instance_valid(item_node):
-		return
-	
-	# SET COLLIDING TO FALSE (Turn off physics tracking)
-	if item_node is RigidBody3D:
-		item_node.freeze = true
-		item_node.sleeping = true
-		
-	# Find all collision shapes recursively and disable them
-	for child in item_node.get_children():
-		if child is CollisionShape3D:
-			child.disabled = true
-	
-	# Hide the real physical floor item completely
-	item_node.hide() 
-	
-	inventory[slot][2] = type_str
-	inventory[slot][1] += 1
-	inventory[slot][3].append(item_node)
-	
-	var active_slot: Node3D = hand.get_node("slot" + slot)
-	for child in active_slot.get_children():
-		if child.is_in_group("cosmetic_dummy"):
-			child.queue_free()
-	
-	var original_mesh: MeshInstance3D = item_node.find_child("MeshInstance3D")
-	if original_mesh:
-		var dummy: MeshInstance3D = original_mesh.duplicate()
-		dummy.add_to_group("cosmetic_dummy")
-		active_slot.add_child(dummy)
-		dummy.position = Vector3.ZERO
-		dummy.rotation = Vector3.ZERO
-		
-		if current_slot == slot:
-			dummy.show()
-		else:
-			dummy.hide()
-
-	if is_owned:
-		current_slot = slot
-		can_pickup = false
-		pickup_timer.start()
-		
-	_refresh_held_references()
-	update_inventory_ui()
-	_refresh_hand_visibility_filters()
-
-
-@rpc("any_peer", "call_local", "reliable")
-func sync_inventory_drop(slot: String, drop_pos: Vector3, drop_rot: Vector3) -> void:
-	if inventory[slot][3].size() == 0:
-		return
-	var item: Node3D = inventory[slot][3].pop_back()
-	
-	inventory[slot][1] -= 1
-	if inventory[slot][1] <= 0:
-		inventory[slot][2] = null
-	
-	var active_slot: Node3D = hand.get_node("slot" + slot)
-	for child in active_slot.get_children():
-		if child.is_in_group("cosmetic_dummy"):
-			child.queue_free()
-	
-	if is_instance_valid(item):
-		item.global_position = drop_pos
-		item.global_rotation = drop_rot
-		item.show()
-		
-		# SET COLLIDING TO TRUE (Restore physics tracking on drop)
-		if item is RigidBody3D:
-			item.freeze = false
-			item.sleeping = false
-			item.linear_velocity = Vector3.ZERO
-			item.angular_velocity = Vector3.ZERO
-			
-		# Re-enable all collision shapes so it hits the floor normally
-		for child in item.get_children():
-			if child is CollisionShape3D:
-				child.disabled = false
-		
-	if is_owned:
-		can_pickup = false
-		pickup_timer.start()
-		
-	_refresh_held_references()
-	update_inventory_ui()
-	_refresh_hand_visibility_filters()
-# ==========================================
-# INTERACTION HANDLING & UI PROCESSES
-# ==========================================
-
-func _process_ui_context_labels(target: Node3D) -> void:
-	var is_interactive: bool = false
-	var context_text: String = ""
-
-	if is_owned and is_instance_valid(target):
-		if target.is_in_group("pickupable") or target.is_in_group("punchable") or target.is_in_group("door") or target.is_in_group("placeable") or target.is_in_group("plate") or target.is_in_group("storage_button"):
-			is_interactive = true
-			if "type" in target and target.type != null:
-				context_text = str(target.type).capitalize()
-			else:
-				context_text = str(target.name).replace("_", " ").capitalize()
-
-	if is_owned and ui_colliding_label:
-		ui_colliding_label.visible = is_interactive
-		if ui_colliding_label.visible:
-			ui_colliding_label.text = context_text
-
-
-func _can_interact_with(target: Node3D) -> bool:
-	if not is_instance_valid(target):
-		return false
-	if target.is_in_group("plate") and is_instance_valid(held_item) and held_item.is_in_group("plate_stackable"):
-		return true
-	if target.is_in_group("door") or target.is_in_group("punchable") or target.is_in_group("storage_button"):
-		return true
-	if target.is_in_group("placeable"):
-		if is_instance_valid(held_item):
-			if target.is_in_group("chopping_board") and held_item.is_in_group("choppable"):
-				return true
-			if target.is_in_group("THE_THING") or target.is_in_group("stove"):
-				return true
-			if not target.is_in_group("chopping_board") and held_item.is_in_group("meat"):
-				return true
-		return false
-	if holding_two_handed or not can_pickup or not target.is_in_group("pickupable"):
-		return false
-	
-	var target_type: String = ""
-	if "type" in target and target.type != null:
-		target_type = str(target.type)
-	else:
-		target_type = target.name
-		
-	for s in inventory:
-		if (inventory[s][2] == target_type and inventory[s][1] > 0) or inventory[s][2] == null or inventory[s][1] == 0:
-			return true
-	return false
-
-
-func handle_inventory_slots() -> void:
-	if holding_two_handed:
-		return 
-	var prev: String = current_slot
-	if Input.is_action_just_pressed("1"):
-		current_slot = "1"
-	elif Input.is_action_just_pressed("2"):
-		current_slot = "2"
-	elif Input.is_action_just_pressed("3"):
-		current_slot = "3"
-	elif Input.is_action_just_pressed("4"):
-		current_slot = "4"
-	
-	if prev != current_slot:
-		_refresh_held_references()
-		update_inventory_ui()
-		_refresh_hand_visibility_filters()
-
 
 func update_inventory_ui() -> void:
 	if not is_owned:
@@ -505,42 +345,6 @@ func check_two_handed_status() -> void:
 	holding_two_handed = conditions_met
 
 
-func _refresh_hand_visibility_filters() -> void:
-	# Show/hide specific slot container nodes and control internal cosmetic clones
-	for slot_node in hand.get_children():
-		var is_active_slot: bool = (slot_node.name == "slot" + current_slot)
-		
-		if is_active_slot:
-			slot_node.show()
-			for child in slot_node.get_children():
-				if child.is_in_group("cosmetic_dummy"):
-					child.show()
-		else:
-			slot_node.hide()
-			for child in slot_node.get_children():
-				if child.is_in_group("cosmetic_dummy"):
-					child.hide()
-
-# ==========================================
-# MOVEMENT, UTILITIES, HEALTH & RE-SPAWN
-# ==========================================
-
-func handle_movement() -> void:
-	var vec: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	if Input.is_action_pressed("sprint"):
-		speed_multiplier = 1.5
-	else:
-		speed_multiplier = 1.0
-		
-	var dir: Vector3 = (transform.basis * Vector3(vec.x, 0, vec.y)).normalized()
-	if dir:
-		velocity.x = dir.x * SPEED * speed_multiplier
-		velocity.z = dir.z * SPEED * speed_multiplier
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
-
-
 func _set_mesh_outline(node: Node, active: bool) -> void:
 	if node is MeshInstance3D:
 		if active:
@@ -549,7 +353,6 @@ func _set_mesh_outline(node: Node, active: bool) -> void:
 			node.material_overlay = null
 	for child in node.get_children():
 		_set_mesh_outline(child, active)
-
 
 func wake_up_stacked_items(target: Node3D) -> void:
 	var state: PhysicsDirectSpaceState3D = target.get_world_3d().direct_space_state
@@ -591,8 +394,6 @@ func clear_inventory_safely() -> void:
 		inventory[s] = [inventory[s][0], 0, null, []]
 	_refresh_held_references()
 	update_inventory_ui()
-	_refresh_hand_visibility_filters()
-
 
 func die() -> void:
 	is_dead = true

@@ -48,7 +48,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.032962143, 0)
 shape = SubResource("BoxShape3D_wy42j")
 
 [node name="input2" type="StaticBody3D" parent="." unique_id=1532370271 groups=["THE_THING", "placeable"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 6)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, 6)
 collision_layer = 7
 collision_mask = 7
 metadata/_edit_group_ = true
