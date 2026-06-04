@@ -225,7 +225,6 @@ func _physics_process(delta: float) -> void:
 func pickup_object(object):
 	var picked_up = 0
 	for i in inventory.keys():
-		print(inventory[i][2])
 		if inventory[i][2] == null:
 			inventory[i][1] += 1
 			inventory[i][2] = object.type
@@ -257,6 +256,7 @@ func pickup_object(object):
 		for i in hand.get_children():
 			i.hide()
 		hand.find_child("slot" + str(current_slot)).show()
+		held_item = object
 		update_inventory_ui()
 
 func drop_object():
@@ -298,8 +298,7 @@ func stack_object(plate: Node3D) -> void:
 	for child in active_slot.get_children():
 		if child.is_in_group("cosmetic_dummy"):
 			child.queue_free()
-		
-	_refresh_held_references()
+	held_item = null
 	update_inventory_ui()
 
 func update_inventory_ui() -> void:
@@ -339,15 +338,6 @@ func update_inventory_ui() -> void:
 			lbl.scale = Vector2(1.15, 1.15)
 		else:
 			lbl.scale = Vector2(1.0, 1.0)
-
-
-func _refresh_held_references() -> void:
-	var stack: Array = inventory[current_slot][3]
-	if stack.size() > 0 and is_instance_valid(stack[-1]):
-		held_item = stack[-1]
-	else:
-		held_item = null
-	check_two_handed_status()
 
 
 func check_two_handed_status() -> void:
@@ -402,7 +392,7 @@ func get_inventory_items_for_score() -> Array:
 func clear_inventory_safely() -> void:
 	for s in inventory:
 		inventory[s] = [inventory[s][0], 0, null, []]
-	_refresh_held_references()
+	held_item = null
 	update_inventory_ui()
 
 func die() -> void:

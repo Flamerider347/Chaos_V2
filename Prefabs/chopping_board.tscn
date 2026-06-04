@@ -12,6 +12,9 @@ albedo_color = Color(0.9162715, 0.15510386, 0.6794909, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_jyd1a"]
 size = Vector3(0.75, 0.57584226, 0.4985962)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_1twjv"]
+size = Vector3(1.0498047, 0.103027344, 0.7022705)
+
 [node name="chopping_board" type="StaticBody3D" unique_id=646814846 groups=["chopping_board", "placeable"]]
 collision_layer = 8
 collision_mask = 8
@@ -48,6 +51,14 @@ shape = SubResource("BoxShape3D_jyd1a")
 [node name="Cuttingboard" type="MeshInstance3D" parent="." unique_id=1926925528]
 transform = Transform3D(-0.7, 0, -6.119594e-08, 0, 0.7, 0, 6.119594e-08, 0, -0.7, 0, 1.08, 0.1)
 mesh = ExtResource("2_v0sgk")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1510955896]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=231895187]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0024414063, 1.131978, 0.09869385)
+shape = SubResource("BoxShape3D_1twjv")
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
