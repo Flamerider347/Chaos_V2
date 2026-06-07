@@ -2941,6 +2941,15 @@ _data = {
 }
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_vj773"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath("goblin/AnimationPlayer:current_animation")
+properties/2/spawn = true
+properties/2/replication_mode = 2
 
 [node name="goblin" type="CharacterBody3D" unique_id=1456164154]
 collision_layer = 2
@@ -3235,9 +3244,6 @@ mesh = SubResource("ArrayMesh_qibn7")
 mesh = SubResource("ArrayMesh_maw8d")
 skin = SubResource("Skin_517vv")
 skeleton = NodePath("..")
-
-[node name="Goblin_37" type="Node3D" parent="goblin" unique_id=1387538311]
-transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="goblin" unique_id=225021431]
 libraries/ = SubResource("AnimationLibrary_qibn7")

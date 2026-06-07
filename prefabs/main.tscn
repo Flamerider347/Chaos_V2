@@ -229,7 +229,8 @@ navigation_mesh = SubResource("NavigationMesh_2mmg3")
 spawn_path = NodePath("../../items")
 
 [node name="enemy_spawner" type="MultiplayerSpawner" parent="game/spawners" unique_id=856044069]
-spawn_path = NodePath("../../items")
+_spawnable_scenes = PackedStringArray("uid://bd52y75iy5rbf")
+spawn_path = NodePath("../../enemies")
 
 [node name="world" type="Node3D" parent="game" unique_id=2057127466]
 
