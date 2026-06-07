@@ -238,7 +238,6 @@ func pickup_object(object):
 			break
 	if int(picked_up) != 0:
 		object.freeze = true
-		object.set_multiplayer_authority(multiplayer.get_unique_id())
 		var shape: CollisionShape3D = object.find_child("CollisionShape3D")
 		if shape:
 			shape.disabled = true
@@ -258,6 +257,11 @@ func pickup_object(object):
 		hand.find_child("slot" + str(current_slot)).show()
 		held_item = object
 		update_inventory_ui()
+		# Tell server to hide item for everyone else
+		if multiplayer.is_server():
+			notify_item_hidden(str(object.get_path()), true, multiplayer.get_unique_id())
+		else:
+			rpc_id(1, "notify_item_hidden", str(object.get_path()), true, multiplayer.get_unique_id())
 
 func drop_object():
 	var dropped = null
@@ -265,24 +269,82 @@ func drop_object():
 	if inventory[current_slot][2] == null:
 		return
 	if inventory[current_slot][2]:
-		if inventory[current_slot][3].size() >=1:
+		if inventory[current_slot][3].size() >= 1:
 			inventory[current_slot][1] -= 1
 			dropped = inventory[current_slot][3][-1]
 			inventory[current_slot][3].erase(dropped)
 	if dropped != null:
 		update_inventory_ui()
-		dropped.set_multiplayer_authority(1)
+		var drop_pos: Vector3 = hand.global_position
 		dropped.freeze = false
 		var shape: CollisionShape3D = dropped.find_child("CollisionShape3D")
 		if shape:
 			shape.disabled = false
-		dropped.global_position = hand.global_position
+		dropped.global_position = drop_pos
 		dropped.global_rotation = Vector3.ZERO
 		dropped.show()
-		if inventory[current_slot][1] <1:
+		if inventory[current_slot][1] < 1:
 			inventory[current_slot][2] = null
-			for i in find_child("slot" +str(current_slot)).get_children():
+			for i in find_child("slot" + str(current_slot)).get_children():
 				i.queue_free()
+		if multiplayer.is_server():
+			notify_item_dropped(str(dropped.get_path()), drop_pos, multiplayer.get_unique_id())
+		else:
+			rpc_id(1, "notify_item_dropped", str(dropped.get_path()), drop_pos, multiplayer.get_unique_id())
+
+@rpc("any_peer", "reliable")
+func notify_item_hidden(item_path: String, hidden: bool, sender_id: int) -> void:
+	if not multiplayer.is_server():
+		return
+	rpc("sync_item_hidden", item_path, hidden, sender_id)
+	sync_item_hidden(item_path, hidden, sender_id)
+
+
+@rpc("any_peer", "reliable")
+func sync_item_hidden(item_path: String, hidden: bool, sender_id: int) -> void:
+	if multiplayer.get_unique_id() == sender_id:
+		return
+	var item = get_node_or_null(item_path)
+	if not is_instance_valid(item):
+		return
+	item.visible = not hidden
+	item.freeze = hidden
+	var shape: CollisionShape3D = item.find_child("CollisionShape3D")
+	if shape:
+		shape.disabled = hidden
+
+
+@rpc("any_peer", "reliable")
+func notify_item_dropped(item_path: String, drop_pos: Vector3, sender_id: int) -> void:
+	if not multiplayer.is_server():
+		return
+	var item = get_node_or_null(item_path)
+	if is_instance_valid(item):
+		item.global_position = drop_pos
+		item.global_rotation = Vector3.ZERO
+		item.freeze = false
+		item.visible = true
+		var shape: CollisionShape3D = item.find_child("CollisionShape3D")
+		if shape:
+			shape.disabled = false
+	rpc("sync_item_dropped", item_path, drop_pos, sender_id)
+	sync_item_dropped(item_path, drop_pos, sender_id)
+
+
+@rpc("any_peer", "reliable")
+func sync_item_dropped(item_path: String, drop_pos: Vector3, sender_id: int) -> void:
+	if multiplayer.get_unique_id() == sender_id:
+		return
+	var item = get_node_or_null(item_path)
+	if not is_instance_valid(item):
+		return
+	item.global_position = drop_pos
+	item.global_rotation = Vector3.ZERO
+	item.freeze = false
+	item.visible = true
+	var shape: CollisionShape3D = item.find_child("CollisionShape3D")
+	if shape:
+		shape.disabled = false
 
 func stack_object(plate: Node3D) -> void:
 	if not is_instance_valid(held_item):

@@ -71,7 +71,6 @@ func _on_custom_item_spawn(data: Array) -> Node:
 		return null
 		
 	var item_type = data[0]
-	var owner_id = data[1]
 	var target_pos = data[2]
 	
 	# ROBUST FALLBACK FOR INDEX 3: If array size is 3 (e.g. from cutting logic), generate a fallback name safely
@@ -93,7 +92,7 @@ func _on_custom_item_spawn(data: Array) -> Node:
 	item_instance.type = str(item_type)
 	item_instance.position = target_pos
 	
-	item_instance.set_multiplayer_authority(owner_id)
+	item_instance.set_multiplayer_authority(1)
 	item_instance.add_to_group("plate_stackable")
 	item_instance.add_to_group("pickupable")
 	
