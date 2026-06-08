@@ -17,12 +17,10 @@ func _ready() -> void:
 	timer.autostart = true
 	timer.timeout.connect(_on_time_check)
 	add_child(timer)
-	print(spawn_points)
 
 func _on_time_check() -> void:
 	if not multiplayer.is_server(): return
 	
-
 	if GameData.is_night and active_enemies.size() == 0:
 		_spawn_night_wave()
 	elif not GameData.is_night and active_enemies.size() > 0:
