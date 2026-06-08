@@ -103,6 +103,7 @@ wait_time = 0.1
 one_shot = true
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1984760006]
+replication_interval = 0.1
 replication_config = SubResource("SceneReplicationConfig_knrd4")
 
 [connection signal="timeout" from="pickup_timer" to="." method="_on_pickup_timer_timeout"]
