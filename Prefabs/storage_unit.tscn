@@ -136,7 +136,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 one_shot = true
 
 [node name="plate_spawner" type="MultiplayerSpawner" parent="." unique_id=580419553]
-_spawnable_scenes = PackedStringArray("uid://uqptavxff366")
 spawn_path = NodePath("../../../../items")
 spawn_limit = 20
 

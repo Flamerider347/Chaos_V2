@@ -11,6 +11,11 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fipcs"]
 albedo_texture = ExtResource("5_dtg7r")
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_t8wxq"]
+properties/0/path = NodePath("Label3D:text")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
 [node name="cheese_tree" type="StaticBody3D" unique_id=68733649 groups=["punchable"]]
 collision_layer = 7
 collision_mask = 7
@@ -41,5 +46,8 @@ one_shot = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 material_override = SubResource("StandardMaterial3D_fipcs")
 mesh = ExtResource("5_30svy")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1222949069]
+replication_config = SubResource("SceneReplicationConfig_t8wxq")
 
 [connection signal="timeout" from="item_timer" to="." method="_on_item_timer_timeout"]

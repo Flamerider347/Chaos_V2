@@ -1,6 +1,6 @@
 extends Node3D
 
-@export var day_length_seconds: float = 18.0
+@export var day_length_seconds: float = 180.0
 
 @onready var sun_light: DirectionalLight3D = $DirectionalLight3D
 @onready var world_env: WorldEnvironment = $WorldEnvironment

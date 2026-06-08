@@ -10,27 +10,27 @@ const CHOPPED_SCENES = {
 @onready var item_spawner: MultiplayerSpawner = get_node("/root/main/game/spawners/item_spawner")
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
-	if body.is_in_group("choppable"):
-		if not multiplayer.is_server():
-			rpc_id(1, "server_chop", body.get_path())
-		else:
-			server_chop(body.get_path())
+	# Only the server calculates gameplay-changing physics triggers
+	if not multiplayer.is_server():
+		return
+		
+	if not is_instance_valid(body) or not "type" in body: 
+		return
 
-@rpc("any_peer", "reliable")
-func server_chop(body_path: NodePath) -> void:
-	if not multiplayer.is_server(): return
-	
-	var body = get_node_or_null(body_path)
-	if not is_instance_valid(body) or not "type" in body: return
-	
+	if body.is_in_group("choppable"):
+		chop_item(body)
+
+
+func chop_item(body: Node3D) -> void:
 	var body_type = body.type
-	body.queue_free() # Safely delete the un-chopped food on the server
+	
+	# Defer deletion so Jolt Physics can safely finish flushing collision events
+	body.call_deferred("queue_free")
 	
 	if CHOPPED_SCENES.has(body_type):
 		for spawn_name in CHOPPED_SCENES[body_type]:
-			# Define exactly where the chopped item should land
 			var spawn_pos = global_position + Vector3(0, 1.2, 0)
 			
-			# Match your custom spawn function configuration array exactly:
-			# [0] = item_type_string, [1] = network_owner_id, [2] = target_global_position
-			item_spawner.spawn([spawn_name, 1, spawn_pos])
+			# Context array: [item_type, requester_id, position]
+			if is_instance_valid(item_spawner):
+				item_spawner.spawn([spawn_name, 1, spawn_pos])

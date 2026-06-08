@@ -8,6 +8,11 @@ points = PackedVector3Array(0.05320945, 0.026732588, 0.29798627, -0.032189064, 0
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_cf1hr"]
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_plfi1"]
+properties/0/path = NodePath("Label3D:text")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
 [node name="bun_tree" type="StaticBody3D" unique_id=68733649 groups=["punchable"]]
 collision_layer = 7
 collision_mask = 7
@@ -37,5 +42,8 @@ text = "5"
 
 [node name="item_timer" type="Timer" parent="." unique_id=1312441818]
 one_shot = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=304594812]
+replication_config = SubResource("SceneReplicationConfig_plfi1")
 
 [connection signal="timeout" from="item_timer" to="." method="_on_item_timer_timeout"]

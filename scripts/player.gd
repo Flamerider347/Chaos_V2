@@ -145,7 +145,7 @@ func _physics_process(delta: float) -> void:
 				elif target.is_in_group("door"):
 					target.open_door()
 
-			if Input.is_action_just_pressed("right_click") and target.is_in_group("plate") and is_instance_valid(held_item) and held_item.is_in_group("plate_stackable"):
+			if Input.is_action_just_pressed("right_click") and target.is_in_group("plate") and is_instance_valid(held_item) and held_item.is_in_group("plate_stackable") and can_pickup:
 				stack_object(target)
 				return
 
@@ -201,6 +201,12 @@ func _physics_process(delta: float) -> void:
 
 	if is_instance_valid(held_item):
 		held_item.visible = is_snapping
+		# FIX 1: When NOT snapping to a counter, force the real item to track the hand position.
+		# This keeps its RemoteTransforms correctly synced with the player as they walk.
+		if not is_snapping:
+			held_item.global_position = hand.global_position
+			held_item.global_rotation = hand.global_rotation
+
 	if is_instance_valid(slot_node):
 		slot_node.visible = not is_snapping
 
@@ -231,14 +237,14 @@ func pickup_object(object):
 
 		if inventory[picked_up][1] <= 1:
 			var object_2 = object.duplicate()
-			for child in object_2.get_children():
-				if child is MultiplayerSynchronizer:
-					child.queue_free()
+			# This will strip out network nodes AND pesky RemoteTransforms from the replica
+			_strip_network_nodes(object_2) 
+			
 			find_child("slot" + str(picked_up)).add_child(object_2)
 			object_2.show()
 			object_2.position = Vector3.ZERO
 			object_2.rotation = Vector3.ZERO
-
+				
 		current_slot = picked_up
 		held_item = inventory[picked_up][3][-1]
 		for i in hand.get_children():
@@ -298,16 +304,17 @@ func stack_object(plate: Node3D) -> void:
 		return
 
 	plate.stack_item(held_item)
+	can_pickup = false
+	$pickup_timer.start()
 	inventory[current_slot][3].erase(held_item)
 	inventory[current_slot][1] -= 1
 	if inventory[current_slot][1] <= 0:
 		inventory[current_slot][2] = null
-
-	var active_slot: Node3D = hand.get_node("slot" + current_slot)
-	for child in active_slot.get_children():
-		if child.is_in_group("cosmetic_dummy"):
+		var active_slot: Node3D = hand.get_node("slot" + current_slot)
+		for child in active_slot.get_children():
 			child.queue_free()
-	held_item = null
+
+	held_item = inventory[current_slot][3][-1] if inventory[current_slot][3].size() > 0 else null
 	update_inventory_ui()
 
 @rpc("any_peer", "reliable")
@@ -395,6 +402,14 @@ func update_inventory_ui() -> void:
 
 		lbl.scale = Vector2(1.15, 1.15) if str(s) == current_slot else Vector2(1.0, 1.0)
 
+func _strip_network_nodes(node: Node) -> void:
+	for child in node.get_children():
+		# FIX 2: Added "or child is RemoteTransform3D" here.
+		# This stops the hand visual copy from stealing transform calculations.
+		if child is MultiplayerSynchronizer or child is MultiplayerSpawner or child is RemoteTransform3D:
+			child.queue_free()
+		else:
+			_strip_network_nodes(child)
 
 func check_two_handed_status() -> void:
 	holding_two_handed = is_instance_valid(held_item) and "is_two_handed" in held_item and held_item.is_two_handed
