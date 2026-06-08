@@ -34,7 +34,28 @@ func _on_body_entered(body: Node) -> void:
 	if is_valid_delivery:
 		game.score += score_to_add
 		game.power += score_to_add
-		rpc("sync_delivery_effects", body.global_position, game.score, body.get_path())
+		
+		rpc("sync_delivery_effects", body.global_position, game.score)
+		
+		# THE FIX: Explicitly free stacked items first
+		if "stacked_items" in body:
+			for item in body.stacked_items:
+				_safe_jolt_delete(item)
+				
+		# Then free the delivered body
+		_safe_jolt_delete(body)
+
+# Helper function to strip collisions before freeing to prevent Jolt ref_count errors
+func _safe_jolt_delete(node) -> void:
+	if not is_instance_valid(node): return
+	node.freeze = true
+
+	if node is CollisionObject3D:
+		node.collision_layer = 0
+		node.collision_mask = 0
+		node.process_mode = Node.PROCESS_MODE_DISABLED
+	
+	node.call_deferred("queue_free")
 
 @rpc("any_peer", "call_local", "reliable")
 func sync_plate_ui(current_plates: int) -> void:
@@ -42,18 +63,10 @@ func sync_plate_ui(current_plates: int) -> void:
 	if ui_node: ui_node.stored = 20 - current_plates
 
 @rpc("any_peer", "call_local", "reliable")
-func sync_delivery_effects(spawn_pos: Vector3, new_score: int, target_path: NodePath) -> void:
-	# Update score locally across clients
+func sync_delivery_effects(spawn_pos: Vector3, new_score: int) -> void:
 	game.score = new_score
 	if game.has_method("thing_ui_update"): game.thing_ui_update()
-	
-	# Spawn visual smoke locally
 	_spawn_smoke(spawn_pos)
-	
-	# Clean up item nodes everywhere
-	var target_node = get_node_or_null(target_path)
-	if is_instance_valid(target_node):
-		target_node.call_deferred("queue_free")
 
 func _calculate_plate_score(plate_node: Node) -> int:
 	if not is_instance_valid(plate_node) or not "stacked_items" in plate_node: return 0
@@ -89,5 +102,5 @@ func _spawn_smoke(spawn_pos: Vector3) -> void:
 		
 	p.global_position = spawn_pos
 	p.emitting = true
-	await get_tree().create_timer(p.lifetime + 0.5).timeout
+	await p.finished
 	if is_instance_valid(p): p.queue_free()
