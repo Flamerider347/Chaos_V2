@@ -12,12 +12,18 @@ func _ready() -> void:
 func stack_item(item: Node) -> void:
 	if not is_instance_valid(item): return
 	var offset = calculate_stack_height()
-	
 	var item_state = item.state if "state" in item else ""
 	var item_cookedness = item.cookedness if "cookedness" in item else 0.0
-
-
 	execute_stack(item, offset, item_state, item_cookedness)
+	# Broadcast to all other peers after reparenting is done
+	rpc("client_sync_stack", str(item.get_path()), offset, item_state, item_cookedness)
+
+
+@rpc("any_peer", "reliable")
+func client_sync_stack(item_path: String, offset: float, forced_state: String, forced_cookedness: float) -> void:
+	var item = get_node_or_null(item_path)
+	if is_instance_valid(item):
+		execute_stack(item, offset, forced_state, forced_cookedness)
 
 func sync_stack(params: Array) -> void:
 	var item = get_node_or_null(params[0])

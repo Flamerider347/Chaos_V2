@@ -7,6 +7,23 @@
 height = 0.47436523
 radius = 0.35546875
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ewpcv"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:freeze")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath(".:visible")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath("CollisionShape3D:disabled")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+
 [node name="bun" type="RigidBody3D" unique_id=2106783148 groups=["choppable", "pickupable"]]
 collision_layer = 5
 collision_mask = 5
@@ -18,3 +35,6 @@ mesh = ExtResource("2_030yr")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1743553243]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.23956141, 0)
 shape = SubResource("CylinderShape3D_030yr")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1249509521]
+replication_config = SubResource("SceneReplicationConfig_ewpcv")

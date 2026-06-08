@@ -9,6 +9,23 @@
 height = 0.20275879
 radius = 0.34960938
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_umwxp"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:freeze")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath(".:visible")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath("CollisionShape3D:disabled")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+
 [node name="meat_chopped_cooked" type="RigidBody3D" unique_id=1119285444 groups=["meat", "pickupable", "plate_stackable"]]
 collision_layer = 5
 collision_mask = 5
@@ -21,3 +38,6 @@ shape = SubResource("CylinderShape3D_hc2be")
 
 [node name="mesh_cooked" type="MeshInstance3D" parent="." unique_id=141237348]
 mesh = ExtResource("3_e7kfw")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=768717951]
+replication_config = SubResource("SceneReplicationConfig_umwxp")

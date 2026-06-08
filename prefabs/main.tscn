@@ -695,6 +695,12 @@ autowrap_mode = 3
 [node name="door_animation_player" type="AnimationPlayer" parent="." unique_id=670073892]
 libraries/ = SubResource("AnimationLibrary_i6w6j")
 
+[node name="fps" type="Label" parent="." unique_id=1827639193]
+offset_left = -2.0
+offset_top = 394.0
+offset_right = 793.0
+offset_bottom = 739.0
+
 [connection signal="body_entered" from="game/world/kitchen/kitchen_area" to="game/world/kitchen/kitchen_area" method="_on_body_entered"]
 [connection signal="body_exited" from="game/world/kitchen/kitchen_area" to="game/world/kitchen/kitchen_area" method="_on_body_exited"]
 [connection signal="body_entered" from="game/world/thing" to="game/world/thing" method="_on_body_entered"]

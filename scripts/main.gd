@@ -19,3 +19,6 @@ func thing_ui_update() -> void:
 	var score_lbl = get_node_or_null("/root/main/UI/score_label") # Update to match your actual UI node name
 	if score_lbl:
 		score_lbl.text = "Score: " + str(GameData.score)
+
+func _process(_delta: float) -> void:
+	$fps.text = str(Engine.get_frames_per_second())

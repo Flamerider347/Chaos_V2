@@ -7,7 +7,24 @@
 height = 0.04901123
 radius = 0.34765625
 
-[node name="cheese_chopped" type="RigidBody3D" unique_id=842069250 groups=["pickupable", "plate_stackable"]]
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_y5awt"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:freeze")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath(".:visible")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath("CollisionShape3D:disabled")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+
+[node name="tomato_chopped" type="RigidBody3D" unique_id=842069250 groups=["pickupable", "plate_stackable"]]
 collision_layer = 5
 collision_mask = 5
 script = ExtResource("1_tcipr")
@@ -30,3 +47,6 @@ mesh = ExtResource("1_rws8n")
 [node name="composite_mesh_3" type="MeshInstance3D" parent="mesh" unique_id=580945086]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.37, 0, 0)
 mesh = ExtResource("1_rws8n")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=783921147]
+replication_config = SubResource("SceneReplicationConfig_y5awt")
