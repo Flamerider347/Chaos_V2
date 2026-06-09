@@ -32,6 +32,8 @@ func _ready() -> void:
 	
 	# Wakeup Sequence
 	is_busy = true
+	if multiplayer.is_server():
+		await get_tree().process_frame
 	_play_animation_networked("GetUp")
 	
 	# If this is a client machine, entirely turn off AI math processing loops

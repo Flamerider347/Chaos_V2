@@ -2,6 +2,7 @@ extends Node3D
 
 @export var day_length_seconds: float = 180.0
 
+@onready var ui_time_label = get_node("/root/main/UI/day_timer")
 @onready var sun_light: DirectionalLight3D = $DirectionalLight3D
 @onready var world_env: WorldEnvironment = $WorldEnvironment
 @onready var night_light : OmniLight3D = $nightlight
@@ -14,7 +15,6 @@ extends Node3D
 	"plate" : preload("res://Prefabs/plate.tscn")
 }
 
-var ui_time_label: Label = null
 var current_time: float = 0.25
 var is_cycle_started: bool = false 
 var current_day = 0
@@ -24,8 +24,6 @@ signal new_day
 
 func _ready() -> void:
 	ui_time_label = get_node_or_null("/root/main/UI/day_timer")
-	if not ui_time_label:
-		ui_time_label = get_tree().current_scene.find_child("day_timer", true, false) as Label
 	update_sky_and_lighting()
 
 
@@ -47,20 +45,20 @@ func _process(delta: float) -> void:
 			changed_day = false
 
 	update_sky_and_lighting()
-	if is_instance_valid(ui_time_label): update_ui_clock()
+	if ui_time_label: update_ui_clock()
 
 
 func start_day_cycle() -> void:
 	is_cycle_started = true
 
 
-@rpc("any_peer", "unreliable")
+@rpc("authority", "unreliable", "call_local")
 func sync_time_from_host(new_time: float) -> void:
 	current_time = new_time
 	GameData.is_night = (current_time >= 0.8333333 or current_time < 0.25)
 
 
-@rpc("any_peer", "call_local", "reliable")
+@rpc("authority", "call_local", "reliable")
 func sync_day_increment(day_num: int) -> void:
 	current_day = day_num
 	new_day.emit(current_day)
@@ -82,7 +80,7 @@ func create_daily_special():
 	rpc("sync_daily_specials_to_all", [r1, r2])
 
 
-@rpc("any_peer", "call_local", "reliable")
+@rpc("authority", "call_local", "reliable")
 func sync_daily_specials_to_all(args: Array) -> void:
 	RecipeManager.recipe_of_the_day = args[0]
 	RecipeManager.recipe_of_the_day2 = args[1]
@@ -137,7 +135,7 @@ func get_node_height(node: Node) -> float:
 
 
 func update_sky_and_lighting() -> void:
-	var sun_angle = current_time * TAU - (TAU / 4.0) + (TAU / 2.0)
+	var sun_angle = current_time * TAU + (TAU / 4.0)
 	sun_light.rotation.x = sun_angle
 	sun_light.rotation.y = deg_to_rad(25.0) 
 	
