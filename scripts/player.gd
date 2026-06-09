@@ -19,7 +19,6 @@ var inventory: Dictionary = {
 	"4": [null, 0, null, []]
 }
 
-
 var last_highlighted_target: Node3D = null
 var outline_material: Material = preload("res://Assets/misc/outline_shader.tres")
 
@@ -94,6 +93,14 @@ func _physics_process(delta: float) -> void:
 	if not is_owned:
 		return
 
+	# FIX: Dynamically calculate if we are holding a 2-handed item or a dirty/filled plate
+	holding_two_handed = false
+	if is_instance_valid(held_item):
+		if "is_two_handed" in held_item and held_item.is_two_handed:
+			holding_two_handed = true
+		elif held_item.is_in_group("plate") and "stacked_items" in held_item and held_item.stacked_items.size() > 0:
+			holding_two_handed = true
+
 	if Input.is_action_just_pressed("debug_toggle"):
 		GameData.is_night = true
 
@@ -145,7 +152,7 @@ func _physics_process(delta: float) -> void:
 				elif target.is_in_group("door"):
 					target.open_door()
 
-			if Input.is_action_just_pressed("right_click") and target.is_in_group("plate") and is_instance_valid(held_item) and held_item.is_in_group("plate_stackable") and can_pickup:
+			if Input.is_action_just_pressed("right_click") and target.is_in_group("plate") and is_instance_valid(held_item) and held_item.is_in_group("plate_stackable") and not held_item.is_in_group("plate") and can_pickup:
 				stack_object(target)
 				return
 
@@ -194,6 +201,10 @@ func _physics_process(delta: float) -> void:
 				held_item.global_position = target.global_position + Vector3(0, 0.2, 0)
 				held_item.global_rotation = Vector3.ZERO
 				is_snapping = true
+			elif target.is_in_group("delivery_area"):
+				held_item.global_position = target.global_position + Vector3(0, 0.2, 0)
+				held_item.global_rotation = Vector3.ZERO
+				is_snapping = true
 			elif not target.is_in_group("chopping_board") and held_item.is_in_group("meat"):
 				held_item.global_position = target.global_position + Vector3(0, 0.4, 0)
 				held_item.global_rotation = Vector3.ZERO
@@ -201,11 +212,25 @@ func _physics_process(delta: float) -> void:
 
 	if is_instance_valid(held_item):
 		held_item.visible = is_snapping
-		# FIX 1: When NOT snapping to a counter, force the real item to track the hand position.
-		# This keeps its RemoteTransforms correctly synced with the player as they walk.
+		
+		if "stacked_items" in held_item:
+			for stacked_item in held_item.stacked_items:
+				if is_instance_valid(stacked_item):
+					stacked_item.visible = is_snapping
+
 		if not is_snapping:
 			held_item.global_position = hand.global_position
 			held_item.global_rotation = hand.global_rotation
+		else:
+			if "stacked_items" in held_item:
+				if is_instance_valid(slot_node) and slot_node.get_child_count() > 0:
+					var visual_plate = slot_node.get_child(0)
+					if is_instance_valid(visual_plate):
+						for idx in range(held_item.stacked_items.size()):
+							var stacked_item = held_item.stacked_items[idx]
+							if is_instance_valid(stacked_item) and visual_plate.get_child_count() > idx:
+								var visual_item = visual_plate.get_child(idx)
+								stacked_item.global_transform = held_item.global_transform * visual_item.transform
 
 	if is_instance_valid(slot_node):
 		slot_node.visible = not is_snapping
@@ -235,15 +260,33 @@ func pickup_object(object):
 			shape.disabled = true
 		object.hide()
 
+		if "stacked_items" in object:
+			for stacked_item in object.stacked_items:
+				if is_instance_valid(stacked_item):
+					stacked_item.freeze = true
+					var s_shape: CollisionShape3D = stacked_item.find_child("CollisionShape3D")
+					if s_shape: s_shape.disabled = true
+					stacked_item.hide()
+
 		if inventory[picked_up][1] <= 1:
 			var object_2 = object.duplicate()
-			# This will strip out network nodes AND pesky RemoteTransforms from the replica
 			_strip_network_nodes(object_2) 
 			
 			find_child("slot" + str(picked_up)).add_child(object_2)
-			object_2.show()
 			object_2.position = Vector3.ZERO
 			object_2.rotation = Vector3.ZERO
+			object_2.show()
+			
+			if "stacked_items" in object:
+				for stacked_item in object.stacked_items:
+					if is_instance_valid(stacked_item):
+						var item_copy = stacked_item.duplicate()
+						_strip_network_nodes(item_copy)
+						object_2.add_child(item_copy)
+						
+						var rel_transform = object.global_transform.affine_inverse() * stacked_item.global_transform
+						item_copy.transform = rel_transform
+						item_copy.show()
 				
 		current_slot = picked_up
 		held_item = inventory[picked_up][3][-1]
@@ -282,6 +325,8 @@ func drop_object():
 				drop_pos = col.global_position + Vector3(0, 1.2, 0)
 			elif col.is_in_group("THE_THING"):
 				drop_pos = col.global_position + Vector3(0, 0.2, 0)
+			elif col.is_in_group("delivery_area"):
+				drop_pos = col.global_position + Vector3(0, 0.2, 0)
 			elif not col.is_in_group("chopping_board") and dropped.is_in_group("meat"):
 				drop_pos = col.global_position + Vector3(0, 0.4, 0)
 
@@ -293,6 +338,22 @@ func drop_object():
 	if shape:
 		shape.disabled = false
 
+	if "stacked_items" in dropped:
+		var slot_node = find_child("slot" + str(current_slot))
+		if is_instance_valid(slot_node) and slot_node.get_child_count() > 0:
+			var visual_plate = slot_node.get_child(0)
+			if is_instance_valid(visual_plate):
+				for idx in range(dropped.stacked_items.size()):
+					var stacked_item = dropped.stacked_items[idx]
+					if is_instance_valid(stacked_item) and visual_plate.get_child_count() > idx:
+						var visual_item = visual_plate.get_child(idx)
+						stacked_item.global_transform = dropped.global_transform * visual_item.transform
+						stacked_item.show()
+						# FIX: Keep physics completely dead on items sitting on a plate out in the world
+						stacked_item.freeze = true 
+						var s_shape: CollisionShape3D = stacked_item.find_child("CollisionShape3D")
+						if s_shape: s_shape.disabled = true
+
 	if multiplayer.is_server():
 		notify_item_dropped(str(dropped.get_path()), drop_pos, multiplayer.get_unique_id())
 	else:
@@ -302,6 +363,13 @@ func drop_object():
 func stack_object(plate: Node3D) -> void:
 	if not is_instance_valid(held_item):
 		return
+
+	# FIX: Immediately remove from pickupable group and kill collision shapes locally
+	if held_item.is_in_group("pickupable"):
+		held_item.remove_from_group("pickupable")
+	held_item.freeze = true
+	var shape: CollisionShape3D = held_item.find_child("CollisionShape3D")
+	if shape: shape.disabled = true
 
 	plate.stack_item(held_item)
 	can_pickup = false
@@ -316,6 +384,7 @@ func stack_object(plate: Node3D) -> void:
 
 	held_item = inventory[current_slot][3][-1] if inventory[current_slot][3].size() > 0 else null
 	update_inventory_ui()
+
 
 @rpc("any_peer", "reliable")
 func notify_item_hidden(item_path: String, hidden: bool, sender_id: int) -> void:
@@ -338,6 +407,14 @@ func sync_item_hidden(item_path: String, hidden: bool, sender_id: int) -> void:
 	if shape:
 		shape.disabled = hidden
 
+	if "stacked_items" in item:
+		for stacked_item in item.stacked_items:
+			if is_instance_valid(stacked_item):
+				stacked_item.visible = not hidden
+				stacked_item.freeze = hidden
+				var s_shape: CollisionShape3D = stacked_item.find_child("CollisionShape3D")
+				if s_shape: s_shape.disabled = hidden
+
 
 @rpc("any_peer", "reliable")
 func notify_item_dropped(item_path: String, drop_pos: Vector3, sender_id: int) -> void:
@@ -345,6 +422,12 @@ func notify_item_dropped(item_path: String, drop_pos: Vector3, sender_id: int) -
 		return
 	var item = get_node_or_null(item_path)
 	if is_instance_valid(item):
+		var relative_transforms = []
+		if "stacked_items" in item:
+			for stacked_item in item.stacked_items:
+				if is_instance_valid(stacked_item):
+					relative_transforms.append(item.global_transform.affine_inverse() * stacked_item.global_transform)
+
 		item.global_position = drop_pos
 		item.global_rotation = Vector3.ZERO
 		item.visible = true
@@ -352,6 +435,20 @@ func notify_item_dropped(item_path: String, drop_pos: Vector3, sender_id: int) -
 		var shape: CollisionShape3D = item.find_child("CollisionShape3D")
 		if shape:
 			shape.disabled = false
+
+		if "stacked_items" in item:
+			for idx in range(item.stacked_items.size()):
+				var stacked_item = item.stacked_items[idx]
+				if is_instance_valid(stacked_item) and idx < relative_transforms.size():
+					# FIX: Strip pickup ability on server sync
+					if stacked_item.is_in_group("pickupable"):
+						stacked_item.remove_from_group("pickupable")
+					stacked_item.global_transform = item.global_transform * relative_transforms[idx]
+					stacked_item.visible = true
+					stacked_item.freeze = true # FIX: Keep frozen
+					var s_shape: CollisionShape3D = stacked_item.find_child("CollisionShape3D")
+					if s_shape: s_shape.disabled = true # FIX: Keep disabled
+
 	rpc("sync_item_dropped", item_path, drop_pos, sender_id)
 	sync_item_dropped(item_path, drop_pos, sender_id)
 
@@ -363,6 +460,13 @@ func sync_item_dropped(item_path: String, drop_pos: Vector3, sender_id: int) -> 
 	var item = get_node_or_null(item_path)
 	if not is_instance_valid(item):
 		return
+		
+	var relative_transforms = []
+	if "stacked_items" in item:
+		for stacked_item in item.stacked_items:
+			if is_instance_valid(stacked_item):
+				relative_transforms.append(item.global_transform.affine_inverse() * stacked_item.global_transform)
+
 	item.global_position = drop_pos
 	item.global_rotation = Vector3.ZERO
 	item.visible = true
@@ -370,6 +474,19 @@ func sync_item_dropped(item_path: String, drop_pos: Vector3, sender_id: int) -> 
 	var shape: CollisionShape3D = item.find_child("CollisionShape3D")
 	if shape:
 		shape.disabled = false
+
+	if "stacked_items" in item:
+		for idx in range(item.stacked_items.size()):
+			var stacked_item = item.stacked_items[idx]
+			if is_instance_valid(stacked_item) and idx < relative_transforms.size():
+				# FIX: Strip pickup group on client network sync
+				if stacked_item.is_in_group("pickupable"):
+					stacked_item.remove_from_group("pickupable")
+				stacked_item.global_transform = item.global_transform * relative_transforms[idx]
+				stacked_item.visible = true
+				stacked_item.freeze = true # FIX: Keep frozen
+				var s_shape: CollisionShape3D = stacked_item.find_child("CollisionShape3D")
+				if s_shape: s_shape.disabled = true # FIX: Keep disabled
 
 
 func update_inventory_ui() -> void:
@@ -402,14 +519,14 @@ func update_inventory_ui() -> void:
 
 		lbl.scale = Vector2(1.15, 1.15) if str(s) == current_slot else Vector2(1.0, 1.0)
 
+
 func _strip_network_nodes(node: Node) -> void:
 	for child in node.get_children():
-		# FIX 2: Added "or child is RemoteTransform3D" here.
-		# This stops the hand visual copy from stealing transform calculations.
 		if child is MultiplayerSynchronizer or child is MultiplayerSpawner or child is RemoteTransform3D:
 			child.queue_free()
 		else:
 			_strip_network_nodes(child)
+
 
 func check_two_handed_status() -> void:
 	holding_two_handed = is_instance_valid(held_item) and "is_two_handed" in held_item and held_item.is_two_handed
