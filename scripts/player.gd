@@ -93,7 +93,6 @@ func _physics_process(delta: float) -> void:
 	if not is_owned:
 		return
 
-	# FIX: Dynamically calculate if we are holding a 2-handed item or a dirty/filled plate
 	holding_two_handed = false
 	if is_instance_valid(held_item):
 		if "is_two_handed" in held_item and held_item.is_two_handed:
@@ -172,21 +171,23 @@ func _physics_process(delta: float) -> void:
 	if not holding_two_handed:
 		changed_slot = false
 		if Input.is_action_just_pressed("1") and current_slot != "1":
-			current_slot = "1"; changed_slot = true
+			current_slot = "1"
+			changed_slot = true
 		elif Input.is_action_just_pressed("2") and current_slot != "2":
-			current_slot = "2"; changed_slot = true
+			current_slot = "2"
+			changed_slot = true
 		elif Input.is_action_just_pressed("3") and current_slot != "3":
-			current_slot = "3"; changed_slot = true
+			current_slot = "3"
+			changed_slot = true
 		elif Input.is_action_just_pressed("4") and current_slot != "4":
-			current_slot = "4"; changed_slot = true
+			current_slot = "4"
+			changed_slot = true
 
 		if changed_slot:
 			if is_instance_valid(held_item):
 				held_item.hide()
 			held_item = inventory[current_slot][3][-1] if inventory[current_slot][3].size() > 0 else null
-			for i in hand.get_children():
-				i.hide()
-			hand.find_child("slot" + current_slot).show()
+			rpc("sync_active_slot", current_slot)
 
 	var slot_node = hand.find_child("slot" + current_slot)
 	var is_snapping: bool = false
@@ -233,8 +234,10 @@ func _physics_process(delta: float) -> void:
 								stacked_item.global_transform = held_item.global_transform * visual_item.transform
 
 	if is_instance_valid(slot_node):
-		slot_node.visible = not is_snapping
-
+		var target_visibility = not is_snapping
+		if slot_node.visible != target_visibility:
+			slot_node.visible = target_visibility
+			rpc("sync_hand_slot_visibility", current_slot, target_visibility)
 	move_and_slide()
 
 
@@ -265,34 +268,17 @@ func pickup_object(object):
 				if is_instance_valid(stacked_item):
 					stacked_item.freeze = true
 					var s_shape: CollisionShape3D = stacked_item.find_child("CollisionShape3D")
-					if s_shape: s_shape.disabled = true
+					if s_shape: 
+						s_shape.disabled = true
 					stacked_item.hide()
 
 		if inventory[picked_up][1] <= 1:
-			var object_2 = object.duplicate()
-			_strip_network_nodes(object_2) 
-			
-			find_child("slot" + str(picked_up)).add_child(object_2)
-			object_2.position = Vector3.ZERO
-			object_2.rotation = Vector3.ZERO
-			object_2.show()
-			
-			if "stacked_items" in object:
-				for stacked_item in object.stacked_items:
-					if is_instance_valid(stacked_item):
-						var item_copy = stacked_item.duplicate()
-						_strip_network_nodes(item_copy)
-						object_2.add_child(item_copy)
-						
-						var rel_transform = object.global_transform.affine_inverse() * stacked_item.global_transform
-						item_copy.transform = rel_transform
-						item_copy.show()
+			rpc("sync_hand_item_added", str(picked_up), str(object.get_path()))
 				
 		current_slot = picked_up
 		held_item = inventory[picked_up][3][-1]
-		for i in hand.get_children():
-			i.hide()
-		hand.find_child("slot" + str(current_slot)).show()
+		
+		rpc("sync_active_slot", str(current_slot))
 		update_inventory_ui()
 
 		if multiplayer.is_server():
@@ -311,8 +297,7 @@ func drop_object():
 
 	if inventory[current_slot][1] <= 0:
 		inventory[current_slot][2] = null
-		for i in find_child("slot" + str(current_slot)).get_children():
-			i.queue_free()
+		rpc("sync_hand_item_removed", str(current_slot))
 
 	update_inventory_ui()
 
@@ -349,10 +334,10 @@ func drop_object():
 						var visual_item = visual_plate.get_child(idx)
 						stacked_item.global_transform = dropped.global_transform * visual_item.transform
 						stacked_item.show()
-						# FIX: Keep physics completely dead on items sitting on a plate out in the world
 						stacked_item.freeze = true 
 						var s_shape: CollisionShape3D = stacked_item.find_child("CollisionShape3D")
-						if s_shape: s_shape.disabled = true
+						if s_shape: 
+							s_shape.disabled = true
 
 	if multiplayer.is_server():
 		notify_item_dropped(str(dropped.get_path()), drop_pos, multiplayer.get_unique_id())
@@ -364,26 +349,82 @@ func stack_object(plate: Node3D) -> void:
 	if not is_instance_valid(held_item):
 		return
 
-	# FIX: Immediately remove from pickupable group and kill collision shapes locally
 	if held_item.is_in_group("pickupable"):
 		held_item.remove_from_group("pickupable")
 	held_item.freeze = true
 	var shape: CollisionShape3D = held_item.find_child("CollisionShape3D")
-	if shape: shape.disabled = true
+	if shape: 
+		shape.disabled = true
 
 	plate.stack_item(held_item)
 	can_pickup = false
 	$pickup_timer.start()
 	inventory[current_slot][3].erase(held_item)
 	inventory[current_slot][1] -= 1
+	
 	if inventory[current_slot][1] <= 0:
 		inventory[current_slot][2] = null
-		var active_slot: Node3D = hand.get_node("slot" + current_slot)
-		for child in active_slot.get_children():
-			child.queue_free()
+		rpc("sync_hand_item_removed", str(current_slot))
 
 	held_item = inventory[current_slot][3][-1] if inventory[current_slot][3].size() > 0 else null
 	update_inventory_ui()
+
+
+@rpc("any_peer", "call_local", "reliable")
+func sync_active_slot(slot_key: String) -> void:
+	current_slot = slot_key
+	for i in hand.get_children():
+		i.hide()
+	var slot_node = hand.find_child("slot" + current_slot)
+	if is_instance_valid(slot_node):
+		slot_node.show()
+
+
+@rpc("any_peer", "call_local", "reliable")
+func sync_hand_item_added(slot_key: String, item_path: String) -> void:
+	var world_object = get_node_or_null(item_path)
+	var slot_node = hand.find_child("slot" + slot_key)
+	
+	if is_instance_valid(world_object) and is_instance_valid(slot_node):
+		for child in slot_node.get_children():
+			child.queue_free()
+			
+		var duplicate_mesh = world_object.duplicate()
+		
+		for child in duplicate_mesh.get_children():
+			if child is MultiplayerSynchronizer or child is MultiplayerSpawner or child is RemoteTransform3D:
+				child.free()
+		
+		_strip_network_nodes(duplicate_mesh)
+		
+		slot_node.add_child(duplicate_mesh)
+		duplicate_mesh.position = Vector3.ZERO
+		duplicate_mesh.rotation = Vector3.ZERO
+		duplicate_mesh.show()
+		
+		if "stacked_items" in world_object:
+			for stacked_item in world_object.stacked_items:
+				if is_instance_valid(stacked_item):
+					var item_copy = stacked_item.duplicate()
+					
+					for s_child in item_copy.get_children():
+						if s_child is MultiplayerSynchronizer or s_child is MultiplayerSpawner or s_child is RemoteTransform3D:
+							s_child.free()
+							
+					_strip_network_nodes(item_copy)
+					duplicate_mesh.add_child(item_copy)
+					
+					var rel_transform = world_object.global_transform.affine_inverse() * stacked_item.global_transform
+					item_copy.transform = rel_transform
+					item_copy.show()
+
+
+@rpc("any_peer", "call_local", "reliable")
+func sync_hand_item_removed(slot_key: String) -> void:
+	var slot_node = hand.find_child("slot" + slot_key)
+	if is_instance_valid(slot_node):
+		for child in slot_node.get_children():
+			child.queue_free()
 
 
 @rpc("any_peer", "reliable")
@@ -391,10 +432,9 @@ func notify_item_hidden(item_path: String, hidden: bool, sender_id: int) -> void
 	if not multiplayer.is_server():
 		return
 	rpc("sync_item_hidden", item_path, hidden, sender_id)
-	sync_item_hidden(item_path, hidden, sender_id)
 
 
-@rpc("any_peer", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sync_item_hidden(item_path: String, hidden: bool, sender_id: int) -> void:
 	if multiplayer.get_unique_id() == sender_id:
 		return
@@ -413,7 +453,8 @@ func sync_item_hidden(item_path: String, hidden: bool, sender_id: int) -> void:
 				stacked_item.visible = not hidden
 				stacked_item.freeze = hidden
 				var s_shape: CollisionShape3D = stacked_item.find_child("CollisionShape3D")
-				if s_shape: s_shape.disabled = hidden
+				if s_shape: 
+					s_shape.disabled = hidden
 
 
 @rpc("any_peer", "reliable")
@@ -422,12 +463,6 @@ func notify_item_dropped(item_path: String, drop_pos: Vector3, sender_id: int) -
 		return
 	var item = get_node_or_null(item_path)
 	if is_instance_valid(item):
-		var relative_transforms = []
-		if "stacked_items" in item:
-			for stacked_item in item.stacked_items:
-				if is_instance_valid(stacked_item):
-					relative_transforms.append(item.global_transform.affine_inverse() * stacked_item.global_transform)
-
 		item.global_position = drop_pos
 		item.global_rotation = Vector3.ZERO
 		item.visible = true
@@ -436,24 +471,10 @@ func notify_item_dropped(item_path: String, drop_pos: Vector3, sender_id: int) -
 		if shape:
 			shape.disabled = false
 
-		if "stacked_items" in item:
-			for idx in range(item.stacked_items.size()):
-				var stacked_item = item.stacked_items[idx]
-				if is_instance_valid(stacked_item) and idx < relative_transforms.size():
-					# FIX: Strip pickup ability on server sync
-					if stacked_item.is_in_group("pickupable"):
-						stacked_item.remove_from_group("pickupable")
-					stacked_item.global_transform = item.global_transform * relative_transforms[idx]
-					stacked_item.visible = true
-					stacked_item.freeze = true # FIX: Keep frozen
-					var s_shape: CollisionShape3D = stacked_item.find_child("CollisionShape3D")
-					if s_shape: s_shape.disabled = true # FIX: Keep disabled
-
 	rpc("sync_item_dropped", item_path, drop_pos, sender_id)
-	sync_item_dropped(item_path, drop_pos, sender_id)
 
 
-@rpc("any_peer", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sync_item_dropped(item_path: String, drop_pos: Vector3, sender_id: int) -> void:
 	if multiplayer.get_unique_id() == sender_id:
 		return
@@ -479,14 +500,14 @@ func sync_item_dropped(item_path: String, drop_pos: Vector3, sender_id: int) -> 
 		for idx in range(item.stacked_items.size()):
 			var stacked_item = item.stacked_items[idx]
 			if is_instance_valid(stacked_item) and idx < relative_transforms.size():
-				# FIX: Strip pickup group on client network sync
 				if stacked_item.is_in_group("pickupable"):
 					stacked_item.remove_from_group("pickupable")
 				stacked_item.global_transform = item.global_transform * relative_transforms[idx]
 				stacked_item.visible = true
-				stacked_item.freeze = true # FIX: Keep frozen
+				stacked_item.freeze = true 
 				var s_shape: CollisionShape3D = stacked_item.find_child("CollisionShape3D")
-				if s_shape: s_shape.disabled = true # FIX: Keep disabled
+				if s_shape: 
+					s_shape.disabled = true 
 
 
 func update_inventory_ui() -> void:
@@ -520,16 +541,35 @@ func update_inventory_ui() -> void:
 		lbl.scale = Vector2(1.15, 1.15) if str(s) == current_slot else Vector2(1.0, 1.0)
 
 
+@rpc("any_peer", "call_local", "unreliable")
+func sync_hand_slot_visibility(slot_key: String, is_visible: bool) -> void:
+	var slot_node = hand.find_child("slot" + slot_key)
+	if is_instance_valid(slot_node):
+		slot_node.visible = is_visible
+
+
 func _strip_network_nodes(node: Node) -> void:
+	if node is MultiplayerSynchronizer:
+		node.public_visibility = false
+		node.set_process(false)
+		node.set_physics_process(false)
+		
+	if node is MultiplayerSpawner or node is RemoteTransform3D:
+		node.set_process(false)
+		node.set_physics_process(false)
+
+	if node is RigidBody3D:
+		node.freeze = true
+		node.gravity_scale = 0.0
+		node.collision_layer = 0
+		node.collision_mask = 0
+		node.process_mode = Node.PROCESS_MODE_DISABLED 
+
+	if node is CollisionShape3D:
+		node.disabled = true
+
 	for child in node.get_children():
-		if child is MultiplayerSynchronizer or child is MultiplayerSpawner or child is RemoteTransform3D:
-			child.queue_free()
-		else:
-			_strip_network_nodes(child)
-
-
-func check_two_handed_status() -> void:
-	holding_two_handed = is_instance_valid(held_item) and "is_two_handed" in held_item and held_item.is_two_handed
+		_strip_network_nodes(child)
 
 
 func _set_mesh_outline(node: Node, active: bool) -> void:
