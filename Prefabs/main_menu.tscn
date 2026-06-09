@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://b5o36fv0otbm2" path="res://scripts/main_menu.gd" id="1_1n3ne"]
 [ext_resource type="Script" uid="uid://hf56gk47qld4" path="res://scripts/tutorial.gd" id="2_7do1g"]
 [ext_resource type="Script" uid="uid://cjjsdgdx8el7h" path="res://scripts/network/LAN.gd" id="3_dgyu8"]
+[ext_resource type="Script" uid="uid://civ4cltduy63" path="res://scripts/network/WebRTC.gd" id="3_m76kp"]
 
 [node name="main_menu" type="Node" unique_id=46663014]
 script = ExtResource("1_1n3ne")
@@ -11,6 +12,7 @@ script = ExtResource("1_1n3ne")
 script = ExtResource("3_dgyu8")
 
 [node name="WebRTC_starter" type="Node" parent="." unique_id=1001951159]
+script = ExtResource("3_m76kp")
 
 [node name="menu_UI" type="CanvasLayer" parent="." unique_id=175713976]
 

@@ -626,13 +626,6 @@ offset_right = 1149.0
 offset_bottom = 33.999992
 script = ExtResource("9_m7hx3")
 
-[node name="colliding" type="Label" parent="UI" unique_id=2114114295]
-offset_left = 939.0
-offset_top = 41.0
-offset_right = 1165.0
-offset_bottom = 126.0
-text = "Left click to do something"
-
 [node name="day_timer" type="Label" parent="UI" unique_id=1922941794]
 offset_left = 538.0
 offset_top = 10.0
@@ -698,10 +691,11 @@ autowrap_mode = 3
 libraries/ = SubResource("AnimationLibrary_i6w6j")
 
 [node name="fps" type="Label" parent="." unique_id=1827639193]
-offset_left = -2.0
-offset_top = 394.0
-offset_right = 793.0
-offset_bottom = 739.0
+offset_left = 1102.0
+offset_top = 5.0
+offset_right = 1897.0
+offset_bottom = 350.0
+text = "240.0"
 
 [connection signal="body_entered" from="game/world/kitchen/kitchen_area" to="game/world/kitchen/kitchen_area" method="_on_body_entered"]
 [connection signal="body_exited" from="game/world/kitchen/kitchen_area" to="game/world/kitchen/kitchen_area" method="_on_body_exited"]

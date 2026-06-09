@@ -11,13 +11,13 @@ var scores: Dictionary = {
 func _on_body_entered(body: Node) -> void:
 	if not is_instance_valid(body): return
 
-	# 1. Player Kill-zone
 	if body.is_in_group("player"):
 		if body.has_method("take_damage"): body.take_damage(1000)
 		return
 
-	# 2. Server-side processing for item deliveries
-	if not multiplayer.is_server(): return
+	# Offline Check: Ensure non-server players are caught and blocked in multiplayer, 
+	# but allowed through if playing entirely alone.
+	if multiplayer.multiplayer_peer != null and not multiplayer.is_server(): return
 	
 	var score_to_add = 0
 	var is_valid_delivery = false
@@ -26,7 +26,12 @@ func _on_body_entered(body: Node) -> void:
 		score_to_add = _calculate_plate_score(body)
 		is_valid_delivery = true
 		GameData.current_plates = max(0, GameData.current_plates - 1)
-		rpc("sync_plate_ui", GameData.current_plates)
+		
+		if multiplayer.multiplayer_peer:
+			rpc("sync_plate_ui", GameData.current_plates)
+		else:
+			sync_plate_ui(GameData.current_plates)
+			
 	elif body.is_in_group("pickupable") and scores.has(body.type):
 		score_to_add = scores[body.type]
 		is_valid_delivery = true
@@ -35,14 +40,15 @@ func _on_body_entered(body: Node) -> void:
 		game.score += score_to_add
 		game.power += score_to_add
 		
-		rpc("sync_delivery_effects", body.global_position, game.score)
+		if multiplayer.multiplayer_peer:
+			rpc("sync_delivery_effects", body.global_position, game.score)
+		else:
+			sync_delivery_effects(body.global_position, game.score)
 		
-		# THE FIX: Explicitly free stacked items first
 		if "stacked_items" in body:
 			for item in body.stacked_items:
 				_safe_jolt_delete(item)
 				
-		# Then free the delivered body
 		_safe_jolt_delete(body)
 
 # Helper function to strip collisions before freeing to prevent Jolt ref_count errors

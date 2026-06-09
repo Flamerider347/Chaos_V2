@@ -10,6 +10,8 @@ gradient = SubResource("Gradient_7bv5x")
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_y0ctg"]
 angle_min = 1.0728835e-05
 angle_max = 90.000015
+radial_velocity_min = 1.9999776
+radial_velocity_max = 4.9999776
 gravity = Vector3(0, 9, 0)
 scale_min = 0.25
 color_ramp = SubResource("GradientTexture1D_7bv5x")

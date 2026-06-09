@@ -542,10 +542,10 @@ func update_inventory_ui() -> void:
 
 
 @rpc("any_peer", "call_local", "unreliable")
-func sync_hand_slot_visibility(slot_key: String, is_visible: bool) -> void:
+func sync_hand_slot_visibility(slot_key: String, item_is_visible: bool) -> void:
 	var slot_node = hand.find_child("slot" + slot_key)
 	if is_instance_valid(slot_node):
-		slot_node.visible = is_visible
+		slot_node.visible = item_is_visible
 
 
 func _strip_network_nodes(node: Node) -> void:

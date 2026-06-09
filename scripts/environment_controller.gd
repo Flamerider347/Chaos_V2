@@ -1,8 +1,8 @@
 extends Node3D
 
-@export var day_length_seconds: float = 180.0
+@export var day_length_seconds: float = 5.0    
 
-@onready var ui_time_label = get_node("/root/main/UI/day_timer")
+@onready var ui_time_label = get_node_or_null("/root/main/UI/day_timer")
 @onready var sun_light: DirectionalLight3D = $DirectionalLight3D
 @onready var world_env: WorldEnvironment = $WorldEnvironment
 @onready var night_light : OmniLight3D = $nightlight
@@ -21,23 +21,41 @@ var current_day = 0
 var changed_day = false
 signal new_day
 
-
 func _ready() -> void:
 	ui_time_label = get_node_or_null("/root/main/UI/day_timer")
 	update_sky_and_lighting()
 
-
 func _process(delta: float) -> void:
-	if not is_cycle_started or (GameData.paused and not GameData.connected): return
+	# 1. Stop immediately if the cycle isn't running or if the game has been lost
+	if not is_cycle_started or GameData.lost or (GameData.paused and not GameData.connected): return
+	
+	# 2. Safety Check: If the multiplayer API wrapper instance itself is broken or freeing, skip calculation
+	if not is_instance_valid(multiplayer): return
 		
-	if multiplayer.is_server():
+	# Check if we are running the simulation host authority role
+	var is_host_authority = true
+	if multiplayer.multiplayer_peer and not multiplayer.is_server():
+		is_host_authority = false
+		
+	if is_host_authority:
 		current_time += delta / day_length_seconds
-		rpc_id(0, "sync_time_from_host", current_time)
+		
+		# Only send RPC updates if a network match is running
+		if multiplayer.multiplayer_peer:
+			rpc_id(0, "sync_time_from_host", current_time)
+		else:
+			# Singleplayer manual assignment loop
+			GameData.is_night = (current_time >= 0.8333333 or current_time < 0.25)
 		
 		if current_time > 0.25 and not changed_day:
 			changed_day = true
 			current_day += 1
-			rpc("sync_day_increment", current_day)
+			
+			if multiplayer.multiplayer_peer:
+				rpc("sync_day_increment", current_day)
+			else:
+				sync_day_increment(current_day)
+				
 			create_daily_special()
 			
 		if current_time > 1.0 and changed_day:
@@ -47,27 +65,19 @@ func _process(delta: float) -> void:
 	update_sky_and_lighting()
 	if ui_time_label: update_ui_clock()
 
-
+@rpc("any_peer", "call_local", "reliable")
 func start_day_cycle() -> void:
 	is_cycle_started = true
-
-
-@rpc("authority", "unreliable", "call_local")
-func sync_time_from_host(new_time: float) -> void:
-	current_time = new_time
-	GameData.is_night = (current_time >= 0.8333333 or current_time < 0.25)
-
-
-@rpc("authority", "call_local", "reliable")
-func sync_day_increment(day_num: int) -> void:
-	current_day = day_num
-	new_day.emit(current_day)
-	var day_lbl = get_node_or_null("/root/main/UI/current_day")
-	if day_lbl: day_lbl.text = "Day: " + str(current_day)
-
+	
+func _is_host_or_singleplayer() -> bool:
+	# Safety Check: Guarantee multiplayer instance wrapper availability
+	if not is_instance_valid(multiplayer) or multiplayer.multiplayer_peer == null:
+		return true
+	return multiplayer.is_server()
 
 func create_daily_special():
-	if not multiplayer.is_server(): return
+	if not _is_host_or_singleplayer(): return
+	
 	var keys = RecipeManager.recipes.keys()
 	if keys.size() == 0: return
 
@@ -77,7 +87,26 @@ func create_daily_special():
 		while r2 == r1:
 			r2 = keys[randi_range(0, keys.size() - 1)]
 			
-	rpc("sync_daily_specials_to_all", [r1, r2])
+	if is_instance_valid(multiplayer) and multiplayer.multiplayer_peer:
+		rpc("sync_daily_specials_to_all", [r1, r2])
+	else:
+		sync_daily_specials_to_all([r1, r2])
+
+@rpc("authority", "unreliable", "call_local")
+func sync_time_from_host(new_time: float) -> void:
+	current_time = new_time
+	GameData.is_night = (current_time >= 0.8333333 or current_time < 0.25)
+
+@rpc("authority", "call_local", "reliable")
+func sync_day_increment(day_num: int) -> void:
+	current_day = day_num
+	new_day.emit(current_day)
+	
+	# FIX 1: Prevent crash if the match has ended and the tree is unloading
+	if not is_inside_tree(): return
+	
+	var day_lbl = get_node_or_null("/root/main/UI/current_day")
+	if day_lbl: day_lbl.text = "Day: " + str(current_day)
 
 
 @rpc("authority", "call_local", "reliable")
@@ -85,9 +114,12 @@ func sync_daily_specials_to_all(args: Array) -> void:
 	RecipeManager.recipe_of_the_day = args[0]
 	RecipeManager.recipe_of_the_day2 = args[1]
 
+	# FIX 2: Stop right here if the scene is being dismantled to prevent global position errors
+	if not is_inside_tree(): return
+
 	var setups = [
-		{"disp": $"../world/kitchen/thing_placement/daily_recipe", "lbl": $"../world/kitchen/thing_placement/recipe_of_the_day", "data": RecipeManager.recipes.get(args[0])},
-		{"disp": $"../world/kitchen/thing_placement/daily_recipe2", "lbl": $"../world/kitchen/thing_placement/recipe_of_the_day2", "data": RecipeManager.recipes.get(args[1])}
+		{"disp": get_node_or_null("../world/kitchen/thing_placement/daily_recipe"), "lbl": get_node_or_null("../world/kitchen/thing_placement/recipe_of_the_day"), "data": RecipeManager.recipes.get(args[0])},
+		{"disp": get_node_or_null("../world/kitchen/thing_placement/daily_recipe2"), "lbl": get_node_or_null("../world/kitchen/thing_placement/recipe_of_the_day2"), "data": RecipeManager.recipes.get(args[1])}
 	]
 
 	for setup in setups:
@@ -102,9 +134,8 @@ func sync_daily_specials_to_all(args: Array) -> void:
 		var gap: float = 0.1 
 		
 		var plate = ingredients["plate"].instantiate()
-		if "freeze" in plate:
-			plate.freeze = true
-			plate.remove_from_group("plate")
+		_strip_item_interactivity(plate, "plate")
+		
 		display_node.add_child(plate)
 		plate.global_position = display_node.global_position 
 		stack_height += get_node_height(plate) + gap
@@ -114,7 +145,9 @@ func sync_daily_specials_to_all(args: Array) -> void:
 			if not ingredients.has(item_key): continue
 			var item = ingredients[item_key].instantiate()
 			item.type = item_key
-			if "freeze" in item: item.freeze = true
+			
+			_strip_item_interactivity(item, "pickupable")
+			
 			display_node.add_child(item)
 			item.global_position = display_node.global_position + Vector3(0, stack_height, 0)
 			stack_height += get_node_height(item) + gap
@@ -123,6 +156,29 @@ func sync_daily_specials_to_all(args: Array) -> void:
 			recipe_label.text = "RECIPE OF THE DAY:\n%s ($%d)" % [data.get("display_name", "Unknown"), int(data.get("value", 0)) * 1.5]
 			recipe_label.global_position = display_node.global_position + Vector3(0, stack_height + 0.6, 0)
 
+func _strip_item_interactivity(node: Node, group_to_remove: String) -> void:
+	if not is_instance_valid(node): return
+	
+	# Remove it from gameplay tracking groups so interaction systems ignore it
+	if node.is_in_group(group_to_remove):
+		node.remove_from_group(group_to_remove)
+	if node.is_in_group("pickupable"):
+		node.remove_from_group("pickupable")
+		
+	# Freeze it physically so Jolt/Godot Physics stops tracking it
+	if "freeze" in node:
+		node.freeze = true
+		
+	# Disable the script running on the item (stops item logic/timers)
+	node.set_process(false)
+	node.set_physics_process(false)
+	node.set_script(null) 
+	
+	# Turn off collisions completely so it's a ghost prop
+	if node is CollisionObject3D:
+		node.collision_layer = 0
+		node.collision_mask = 0
+		node.process_mode = Node.PROCESS_MODE_DISABLED
 
 func get_node_height(node: Node) -> float:
 	if not is_instance_valid(node): return 0.1
@@ -132,7 +188,6 @@ func get_node_height(node: Node) -> float:
 		elif col.shape is CylinderShape3D or col.shape is CapsuleShape3D: return col.shape.height
 		elif col.shape is SphereShape3D: return col.shape.radius * 2.0
 	return 0.1
-
 
 func update_sky_and_lighting() -> void:
 	var sun_angle = current_time * TAU + (TAU / 4.0)
@@ -170,7 +225,6 @@ func update_sky_and_lighting() -> void:
 
 	if is_instance_valid(night_light):
 		night_light.light_energy = (1.0 - (sun_fade / 1.2)) * 2.0
-
 
 func update_ui_clock() -> void:
 	var total_minutes = int(current_time * 24.0 * 60.0)
