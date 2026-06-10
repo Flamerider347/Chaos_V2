@@ -1,4 +1,4 @@
 # Kitchen Chaos 2
 
 
-## NOTE: THIS IS THE FINAL WORKING GD-SYNC VERSION
+## Now converted to LAN with WebRTC to be setup
