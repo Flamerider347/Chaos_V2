@@ -31,7 +31,11 @@ func _ready() -> void:
 
 # --- Host Logic (Creating the Lobby) ---
 func host_game() -> void:
-	var error = peer.create_server(DEFAULT_PORT, 4) # Max 4 players
+	# CRITICAL: Always instantiate a clean peer instance before creating a server
+	peer = ENetMultiplayerPeer.new()
+	
+	# Pass 3 if you want a strict 4-player max lobby (1 host + 3 clients)
+	var error = peer.create_server(DEFAULT_PORT, 10) 
 	if error != OK:
 		_update_status_ui("Failed to host on port " + str(DEFAULT_PORT))
 		return
@@ -45,10 +49,13 @@ func host_game() -> void:
 # --- Client Logic (Joining the Lobby) ---
 func join_game(target_ip: String) -> void:
 	if target_ip.strip_edges() == "":
-		target_ip = "127.0.0.1" # Default to localhost if empty
+		target_ip = "127.0.0.1" 
 		
 	is_joining = true
 	_update_status_ui("Connecting...")
+	
+	# CRITICAL: Always instantiate a clean peer instance before creating a client
+	peer = ENetMultiplayerPeer.new()
 	
 	var error = peer.create_client(target_ip, DEFAULT_PORT)
 	if error != OK:
@@ -56,9 +63,6 @@ func join_game(target_ip: String) -> void:
 		return
 		
 	multiplayer.multiplayer_peer = peer
-
-# --- Godot Network Signal Callbacks ---
-
 func _on_player_connected(id: int) -> void:
 	print("Player connected with network ID: ", id)
 

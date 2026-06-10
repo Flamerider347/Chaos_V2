@@ -1,7 +1,5 @@
 extends Node3D
 
-@export var day_length_seconds: float = 10.0
-
 # --- UI Onready Variables ---
 @onready var score_label: Label = get_node_or_null("/root/main/UI/score_label")
 @onready var day_timer_label: Label = get_node_or_null("/root/main/UI/day_timer")

@@ -35,6 +35,13 @@ func _on_input_body_entered(body: Node3D) -> void:
 	var type = body.type
 	if body is RigidBody3D:
 		if type in valid_food_types:
+			# FIX 1: Stop physical bounces from triggering double entry counting
+			if stocks[type].has(body):
+				return
+				
+			# FIX 2: Reclaim server authority immediately so client physics can't fight the deselect
+			body.set_multiplayer_authority(1)
+			
 			stocks[type].append(body)
 			body.position = Vector3(0, -50, 0)
 			body.freeze = true
@@ -75,14 +82,21 @@ func server_spawn_item(item_type: String, requester_id: int) -> void:
 
 	elif stocks.has(item_type) and stocks[item_type].size() > 0:
 		var item_to_spawn: Node3D = stocks[item_type].pop_back()
+		
+		# FIX 3: Safety wrapper to verify the object reference is active before extraction calculations
 		if is_instance_valid(item_to_spawn):
 			item_to_spawn.freeze = false
 			item_to_spawn.visible = true
+			item_to_spawn.set_collision_layer_value(3, true) # Kept your working layer logic!
 			item_to_spawn.global_position = item_spawn_pos
 			item_to_spawn.set_multiplayer_authority(requester_id)
+			
 			rpc("sync_display_count", item_type, stocks[item_type].size())
 			rpc("sync_recalled_item", str(item_to_spawn.get_path()), item_spawn_pos)
 			sync_recalled_item(str(item_to_spawn.get_path()), item_spawn_pos)
+		else:
+			# Fallback sync if a null node somehow slipped into the tracker array
+			rpc("sync_display_count", item_type, stocks[item_type].size())
 
 
 @rpc("any_peer", "reliable")
@@ -93,6 +107,7 @@ func sync_recalled_item(item_path: String, pos: Vector3) -> void:
 	item.global_position = pos
 	item.visible = true
 	item.freeze = false
+	item.set_collision_layer_value(3, true) # Kept your working layer logic!
 	var shape: CollisionShape3D = item.find_child("CollisionShape3D")
 	if shape:
 		shape.disabled = false

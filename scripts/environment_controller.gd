@@ -1,6 +1,6 @@
 extends Node3D
 
-@export var day_length_seconds: float = 5.0    
+@export var day_length_seconds: float = 180.0    
 
 @onready var ui_time_label = get_node_or_null("/root/main/UI/day_timer")
 @onready var sun_light: DirectionalLight3D = $DirectionalLight3D

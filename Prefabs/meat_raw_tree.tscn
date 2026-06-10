@@ -41,3 +41,6 @@ mesh = ExtResource("5_halqr")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=197831313]
 replication_config = SubResource("SceneReplicationConfig_6072s")
+
+[node name="item_timer" type="Timer" parent="." unique_id=640458904]
+one_shot = true
