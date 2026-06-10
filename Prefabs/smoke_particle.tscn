@@ -4,30 +4,32 @@
 offsets = PackedFloat32Array(0, 0.33660132, 0.5849673, 0.85294116, 1)
 colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_y0ctg"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7bv5x"]
 gradient = SubResource("Gradient_7bv5x")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_4samp"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_y0ctg"]
 angle_min = 1.0728835e-05
 angle_max = 90.000015
 radial_velocity_min = 1.9999776
 radial_velocity_max = 4.9999776
 gravity = Vector3(0, 9, 0)
 scale_min = 0.25
-color_ramp = SubResource("GradientTexture1D_y0ctg")
+color_ramp = SubResource("GradientTexture1D_7bv5x")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1qv7y"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7bv5x"]
 transparency = 1
 vertex_color_use_as_albedo = true
 
-[sub_resource type="SphereMesh" id="SphereMesh_vyapm"]
-material = SubResource("StandardMaterial3D_1qv7y")
+[sub_resource type="SphereMesh" id="SphereMesh_y0ctg"]
+material = SubResource("StandardMaterial3D_7bv5x")
+radial_segments = 8
+rings = 4
 
-[node name="smoke_particle" type="GPUParticles3D" unique_id=403456921]
+[node name="smoke_particle" type="GPUParticles3D" unique_id=2060471551]
 emitting = false
 amount = 30
 lifetime = 1.5
 one_shot = true
 explosiveness = 0.8
-process_material = SubResource("ParticleProcessMaterial_4samp")
-draw_pass_1 = SubResource("SphereMesh_vyapm")
+process_material = SubResource("ParticleProcessMaterial_y0ctg")
+draw_pass_1 = SubResource("SphereMesh_y0ctg")

@@ -1,11 +1,27 @@
 [gd_scene format=3 uid="uid://uqptavxff366"]
 
 [ext_resource type="Script" uid="uid://byplvy0m43nn1" path="res://scripts/plate.gd" id="1_khefw"]
-[ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="2_agim4"]
 [ext_resource type="ArrayMesh" uid="uid://blmeb0is1ac16" path="res://Assets/Models/kitchenassets/plate.obj" id="2_vaopm"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ho3ci"]
 size = Vector3(1, 0.1, 1)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_agim4"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:freeze")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath(".:visible")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath("CollisionShape3D:disabled")
+properties/4/spawn = true
+properties/4/replication_mode = 2
 
 [node name="plate" type="RigidBody3D" unique_id=550599860 groups=["pickupable", "plate", "two_handed"]]
 collision_layer = 5
@@ -19,26 +35,5 @@ shape = SubResource("BoxShape3D_ho3ci")
 [node name="mesh" type="MeshInstance3D" parent="." unique_id=132229452]
 mesh = ExtResource("2_vaopm")
 
-[node name="PropertySynchronizer" type="Node" parent="." unique_id=1257356748]
-script = ExtResource("2_agim4")
-broadcast = 2
-node_path = NodePath("..")
-properties = PackedStringArray("global_position", "global_rotation", "freeze")
-interpolated = false
-interpolation_speed = 1.0
-extrapolation = null
-extrapolated = false
-max_extrapolation_time = 0.2
-metadata/_custom_type_script = "uid://b7bt85tck6v7g"
-
-[node name="PropertySynchronizer2" type="Node" parent="." unique_id=534404609]
-script = ExtResource("2_agim4")
-broadcast = 2
-node_path = NodePath("../CollisionShape3D")
-properties = PackedStringArray("disabled")
-interpolated = false
-interpolation_speed = 1.0
-extrapolation = null
-extrapolated = false
-max_extrapolation_time = 0.2
-metadata/_custom_type_script = "uid://b7bt85tck6v7g"
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=225880196]
+replication_config = SubResource("SceneReplicationConfig_agim4")

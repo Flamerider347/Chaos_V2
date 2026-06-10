@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://b40mw3jwwby2f"]
 
 [ext_resource type="Script" uid="uid://1tm70vo1mjck" path="res://scripts/storage_display.gd" id="1_dwqd6"]
-[ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="2_fnene"]
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_dwqd6"]
 data = PackedVector3Array(-0.05, -0.45, 0.45, -0.05, -0.45, -0.45, -0.05, 0.45, -0.45, 0.05, -0.45, -0.45, -0.05, -0.45, -0.45, -0.05, -0.45, 0.45, -0.05, 0.45, -0.45, -0.05, -0.45, -0.45, 0.05, -0.45, -0.45, -0.05, 0.45, -0.45, -0.05, 0.45, 0.45, -0.05, -0.45, 0.45, -0.05, -0.45, 0.45, -0.05, 0.45, 0.45, 0.05, 0.45, 0.45, 0.05, 0.45, 0.45, -0.05, 0.45, 0.45, -0.05, 0.45, -0.45, -0.05, -0.45, 0.45, 0.05, -0.45, 0.45, 0.05, -0.45, -0.45, 0.05, 0.45, 0.45, 0.05, -0.45, 0.45, -0.05, -0.45, 0.45, 0.05, -0.45, -0.45, 0.05, -0.45, 0.45, 0.05, 0.45, 0.45, 0.05, -0.45, -0.45, 0.05, 0.45, -0.45, -0.05, 0.45, -0.45, -0.05, 0.45, -0.45, 0.05, 0.45, -0.45, 0.05, 0.45, 0.45, 0.05, 0.45, 0.45, 0.05, 0.45, -0.45, 0.05, -0.45, -0.45)
@@ -25,14 +24,3 @@ vertical_alignment = 2
 
 [node name="item_mesh" type="MeshInstance3D" parent="." unique_id=1513333337]
 transform = Transform3D(0.01, 0, 0, 0, 1, 0, 0, 0, 1, 0.06, -0.4, 0)
-
-[node name="PropertySynchronizer" type="Node" parent="." unique_id=1207760901]
-script = ExtResource("2_fnene")
-node_path = NodePath("../stored")
-properties = PackedStringArray("text")
-interpolated = false
-interpolation_speed = 1.0
-extrapolation = null
-extrapolated = false
-max_extrapolation_time = 0.2
-metadata/_custom_type_script = "uid://b7bt85tck6v7g"

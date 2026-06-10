@@ -2,9 +2,17 @@
 
 [ext_resource type="Script" uid="uid://b5o36fv0otbm2" path="res://scripts/main_menu.gd" id="1_1n3ne"]
 [ext_resource type="Script" uid="uid://hf56gk47qld4" path="res://scripts/tutorial.gd" id="2_7do1g"]
+[ext_resource type="Script" uid="uid://cjjsdgdx8el7h" path="res://scripts/network/LAN.gd" id="3_dgyu8"]
+[ext_resource type="Script" uid="uid://civ4cltduy63" path="res://scripts/network/WebRTC.gd" id="3_m76kp"]
 
 [node name="main_menu" type="Node" unique_id=46663014]
 script = ExtResource("1_1n3ne")
+
+[node name="LAN_starter" type="Node" parent="." unique_id=1403336714]
+script = ExtResource("3_dgyu8")
+
+[node name="WebRTC_starter" type="Node" parent="." unique_id=1001951159]
+script = ExtResource("3_m76kp")
 
 [node name="menu_UI" type="CanvasLayer" parent="." unique_id=175713976]
 
@@ -13,7 +21,6 @@ offset_left = 288.0
 offset_top = 306.0
 offset_right = 552.0
 offset_bottom = 382.0
-disabled = true
 text = "Join
 "
 
@@ -81,5 +88,14 @@ To get started, you can press \"play\" to join singleplayer or host a world, or 
 Be aware that connecting may take some time, and there's a maximum lobby size of 4. If the door has been opened you won't be able to join the lobby."
 autowrap_mode = 3
 
+[node name="lan_check" type="CheckButton" parent="menu_UI" unique_id=1277900329]
+offset_left = 59.0
+offset_top = 166.0
+offset_right = 212.0
+offset_bottom = 235.0
+button_pressed = true
+text = "Lan/Online"
+
 [connection signal="pressed" from="menu_UI/join_button" to="." method="_on_join_pressed"]
 [connection signal="pressed" from="menu_UI/play_button" to="." method="_on_play_pressed"]
+[connection signal="toggled" from="menu_UI/lan_check" to="." method="_on_lan_check_toggled"]

@@ -2,11 +2,27 @@
 
 [ext_resource type="Script" uid="uid://m8dtdn28meeu" path="res://scripts/item.gd" id="1_030yr"]
 [ext_resource type="ArrayMesh" uid="uid://bthlco7r3n27t" path="res://Assets/Models/kitchenassets/food_ingredient_bun.obj" id="2_030yr"]
-[ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="3_rvyxl"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_030yr"]
 height = 0.47436523
 radius = 0.35546875
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ewpcv"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:freeze")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath(".:visible")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath("CollisionShape3D:disabled")
+properties/4/spawn = true
+properties/4/replication_mode = 2
 
 [node name="bun" type="RigidBody3D" unique_id=2106783148 groups=["choppable", "pickupable"]]
 collision_layer = 5
@@ -20,26 +36,5 @@ mesh = ExtResource("2_030yr")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.23956141, 0)
 shape = SubResource("CylinderShape3D_030yr")
 
-[node name="PropertySynchronizer" type="Node" parent="." unique_id=272914693]
-script = ExtResource("3_rvyxl")
-broadcast = 2
-node_path = NodePath("..")
-properties = PackedStringArray("global_position", "global_rotation", "freeze")
-interpolated = false
-interpolation_speed = 1.0
-extrapolation = null
-extrapolated = false
-max_extrapolation_time = 0.2
-metadata/_custom_type_script = "uid://b7bt85tck6v7g"
-
-[node name="PropertySynchronizer2" type="Node" parent="." unique_id=1629252780]
-script = ExtResource("3_rvyxl")
-broadcast = 2
-node_path = NodePath("../CollisionShape3D")
-properties = PackedStringArray("disabled")
-interpolated = false
-interpolation_speed = 1.0
-extrapolation = null
-extrapolated = false
-max_extrapolation_time = 0.2
-metadata/_custom_type_script = "uid://b7bt85tck6v7g"
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1249509521]
+replication_config = SubResource("SceneReplicationConfig_ewpcv")

@@ -2,13 +2,29 @@
 
 [ext_resource type="ArrayMesh" uid="uid://bewc7hpqqbqd8" path="res://Assets/Models/kitchenassets/food_ingredient_tomato_slice.obj" id="1_rws8n"]
 [ext_resource type="Script" uid="uid://m8dtdn28meeu" path="res://scripts/item.gd" id="1_tcipr"]
-[ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="3_qijp5"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_tcipr"]
 height = 0.04901123
 radius = 0.34765625
 
-[node name="cheese_chopped" type="RigidBody3D" unique_id=842069250 groups=["pickupable", "plate_stackable"]]
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_y5awt"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:freeze")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath(".:visible")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath("CollisionShape3D:disabled")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+
+[node name="tomato_chopped" type="RigidBody3D" unique_id=842069250 groups=["pickupable", "plate_stackable"]]
 collision_layer = 5
 collision_mask = 5
 script = ExtResource("1_tcipr")
@@ -32,26 +48,5 @@ mesh = ExtResource("1_rws8n")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.37, 0, 0)
 mesh = ExtResource("1_rws8n")
 
-[node name="PropertySynchronizer" type="Node" parent="." unique_id=515839190]
-script = ExtResource("3_qijp5")
-broadcast = 2
-node_path = NodePath("..")
-properties = PackedStringArray("global_position", "global_rotation", "freeze", "type")
-interpolated = false
-interpolation_speed = 1.0
-extrapolation = null
-extrapolated = false
-max_extrapolation_time = 0.2
-metadata/_custom_type_script = "uid://b7bt85tck6v7g"
-
-[node name="PropertySynchronizer2" type="Node" parent="." unique_id=1064610053]
-script = ExtResource("3_qijp5")
-broadcast = 2
-node_path = NodePath("../CollisionShape3D")
-properties = PackedStringArray("disabled")
-interpolated = false
-interpolation_speed = 1.0
-extrapolation = null
-extrapolated = false
-max_extrapolation_time = 0.2
-metadata/_custom_type_script = "uid://b7bt85tck6v7g"
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=783921147]
+replication_config = SubResource("SceneReplicationConfig_y5awt")

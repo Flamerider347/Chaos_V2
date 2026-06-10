@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://bxa4oeybkp46x" path="res://scripts/player.gd" id="1_5wxv7"]
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://Assets/SFX/icon.svg" id="2_2nftw"]
-[ext_resource type="Script" uid="uid://b7bt85tck6v7g" path="res://addons/GD-Sync/Scripts/Types/PropertySynchronizer.gd" id="2_y5hcb"]
 [ext_resource type="ArrayMesh" uid="uid://d0xna0wnnnxeg" path="res://Assets/Models/TopHat.obj" id="3_2nftw"]
 [ext_resource type="Texture2D" uid="uid://cysttpplh4j14" path="res://Assets/misc/icon.svg" id="4_ht1c8"]
 [ext_resource type="Shader" uid="uid://bc5wx8x6gio6q" path="res://Assets/misc/global_outline.gdshader" id="5_hck1p"]
@@ -35,6 +34,14 @@ size = Vector2(2, 2)
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_3icqa"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_y6xdh"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_knrd4"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 2
 
 [node name="player" type="CharacterBody3D" unique_id=300991191 groups=["player"]]
 process_mode = 1
@@ -91,33 +98,12 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 2
 billboard = 2
 text = "John"
 
-[node name="PropertySynchronizer4" type="Node" parent="." unique_id=1292649933]
-script = ExtResource("2_y5hcb")
-broadcast = 2
-refresh_rate = 60
-node_path = NodePath("..")
-properties = PackedStringArray("rotation_degrees")
-interpolated = false
-interpolation_speed = 60.0
-extrapolation = null
-extrapolated = false
-max_extrapolation_time = 0.2
-metadata/_custom_type_script = "uid://b7bt85tck6v7g"
-
-[node name="PropertySynchronizer" type="Node" parent="." unique_id=1495390822]
-script = ExtResource("2_y5hcb")
-broadcast = 2
-refresh_rate = 60
-node_path = NodePath("..")
-properties = PackedStringArray("global_position")
-interpolated = true
-interpolation_speed = 30.0
-extrapolated = false
-max_extrapolation_time = 0.2
-metadata/_custom_type_script = "uid://b7bt85tck6v7g"
-
 [node name="pickup_timer" type="Timer" parent="." unique_id=750239620]
 wait_time = 0.1
 one_shot = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1984760006]
+replication_interval = 0.1
+replication_config = SubResource("SceneReplicationConfig_knrd4")
 
 [connection signal="timeout" from="pickup_timer" to="." method="_on_pickup_timer_timeout"]
