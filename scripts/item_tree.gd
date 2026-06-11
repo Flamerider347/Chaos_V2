@@ -36,7 +36,7 @@ func _on_item_timer_timeout() -> void:
 	self.find_child(self.name + str(item_left)).show()
 	if item_left < max_item_left:
 		if has_node("item_timer"):
-			$item_timer.start(0.2)
+			$item_timer.start(10)
 
 
 @rpc("any_peer", "reliable")
@@ -63,7 +63,7 @@ func server_handle_punch(sender_id: int) -> void:
 		item_spawner.spawn(package)
 	
 	if has_node("item_timer"):
-		$item_timer.start(0.2)
+		$item_timer.start(10)
 		
 
 

@@ -66,6 +66,44 @@ collision_layer = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.032962143, 0)
 shape = SubResource("BoxShape3D_wy42j")
 
+[node name="input3" type="StaticBody3D" parent="." unique_id=669241738 groups=["THE_THING", "placeable"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 16)
+collision_layer = 7
+collision_mask = 7
+metadata/_edit_group_ = true
+
+[node name="hopper" type="MeshInstance3D" parent="input3" unique_id=1503657893]
+mesh = ExtResource("1_wy42j")
+
+[node name="hopper_colision" type="CollisionShape3D" parent="input3" unique_id=1739127137]
+shape = SubResource("ConcavePolygonShape3D_b11uu")
+
+[node name="input_detection" type="Area3D" parent="input3" unique_id=375316510]
+collision_layer = 4
+
+[node name="input_detection_collider" type="CollisionShape3D" parent="input3/input_detection" unique_id=378839199 groups=["THE_THING", "placeable"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.032962143, 0)
+shape = SubResource("BoxShape3D_wy42j")
+
+[node name="input4" type="StaticBody3D" parent="." unique_id=1530759567 groups=["THE_THING", "placeable"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, 16)
+collision_layer = 7
+collision_mask = 7
+metadata/_edit_group_ = true
+
+[node name="hopper" type="MeshInstance3D" parent="input4" unique_id=1217362653]
+mesh = ExtResource("1_wy42j")
+
+[node name="hopper_colision" type="CollisionShape3D" parent="input4" unique_id=649778124]
+shape = SubResource("ConcavePolygonShape3D_b11uu")
+
+[node name="input_detection" type="Area3D" parent="input4" unique_id=2102769632]
+collision_layer = 4
+
+[node name="input_detection_collider" type="CollisionShape3D" parent="input4/input_detection" unique_id=310106763 groups=["THE_THING", "placeable"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.032962143, 0)
+shape = SubResource("BoxShape3D_wy42j")
+
 [node name="main_display" type="StaticBody3D" parent="." unique_id=345972175]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 collision_layer = 3
@@ -116,6 +154,56 @@ visible = false
 text = "STOP SPAWNING PLATES 
 YOU ALREADY HAVE 20"
 
+[node name="main_display2" type="StaticBody3D" parent="." unique_id=52959326]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 17)
+collision_layer = 3
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="temp_main_collider" type="CSGBox3D" parent="main_display2" unique_id=1373841302]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2)
+size = Vector3(2, 2, 4)
+material = SubResource("StandardMaterial3D_m7cs6")
+
+[node name="main_collider" type="CollisionShape3D" parent="main_display2" unique_id=570642351]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.017333968, 1, 2)
+shape = SubResource("BoxShape3D_atruf")
+
+[node name="tomato" parent="main_display2" unique_id=2100771733 instance=ExtResource("3_r5g5x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 1.5, 3.45)
+display_mesh = ExtResource("4_r5g5x")
+y_offset = 0.1
+
+[node name="plate" parent="main_display2" unique_id=1792900176 instance=ExtResource("3_r5g5x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 0.50972867, 3.45)
+stored = 20
+y_offset = -0.165
+
+[node name="Label3D" type="Label3D" parent="main_display2/plate" unique_id=1754237772]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.050318718, 0, 0)
+text = "Plates"
+
+[node name="cheese" parent="main_display2" unique_id=1339812407 instance=ExtResource("3_r5g5x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 1.5, 2.45)
+display_mesh = ExtResource("5_g3ifc")
+y_offset = 0.15
+
+[node name="bun" parent="main_display2" unique_id=425795608 instance=ExtResource("3_r5g5x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 1.5, 1.45)
+display_mesh = ExtResource("6_710h6")
+y_offset = 0.2
+
+[node name="meat_raw" parent="main_display2" unique_id=1146126443 instance=ExtResource("3_r5g5x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 1.5, 0.45)
+display_mesh = ExtResource("6_1xajb")
+y_offset = 0.25
+
+[node name="plate_warning" type="Label3D" parent="main_display2" unique_id=114545977]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1.0009695, 0.58364683, 1.6083028)
+visible = false
+text = "STOP SPAWNING PLATES 
+YOU ALREADY HAVE 20"
+
 [node name="output" type="StaticBody3D" parent="." unique_id=642246616]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
 collision_layer = 3
@@ -132,6 +220,22 @@ shape = SubResource("BoxShape3D_g3ifc")
 [node name="spawn_point" type="Node3D" parent="output" unique_id=293223406]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 
+[node name="output2" type="StaticBody3D" parent="." unique_id=89035944]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 22)
+collision_layer = 3
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="bench_output" type="MeshInstance3D" parent="output2" unique_id=998352796]
+mesh = ExtResource("3_0c86a")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="output2" unique_id=220560001]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_g3ifc")
+
+[node name="spawn_point" type="Node3D" parent="output2" unique_id=690728577]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
 [node name="warning_timer" type="Timer" parent="." unique_id=1903808972]
 one_shot = true
 
@@ -141,4 +245,6 @@ spawn_limit = 20
 
 [connection signal="body_entered" from="input/input_detection" to="." method="_on_input_body_entered"]
 [connection signal="body_entered" from="input2/input_detection" to="." method="_on_input_body_entered"]
+[connection signal="body_entered" from="input3/input_detection" to="." method="_on_input_body_entered"]
+[connection signal="body_entered" from="input4/input_detection" to="." method="_on_input_body_entered"]
 [connection signal="timeout" from="warning_timer" to="." method="_on_warning_timer_timeout"]

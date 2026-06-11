@@ -13,24 +13,18 @@ radius = 1.0844727
 height = 5.4227295
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_soqgf"]
-properties/0/path = NodePath("Label3D:text")
+properties/0/path = NodePath("Tree1Tomato1:visible")
 properties/0/spawn = true
 properties/0/replication_mode = 1
-properties/1/path = NodePath("Tree2Tomato1:visible")
+properties/1/path = NodePath("Tree1Tomato2:visible")
 properties/1/spawn = true
 properties/1/replication_mode = 1
-properties/2/path = NodePath("Tree2Tomato2:visible")
+properties/2/path = NodePath("Tree1Tomato3:visible")
 properties/2/spawn = true
 properties/2/replication_mode = 1
-properties/3/path = NodePath("Tree2Tomato3:visible")
+properties/3/path = NodePath("Tree1Tomato4:visible")
 properties/3/spawn = true
 properties/3/replication_mode = 1
-properties/4/path = NodePath("Tree2Tomato4:visible")
-properties/4/spawn = true
-properties/4/replication_mode = 1
-properties/5/path = NodePath("Tree2Tomato5:visible")
-properties/5/spawn = true
-properties/5/replication_mode = 1
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vd21m"]
 albedo_texture = ExtResource("3_e5hxk")
