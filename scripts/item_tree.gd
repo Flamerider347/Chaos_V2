@@ -1,16 +1,18 @@
 extends Node3D
-
-var item_left: int = 5:
-	set(val):
-		item_left = val
-		if has_node("Label3D"):
-			$Label3D.text = str(val)
-
+var item_children = []
+var max_item_left = 4
+var item_left: int = 4
 # Path pointing to your native MultiplayerSpawner
 @onready var item_spawner: MultiplayerSpawner = get_node("/root/main/game/spawners/item_spawner")
 
 
 func _ready() -> void:
+	for i in self.get_children():
+		if i.is_in_group("tree_item"):
+			item_children.append(i)
+			i.show()
+	max_item_left = item_children.size()
+	item_left = max_item_left
 	if has_node("Label3D"):
 		$Label3D.text = str(item_left)
 	
@@ -30,10 +32,11 @@ func _on_item_timer_timeout() -> void:
 	if not multiplayer.is_server():
 		return
 		
-	item_left = min(5, item_left + 1)
-	if item_left < 5:
+	item_left = min(max_item_left, item_left + 1)
+	self.find_child(self.name + str(item_left)).show()
+	if item_left < max_item_left:
 		if has_node("item_timer"):
-			$item_timer.start(10)
+			$item_timer.start(0.2)
 
 
 @rpc("any_peer", "reliable")
@@ -42,13 +45,13 @@ func server_handle_punch(sender_id: int) -> void:
 		return
 	if item_left <= 0:
 		return
-	
-	item_left -= 1
-	
-	var item_name_prefix: String = self.name.left(-5) # e.g., "meat" or "plate"
+
+	var item_name_prefix: String = self.name.substr(5).to_lower()
 	var angle: float = randf_range(0, 2 * PI)
 	var spawn_pos: Vector3 = global_position + Vector3(sin(angle), 0.2, cos(angle)) * randf_range(1, 3)
 	
+	self.find_child(self.name + str(item_left)).hide()
+	item_left -= 1
 	# Generate a secure network-unique identity name string
 	var unique_name: String = item_name_prefix + "_" + str(randi() % 100000)
 	
@@ -60,7 +63,8 @@ func server_handle_punch(sender_id: int) -> void:
 		item_spawner.spawn(package)
 	
 	if has_node("item_timer"):
-		$item_timer.start(10)
+		$item_timer.start(0.2)
+		
 
 
 # --- Native Godot Spawn Routine ---

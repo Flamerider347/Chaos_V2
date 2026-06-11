@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://b7v3hl5yko217"]
+
+[ext_resource type="Script" uid="uid://togfvjn4aqrk" path="res://scripts/item_tree.gd" id="1_mkai2"]
+[ext_resource type="ArrayMesh" uid="uid://jyccg41bp8kj" path="res://Assets/Models/tree1tomatoX.obj" id="2_wk3ir"]
+[ext_resource type="Texture2D" uid="uid://ckwrj4w1xthnd" path="res://Assets/Models/restaurantbits_texture.png" id="3_e5hxk"]
+[ext_resource type="ArrayMesh" uid="uid://bvs28ujvnj1i6" path="res://Assets/Models/tree1tomato1.obj" id="4_x0x00"]
+[ext_resource type="ArrayMesh" uid="uid://bk55tayshwrro" path="res://Assets/Models/tree1tomato2.obj" id="5_0vxj4"]
+[ext_resource type="ArrayMesh" uid="uid://ctyquof576osg" path="res://Assets/Models/tree1tomato3.obj" id="6_i0ox2"]
+[ext_resource type="ArrayMesh" uid="uid://y770xycbm6cc" path="res://Assets/Models/tree1tomato4.obj" id="7_iqm7r"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wk3ir"]
+radius = 1.0844727
+height = 5.4227295
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_soqgf"]
+properties/0/path = NodePath("Label3D:text")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("Tree2Tomato1:visible")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("Tree2Tomato2:visible")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("Tree2Tomato3:visible")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("Tree2Tomato4:visible")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath("Tree2Tomato5:visible")
+properties/5/spawn = true
+properties/5/replication_mode = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vd21m"]
+albedo_texture = ExtResource("3_e5hxk")
+
+[node name="Tree1Tomato" type="StaticBody3D" unique_id=68733649 groups=["punchable"]]
+collision_layer = 7
+collision_mask = 7
+script = ExtResource("1_mkai2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2071637746]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8767567, 0)
+shape = SubResource("CapsuleShape3D_wk3ir")
+
+[node name="item_timer" type="Timer" parent="." unique_id=1312441818]
+one_shot = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=529418325]
+replication_config = SubResource("SceneReplicationConfig_soqgf")
+
+[node name="Tree1TomatoX" type="MeshInstance3D" parent="." unique_id=681818308]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9, 0)
+mesh = ExtResource("2_wk3ir")
+surface_material_override/0 = SubResource("StandardMaterial3D_vd21m")
+
+[node name="Tree1Tomato1" type="MeshInstance3D" parent="." unique_id=384988498 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9, 0)
+mesh = ExtResource("4_x0x00")
+surface_material_override/0 = SubResource("StandardMaterial3D_vd21m")
+
+[node name="Tree1Tomato2" type="MeshInstance3D" parent="." unique_id=1591872037 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9, 0)
+mesh = ExtResource("5_0vxj4")
+surface_material_override/0 = SubResource("StandardMaterial3D_vd21m")
+
+[node name="Tree1Tomato3" type="MeshInstance3D" parent="." unique_id=1397556417 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9, 0)
+mesh = ExtResource("6_i0ox2")
+surface_material_override/0 = SubResource("StandardMaterial3D_vd21m")
+
+[node name="Tree1Tomato4" type="MeshInstance3D" parent="." unique_id=1540436249 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9, 0)
+mesh = ExtResource("7_iqm7r")
+surface_material_override/0 = SubResource("StandardMaterial3D_vd21m")
+
+[connection signal="timeout" from="item_timer" to="." method="_on_item_timer_timeout"]

@@ -1,0 +1,119 @@
+[gd_scene format=3 uid="uid://cmdk146oos7fp"]
+
+[ext_resource type="Script" uid="uid://togfvjn4aqrk" path="res://scripts/item_tree.gd" id="1_gtn07"]
+[ext_resource type="ArrayMesh" uid="uid://ds21gxd2takga" path="res://Assets/Models/tree3tomatoX.obj" id="2_fmasp"]
+[ext_resource type="Texture2D" uid="uid://kbccb3s4q7hh" path="res://Assets/Models/kitchenassets/restaurantbits_texture.png" id="3_2t2sn"]
+[ext_resource type="ArrayMesh" uid="uid://dyv2ysc67bwho" path="res://Assets/Models/tree3tomato9.obj" id="4_0fskj"]
+[ext_resource type="Material" uid="uid://141503k533fm" path="res://Assets/misc/mesh_colours.tres" id="5_2t2sn"]
+[ext_resource type="ArrayMesh" uid="uid://5ars2jy58fr0" path="res://Assets/Models/tree3tomato10.obj" id="5_4ttme"]
+[ext_resource type="ArrayMesh" uid="uid://x6emnrf3hf8i" path="res://Assets/Models/tree3tomato7.obj" id="6_7jvn8"]
+[ext_resource type="ArrayMesh" uid="uid://b0b8hnqhim4ue" path="res://Assets/Models/tree3tomato6.obj" id="7_vk7om"]
+[ext_resource type="ArrayMesh" uid="uid://ciukit3t0v5m0" path="res://Assets/Models/tree3tomato5.obj" id="8_jhyfh"]
+[ext_resource type="ArrayMesh" uid="uid://btgrugkdxl3g5" path="res://Assets/Models/tree3tomato4.obj" id="9_q4x5r"]
+[ext_resource type="ArrayMesh" uid="uid://knpvtwf24wb8" path="res://Assets/Models/tree3tomato3.obj" id="10_pndu0"]
+[ext_resource type="ArrayMesh" uid="uid://cpnj3ryq8up2n" path="res://Assets/Models/tree3tomato2.obj" id="11_2qdn4"]
+[ext_resource type="ArrayMesh" uid="uid://cm6mtijnxhe6k" path="res://Assets/Models/tree3tomato8.obj" id="12_0fskj"]
+[ext_resource type="ArrayMesh" uid="uid://bs6pd38wvuryh" path="res://Assets/Models/tree3tomato1.obj" id="12_qqstc"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wk3ir"]
+radius = 1.5776367
+height = 8.700562
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_soqgf"]
+properties/0/path = NodePath("Label3D:text")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("Tree2Tomato1:visible")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("Tree2Tomato2:visible")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("Tree2Tomato3:visible")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("Tree2Tomato4:visible")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath("Tree2Tomato5:visible")
+properties/5/spawn = true
+properties/5/replication_mode = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0i2h6"]
+albedo_texture = ExtResource("3_2t2sn")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xhxc5"]
+albedo_texture = ExtResource("3_2t2sn")
+
+[node name="Tree3Tomato" type="StaticBody3D" unique_id=68733649 groups=["punchable"]]
+collision_layer = 7
+collision_mask = 7
+script = ExtResource("1_gtn07")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2071637746]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.600556, 0)
+shape = SubResource("CapsuleShape3D_wk3ir")
+
+[node name="item_timer" type="Timer" parent="." unique_id=1312441818]
+one_shot = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=529418325]
+replication_config = SubResource("SceneReplicationConfig_soqgf")
+
+[node name="Tree3TomatoX" type="MeshInstance3D" parent="." unique_id=405999631]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9, 0)
+mesh = ExtResource("2_fmasp")
+surface_material_override/0 = SubResource("StandardMaterial3D_0i2h6")
+surface_material_override/1 = SubResource("StandardMaterial3D_xhxc5")
+
+[node name="Tree3Tomato1" type="MeshInstance3D" parent="." unique_id=1483708601 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9, 0)
+mesh = ExtResource("12_qqstc")
+surface_material_override/0 = ExtResource("5_2t2sn")
+
+[node name="Tree3Tomato2" type="MeshInstance3D" parent="." unique_id=1741294787 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9, 0)
+mesh = ExtResource("11_2qdn4")
+surface_material_override/0 = ExtResource("5_2t2sn")
+
+[node name="Tree3Tomato3" type="MeshInstance3D" parent="." unique_id=1440253067 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9, 0)
+mesh = ExtResource("10_pndu0")
+surface_material_override/0 = ExtResource("5_2t2sn")
+
+[node name="Tree3Tomato4" type="MeshInstance3D" parent="." unique_id=1294625099 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9, 0)
+mesh = ExtResource("9_q4x5r")
+surface_material_override/0 = ExtResource("5_2t2sn")
+
+[node name="Tree3Tomato5" type="MeshInstance3D" parent="." unique_id=1807419765 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9, 0)
+mesh = ExtResource("8_jhyfh")
+surface_material_override/0 = ExtResource("5_2t2sn")
+
+[node name="Tree3Tomato6" type="MeshInstance3D" parent="." unique_id=242570856 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9, 0)
+mesh = ExtResource("7_vk7om")
+surface_material_override/0 = ExtResource("5_2t2sn")
+
+[node name="Tree3Tomato7" type="MeshInstance3D" parent="." unique_id=1306433747 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9, 0)
+mesh = ExtResource("6_7jvn8")
+surface_material_override/0 = ExtResource("5_2t2sn")
+
+[node name="Tree3Tomato8" type="MeshInstance3D" parent="." unique_id=536331472 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9, 0)
+mesh = ExtResource("12_0fskj")
+surface_material_override/0 = ExtResource("5_2t2sn")
+
+[node name="Tree3Tomato9" type="MeshInstance3D" parent="." unique_id=2132719893 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9, 0)
+mesh = ExtResource("4_0fskj")
+surface_material_override/0 = ExtResource("5_2t2sn")
+
+[node name="Tree3Tomato10" type="MeshInstance3D" parent="." unique_id=1571558817 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9, 0)
+mesh = ExtResource("5_4ttme")
+surface_material_override/0 = ExtResource("5_2t2sn")
+
+[connection signal="timeout" from="item_timer" to="." method="_on_item_timer_timeout"]
