@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cm6mtijnxhe6k"
+path="res://.godot/imported/tree3tomato8.obj-f9050aba607be1ced6d6e94dfa9a3490.mesh"
+
+[deps]
+
+files=["res://.godot/imported/tree3tomato8.obj-f9050aba607be1ced6d6e94dfa9a3490.mesh"]
+
+source_file="res://Assets/Models/tree3tomato8.obj"
+dest_files=["res://.godot/imported/tree3tomato8.obj-f9050aba607be1ced6d6e94dfa9a3490.mesh", "res://.godot/imported/tree3tomato8.obj-f9050aba607be1ced6d6e94dfa9a3490.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

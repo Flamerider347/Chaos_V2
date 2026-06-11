@@ -210,7 +210,11 @@ func _physics_process(delta: float) -> void:
 				held_item.global_position = target.global_position + Vector3(0, 0.4, 0)
 				held_item.global_rotation = Vector3.ZERO
 				is_snapping = true
-
+		elif target.is_in_group("plate") and held_item.is_in_group("plate_stackable"):
+			var y_stack_height = target.calculate_stack_height() + 0.1
+			held_item.global_position = target.global_position + Vector3(0, y_stack_height, 0)
+			held_item.global_rotation = Vector3.ZERO
+			is_snapping = true
 	if is_instance_valid(held_item):
 		held_item.visible = is_snapping
 		
