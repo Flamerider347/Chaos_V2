@@ -13,7 +13,7 @@ properties/0/path = NodePath("Label3D:text")
 properties/0/spawn = true
 properties/0/replication_mode = 1
 
-[node name="bun_tree" type="StaticBody3D" unique_id=68733649 groups=["punchable"]]
+[node name="Tree1Bun" type="StaticBody3D" unique_id=68733649 groups=["punchable"]]
 collision_layer = 7
 collision_mask = 7
 script = ExtResource("1_dtyhy")
@@ -22,10 +22,6 @@ script = ExtResource("1_dtyhy")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 radius = 0.2
 sides = 6
-
-[node name="bun_decorator" type="MeshInstance3D" parent="." unique_id=204626617]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
-mesh = ExtResource("2_hjqq3")
 
 [node name="bun_collider" type="CollisionShape3D" parent="." unique_id=1092164731]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
@@ -45,5 +41,25 @@ one_shot = true
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=304594812]
 replication_config = SubResource("SceneReplicationConfig_plfi1")
+
+[node name="Tree1Bun1" type="MeshInstance3D" parent="." unique_id=382210329 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0339355, 2, 1.8721924)
+mesh = ExtResource("2_hjqq3")
+
+[node name="Tree1Bun2" type="MeshInstance3D" parent="." unique_id=86421772 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0779419, 2, 0.02758789)
+mesh = ExtResource("2_hjqq3")
+
+[node name="Tree1Bun3" type="MeshInstance3D" parent="." unique_id=930798485 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7548828, 2, -0.7680664)
+mesh = ExtResource("2_hjqq3")
+
+[node name="Tree1Bun4" type="MeshInstance3D" parent="." unique_id=1634961384 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0474854, 2, 0.9111328)
+mesh = ExtResource("2_hjqq3")
+
+[node name="Tree1Bun5" type="MeshInstance3D" parent="." unique_id=286096853 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15710449, 2, -0.7680664)
+mesh = ExtResource("2_hjqq3")
 
 [connection signal="timeout" from="item_timer" to="." method="_on_item_timer_timeout"]

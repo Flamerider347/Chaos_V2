@@ -5,7 +5,7 @@ extends Area3D
 
 var scores: Dictionary = {
 	"cheese": 5, "cheese_chopped": 10, "tomato": 6, "tomato_chopped": 12, "bun": 50,
-	"bun_bottom_chopped": 40, "bun_top_chopped": 30, "meat_raw": 10, "meat_cooked": 50, "meat_burnt": 25
+	"bun_bottom_chopped": 40, "bun_top_chopped": 30, "meat": 10, "meat_cooked": 50, "meat_burnt": 25
 }
 
 func _on_body_entered(body: Node) -> void:

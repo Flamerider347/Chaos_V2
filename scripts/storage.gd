@@ -1,6 +1,6 @@
 extends Node3D
 
-var valid_food_types: Array[String] = ["cheese", "tomato", "bun", "meat_raw"]
+var valid_food_types: Array[String] = ["cheese", "tomato", "bun", "meat"]
 @export var stocks: Dictionary = {}
 
 # Keep track of both spawn positions now

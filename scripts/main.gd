@@ -81,7 +81,7 @@ func _notification(what: int) -> void:
 
 func _process(_delta: float) -> void:
 	if has_node("fps"):
-		$fps.text = str(Engine.get_frames_per_second())
+		$fps.text = "FPS: " +str(Engine.get_frames_per_second())
 
 # --- Day Cycle & Survival Math Logic ---
 

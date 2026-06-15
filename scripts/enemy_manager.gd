@@ -1,10 +1,6 @@
 extends Node3D
 
-@onready var spawn_points: Array[Marker3D] = [
-	$"../navigation_nodes/Marker3D",
-	$"../navigation_nodes/Marker3D2",
-	$"../navigation_nodes/Marker3D3",
-]
+@onready var spawn_points: Array[Marker3D] = []
 var active_enemies: Array = []
 
 # Dynamically grabs your custom MultiplayerSpawner child node
@@ -17,6 +13,9 @@ func _ready() -> void:
 	timer.autostart = true
 	timer.timeout.connect(_on_time_check)
 	add_child(timer)
+	for i in $"../navigation_nodes".get_children():
+		if i is Marker3D:
+			spawn_points.append(i)
 
 func _on_time_check() -> void:
 	if not multiplayer.is_server(): return

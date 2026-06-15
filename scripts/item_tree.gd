@@ -33,7 +33,7 @@ func _on_item_timer_timeout() -> void:
 		return
 		
 	item_left = min(max_item_left, item_left + 1)
-	self.find_child(self.name + str(item_left)).show()
+	self.find_child(str(self.name.left(-1)) + str(item_left)).show()
 	if item_left < max_item_left:
 		if has_node("item_timer"):
 			$item_timer.start(10)
@@ -46,11 +46,10 @@ func server_handle_punch(sender_id: int) -> void:
 	if item_left <= 0:
 		return
 
-	var item_name_prefix: String = self.name.substr(5).to_lower()
+	var item_name_prefix: String = self.name.substr(5).to_lower().left(-1)
 	var angle: float = randf_range(0, 2 * PI)
 	var spawn_pos: Vector3 = global_position + Vector3(sin(angle), 0.2, cos(angle)) * randf_range(1, 3)
-	
-	self.find_child(self.name + str(item_left)).hide()
+	self.find_child(self.name.left(-1) + str(item_left)).hide()
 	item_left -= 1
 	# Generate a secure network-unique identity name string
 	var unique_name: String = item_name_prefix + "_" + str(randi() % 100000)

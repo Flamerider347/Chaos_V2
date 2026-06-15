@@ -143,7 +143,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 1.5, 1.45)
 display_mesh = ExtResource("6_710h6")
 y_offset = 0.2
 
-[node name="meat_raw" parent="main_display" unique_id=1343648376 instance=ExtResource("3_r5g5x")]
+[node name="meat" parent="main_display" unique_id=1343648376 instance=ExtResource("3_r5g5x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 1.5, 0.45)
 display_mesh = ExtResource("6_1xajb")
 y_offset = 0.25
@@ -193,7 +193,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 1.5, 1.45)
 display_mesh = ExtResource("6_710h6")
 y_offset = 0.2
 
-[node name="meat_raw" parent="main_display2" unique_id=1146126443 instance=ExtResource("3_r5g5x")]
+[node name="meat" parent="main_display2" unique_id=1146126443 instance=ExtResource("3_r5g5x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 1.5, 0.45)
 display_mesh = ExtResource("6_1xajb")
 y_offset = 0.25
