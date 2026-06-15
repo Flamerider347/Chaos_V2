@@ -10,6 +10,29 @@ extends Node3D
 @onready var main_ui = $UI
 @onready var thing_ui_panel: Label3D = get_node_or_null("game/world/kitchen/thing_placement/thing_UI")
 
+# Point this directly to your MultiplayerSpawner dedicated to trees
+@onready var tree_spawner: MultiplayerSpawner = get_node_or_null("game/spawners/tree_spawner")
+@onready var item_spawner: MultiplayerSpawner = get_node_or_null("game/spawners/item_spawner")
+
+var current_trees = {
+	"Tomato" : [],
+	"Cheese" : [],
+	"Bun" : [],
+	"Meat" : [],
+}
+
+# Mapping types to their distinct variations
+var tree_prefabs = {
+	"Tomato" : ["res://Prefabs/tree_1_tomato.tscn", "res://Prefabs/tree_2_tomato.tscn", "res://Prefabs/tree_3_tomato.tscn"],
+	"Cheese" : ["res://Prefabs/tree_1_cheese.tscn"],
+	"Bun" : ["res://Prefabs/tree_1_bun.tscn"],
+	"Meat" : ["res://Prefabs/tree_1_meat.tscn"]
+}
+
+# Defined boundaries for your map positions
+var min_spawn_bound: Vector2 = Vector2(-45, -45)
+var max_spawn_bound: Vector2 = Vector2(45, 45)
+
 # --- Gameplay Core Variables ---
 var score: int = 0:
 	set(val):
@@ -30,36 +53,41 @@ var paused: bool = false
 func _ready() -> void:
 	GameData.in_game = true
 	GameData.lost = false
-	
-	# 1. Force the game state variables to be completely unpaused on boot
 	paused = false
 	GameData.paused = false
 	
-	# 2. Visually hide the pause menu and show the primary gameplay HUD
 	if is_instance_valid(pause_ui):
 		pause_ui.visible = false
 	if is_instance_valid(main_ui):
 		main_ui.visible = true
 		
-	# 3. CRITICAL: Explicitly trap the mouse cursor immediately so movement works on frame one
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
-	# Connect to environment controller if it exists in your scene tree
 	var env_controller = get_node_or_null("environment_controller")
 	if env_controller:
 		env_controller.new_day.connect(_on_environment_controller_new_day)
 	
-	# Initialize Networking Display text safely
 	if multiplayer.multiplayer_peer and multiplayer.get_unique_id() != 0:
 		if is_instance_valid(status_label): status_label.text = "Match Active"
 		if is_instance_valid(pause_room_label): pause_room_label.text = "Online Session"
 	else:
 		if is_instance_valid(status_label): status_label.text = "Local Match"
 		
-	# Fallback data sync on load
 	score = GameData.score
 	power = GameData.power
 	thing_ui_update()
+	
+	# Register custom spawner rules for the trees on all peers
+# Register custom spawner rules for the trees on all peers
+	if is_instance_valid(tree_spawner):
+		tree_spawner.spawn_function = _on_tree_spawn_custom
+		
+	# FIX: Bind the item spawner callable here so it is valid on frame one for everyone
+	if is_instance_valid(item_spawner):
+		item_spawner.spawn_function = _on_custom_item_spawn_shared
+		
+	if multiplayer.is_server():
+		grow_a_garden()
 	
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
@@ -81,35 +109,109 @@ func _notification(what: int) -> void:
 
 func _process(_delta: float) -> void:
 	if has_node("fps"):
-		$fps.text = "FPS: " +str(Engine.get_frames_per_second())
+		$fps.text = "FPS: " + str(Engine.get_frames_per_second())
 
 # --- Day Cycle & Survival Math Logic ---
 
 func _on_environment_controller_new_day(day: int) -> void:
 	current_day = day
-	
-	# Match display label if tracked by this script
 	if is_instance_valid(current_day_label):
 		current_day_label.text = "Day: " + str(current_day)
 		
 	if day != 1:
 		total_power_cost += 10 * day 
 	
-	# Base baseline power recovery/calculation adjustments 
 	power = 100 + score - total_power_cost
 	thing_ui_update()
 	
-	# Server validates resources and handles game over synchronization
 	if multiplayer.is_server():
 		if power < 0:
 			rpc("burn_it_all_down")
+		else:
+			# Automatically regenerate fallen trees at the start of a new day
+			grow_a_garden()
+
+func grow_a_garden() -> void:
+	if not multiplayer.is_server(): return
+	
+	# Define your kitchen boundaries (Adjust these vectors to fit your kitchen's size!)
+	var kitchen_min: Vector2 = Vector2(-10.0, -10.0)
+	var kitchen_max: Vector2 = Vector2(10.0, 10.0)
+	
+	for type in current_trees.keys():
+		var current_count = current_trees[type].size()
+		
+		while current_count < 4:
+			var variations = tree_prefabs[type]
+			var chosen_prefab_path = variations[randi() % variations.size()]
+			
+			var spawn_pos: Vector3 = Vector3.ZERO
+			var valid_position: bool = false
+			
+			# Keep picking a position until it lands outside the kitchen bounds
+			while not valid_position:
+				var rand_x = randf_range(min_spawn_bound.x, max_spawn_bound.x)
+				var rand_z = randf_range(min_spawn_bound.y, max_spawn_bound.y)
+				
+				# Check if the picked coordinate is inside the kitchen zone
+				if rand_x >= kitchen_min.x and rand_x <= kitchen_max.x and rand_z >= kitchen_min.y and rand_z <= kitchen_max.y:
+					continue # It's in the kitchen! Loop again to try a different spot.
+				
+				spawn_pos = Vector3(rand_x, 0.0, rand_z)
+				valid_position = true
+			
+			var unique_name = "Tree_" + type + "_" + str(randi() % 100000)
+			var data_packet = [chosen_prefab_path, spawn_pos, unique_name, type]
+			
+			if is_instance_valid(tree_spawner):
+				tree_spawner.spawn(data_packet)
+				
+			current_count += 1
+
+func _on_custom_item_spawn_shared(data: Array) -> Node:
+	if data.size() < 3: return null
+		
+	var item_type = data[0]
+	var target_pos = data[2]
+	var exact_name: String = str(data[3]) if data.size() >= 4 else str(item_type) + "_fallback_" + str(randi() % 100000)
+	
+	var item_path: String = "res://Prefabs/" + str(item_type) + ".tscn"
+	if not ResourceLoader.exists(item_path): return null
+		
+	var item_instance = load(item_path).instantiate()
+	item_instance.name = exact_name
+	item_instance.type = str(item_type)
+	item_instance.position = target_pos
+	
+	item_instance.set_multiplayer_authority(1)
+	item_instance.add_to_group("plate_stackable")
+	item_instance.add_to_group("pickupable")
+	
+	return item_instance
+func _on_tree_spawn_custom(data: Array) -> Node:
+	var path = data[0]
+	var pos = data[1]
+	var node_name = data[2]
+	var type = data[3]
+	
+	if not ResourceLoader.exists(path):
+		return null
+		
+	var tree_instance = load(path).instantiate()
+	tree_instance.name = node_name
+	
+	# FIXED: Changing this to local .position stops the "!is_inside_tree()" engine error
+	tree_instance.position = pos
+	
+	if not current_trees[type].has(tree_instance):
+		current_trees[type].append(tree_instance)
+		
+	return tree_instance
 
 func thing_ui_update() -> void:
-	# 1. Update general score tracking UI element
 	if is_instance_valid(score_label):
 		score_label.text = "Score: " + str(score)
 		
-	# 2. Update dynamic survival display readout text box
 	if is_instance_valid(thing_ui_panel):
 		var next_night_cost = 10 * (current_day + 1)
 		var power_req = power - next_night_cost
@@ -124,14 +226,11 @@ func thing_ui_update() -> void:
 							 "\nPower needed to survive next night: " + str(next_night_cost) + \
 							 "\nYou need " + str(power_req) + " more Power to survive tonight"
 
-# --- Host Native Defeat Protocol ---
-
 @rpc("authority", "call_local", "reliable")
 func burn_it_all_down() -> void:
 	GameData.lost = true
 	GameData.in_game = false
 	
-	# Tear down network connection cleanly
 	if multiplayer.multiplayer_peer:
 		multiplayer.multiplayer_peer.close()
 		multiplayer.multiplayer_peer = null

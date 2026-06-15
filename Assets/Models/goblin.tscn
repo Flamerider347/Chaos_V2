@@ -1,8 +1,0 @@
-[gd_scene format=3 uid="uid://dgvi0vq814jxx"]
-
-[ext_resource type="PackedScene" uid="uid://qa2on8f8wvgb" path="res://Assets/Models/simple_goblin.glb" id="1_nb6wj"]
-
-[node name="Node3D" type="Node3D" unique_id=912179134]
-
-[node name="Sketchfab_Scene" parent="." unique_id=1746451111 instance=ExtResource("1_nb6wj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.024887398, 0, -0.16699696)

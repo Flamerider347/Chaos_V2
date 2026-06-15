@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c7isve8b3s6cd"]
 
-[ext_resource type="Script" uid="uid://togfvjn4aqrk" path="res://scripts/item_tree.gd" id="1_i1edc"]
-[ext_resource type="ArrayMesh" uid="uid://c5fc7ra7wjom7" path="res://Assets/Models/kitchenassets/food_ingredient_burger_uncooked.obj" id="5_halqr"]
+[ext_resource type="Script" uid="uid://togfvjn4aqrk" path="res://scripts/item_tree.gd" id="1_v4nfm"]
+[ext_resource type="ArrayMesh" uid="uid://c5fc7ra7wjom7" path="res://Assets/Models/kitchenassets/food_ingredient_burger_uncooked.obj" id="2_pj4o6"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_cf1hr"]
 
@@ -9,10 +9,10 @@
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_6072s"]
 
-[node name="Tree1Meat" type="StaticBody3D" unique_id=68733649 groups=["punchable"]]
+[node name="Tree1Meat1" type="StaticBody3D" unique_id=68733649 groups=["punchable"]]
 collision_layer = 7
 collision_mask = 7
-script = ExtResource("1_i1edc")
+script = ExtResource("1_v4nfm")
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="." unique_id=515047224]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -35,22 +35,22 @@ one_shot = true
 
 [node name="Tree1Meat1" type="MeshInstance3D" parent="." unique_id=435183549 groups=["tree_item"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5806515, 0.6921921)
-mesh = ExtResource("5_halqr")
+mesh = ExtResource("2_pj4o6")
 
 [node name="Tree1Meat2" type="MeshInstance3D" parent="." unique_id=338822104 groups=["tree_item"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9912996, 0)
-mesh = ExtResource("5_halqr")
+mesh = ExtResource("2_pj4o6")
 
 [node name="Tree1Meat3" type="MeshInstance3D" parent="." unique_id=1667904241 groups=["tree_item"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.56483, -0.9018271)
-mesh = ExtResource("5_halqr")
+mesh = ExtResource("2_pj4o6")
 
 [node name="Tree1Meat4" type="MeshInstance3D" parent="." unique_id=1193083308 groups=["tree_item"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9912996, -1.4239376)
-mesh = ExtResource("5_halqr")
+mesh = ExtResource("2_pj4o6")
 
 [node name="Tree1Meat5" type="MeshInstance3D" parent="." unique_id=279541321 groups=["tree_item"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9912996, 1.0323547)
-mesh = ExtResource("5_halqr")
+mesh = ExtResource("2_pj4o6")
 
 [connection signal="timeout" from="item_timer" to="." method="_on_item_timer_timeout"]

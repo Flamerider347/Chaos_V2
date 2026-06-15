@@ -1,7 +1,7 @@
 extends Area3D
 
 @onready var smoke_particle: PackedScene = preload("res://Prefabs/smoke_particle.tscn")
-@onready var game: Node = $"../../.."
+@onready var game: Node = $"../../../.."
 
 var scores: Dictionary = {
 	"cheese": 5, "cheese_chopped": 10, "tomato": 6, "tomato_chopped": 12, "bun": 50,

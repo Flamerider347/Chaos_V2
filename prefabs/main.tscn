@@ -6,25 +6,19 @@
 [ext_resource type="Script" uid="uid://cpr3cjn4l5i8k" path="res://scripts/player_spawner.gd" id="2_g4wyc"]
 [ext_resource type="Shader" uid="uid://b4owg11v8s30w" path="res://Assets/misc/sky_shader.gdshader" id="2_ihn02"]
 [ext_resource type="ArrayMesh" uid="uid://bj32ymoulnvrb" path="res://Assets/Models/basicland(big).obj" id="3_mmri0"]
-[ext_resource type="PackedScene" uid="uid://djl7ef2n605tr" path="res://Prefabs/cheese_tree.tscn" id="4_dajsn"]
 [ext_resource type="Texture2D" uid="uid://dk7scqa85ri4g" path="res://Assets/misc/PNdtb.jpg" id="4_eednf"]
 [ext_resource type="Texture2D" uid="uid://dm0a5vhk82c5s" path="res://Assets/misc/unnamed.png" id="4_lcyuj"]
 [ext_resource type="Shape3D" uid="uid://ne3kbhclr11s" path="res://resources/world_collision.res" id="4_mmri0"]
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://Assets/SFX/icon.svg" id="5_a5tfy"]
-[ext_resource type="PackedScene" uid="uid://b7v3hl5yko217" path="res://Prefabs/tree_1_tomato.tscn" id="5_i6w6j"]
 [ext_resource type="Script" uid="uid://bof2t2fwctfbu" path="res://scripts/door.gd" id="5_xjs27"]
 [ext_resource type="PackedScene" uid="uid://cwn8urw430asm" path="res://Prefabs/chopping_board.tscn" id="6_fpsi2"]
 [ext_resource type="PackedScene" uid="uid://c3u05loyvf8k3" path="res://Prefabs/storage_unit.tscn" id="7_ihn02"]
 [ext_resource type="Script" uid="uid://b55ss7d6s1qyy" path="res://scripts/thing.gd" id="8_e4ce6"]
-[ext_resource type="PackedScene" uid="uid://cmdk146oos7fp" path="res://Prefabs/tree_3_tomato.tscn" id="8_iocbj"]
 [ext_resource type="Script" uid="uid://b8dg7dl0ay2uf" path="res://scripts/enemy_manager.gd" id="9_1lqda"]
 [ext_resource type="Script" uid="uid://bavxckwopedl" path="res://scripts/score.gd" id="9_m7hx3"]
-[ext_resource type="PackedScene" uid="uid://bdi1ju62g1fdu" path="res://Prefabs/bun_1_tree.tscn" id="12_h808o"]
 [ext_resource type="Texture2D" uid="uid://bnfkdd630vql2" path="res://Assets/Models/hexagons_medieval.png" id="13_cgc31"]
-[ext_resource type="PackedScene" uid="uid://c7isve8b3s6cd" path="res://Prefabs/meat_1_tree.tscn" id="16_18m2x"]
 [ext_resource type="Shape3D" uid="uid://ch7vt5r0qluk8" path="res://resources/kitchen_mesh.res" id="18_kjcd6"]
 [ext_resource type="Texture2D" uid="uid://djwvfah1ycrcy" path="res://Assets/misc/temp_icon.png" id="19_2mmg3"]
-[ext_resource type="PackedScene" uid="uid://77yt2amhmne4" path="res://Prefabs/tree_2_tomato.tscn" id="19_oxfvy"]
 [ext_resource type="Texture2D" uid="uid://82gci5q8xxkq" path="res://Assets/misc/VRSwiB-2993518902.jpg" id="22_as7qb"]
 [ext_resource type="Texture2D" uid="uid://ckwrj4w1xthnd" path="res://Assets/Models/restaurantbits_texture.png" id="23_ybnlm"]
 [ext_resource type="ArrayMesh" uid="uid://biorjvmmf1krl" path="res://Assets/Models/kitchen_model.obj" id="24_66d46"]
@@ -35,6 +29,9 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cgc31"]
 albedo_texture = ExtResource("13_cgc31")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_asxxo"]
+size = Vector3(100, 1.2451172, 100)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ybnlm"]
 size = Vector3(7.861206, 2.420044, 7.305786)
@@ -87,9 +84,6 @@ points = PackedVector3Array(1.899765, 4, 0.25, 2, 3.899765, 0.13669735, 1.899765
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_iocbj"]
 size = Vector3(19.90564, 2.506958, 12.930599)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_asxxo"]
-size = Vector3(100, 1.2451172, 100)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6ph5j"]
 shader = ExtResource("2_ihn02")
@@ -213,7 +207,12 @@ _data = {
 process_mode = 3
 script = ExtResource("1_a5p6j")
 
-[node name="Node" type="Node" parent="." unique_id=930827023]
+[node name="players" type="Node3D" parent="." unique_id=1582431357]
+script = ExtResource("2_g4wyc")
+
+[node name="player_spawner" type="MultiplayerSpawner" parent="players" unique_id=1476604135]
+_spawnable_scenes = PackedStringArray("uid://clwq3k4knykhf", "uid://bd52y75iy5rbf")
+spawn_path = NodePath("..")
 
 [node name="game" type="NavigationRegion3D" parent="." unique_id=1302834535]
 navigation_mesh = ExtResource("2_2mmg3")
@@ -222,6 +221,9 @@ navigation_mesh = ExtResource("2_2mmg3")
 
 [node name="item_spawner" type="MultiplayerSpawner" parent="game/spawners" unique_id=639190437]
 spawn_path = NodePath("../../items")
+
+[node name="tree_spawner" type="MultiplayerSpawner" parent="game/spawners" unique_id=1679573995]
+spawn_path = NodePath("../../item_trees")
 
 [node name="enemy_spawner" type="MultiplayerSpawner" parent="game/spawners" unique_id=856044069]
 _spawnable_scenes = PackedStringArray("uid://bd52y75iy5rbf")
@@ -235,16 +237,42 @@ collision_layer = 3
 collision_mask = 3
 
 [node name="Basicland2" type="MeshInstance3D" parent="game/world/floor" unique_id=1257339244]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.92, 17)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.785, 17)
 material_override = SubResource("StandardMaterial3D_cgc31")
 mesh = ExtResource("3_mmri0")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/floor" unique_id=460714968]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.92, 17)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.785, 17)
 shape = ExtResource("4_mmri0")
 
 [node name="kitchen" type="Node3D" parent="game/world" unique_id=1556216379]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.14953232, -1.4)
+
+[node name="thing" type="Area3D" parent="game/world/kitchen" unique_id=965717664]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.4)
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("8_e4ce6")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/kitchen/thing" unique_id=688455270]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5.248365, 0)
+shape = SubResource("BoxShape3D_asxxo")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="game/world/kitchen/thing" unique_id=422188166]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.9, -0.3344673)
+use_collision = true
+collision_layer = 3
+collision_mask = 3
+
+[node name="CSGMesh3D" type="CSGBox3D" parent="game/world/kitchen/thing/CSGCombiner3D" unique_id=1911430398]
+size = Vector3(17.125795, 4.5910645, 12.536616)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="game/world/kitchen/thing/CSGCombiner3D" unique_id=1940218513]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.088514805, 0)
+operation = 2
+radius = 2.0
+height = 4.4560547
 
 [node name="storage_unit" parent="game/world/kitchen" unique_id=199859682 instance=ExtResource("7_ihn02")]
 transform = Transform3D(8.347416e-09, 0, -0.7, 0, 0.7, 0, 0.7, 0, 8.347416e-09, 7.7, -0.637, -4.201)
@@ -450,31 +478,6 @@ metadata/_edit_group_ = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.022155762, 0.753479, 1.2916737)
 shape = SubResource("BoxShape3D_iocbj")
 
-[node name="thing" type="Area3D" parent="game/world" unique_id=965717664]
-collision_layer = 3
-collision_mask = 3
-script = ExtResource("8_e4ce6")
-metadata/_edit_group_ = true
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/thing" unique_id=688455270]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5.248365, 0)
-shape = SubResource("BoxShape3D_asxxo")
-
-[node name="CSGCombiner3D" type="CSGCombiner3D" parent="game/world/thing" unique_id=422188166]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.9, -0.3344673)
-use_collision = true
-collision_layer = 3
-collision_mask = 3
-
-[node name="CSGMesh3D" type="CSGBox3D" parent="game/world/thing/CSGCombiner3D" unique_id=1911430398]
-size = Vector3(17.125795, 4.5910645, 12.536616)
-
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="game/world/thing/CSGCombiner3D" unique_id=1940218513]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.088514805, 0)
-operation = 2
-radius = 2.0
-height = 4.4560547
-
 [node name="environment_controller" type="Node3D" parent="game" unique_id=1085363601]
 script = ExtResource("2_6ph5j")
 
@@ -490,13 +493,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8970528, 0)
 shadow_enabled = true
 shadow_caster_mask = 4293918722
 omni_range = 15.462516
-
-[node name="players" type="Node3D" parent="game" unique_id=1582431357]
-script = ExtResource("2_g4wyc")
-
-[node name="player_spawner" type="MultiplayerSpawner" parent="game/players" unique_id=1476604135]
-_spawnable_scenes = PackedStringArray("uid://clwq3k4knykhf", "uid://bd52y75iy5rbf")
-spawn_path = NodePath("..")
 
 [node name="enemies" type="Node3D" parent="game" unique_id=2006808970]
 script = ExtResource("9_1lqda")
@@ -536,30 +532,6 @@ vertices = PackedVector3Array(-10, 0, 8, 10, 0, 8, 10, 0, -7, -10, 0, -7)
 affect_navigation_mesh = true
 
 [node name="item_trees" type="Node3D" parent="game" unique_id=818857422]
-
-[node name="cheese_tree" parent="game/item_trees" unique_id=2004034440 instance=ExtResource("4_dajsn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.405759, -0.632535, -10.180931)
-
-[node name="Tree1Tomato1" parent="game/item_trees" unique_id=663506654 instance=ExtResource("5_i6w6j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6508427, 0, -35.429726)
-
-[node name="Tree2Tomato1" parent="game/item_trees" unique_id=68733649 instance=ExtResource("19_oxfvy")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.821601, 0, -22.893839)
-
-[node name="Tree2Tomato2" parent="game/item_trees" unique_id=61992489 instance=ExtResource("19_oxfvy")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.89638, 0, -23.772818)
-
-[node name="Tree1Meat1" parent="game/item_trees" unique_id=1613342009 instance=ExtResource("16_18m2x")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10642767, -0.55799115, -19.15326)
-
-[node name="Tree3Tomato1" parent="game/item_trees" unique_id=2124042767 instance=ExtResource("8_iocbj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.702769, 0, -31.131504)
-
-[node name="Tree3Tomato2" parent="game/item_trees" unique_id=174673256 instance=ExtResource("8_iocbj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.323982, 0, -17.124641)
-
-[node name="Tree1Bun1" parent="game/item_trees" unique_id=890879246 instance=ExtResource("12_h808o")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.316235, -0.5711374, -15.472309)
 
 [node name="Pause_UI" type="CanvasLayer" parent="." unique_id=516443905]
 
@@ -721,8 +693,8 @@ offset_right = 1822.095
 offset_bottom = 378.0
 text = "FPS: 240"
 
+[connection signal="body_entered" from="game/world/kitchen/thing" to="game/world/kitchen/thing" method="_on_body_entered"]
 [connection signal="body_entered" from="game/world/kitchen/kitchen_area" to="game/world/kitchen/kitchen_area" method="_on_body_entered"]
 [connection signal="body_exited" from="game/world/kitchen/kitchen_area" to="game/world/kitchen/kitchen_area" method="_on_body_exited"]
-[connection signal="body_entered" from="game/world/thing" to="game/world/thing" method="_on_body_entered"]
 [connection signal="new_day" from="game/environment_controller" to="." method="_on_environment_controller_new_day"]
 [connection signal="pressed" from="Pause_UI/copybutton" to="." method="_on_copy_button_pressed"]

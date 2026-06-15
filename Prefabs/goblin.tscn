@@ -7,7 +7,8 @@
 radius = 0.33642578
 height = 1.8100586
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_qibn7"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_vj773"]
+size = Vector3(1, 1, 1.0152893)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6flec"]
 resource_name = "Goblin"
@@ -2966,8 +2967,8 @@ collision_layer = 3
 collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="attack_zone" unique_id=121631485]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0317367, -0.32043505)
-shape = SubResource("BoxShape3D_qibn7")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0317367, -0.3280797)
+shape = SubResource("BoxShape3D_vj773")
 
 [node name="nav_agent" type="NavigationAgent3D" parent="." unique_id=689201734]
 
@@ -3238,6 +3239,7 @@ bone_idx = 23
 transform = Transform3D(0.81596637, -0.5746546, 0.06300061, -0.037654087, 0.05594271, 0.9974856, -0.57687175, -0.81648177, 0.024003549, 0.6633031, 0.030334188, 0.38798475)
 
 [node name="Object_34" type="MeshInstance3D" parent="goblin/Skeleton3D/WeaponSlot_16/Club_15" unique_id=1299084779]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 2.12, 0, 0, 0)
 mesh = SubResource("ArrayMesh_qibn7")
 
 [node name="Object_9" type="MeshInstance3D" parent="goblin/Skeleton3D" unique_id=598476936]
@@ -3247,7 +3249,9 @@ skeleton = NodePath("..")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="goblin" unique_id=225021431]
 libraries/ = SubResource("AnimationLibrary_qibn7")
-metadata/_custom_type_script = "uid://ct5pqjn3s72nv"
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=365054815]
 replication_config = SubResource("SceneReplicationConfig_vj773")
+
+[connection signal="body_entered" from="attack_zone" to="." method="_on_attack_zone_body_entered"]
+[connection signal="body_exited" from="attack_zone" to="." method="_on_attack_zone_body_exited"]

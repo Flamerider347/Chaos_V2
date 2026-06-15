@@ -26,6 +26,7 @@ const SPEED: float = 5.0
 const JUMP_VELOCITY: float = 3.0
 const GRAVITY: float = 9.8
 var mouse_sensitivity: float = 0.003
+var held_object_amount = 0
 
 @onready var interact_cast: RayCast3D = $head/interact_cast
 @onready var hand: Node3D = $hand
@@ -160,13 +161,23 @@ func _physics_process(delta: float) -> void:
 
 	var vec: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	speed_multiplier = 1.5 if Input.is_action_pressed("sprint") else 1.0
+
+	# 1. Calculate weighted speed and clamp it between 3.0 and 5.0
+	# (Subtracting weight from SPEED ensures carrying more items slows you down)
+	var weighted_speed: float = SPEED - (held_object_amount * 0.1) 
+	weighted_speed = clampf(weighted_speed, 3.0, 5.0) * speed_multiplier
+	if holding_two_handed: weighted_speed = 3.0
+
 	var dir: Vector3 = (transform.basis * Vector3(vec.x, 0, vec.y)).normalized()
+
 	if dir:
-		velocity.x = dir.x * SPEED * speed_multiplier
-		velocity.z = dir.z * SPEED * speed_multiplier
+		# 2. Multiply by our safe, clamped speed
+		velocity.x = dir.x * weighted_speed
+		velocity.z = dir.z * weighted_speed
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
+		# 3. Use the clamped speed as the deceleration step so stopping feels natural
+		velocity.x = move_toward(velocity.x, 0, weighted_speed)
+		velocity.z = move_toward(velocity.z, 0, weighted_speed)
 
 	if not holding_two_handed:
 		changed_slot = false
@@ -261,6 +272,7 @@ func pickup_object(object):
 			break
 
 	if int(picked_up) != 0:
+		held_object_amount += 1
 		object.freeze = true
 		var shape: CollisionShape3D = object.find_child("CollisionShape3D")
 		if shape:
@@ -296,6 +308,7 @@ func drop_object():
 		return
 
 	inventory[current_slot][1] -= 1
+	held_object_amount -= 1
 	var dropped = inventory[current_slot][3].pop_back()
 	held_item = inventory[current_slot][3][-1] if inventory[current_slot][3].size() > 0 else null
 
@@ -366,7 +379,7 @@ func stack_object(plate: Node3D) -> void:
 	$pickup_timer.start()
 	inventory[current_slot][3].erase(held_item)
 	inventory[current_slot][1] -= 1
-	
+	held_object_amount -= 1
 	if inventory[current_slot][1] <= 0:
 		inventory[current_slot][2] = null
 		rpc("sync_hand_item_removed", str(current_slot))

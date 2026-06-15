@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b7v3hl5yko217"]
 
 [ext_resource type="Script" uid="uid://togfvjn4aqrk" path="res://scripts/item_tree.gd" id="1_mkai2"]
+[ext_resource type="Texture2D" uid="uid://bnfkdd630vql2" path="res://Assets/Models/hexagons_medieval.png" id="2_jn1g1"]
 [ext_resource type="ArrayMesh" uid="uid://jyccg41bp8kj" path="res://Assets/Models/tree1tomatoX.obj" id="2_wk3ir"]
 [ext_resource type="Texture2D" uid="uid://ckwrj4w1xthnd" path="res://Assets/Models/restaurantbits_texture.png" id="3_e5hxk"]
 [ext_resource type="ArrayMesh" uid="uid://bvs28ujvnj1i6" path="res://Assets/Models/tree1tomato1.obj" id="4_x0x00"]
@@ -26,10 +27,123 @@ properties/3/path = NodePath("Tree1Tomato4:visible")
 properties/3/spawn = true
 properties/3/replication_mode = 1
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u0o4s"]
+transparency = 1
+albedo_texture = ExtResource("2_jn1g1")
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vd21m"]
 albedo_texture = ExtResource("3_e5hxk")
 
-[node name="Tree1Tomato" type="StaticBody3D" unique_id=68733649 groups=["punchable"]]
+[sub_resource type="Animation" id="Animation_u0o4s"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Tree1TomatoX:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Tree1TomatoX:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -1.9, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Tree1TomatoX:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CollisionShape3D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1.8767567, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_jn1g1"]
+resource_name = "chopped"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Tree1TomatoX:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(0.1, 0.1, 0.1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Tree1TomatoX:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -1.9, 0), Vector3(0, -1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Tree1TomatoX:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.75),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CollisionShape3D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -10, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ikbd3"]
+_data = {
+&"RESET": SubResource("Animation_u0o4s"),
+&"chopped": SubResource("Animation_jn1g1")
+}
+
+[node name="Tree1Tomato1" type="StaticBody3D" unique_id=68733649 groups=["punchable"]]
 collision_layer = 7
 collision_mask = 7
 script = ExtResource("1_mkai2")
@@ -46,6 +160,7 @@ replication_config = SubResource("SceneReplicationConfig_soqgf")
 
 [node name="Tree1TomatoX" type="MeshInstance3D" parent="." unique_id=681818308]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9, 0)
+material_override = SubResource("StandardMaterial3D_u0o4s")
 mesh = ExtResource("2_wk3ir")
 surface_material_override/0 = SubResource("StandardMaterial3D_vd21m")
 
@@ -68,5 +183,8 @@ surface_material_override/0 = SubResource("StandardMaterial3D_vd21m")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9, 0)
 mesh = ExtResource("7_iqm7r")
 surface_material_override/0 = SubResource("StandardMaterial3D_vd21m")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2092853416]
+libraries/ = SubResource("AnimationLibrary_ikbd3")
 
 [connection signal="timeout" from="item_timer" to="." method="_on_item_timer_timeout"]
