@@ -3,4 +3,5 @@
 [ext_resource type="Texture2D" uid="uid://kbccb3s4q7hh" path="res://Assets/Models/kitchenassets/restaurantbits_texture.png" id="1_wc3b5"]
 
 [resource]
+shading_mode = 2
 albedo_texture = ExtResource("1_wc3b5")

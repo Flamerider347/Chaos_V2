@@ -7,13 +7,23 @@ extends Node
 @onready var lobby_error_label: Label = $"menu_UI/lobby error"
 @onready var lan_toggle: CheckButton = $menu_UI/lan_check
 
+# --- Sky Shader & Lighting Additions ---
+@export var day_length_seconds: float = 30.0
+@onready var sun_light: DirectionalLight3D = $DirectionalLight3D
+@onready var world_env: WorldEnvironment = $WorldEnvironment
+@onready var night_light: OmniLight3D = $nightlight
+
+var current_time: float = 0.25
+# --------------------------------------
+
 func _ready() -> void:
+	$Camera3D.current = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	lobby_error_label.text = ""
 	$menu_UI/join_button.disabled = false
 	
 	# TESTING QUALITY OF LIFE: Automatically fill IP with localhost loopback
-	join_code_input.text = "127.0.0.1"
+	#join_code_input.text = "127.0.0.1"
 	
 	# Connect to GameData's native signals to listen for live updates
 	GameData.multiplayer.connected_to_server.connect(_on_network_join_success)
@@ -27,6 +37,18 @@ func _ready() -> void:
 	
 	if GameData.lost:
 		status_label.text = "Game lost! Please relaunch the game to host a new match."
+		
+	# Initial background shader frame setup
+	update_sky_and_lighting()
+
+# --- Process Loop for Menu Sky Shader ---
+func _process(delta: float) -> void:
+	# Advance time smoothly for the menu preview loop
+	current_time += delta / day_length_seconds
+	if current_time > 1.0:
+		current_time = 0.0
+		
+	update_sky_and_lighting()
 
 func _on_lan_check_toggled(toggled_on: bool) -> void:
 	if toggled_on:
@@ -51,7 +73,7 @@ func _on_join_pressed() -> void:
 	_assign_username()
 	status_label.text = "Connecting to lobby..."
 	$menu_UI/join_button.disabled = true
-	
+	$timeout_timer.start(15)
 	if lan_toggle.button_pressed:
 		$LAN_starter.start_client()
 	else:
@@ -61,10 +83,13 @@ func _on_join_pressed() -> void:
 # --- Network Callback Triggers ---
 
 func _on_network_join_success() -> void:
+	# Stop the timer so it doesn't trigger a failure after we successfully connect
+	$timeout_timer.stop()
 	status_label.text = "Connected! Loading world..."
 	get_tree().change_scene_to_file("res://Prefabs/main.tscn")
 
 func _on_network_join_fail() -> void:
+	$timeout_timer.stop()
 	$menu_UI/join_button.disabled = false
 	status_label.text = "Connection failed."
 	lobby_error_label.text = "Could not reach the host machine. Double-check the IP address."
@@ -79,3 +104,54 @@ func _assign_username() -> void:
 		GameData.username = "Player"
 	else:
 		GameData.username = cleaned_name
+
+# --- Background Sky/Lighting Driver Function ---
+func update_sky_and_lighting() -> void:
+	if not is_instance_valid(sun_light) or not is_instance_valid(world_env): return
+
+	var sun_angle = current_time * TAU + (TAU / 4.0)
+	sun_light.rotation.x = sun_angle
+	sun_light.rotation.y = deg_to_rad(25.0) 
+	
+	var sun_fade: float = 0.0
+	var sunset_blend: float = 0.0
+	
+	if current_time >= 0.25 and current_time < 0.3333:
+		sun_fade = smoothstep(0.25, 0.3333, current_time) * 0.4
+		sunset_blend = 1.0
+	elif current_time >= 0.3333 and current_time < 0.4167:
+		sun_fade = lerp(0.4, 1.2, smoothstep(0.3333, 0.4167, current_time))
+		sunset_blend = smoothstep(0.4167, 0.3333, current_time)
+	elif current_time >= 0.4167 and current_time < 0.6667:
+		sun_fade = 1.2
+		sunset_blend = 0.0
+	elif current_time >= 0.6667 and current_time < 0.75:
+		sun_fade = 1.2
+		sunset_blend = smoothstep(0.6667, 0.75, current_time)
+	elif current_time >= 0.75 and current_time < 0.9167:
+		sun_fade = smoothstep(0.9167, 0.75, current_time) * 0.3
+		sunset_blend = smoothstep(0.9167, 0.75, current_time)
+
+	var is_night_preview = (current_time >= 0.8333333 or current_time < 0.25)
+	sun_light.light_energy = sun_fade
+	sun_light.light_color = Color(0.05, 0.05, 0.15) if is_night_preview else Color(1.0, 0.95, 0.85).lerp(Color(0.95, 0.45, 0.15), sunset_blend)
+
+	var env = world_env.environment
+	if env:
+		env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+		var night_weight = 1.0 - (sun_fade / 1.2)
+		env.ambient_light_color = Color(0.6, 0.7, 0.8).lerp(Color(0.2, 0.25, 0.35), night_weight)
+		env.ambient_light_energy = lerp(1.0, 0.6, night_weight)
+
+	if is_instance_valid(night_light):
+		night_light.light_energy = (1.0 - (sun_fade / 1.2)) * 2.0
+
+
+func _on_timeout_timer_timeout() -> void:
+	# Clear multiplayer peer to cleanly kill the pending connection loop
+	if is_instance_valid(multiplayer) and multiplayer.multiplayer_peer:
+		multiplayer.multiplayer_peer = null
+		
+	$menu_UI/join_button.disabled = false
+	status_label.text = "Connection failed."
+	lobby_error_label.text = "Connection timed out after 15 seconds."
