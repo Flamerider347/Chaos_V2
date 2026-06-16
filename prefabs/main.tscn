@@ -18,7 +18,6 @@
 [ext_resource type="Script" uid="uid://bavxckwopedl" path="res://scripts/score.gd" id="9_m7hx3"]
 [ext_resource type="Texture2D" uid="uid://bnfkdd630vql2" path="res://Assets/Models/hexagons_medieval.png" id="13_cgc31"]
 [ext_resource type="Shape3D" uid="uid://ch7vt5r0qluk8" path="res://resources/kitchen_mesh.res" id="18_kjcd6"]
-[ext_resource type="Texture2D" uid="uid://djwvfah1ycrcy" path="res://Assets/misc/temp_icon.png" id="19_2mmg3"]
 [ext_resource type="Texture2D" uid="uid://82gci5q8xxkq" path="res://Assets/misc/VRSwiB-2993518902.jpg" id="22_as7qb"]
 [ext_resource type="Texture2D" uid="uid://ckwrj4w1xthnd" path="res://Assets/Models/restaurantbits_texture.png" id="23_ybnlm"]
 [ext_resource type="ArrayMesh" uid="uid://biorjvmmf1krl" path="res://Assets/Models/kitchen_model.obj" id="24_66d46"]
@@ -39,12 +38,8 @@ size = Vector3(7.861206, 2.420044, 7.305786)
 [sub_resource type="BoxShape3D" id="BoxShape3D_dajsn"]
 size = Vector3(17.13971, 3, 0.1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kjcd6"]
-shading_mode = 0
-albedo_texture = ExtResource("19_2mmg3")
-uv1_scale = Vector3(3.045, 1.12, 3.045)
-uv1_offset = Vector3(0, -0.01, 0)
-stencil_flags = 2
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_66d46"]
+albedo_color = Color(0.101391785, 0.526599, 0.44483685, 1)
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_cgc31"]
 height = 5.4506836
@@ -306,14 +301,16 @@ shape = SubResource("BoxShape3D_dajsn")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="game/world/kitchen/door" unique_id=1707687240]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.014999986, -0.010000229)
-material_override = SubResource("StandardMaterial3D_kjcd6")
+material_override = SubResource("StandardMaterial3D_66d46")
 size = Vector3(17.152527, 3, 0.12028809)
 
 [node name="Label3D" type="Label3D" parent="game/world/kitchen/door" unique_id=203890966]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.19245076)
-text = "Press \"Left Click to open\"
-WARNING, OTHERS CAN'T JOIN
-ONCE DOOR IS OPENED"
+text = "Press \"Left Click\" to open
+any bugs, visual or otherwise
+are the fault of anyone who joins
+after this door has opened.
+(Add bugs in feedback form please)"
 
 [node name="thing_placement" type="StaticBody3D" parent="game/world/kitchen" unique_id=604275614 groups=["THE_THING", "placeable"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.0114441)

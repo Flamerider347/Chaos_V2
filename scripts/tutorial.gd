@@ -7,8 +7,10 @@ var texts = [
 	WASD/ARROW KEYS - Move
 	SPACE - JUMP
 	LEFT CLICK - PICKUP
-	RIGHT - CLICK",
-	"My name is john",
+	RIGHT - CLICK
+	TAB - OPEN/CLOSE MENU",
+	"You can alter your sensitivity
+	 in the menu (Press TAB)",
 	"John is a nice name",
 	
 ]
