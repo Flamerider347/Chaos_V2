@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cyq7gp07qiehn"
+path="res://.godot/imported/deco_tree6.obj-7cd84ff39bdbc34b32f5f0fef13df6ea.mesh"
+
+[deps]
+
+files=["res://.godot/imported/deco_tree6.obj-7cd84ff39bdbc34b32f5f0fef13df6ea.mesh"]
+
+source_file="res://Assets/Models/deco/deco_tree6.obj"
+dest_files=["res://.godot/imported/deco_tree6.obj-7cd84ff39bdbc34b32f5f0fef13df6ea.mesh", "res://.godot/imported/deco_tree6.obj-7cd84ff39bdbc34b32f5f0fef13df6ea.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false
