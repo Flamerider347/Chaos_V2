@@ -4,8 +4,9 @@ extends Area3D
 @onready var game: Node = $"../../../.."
 
 var scores: Dictionary = {
-	"cheese": 5, "cheese_chopped": 10, "tomato": 6, "tomato_chopped": 12, "bun": 50,
-	"bun_bottom_chopped": 40, "bun_top_chopped": 30, "meat": 10, "meat_cooked": 50, "meat_burnt": 25
+	"cheese": 5, "cheese_chopped": 10, "tomato": 5, "tomato_chopped": 10, "bun": 10,
+	"lettuce" : 5, "lettuce_chopped" : 10, "carrot" : 5, "carrot_chopped" : 10,
+	"bun_bottom_chopped": 10, "bun_top_chopped": 10, "meat": 20, "meat_cooked": 50
 }
 
 func _on_body_entered(body: Node) -> void:

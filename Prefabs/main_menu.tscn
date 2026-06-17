@@ -55,6 +55,14 @@ script = ExtResource("3_m76kp")
 
 [node name="menu_UI" type="CanvasLayer" parent="." unique_id=175713976]
 
+[node name="spool_server" type="Button" parent="menu_UI" unique_id=161786259]
+offset_left = 367.0
+offset_top = 530.0
+offset_right = 625.0
+offset_bottom = 584.0
+text = "Generate a Multiinstance
+(IP of host needs to be specified)"
+
 [node name="join_button" type="Button" parent="menu_UI" unique_id=1952092994]
 offset_left = 303.0
 offset_top = 282.0
@@ -147,6 +155,14 @@ disabled = true
 button_pressed = true
 text = "Lan/Online"
 
+[node name="port" type="LineEdit" parent="menu_UI" unique_id=87542153]
+offset_left = 631.0
+offset_top = 416.0
+offset_right = 814.0
+offset_bottom = 478.0
+placeholder_text = "Enter Port"
+
+[connection signal="pressed" from="menu_UI/spool_server" to="." method="_on_spool_server_pressed"]
 [node name="Node3D" type="Node3D" parent="." unique_id=1214618011]
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=560626361]

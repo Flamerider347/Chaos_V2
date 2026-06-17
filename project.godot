@@ -17,7 +17,7 @@ privateKey="a54ba81546b296a8"
 [application]
 
 config/name="Kitchen Chaos V2"
-run/main_scene="uid://banusvtnmwu18"
+run/main_scene="uid://6a3pn8jexcvt"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="uid://djwvfah1ycrcy"
 
@@ -26,6 +26,7 @@ config/icon="uid://djwvfah1ycrcy"
 GameData="*uid://m4y852ej0k71"
 RecipeManager="*uid://cxemb85k3ycss"
 TileRunInstancesGlobal="*uid://b6fg6pu2bfi14"
+DedicatedServerOptimiser="*uid://didffsk3uwq1x"
 
 [display]
 
@@ -56,6 +57,7 @@ two_handed=""
 enemy=""
 storage_button=""
 tree_item=""
+storable=""
 
 [input]
 

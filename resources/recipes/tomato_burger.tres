@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource("1_hgyev")
-recipe_internal = "tomato_burger"
-recipe_display = "Tomato Burger"
+recipe_internal = "salad_burger"
+recipe_display = "Salad burger"
 value = 100
-components = ["bun_bottom_chopped", "tomato_chopped", "tomato_chopped", "bun_top_chopped"]
+components = Array[String](["bun_bottom_chopped", "tomato_chopped", "lettuce_chopped", "tomato_chopped", "bun_top_chopped"])
 metadata/_custom_type_script = "uid://dtjxcw3h8b2jk"

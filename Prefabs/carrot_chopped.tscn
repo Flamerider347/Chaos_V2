@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://bnkdas160exxg"]
+
+[ext_resource type="Script" uid="uid://m8dtdn28meeu" path="res://scripts/item.gd" id="1_sdt1m"]
+[ext_resource type="ArrayMesh" uid="uid://bewc7hpqqbqd8" path="res://Assets/Models/kitchenassets/food_ingredient_tomato_slice.obj" id="2_l651e"]
+[ext_resource type="Texture2D" uid="uid://dmdo4y6gemfu0" path="res://Assets/misc/gettyimages-1406174121.jpg" id="3_l651e"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_tcipr"]
+height = 0.04901123
+radius = 0.34765625
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_312as"]
+albedo_color = Color(0.6022949, 0.21896008, 9.62615e-08, 1)
+albedo_texture = ExtResource("3_l651e")
+uv1_scale = Vector3(-0.17, -0.17, -0.17)
+uv1_offset = Vector3(0.605, 0, 0)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_y5awt"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:freeze")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath(".:visible")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath("CollisionShape3D:disabled")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+
+[node name="tomato_chopped" type="RigidBody3D" unique_id=842069250 groups=["pickupable", "plate_stackable"]]
+collision_layer = 5
+collision_mask = 5
+script = ExtResource("1_sdt1m")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1919428917]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.024574049, 0)
+shape = SubResource("CylinderShape3D_tcipr")
+
+[node name="mesh" type="MeshInstance3D" parent="." unique_id=1157095276]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+
+[node name="composite_mesh" type="MeshInstance3D" parent="mesh" unique_id=1223852272]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.42668205, 0, -0.32942775)
+mesh = ExtResource("2_l651e")
+surface_material_override/0 = SubResource("StandardMaterial3D_312as")
+
+[node name="composite_mesh_2" type="MeshInstance3D" parent="mesh" unique_id=14957001]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4144264, 0, 0.35527104)
+mesh = ExtResource("2_l651e")
+surface_material_override/0 = SubResource("StandardMaterial3D_312as")
+
+[node name="composite_mesh_3" type="MeshInstance3D" parent="mesh" unique_id=580945086]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.23445785, 0, 0.4697016)
+mesh = ExtResource("2_l651e")
+surface_material_override/0 = SubResource("StandardMaterial3D_312as")
+
+[node name="composite_mesh_4" type="MeshInstance3D" parent="mesh" unique_id=1569979934]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6117908, 0, -0.060288653)
+mesh = ExtResource("2_l651e")
+surface_material_override/0 = SubResource("StandardMaterial3D_312as")
+
+[node name="composite_mesh_5" type="MeshInstance3D" parent="mesh" unique_id=1595174821]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1818875, 0, -0.523937)
+mesh = ExtResource("2_l651e")
+surface_material_override/0 = SubResource("StandardMaterial3D_312as")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=783921147]
+replication_config = SubResource("SceneReplicationConfig_y5awt")

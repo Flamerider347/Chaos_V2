@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://cx4og0ilatgfw"]
+[gd_scene format=3 uid="uid://b1xfkbffsmx8q"]
 
-[ext_resource type="Script" uid="uid://m8dtdn28meeu" path="res://scripts/item.gd" id="1_es73f"]
-[ext_resource type="ArrayMesh" uid="uid://d0wayyy88wqcv" path="res://Assets/Models/kitchenassets/food_ingredient_cheese_slice.obj" id="3_es73f"]
+[ext_resource type="Script" uid="uid://m8dtdn28meeu" path="res://scripts/item.gd" id="1_b3c8p"]
+[ext_resource type="ArrayMesh" uid="uid://dvmkw7ri5y6u8" path="res://Assets/Models/kitchenassets/food_ingredient_lettuce_slice.obj" id="2_afcln"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bky3v"]
 size = Vector3(0.81744385, 0.08984375, 0.8046387)
@@ -23,18 +23,18 @@ properties/4/path = NodePath("CollisionShape3D:disabled")
 properties/4/spawn = true
 properties/4/replication_mode = 2
 
-[node name="cheese_chopped" type="RigidBody3D" unique_id=842069250 groups=["pickupable", "plate_stackable"]]
+[node name="lettuce_chopped" type="RigidBody3D" unique_id=842069250 groups=["pickupable", "plate_stackable"]]
 collision_layer = 69
 collision_mask = 5
-script = ExtResource("1_es73f")
+script = ExtResource("1_b3c8p")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1919428917]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000579834, 0.023803711, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000579834, 0.044433594, 0.00051271915)
 shape = SubResource("BoxShape3D_bky3v")
-
-[node name="mesh" type="MeshInstance3D" parent="." unique_id=1157095276]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.029027492, 0)
-mesh = ExtResource("3_es73f")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1655817904]
 replication_config = SubResource("SceneReplicationConfig_myv00")
+
+[node name="FoodIngredientLettuceSlice" type="MeshInstance3D" parent="." unique_id=1711522320]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.035633907, 0)
+mesh = ExtResource("2_afcln")

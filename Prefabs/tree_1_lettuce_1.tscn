@@ -1,0 +1,129 @@
+[gd_scene format=3 uid="uid://v4cl026q4w1w"]
+
+[ext_resource type="Script" uid="uid://togfvjn4aqrk" path="res://scripts/item_tree.gd" id="1_nnydb"]
+[ext_resource type="ArrayMesh" uid="uid://cbjsc3uj8gxj4" path="res://Assets/Models/kitchenassets/food_ingredient_lettuce.obj" id="2_m7wtb"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_seq2h"]
+height = 0.4
+radius = 3.378418
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_soqgf"]
+properties/0/path = NodePath("Tree2Tomato1:visible")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("Tree2Tomato2:visible")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("Tree2Tomato3:visible")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("Tree2Tomato4:visible")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("Tree2Tomato5:visible")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath("Tree2Tomato6:visible")
+properties/5/spawn = true
+properties/5/replication_mode = 1
+
+[sub_resource type="Animation" id="Animation_yv7s1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -0.2, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_3ivvs"]
+resource_name = "chopped"
+length = 0.8
+step = 0.016666668
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -10, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uym7u"]
+_data = {
+&"RESET": SubResource("Animation_yv7s1"),
+&"chopped": SubResource("Animation_3ivvs")
+}
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_nnydb"]
+margin = 0.0
+
+[node name="Tree1Lettuce1" type="StaticBody3D" unique_id=68733649 groups=["punchable"]]
+collision_layer = 4
+collision_mask = 4
+script = ExtResource("1_nnydb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2071637746]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0)
+shape = SubResource("CylinderShape3D_seq2h")
+
+[node name="item_timer" type="Timer" parent="." unique_id=1312441818]
+one_shot = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=529418325]
+replication_config = SubResource("SceneReplicationConfig_soqgf")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=118756677]
+libraries/ = SubResource("AnimationLibrary_uym7u")
+
+[node name="Tree1Lettuce1" type="MeshInstance3D" parent="." unique_id=1499631619 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.33836743, -0.0052375495, -2.0244422)
+mesh = ExtResource("2_m7wtb")
+
+[node name="Tree1Lettuce2" type="MeshInstance3D" parent="." unique_id=1978257543 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2179232, -0.0052375495, 1.3998475)
+mesh = ExtResource("2_m7wtb")
+
+[node name="Tree1Lettuce3" type="MeshInstance3D" parent="." unique_id=667910940 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6875888, -0.0052375495, -0.62398446)
+mesh = ExtResource("2_m7wtb")
+
+[node name="Tree1Lettuce4" type="MeshInstance3D" parent="." unique_id=1832359318 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3268108, -0.0052375495, -1.0594926)
+mesh = ExtResource("2_m7wtb")
+
+[node name="Tree1Lettuce5" type="MeshInstance3D" parent="." unique_id=2054357708 groups=["tree_item"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5744534, -0.0052375495, 1.0326545)
+mesh = ExtResource("2_m7wtb")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="." unique_id=509804186]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3345513, 0, -1.076251)
+shape = SubResource("CylinderShape3D_nnydb")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="." unique_id=530124340]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6950958, 0, -0.6188443)
+shape = SubResource("CylinderShape3D_nnydb")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="." unique_id=333635639]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2161639, 0, 1.4260328)
+shape = SubResource("CylinderShape3D_nnydb")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="." unique_id=191524537]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5767076, 0, 1.0654886)
+shape = SubResource("CylinderShape3D_nnydb")
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="." unique_id=922748106]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.38745093, 0, -2.0341146)
+shape = SubResource("CylinderShape3D_nnydb")
+
+[connection signal="timeout" from="item_timer" to="." method="_on_item_timer_timeout"]

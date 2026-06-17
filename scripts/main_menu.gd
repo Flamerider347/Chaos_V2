@@ -105,6 +105,14 @@ func _assign_username() -> void:
 	else:
 		GameData.username = cleaned_name
 
+func _on_spool_server_pressed():
+	var target_code_node = $menu_UI/join_code
+	if not target_code_node: return
+
+	var target_ip: String = target_code_node.text.strip_edges()
+	print(target_ip)
+	GameData.request_spooled_instance(target_ip)
+	
 # --- Background Sky/Lighting Driver Function ---
 func update_sky_and_lighting() -> void:
 	if not is_instance_valid(sun_light) or not is_instance_valid(world_env): return

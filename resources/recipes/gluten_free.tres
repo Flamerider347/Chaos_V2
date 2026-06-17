@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeData" format=3 uid="uid://bybyluwr7tw6h"]
+
+[ext_resource type="Script" uid="uid://dtjxcw3h8b2jk" path="res://resources/recipes/recipe_template.gd" id="1_exodg"]
+
+[resource]
+script = ExtResource("1_exodg")
+recipe_internal = "gluten_free"
+recipe_display = "Gluten-Free Burger"
+value = 200
+components = Array[String](["lettuce_chopped", "carrot_chopped", "meat_cooked", "tomato_chopped", "lettuce_chopped"])
+metadata/_custom_type_script = "uid://dtjxcw3h8b2jk"

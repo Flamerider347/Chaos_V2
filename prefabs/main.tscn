@@ -227,21 +227,20 @@ spawn_path = NodePath("../../enemies")
 [node name="world" type="Node3D" parent="game" unique_id=2057127466]
 
 [node name="floor" type="StaticBody3D" parent="game/world" unique_id=62039052]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2838614, 0)
 collision_layer = 3
 collision_mask = 3
 
 [node name="Basicland2" type="MeshInstance3D" parent="game/world/floor" unique_id=1257339244]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.785, 17)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.12, 17)
 material_override = SubResource("StandardMaterial3D_cgc31")
 mesh = ExtResource("3_mmri0")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/floor" unique_id=460714968]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.785, 17)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.12, 17)
 shape = ExtResource("4_mmri0")
 
 [node name="kitchen" type="Node3D" parent="game/world" unique_id=1556216379]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.14953232, -1.4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.519948, -1.4)
 
 [node name="thing" type="Area3D" parent="game/world/kitchen" unique_id=965717664]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.4)
@@ -320,10 +319,7 @@ collision_mask = 8
 [node name="thing_UI" type="Label3D" parent="game/world/kitchen/thing_placement" unique_id=1844602340]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5212898, 0)
 billboard = 2
-text = "Daily recipes give 50% more score!
-Total score: 0
-Power left: 100
-Power required: 10"
+text = "~Score Display~"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/kitchen/thing_placement" unique_id=1715452083]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85870254, 0)
@@ -332,8 +328,6 @@ shape = SubResource("CylinderShape3D_cgc31")
 [node name="recipe_of_the_day" type="Label3D" parent="game/world/kitchen/thing_placement" unique_id=527199740]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.096483, 1.521, 0.4)
 billboard = 2
-text = "RECIPE OF THE DAY
-Classic Burger (750)"
 
 [node name="StaticBody3D" type="StaticBody3D" parent="game/world/kitchen/thing_placement/recipe_of_the_day" unique_id=1898245898]
 collision_layer = 3
@@ -346,8 +340,6 @@ shape = SubResource("CylinderShape3D_oxfvy")
 [node name="recipe_of_the_day2" type="Label3D" parent="game/world/kitchen/thing_placement" unique_id=646557600]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.095927, 1.521, 0.4)
 billboard = 2
-text = "RECIPE OF THE DAY
-Classic Burger (750)"
 
 [node name="StaticBody3D2" type="StaticBody3D" parent="game/world/kitchen/thing_placement/recipe_of_the_day2" unique_id=1955934586]
 collision_layer = 3

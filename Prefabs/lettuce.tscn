@@ -1,13 +1,13 @@
-[gd_scene format=3 uid="uid://0ms6tvtkkd3n"]
+[gd_scene format=3 uid="uid://ddl3npd05jw0g"]
 
-[ext_resource type="Script" uid="uid://m8dtdn28meeu" path="res://scripts/item.gd" id="1_5f6i5"]
-[ext_resource type="ArrayMesh" uid="uid://bqgmppusg7adl" path="res://Assets/Models/kitchenassets/food_ingredient_tomato.obj" id="1_mchhu"]
+[ext_resource type="Script" uid="uid://m8dtdn28meeu" path="res://scripts/item.gd" id="1_ovud0"]
+[ext_resource type="ArrayMesh" uid="uid://cbjsc3uj8gxj4" path="res://Assets/Models/kitchenassets/food_ingredient_lettuce.obj" id="2_1jhbc"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_g85ev"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_5f6i5"]
-height = 0.51374817
-radius = 0.27734375
+height = 0.73257446
+radius = 0.4609375
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mchhu"]
 properties/0/path = NodePath(".:position")
@@ -23,18 +23,18 @@ properties/3/path = NodePath(".:freeze")
 properties/3/spawn = true
 properties/3/replication_mode = 1
 
-[node name="tomato" type="RigidBody3D" unique_id=1119285444 groups=["choppable", "pickupable"]]
+[node name="lettuce" type="RigidBody3D" unique_id=1119285444 groups=["choppable", "pickupable", "storable"]]
 collision_layer = 69
 collision_mask = 5
 physics_material_override = SubResource("PhysicsMaterial_g85ev")
-script = ExtResource("1_5f6i5")
+script = ExtResource("1_ovud0")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1058205028]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25736266, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3648227, 0)
 shape = SubResource("CylinderShape3D_5f6i5")
-
-[node name="FoodIngredientTomato" type="MeshInstance3D" parent="." unique_id=73133390]
-mesh = ExtResource("1_mchhu")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=317781935]
 replication_config = SubResource("SceneReplicationConfig_mchhu")
+
+[node name="FoodIngredientLettuce" type="MeshInstance3D" parent="." unique_id=1600473570]
+mesh = ExtResource("2_1jhbc")

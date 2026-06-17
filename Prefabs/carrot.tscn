@@ -1,12 +1,12 @@
-[gd_scene format=3 uid="uid://0ms6tvtkkd3n"]
+[gd_scene format=3 uid="uid://dpo808vccyg7k"]
 
-[ext_resource type="Script" uid="uid://m8dtdn28meeu" path="res://scripts/item.gd" id="1_5f6i5"]
-[ext_resource type="ArrayMesh" uid="uid://bqgmppusg7adl" path="res://Assets/Models/kitchenassets/food_ingredient_tomato.obj" id="1_mchhu"]
+[ext_resource type="Script" uid="uid://m8dtdn28meeu" path="res://scripts/item.gd" id="1_ph54w"]
+[ext_resource type="ArrayMesh" uid="uid://cju1islxu6fsb" path="res://Assets/Models/kitchenassets/food_ingredient_carrot.obj" id="2_h716b"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_g85ev"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_5f6i5"]
-height = 0.51374817
+height = 0.93878174
 radius = 0.27734375
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mchhu"]
@@ -23,18 +23,19 @@ properties/3/path = NodePath(".:freeze")
 properties/3/spawn = true
 properties/3/replication_mode = 1
 
-[node name="tomato" type="RigidBody3D" unique_id=1119285444 groups=["choppable", "pickupable"]]
+[node name="carrot" type="RigidBody3D" unique_id=1119285444 groups=["choppable", "pickupable", "storable"]]
 collision_layer = 69
 collision_mask = 5
 physics_material_override = SubResource("PhysicsMaterial_g85ev")
-script = ExtResource("1_5f6i5")
+script = ExtResource("1_ph54w")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1058205028]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25736266, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.47317535, 0)
 shape = SubResource("CylinderShape3D_5f6i5")
-
-[node name="FoodIngredientTomato" type="MeshInstance3D" parent="." unique_id=73133390]
-mesh = ExtResource("1_mchhu")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=317781935]
 replication_config = SubResource("SceneReplicationConfig_mchhu")
+
+[node name="FoodIngredientCarrot" type="MeshInstance3D" parent="." unique_id=2088452751]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.59400773, 0)
+mesh = ExtResource("2_h716b")

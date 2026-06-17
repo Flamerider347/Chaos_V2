@@ -6,7 +6,7 @@
 script = ExtResource("1_8a6n3")
 recipe_internal = "cheese_burger"
 recipe_display = "Cheeseburger"
-value = 200
-components = Array[String](["bun_bottom_chopped", "cheese_chopped", "cheese_chopped", "bun_top_chopped"])
+value = 100
+components = Array[String](["bun_bottom_chopped", "cheese_chopped", "cheese_chopped", "cheese_chopped", "bun_top_chopped"])
 is_burger = true
 metadata/_custom_type_script = "uid://dtjxcw3h8b2jk"

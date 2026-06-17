@@ -327,7 +327,8 @@ func drop_object():
 				drop_pos = col.global_position + Vector3(0, 1.2, 0)
 			elif col.is_in_group("THE_THING"):
 				drop_pos = col.global_position + Vector3(0, 0.2, 0)
-				dropped.set_collision_layer_value(3,false)
+				if dropped.is_in_group("storable"):
+					dropped.set_collision_layer_value(3,false)
 			elif col.is_in_group("delivery_area"):
 				drop_pos = col.global_position + Vector3(0, 0.2, 0)
 			elif not col.is_in_group("chopping_board") and dropped.is_in_group("meat"):

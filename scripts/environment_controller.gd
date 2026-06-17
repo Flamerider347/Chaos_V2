@@ -10,6 +10,8 @@ extends Node3D
 	"tomato_chopped" : preload("res://Prefabs/tomato_chopped.tscn"),
 	"cheese_chopped" : preload("res://Prefabs/cheese_chopped.tscn"),
 	"bun_top_chopped" : preload("res://Prefabs/bun_top_chopped.tscn"),
+	"lettuce_chopped" : preload("res://Prefabs/lettuce_chopped.tscn"),
+	"carrot_chopped" : preload("res://Prefabs/carrot_chopped.tscn"),
 	"bun_bottom_chopped" : preload("res://Prefabs/bun_bottom_chopped.tscn"),
 	"meat_cooked" : preload("res://Prefabs/meat_cooked.tscn"),
 	"plate" : preload("res://Prefabs/plate.tscn")

@@ -19,6 +19,8 @@ var current_trees = {
 	"Cheese" : [],
 	"Bun" : [],
 	"Meat" : [],
+	"Carrot" : [],
+	"Lettuce" : []
 }
 
 # Mapping types to their distinct variations
@@ -26,31 +28,32 @@ var tree_prefabs = {
 	"Tomato" : ["res://Prefabs/tree_1_tomato.tscn", "res://Prefabs/tree_2_tomato.tscn", "res://Prefabs/tree_3_tomato.tscn"],
 	"Cheese" : ["res://Prefabs/tree_1_cheese.tscn"],
 	"Bun" : ["res://Prefabs/tree_1_bun.tscn"],
-	"Meat" : ["res://Prefabs/tree_1_meat.tscn"]
+	"Meat" : ["res://Prefabs/tree_1_meat.tscn"],
+	"Carrot" : ["res://Prefabs/tree_1_carrot_1.tscn"],
+	"Lettuce" : ["res://Prefabs/tree_1_lettuce_1.tscn"]
 }
 
 # Defined boundaries for your map positions
-var min_spawn_bound: Vector2 = Vector2(-45, -45)
-var max_spawn_bound: Vector2 = Vector2(45, 45)
+var min_spawn_bound: Vector2 = Vector2(-40, -40)
+var max_spawn_bound: Vector2 = Vector2(35, 35)
 
 # --- Gameplay Core Variables ---
 var score: int = 0:
 	set(val):
 		score = val
 		GameData.score = val
-		thing_ui_update()
 
 var power: float = 100.0:
 	set(val):
 		power = val
 		GameData.power = round(val)
-		thing_ui_update()
 
 var total_power_cost: int = 0
 var current_day: int = 0
 var paused: bool = false
 
 func _ready() -> void:
+	print(GameData.game_port)
 	GameData.in_game = true
 	GameData.lost = false
 	paused = false
@@ -75,7 +78,6 @@ func _ready() -> void:
 		
 	score = GameData.score
 	power = GameData.power
-	thing_ui_update()
 	
 	# Register custom spawner rules for the trees on all peers
 # Register custom spawner rules for the trees on all peers
@@ -121,7 +123,7 @@ func _on_environment_controller_new_day(day: int) -> void:
 	if day != 1:
 		total_power_cost += 10 * day 
 	
-	power = 100 + score - total_power_cost
+	power = 20 + score - total_power_cost
 	thing_ui_update()
 	
 	if multiplayer.is_server():
@@ -135,8 +137,8 @@ func grow_a_garden() -> void:
 	if not multiplayer.is_server(): return
 	
 	# Define your kitchen boundaries (Adjust these vectors to fit your kitchen's size!)
-	var kitchen_min: Vector2 = Vector2(-10.0, -10.0)
-	var kitchen_max: Vector2 = Vector2(10.0, 10.0)
+	var kitchen_min: Vector2 = Vector2(-15.0, -12.0)
+	var kitchen_max: Vector2 = Vector2(15.0, 12.0)
 	
 	for type in current_trees.keys():
 		var current_count = current_trees[type].size()
@@ -218,13 +220,17 @@ func thing_ui_update() -> void:
 		
 		if power_req < 0:
 			power_req = abs(power_req)
+			thing_ui_panel.text = "\nScore: " + str(score) + \
+			 "\nPower left: " + str(power) + \
+			 "\nPower Requirement for today: " + str(next_night_cost) + \
+			 "\nYou need " + str(power_req) + " more Power to survive tonight"
+
 		else:
 			power_req = 0
-			
-		thing_ui_panel.text = "\nScore: " + str(score) + \
-							 "\nPower left: " + str(power) + \
-							 "\nPower needed to survive next night: " + str(next_night_cost) + \
-							 "\nYou need " + str(power_req) + " more Power to survive tonight"
+			thing_ui_panel.text = "\nScore: " + str(score) + \
+			 "\nPower left: " + str(power) + \
+			 "\nPower Requirement for today: " + str(next_night_cost) + \
+			 "\nYou will survive tonight"
 
 @rpc("authority", "call_local", "reliable")
 func burn_it_all_down() -> void:

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="RecipeData" format=3 uid="uid://b4hxor6qxbq37"]
+
+[ext_resource type="Script" uid="uid://dtjxcw3h8b2jk" path="res://resources/recipes/recipe_template.gd" id="1_4ijsc"]
+
+[resource]
+script = ExtResource("1_4ijsc")
+recipe_internal = "vege_burger"
+recipe_display = "Vegetarian Burger"
+value = 120
+components = Array[String](["bun_bottom_chopped", "lettuce_chopped", "tomato_chopped", "cheese_chopped", "carrot_chopped", "bun_top_chopped"])
+is_burger = true
+metadata/_custom_type_script = "uid://dtjxcw3h8b2jk"

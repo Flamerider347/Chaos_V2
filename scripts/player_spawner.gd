@@ -13,8 +13,8 @@ func _ready() -> void:
 	multiplayer.peer_connected.connect(_spawn_player)
 	multiplayer.peer_disconnected.connect(_remove_player)
 	
-	# Spawn host player
-	_spawn_player(1)
+	if not OS.has_feature("dedicated_server"):
+		_spawn_player(1)
 
 func _spawn_player(id: int) -> void:
 	if has_node(str(id)): return
