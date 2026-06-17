@@ -526,17 +526,18 @@ affect_navigation_mesh = true
 
 [node name="roomcode" type="Label" parent="Pause_UI" unique_id=1665139751]
 offset_left = 10.0
-offset_top = 10.0
+offset_top = 140.0
 offset_right = 261.0
-offset_bottom = 33.0
-text = "Not yet connected, please wait..."
+offset_bottom = 163.0
+text = "Port: 13501"
 
 [node name="copybutton" type="Button" parent="Pause_UI" unique_id=2034908009]
-offset_left = 10.0
-offset_top = 36.98
-offset_right = 195.0
-offset_bottom = 86.98001
-text = "Copy code to clipboard"
+offset_left = 12.0
+offset_top = 18.0
+offset_right = 197.0
+offset_bottom = 68.000015
+text = "Copy Port & IP
+to clipboard"
 
 [node name="sensitivity" type="HSlider" parent="Pause_UI" unique_id=1522102959]
 offset_left = 10.0
@@ -555,7 +556,15 @@ offset_right = 90.0
 offset_bottom = 131.0
 text = "Sensitivity"
 
+[node name="host_ip" type="Label" parent="Pause_UI" unique_id=2037953592]
+offset_left = 10.0
+offset_top = 169.0
+offset_right = 90.0
+offset_bottom = 192.0
+text = "IP: hidden"
+
 [node name="UI" type="CanvasLayer" parent="." unique_id=1896255929]
+visible = false
 
 [node name="status" type="Label" parent="UI" unique_id=1196367339]
 offset_left = 10.0
@@ -686,4 +695,4 @@ text = "FPS: 240"
 [connection signal="body_entered" from="game/world/kitchen/kitchen_area" to="game/world/kitchen/kitchen_area" method="_on_body_entered"]
 [connection signal="body_exited" from="game/world/kitchen/kitchen_area" to="game/world/kitchen/kitchen_area" method="_on_body_exited"]
 [connection signal="new_day" from="game/environment_controller" to="." method="_on_environment_controller_new_day"]
-[connection signal="pressed" from="Pause_UI/copybutton" to="." method="_on_copy_button_pressed"]
+[connection signal="pressed" from="Pause_UI/copybutton" to="." method="_on_copybutton_pressed"]

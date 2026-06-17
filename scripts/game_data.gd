@@ -62,12 +62,10 @@ func host_game() -> void:
 	_update_status_ui("Hosting! IP: " + room_code)
 
 # --- Client Logic (Joining the Lobby) ---
-func join_game(target_ip: String, port: int) -> void:
+func join_game(target_ip: String, port:int) -> void:
 	if target_ip.strip_edges() == "":
 		target_ip = "127.0.0.1" 
-	if port == 0:
-		port = 13501
-		
+
 	is_joining = true
 	_update_status_ui("Connecting...")
 	

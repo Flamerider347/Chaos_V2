@@ -2,10 +2,9 @@ extends Node
 
 @onready var menu_ui = $menu_UI
 @onready var username_input: LineEdit = $menu_UI/username
-@onready var join_code_input: LineEdit = $menu_UI/join_code
+@onready var join_code_input: LineEdit = $menu_UI/LAN_menu/join_code
 @onready var status_label: Label = $menu_UI/status
 @onready var lobby_error_label: Label = $"menu_UI/lobby error"
-@onready var lan_toggle: CheckButton = $menu_UI/lan_check
 
 # --- Sky Shader & Lighting Additions ---
 @export var day_length_seconds: float = 30.0
@@ -20,20 +19,16 @@ func _ready() -> void:
 	$Camera3D.current = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	lobby_error_label.text = ""
-	$menu_UI/join_button.disabled = false
-	
+	for i in $menu_UI.get_children():
+		if not i.is_in_group("donthide"):
+			i.hide()
+	$menu_UI/start_menu.show()
 	# TESTING QUALITY OF LIFE: Automatically fill IP with localhost loopback
 	#join_code_input.text = "127.0.0.1"
 	
 	# Connect to GameData's native signals to listen for live updates
 	GameData.multiplayer.connected_to_server.connect(_on_network_join_success)
 	GameData.multiplayer.connection_failed.connect(_on_network_join_fail)
-	
-	# Force LAN to be checked by default on boot
-	if not lan_toggle.button_pressed:
-		lan_toggle.button_pressed = true
-	else:
-		_on_lan_check_toggled(true)
 	
 	if GameData.lost:
 		status_label.text = "Game lost! Please relaunch the game to host a new match."
@@ -58,27 +53,25 @@ func _on_lan_check_toggled(toggled_on: bool) -> void:
 		status_label.text = "Online Mode Active. Enter Room Code to Join."
 		join_code_input.placeholder_text = "Enter Online Room Code"
 
+
+func _on_LAN_pressed() -> void:
+	$menu_UI/LAN_menu.show()
+	$menu_UI/start_menu.hide()
+
+
 func _on_play_pressed() -> void:
 	_assign_username()
 	
-	if lan_toggle.button_pressed:
-		$LAN_starter.start_server()
-	else:
-		if has_node("WebRTC_starter"): 
-			$WebRTC_starter.start_server()
-			
+	$LAN_starter.start_server()
 	get_tree().change_scene_to_file("res://Prefabs/main.tscn")
 
 func _on_join_pressed() -> void:
 	_assign_username()
 	status_label.text = "Connecting to lobby..."
-	$menu_UI/join_button.disabled = true
+	$menu_UI/LAN_menu/join_button.disabled = true
 	$timeout_timer.start(15)
-	if lan_toggle.button_pressed:
-		$LAN_starter.start_client()
-	else:
-		if has_node("WebRTC_starter"):
-			$WebRTC_starter.start_client()
+
+	$LAN_starter.start_client($menu_UI/LAN_menu/port.text.strip_edges(),$menu_UI/LAN_menu/join_code.text.strip_edges())
 
 # --- Network Callback Triggers ---
 
@@ -163,3 +156,37 @@ func _on_timeout_timer_timeout() -> void:
 	$menu_UI/join_button.disabled = false
 	status_label.text = "Connection failed."
 	lobby_error_label.text = "Connection timed out after 15 seconds."
+
+
+func start_menu() -> void:
+	$menu_UI/LAN_menu.hide()
+	$menu_UI/LLAN_menu.hide()
+	$menu_UI/start_menu.show()
+
+
+func _on_LLAN_pressed() -> void:
+	$menu_UI/LLAN_menu.show()
+	$menu_UI/start_menu.hide()
+
+
+func _on_copy_code_text_changed(new_text: String) -> void:
+	# 1. Clean up any accidental trailing spaces or newlines
+	var clean_text = new_text.strip_edges()
+	
+	# 2. Only attempt to parse if the text actually contains your custom separator
+	if clean_text.contains("///"):
+		# This splits the string into an array. 
+		# e.g., "192.168.1.5///25565" becomes ["192.168.1.5", "25565"]
+		var parts: PackedStringArray = clean_text.split("///")
+		
+		# 3. Double check that we successfully got exactly two pieces
+		if parts.size() == 2:
+			var target_ip: String = parts[0]
+			var target_port: int = int(parts[1]) # Convert the port string back to an integer
+			$menu_UI/LAN_menu/join_code.text = target_ip
+			$menu_UI/LAN_menu/port.text = str(target_port)
+			$menu_UI/enter.show()
+	else:
+		$menu_UI/copy_code.text = ""
+		$menu_UI/copy_code.placeholder_text = "Please paste the code in"
+		$menu_UI/enter.hide()

@@ -53,7 +53,8 @@ var current_day: int = 0
 var paused: bool = false
 
 func _ready() -> void:
-	print(GameData.game_port)
+	$Pause_UI/roomcode.text = "Port: " +str(GameData.game_port)
+	$Pause_UI/host_ip.text = "IP:" +str(GameData.room_code)
 	GameData.in_game = true
 	GameData.lost = false
 	paused = false
@@ -71,8 +72,7 @@ func _ready() -> void:
 		env_controller.new_day.connect(_on_environment_controller_new_day)
 	
 	if multiplayer.multiplayer_peer and multiplayer.get_unique_id() != 0:
-		if is_instance_valid(status_label): status_label.text = "Match Active"
-		if is_instance_valid(pause_room_label): pause_room_label.text = "Online Session"
+		if is_instance_valid(status_label): status_label.text = "Match Active \nPort: " +str(GameData.game_port)
 	else:
 		if is_instance_valid(status_label): status_label.text = "Local Match"
 		
@@ -242,3 +242,9 @@ func burn_it_all_down() -> void:
 		multiplayer.multiplayer_peer = null
 		
 	get_tree().change_scene_to_file("res://Prefabs/main_menu.tscn")
+
+
+func _on_copybutton_pressed() -> void:
+	if GameData.room_code and GameData.game_port:
+		var copy_code = str(GameData.room_code) + "///" + str(GameData.game_port)
+		DisplayServer.clipboard_set(copy_code)
