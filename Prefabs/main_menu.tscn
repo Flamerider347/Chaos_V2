@@ -67,7 +67,7 @@ offset_left = 176.0
 offset_top = 290.0
 offset_right = 476.0
 offset_bottom = 350.0
-placeholder_text = "Copy code here"
+placeholder_text = "Paste the host IP/Port code here"
 
 [node name="enter" type="Button" parent="menu_UI" unique_id=1094319762]
 offset_left = 176.0
@@ -77,6 +77,7 @@ offset_bottom = 416.0
 text = "Join game"
 
 [node name="start_menu" type="Control" parent="menu_UI" unique_id=296126113]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 667.0
@@ -122,7 +123,7 @@ offset_left = 186.0
 offset_top = 419.0
 offset_right = 963.0
 offset_bottom = 598.0
-text = "To get started, choose how to play. Web currently only supports singleplayer"
+text = "To get started, choose how to play. Web version only supports singleplayer"
 autowrap_mode = 3
 
 [node name="Label2" type="Label" parent="menu_UI/start_menu" unique_id=821679050]
@@ -209,7 +210,7 @@ offset_left = 496.0
 offset_top = 362.0
 offset_right = 796.0
 offset_bottom = 422.0
-text = "Return"
+text = "Back to main menu"
 
 [node name="status" type="Label" parent="menu_UI/LAN_menu" unique_id=139176853]
 layout_mode = 0
@@ -221,19 +222,25 @@ text = "If you're hosting a LAN world, just press PLAY"
 
 [node name="status2" type="Label" parent="menu_UI/LAN_menu" unique_id=1824787667]
 layout_mode = 0
-offset_left = 807.0
-offset_top = 140.0
-offset_right = 1156.0
-offset_bottom = 371.0
-text = "If you're joining a world, 
+offset_left = 808.0
+offset_top = 134.0
+offset_right = 1157.0
+offset_bottom = 443.0
+text = "If you're joining a LAN world, 
 enter the port and the host IP 
 (In the top left corner of the host screen)
 
+
 Then press Join
+
+
 Alternatively, you can cut and paste
 the code into the bottom left box
 if the host sends you it!
-"
+
+Note:
+Make sure you're all
+on the same network!"
 
 [node name="LLAN_menu" type="Control" parent="menu_UI" unique_id=2103419970]
 layout_mode = 3
@@ -256,7 +263,7 @@ offset_left = 496.0
 offset_top = 139.0
 offset_right = 796.0
 offset_bottom = 199.0
-placeholder_text = "Enter Host IP"
+placeholder_text = "Enter Host (admin computer) IP"
 
 [node name="port" type="LineEdit" parent="menu_UI/LLAN_menu" unique_id=87542153]
 layout_mode = 0
@@ -281,7 +288,24 @@ offset_left = 496.0
 offset_top = 362.0
 offset_right = 796.0
 offset_bottom = 422.0
-text = "Return"
+text = "Back to main menu"
+
+[node name="Label" type="Label" parent="menu_UI/LLAN_menu" unique_id=1215128647]
+layout_mode = 0
+offset_left = 802.0
+offset_top = 139.0
+offset_right = 842.0
+offset_bottom = 162.0
+text = "School LLAN is more difficult, 
+but still possible!
+
+First open the admin computer and run the
+\"multi_spooler\" in the school_LLAN folder
+
+Then enter admin computer IP
+Then press \"Generate a Multiinstance\"
+
+Other players can then join :)"
 
 [node name="RTC_menu" type="Control" parent="menu_UI" unique_id=1341687830]
 visible = false
