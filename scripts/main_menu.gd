@@ -83,7 +83,6 @@ func _on_network_join_success() -> void:
 
 func _on_network_join_fail() -> void:
 	$timeout_timer.stop()
-	$menu_UI/join_button.disabled = false
 	status_label.text = "Connection failed."
 	lobby_error_label.text = "Could not reach the host machine. Double-check the IP address."
 
@@ -99,7 +98,7 @@ func _assign_username() -> void:
 		GameData.username = cleaned_name
 
 func _on_spool_server_pressed():
-	var target_code_node = $menu_UI/join_code
+	var target_code_node = $menu_UI/LLAN_menu/join_code
 	if not target_code_node: return
 
 	var target_ip: String = target_code_node.text.strip_edges()

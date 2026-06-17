@@ -28,6 +28,11 @@ layout_mode = 2
 text = "Listening on IP: "
 horizontal_alignment = 1
 
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2" unique_id=1011520391]
+layout_mode = 2
+text = "Listening on Port:"
+horizontal_alignment = 1
+
 [node name="console_output" type="RichTextLabel" parent="MarginContainer/HBoxContainer" unique_id=544032081]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
