@@ -3,13 +3,11 @@ extends Node
 var peer = ENetMultiplayerPeer.new()
 
 func _ready():
-	print("spooling")
 	peer.create_server(GameData.SPOOLER_PORT)
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(_on_client_connected)
 
 func _on_client_connected(client_id):
-	print("client connected")
 	var allocated_port = GameData.find_port(GameData.next_available_port)
 	GameData.next_available_port = allocated_port + 1
 
