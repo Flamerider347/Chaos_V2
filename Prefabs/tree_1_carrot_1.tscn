@@ -8,24 +8,24 @@ height = 0.4
 radius = 3.378418
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_soqgf"]
-properties/0/path = NodePath("Tree2Tomato1:visible")
+properties/0/path = NodePath("Tree1Carrot1:visible")
 properties/0/spawn = true
-properties/0/replication_mode = 1
-properties/1/path = NodePath("Tree2Tomato2:visible")
+properties/0/replication_mode = 2
+properties/1/path = NodePath("Tree1Carrot2:visible")
 properties/1/spawn = true
-properties/1/replication_mode = 1
-properties/2/path = NodePath("Tree2Tomato3:visible")
+properties/1/replication_mode = 2
+properties/2/path = NodePath("Tree1Carrot3:visible")
 properties/2/spawn = true
-properties/2/replication_mode = 1
-properties/3/path = NodePath("Tree2Tomato4:visible")
+properties/2/replication_mode = 2
+properties/3/path = NodePath("Tree1Carrot4:visible")
 properties/3/spawn = true
-properties/3/replication_mode = 1
-properties/4/path = NodePath("Tree2Tomato5:visible")
+properties/3/replication_mode = 2
+properties/4/path = NodePath("Tree1Carrot5:visible")
 properties/4/spawn = true
-properties/4/replication_mode = 1
-properties/5/path = NodePath("Tree2Tomato6:visible")
+properties/4/replication_mode = 2
+properties/5/path = NodePath("Tree1Carrot6:visible")
 properties/5/spawn = true
-properties/5/replication_mode = 1
+properties/5/replication_mode = 2
 
 [sub_resource type="Animation" id="Animation_yv7s1"]
 length = 0.001
