@@ -1,13 +1,24 @@
 extends Area3D
 
 @onready var smoke_particle: PackedScene = preload("res://Prefabs/smoke_particle.tscn")
-@onready var game: Node = $"../../../.."
+
+# FIX 1: Find the game node dynamically using absolute root lookup or group fallback
+var game: Node
 
 var scores: Dictionary = {
 	"cheese": 5, "cheese_chopped": 10, "tomato": 5, "tomato_chopped": 10, "bun": 10,
 	"lettuce" : 5, "lettuce_chopped" : 10, "carrot" : 5, "carrot_chopped" : 10,
 	"bun_bottom_chopped": 10, "bun_top_chopped": 10, "meat": 20, "meat_cooked": 50
 }
+
+func _ready() -> void:
+	# Safely locate the main game script regardless of spooler hierarchy
+	game = get_node_or_null("/root/main/game")
+	if not game:
+		# Fallback if your root structure is named differently under headless server
+		var games_in_group = get_tree().get_nodes_in_group("game_main")
+		if games_in_group.size() > 0:
+			game = games_in_group[0]
 
 func _on_body_entered(body: Node) -> void:
 	if not is_instance_valid(body): return
@@ -16,8 +27,6 @@ func _on_body_entered(body: Node) -> void:
 		if body.has_method("take_damage"): body.take_damage(1000)
 		return
 
-	# Offline Check: Ensure non-server players are caught and blocked in multiplayer, 
-	# but allowed through if playing entirely alone.
 	if multiplayer.multiplayer_peer != null and not multiplayer.is_server(): return
 	
 	var score_to_add = 0
@@ -37,7 +46,7 @@ func _on_body_entered(body: Node) -> void:
 		score_to_add = scores[body.type]
 		is_valid_delivery = true
 		
-	if is_valid_delivery:
+	if is_valid_delivery and is_instance_valid(game):
 		game.score += score_to_add
 		game.power += score_to_add
 		
@@ -52,7 +61,6 @@ func _on_body_entered(body: Node) -> void:
 				
 		_safe_jolt_delete(body)
 
-# Helper function to strip collisions before freeing to prevent Jolt ref_count errors
 func _safe_jolt_delete(node) -> void:
 	if not is_instance_valid(node): return
 	node.freeze = true
@@ -66,13 +74,17 @@ func _safe_jolt_delete(node) -> void:
 
 @rpc("any_peer", "call_local", "reliable")
 func sync_plate_ui(current_plates: int) -> void:
-	var ui_node = get_node_or_null("../kitchen/storage_unit/main_display/plate")
-	if ui_node: ui_node.stored = 20 - current_plates
+	# FIX 2: Use absolute scene path targeting for the storage unit 
+	var ui_node = get_node_or_null("/root/main/game/kitchen/storage_unit/main_display/plate")
+	if ui_node: 
+		ui_node.stored = 20 - current_plates
 
 @rpc("any_peer", "call_local", "reliable")
 func sync_delivery_effects(spawn_pos: Vector3, new_score: int) -> void:
-	game.score = new_score
-	if game.has_method("thing_ui_update"): game.thing_ui_update()
+	if is_instance_valid(game):
+		game.score = new_score
+		if game.has_method("thing_ui_update"): 
+			game.thing_ui_update()
 	_spawn_smoke(spawn_pos)
 
 func _calculate_plate_score(plate_node: Node) -> int:
