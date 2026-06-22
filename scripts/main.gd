@@ -27,7 +27,7 @@ var current_trees = {
 var tree_prefabs = {
 	"Tomato" : ["res://Prefabs/tree_1_tomato.tscn", "res://Prefabs/tree_2_tomato.tscn", "res://Prefabs/tree_3_tomato.tscn"],
 	"Cheese" : ["res://Prefabs/tree_1_cheese.tscn"],
-	"Bun" : ["res://Prefabs/tree_1_bun.tscn"],
+	"Bun" : ["res://Prefabs/tree_1_bun.tscn","res://Prefabs/tree_2_bun_2.tscn"],
 	"Meat" : ["res://Prefabs/tree_1_meat.tscn"],
 	"Carrot" : ["res://Prefabs/tree_1_carrot_1.tscn"],
 	"Lettuce" : ["res://Prefabs/tree_1_lettuce_1.tscn"]

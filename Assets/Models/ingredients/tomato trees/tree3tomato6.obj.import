@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://b0b8hnqhim4ue"
-path="res://.godot/imported/tree3tomato6.obj-81251070bcffe62ef8ff92f899258942.mesh"
+path="res://.godot/imported/tree3tomato6.obj-0a2c8836263db41194f99370fa357ec0.mesh"
 
 [deps]
 
-files=["res://.godot/imported/tree3tomato6.obj-81251070bcffe62ef8ff92f899258942.mesh"]
+files=["res://.godot/imported/tree3tomato6.obj-0a2c8836263db41194f99370fa357ec0.mesh"]
 
-source_file="res://Assets/Models/tree3tomato6.obj"
-dest_files=["res://.godot/imported/tree3tomato6.obj-81251070bcffe62ef8ff92f899258942.mesh", "res://.godot/imported/tree3tomato6.obj-81251070bcffe62ef8ff92f899258942.mesh"]
+source_file="res://Assets/Models/ingredients/tomato trees/tree3tomato6.obj"
+dest_files=["res://.godot/imported/tree3tomato6.obj-0a2c8836263db41194f99370fa357ec0.mesh", "res://.godot/imported/tree3tomato6.obj-0a2c8836263db41194f99370fa357ec0.mesh"]
 
 [params]
 

@@ -114,6 +114,8 @@ func _physics_process(delta: float) -> void:
 
 	if not is_on_floor():
 		velocity.y -= GRAVITY * delta
+		if position.y < -5:
+			self.position = Vector3(0,2,0)
 
 	if GameData.paused:
 		velocity.x = 0

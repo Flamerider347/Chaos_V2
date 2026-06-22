@@ -6,8 +6,8 @@
 [ext_resource type="Script" uid="uid://civ4cltduy63" path="res://scripts/network/WebRTC.gd" id="3_m76kp"]
 [ext_resource type="Shader" uid="uid://b4owg11v8s30w" path="res://Assets/misc/sky_shader.gdshader" id="6_n2va3"]
 [ext_resource type="Material" uid="uid://141503k533fm" path="res://Assets/misc/mesh_colours.tres" id="10_p5qx4"]
-[ext_resource type="ArrayMesh" uid="uid://drwjejq4t56h7" path="res://Assets/Models/basicland3.obj" id="11_ey8gg"]
-[ext_resource type="ArrayMesh" uid="uid://2vh5aha1jops" path="res://Assets/Models/basicland2.obj" id="11_p5qx4"]
+[ext_resource type="ArrayMesh" uid="uid://c6n236sv2ys7y" path="res://Assets/Models/basicland3.obj" id="11_ey8gg"]
+[ext_resource type="ArrayMesh" uid="uid://f5xvk66fo03e" path="res://Assets/Models/basiclandbig.obj" id="11_p5qx4"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_m1h1t"]
 load_path = "res://.godot/imported/PNdtb.jpg-3bf9b7b3b1afa53881adb17f05f3fa27.s3tc.ctex"

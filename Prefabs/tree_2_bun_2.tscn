@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://c56c10cwa8tcx"]
+
+[ext_resource type="Script" uid="uid://togfvjn4aqrk" path="res://scripts/item_tree.gd" id="1_2fxkt"]
+[ext_resource type="ArrayMesh" uid="uid://dcw0aawqv5t1s" path="res://Assets/Models/ingredients/bun trees/tree2bunX.obj" id="2_vup8q"]
+[ext_resource type="Material" uid="uid://141503k533fm" path="res://Assets/misc/mesh_colours.tres" id="3_fljo7"]
+[ext_resource type="ArrayMesh" uid="uid://cjdaq0xy0d25n" path="res://Assets/Models/ingredients/bun trees/tree2bun6.obj" id="4_2f55y"]
+[ext_resource type="ArrayMesh" uid="uid://2p2xnbg3t3ct" path="res://Assets/Models/ingredients/bun trees/tree2bun5.obj" id="5_qacet"]
+[ext_resource type="ArrayMesh" uid="uid://bhei7lrmuxr8k" path="res://Assets/Models/ingredients/bun trees/tree2bun4.obj" id="6_gsttc"]
+[ext_resource type="ArrayMesh" uid="uid://ca57ne024gt6s" path="res://Assets/Models/ingredients/bun trees/tree2bun3.obj" id="7_48gby"]
+[ext_resource type="ArrayMesh" uid="uid://pls5nte02ukj" path="res://Assets/Models/ingredients/bun trees/tree2bun2.obj" id="8_ycbyu"]
+[ext_resource type="ArrayMesh" uid="uid://cg356ue5x2p2e" path="res://Assets/Models/ingredients/bun trees/tree2bun1.obj" id="9_lbqcl"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_cf1hr"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_plfi1"]
+properties/0/path = NodePath("Label3D:text")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath("Tree1Bun1:visible")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath("Tree1Bun2:visible")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath("Tree1Bun3:visible")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath("Tree1Bun4:visible")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+properties/5/path = NodePath("Tree1Bun5:visible")
+properties/5/spawn = true
+properties/5/replication_mode = 2
+
+[node name="Tree2Bun2" type="StaticBody3D" unique_id=68733649 groups=["punchable"]]
+collision_layer = 7
+collision_mask = 7
+script = ExtResource("1_2fxkt")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2071637746]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CylinderShape3D_cf1hr")
+
+[node name="Label3D" type="Label3D" parent="." unique_id=1546856357]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8490634, 0)
+billboard = 2
+text = "5"
+
+[node name="item_timer" type="Timer" parent="." unique_id=1312441818]
+one_shot = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=304594812]
+replication_config = SubResource("SceneReplicationConfig_plfi1")
+
+[node name="Tree2BunX" type="MeshInstance3D" parent="." unique_id=194900447]
+mesh = ExtResource("2_vup8q")
+surface_material_override/0 = ExtResource("3_fljo7")
+
+[node name="Tree2Bun6" type="MeshInstance3D" parent="." unique_id=2026501705 groups=["tree_item"]]
+mesh = ExtResource("4_2f55y")
+surface_material_override/0 = ExtResource("3_fljo7")
+
+[node name="Tree2Bun5" type="MeshInstance3D" parent="." unique_id=1195188978 groups=["tree_item"]]
+mesh = ExtResource("5_qacet")
+surface_material_override/0 = ExtResource("3_fljo7")
+surface_material_override/1 = ExtResource("3_fljo7")
+
+[node name="Tree2Bun4" type="MeshInstance3D" parent="." unique_id=2078106352 groups=["tree_item"]]
+mesh = ExtResource("6_gsttc")
+surface_material_override/0 = ExtResource("3_fljo7")
+
+[node name="Tree2Bun3" type="MeshInstance3D" parent="." unique_id=487473029 groups=["tree_item"]]
+mesh = ExtResource("7_48gby")
+surface_material_override/0 = ExtResource("3_fljo7")
+
+[node name="Tree2Bun2" type="MeshInstance3D" parent="." unique_id=731767405 groups=["tree_item"]]
+mesh = ExtResource("8_ycbyu")
+surface_material_override/0 = ExtResource("3_fljo7")
+
+[node name="Tree2Bun1" type="MeshInstance3D" parent="." unique_id=834628178 groups=["tree_item"]]
+mesh = ExtResource("9_lbqcl")
+surface_material_override/0 = ExtResource("3_fljo7")
+
+[connection signal="timeout" from="item_timer" to="." method="_on_item_timer_timeout"]
