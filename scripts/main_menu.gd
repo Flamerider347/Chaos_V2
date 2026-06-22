@@ -44,6 +44,16 @@ func _process(delta: float) -> void:
 		current_time = 0.0
 		
 	update_sky_and_lighting()
+	if Input.is_action_just_pressed("ui_cancel"):
+		if $menu_UI/multiplayer_menu.visible:
+			start_menu()
+		elif $menu_UI/LAN_menu.visible:
+			_on_multiplayer_pressed()
+		elif $menu_UI/LLAN_menu.visible:
+			_on_LAN_pressed()
+	if Input.is_action_just_pressed("backspace"):
+		if $menu_UI/start_menu/copy_code.has_focus():
+			$menu_UI/start_menu/copy_code.text = ""
 
 func _on_lan_check_toggled(toggled_on: bool) -> void:
 	if toggled_on:
@@ -57,6 +67,8 @@ func _on_lan_check_toggled(toggled_on: bool) -> void:
 func _on_LAN_pressed() -> void:
 	$menu_UI/LAN_menu.show()
 	$menu_UI/start_menu.hide()
+	$menu_UI/LLAN_menu.hide()
+	$menu_UI/multiplayer_menu.hide()
 
 
 func _on_play_pressed() -> void:
@@ -161,11 +173,14 @@ func start_menu() -> void:
 	$menu_UI/LAN_menu.hide()
 	$menu_UI/LLAN_menu.hide()
 	$menu_UI/start_menu.show()
+	$menu_UI/multiplayer_menu.hide()
 
 
 func _on_LLAN_pressed() -> void:
 	$menu_UI/LLAN_menu.show()
 	$menu_UI/start_menu.hide()
+	$menu_UI/LAN_menu.hide()
+	$menu_UI/multiplayer_menu.hide()
 
 
 func _on_copy_code_text_changed(new_text: String) -> void:
@@ -184,8 +199,19 @@ func _on_copy_code_text_changed(new_text: String) -> void:
 			var target_port: int = int(parts[1]) # Convert the port string back to an integer
 			$menu_UI/LAN_menu/join_code.text = target_ip
 			$menu_UI/LAN_menu/port.text = str(target_port)
-			$menu_UI/enter.show()
+			$menu_UI/start_menu/enter.show()
 	else:
-		$menu_UI/copy_code.text = ""
-		$menu_UI/copy_code.placeholder_text = "Please paste the code in"
-		$menu_UI/enter.hide()
+		$menu_UI/start_menu/copy_code.text = ""
+		$menu_UI/start_menu/copy_code.placeholder_text = "Please paste the code in"
+		$menu_UI/start_menu/enter.hide()
+
+
+func _on_multiplayer_pressed() -> void:
+	$menu_UI/multiplayer_menu.show()
+	$menu_UI/LAN_menu.hide()
+	$menu_UI/LLAN_menu.hide()
+	$menu_UI/start_menu.hide()
+
+
+func _on_singleplayer_3_pressed() -> void:
+	get_tree().quit()

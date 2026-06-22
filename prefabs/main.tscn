@@ -9,7 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://dk7scqa85ri4g" path="res://Assets/misc/PNdtb.jpg" id="4_eednf"]
 [ext_resource type="Texture2D" uid="uid://dm0a5vhk82c5s" path="res://Assets/misc/unnamed.png" id="4_lcyuj"]
 [ext_resource type="Shape3D" uid="uid://ne3kbhclr11s" path="res://resources/world_collision.res" id="4_mmri0"]
-[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://Assets/SFX/icon.svg" id="5_a5tfy"]
 [ext_resource type="Script" uid="uid://bof2t2fwctfbu" path="res://scripts/door.gd" id="5_xjs27"]
 [ext_resource type="PackedScene" uid="uid://cwn8urw430asm" path="res://Prefabs/chopping_board.tscn" id="6_fpsi2"]
 [ext_resource type="PackedScene" uid="uid://c3u05loyvf8k3" path="res://Prefabs/storage_unit.tscn" id="7_ihn02"]
@@ -18,6 +17,7 @@
 [ext_resource type="Script" uid="uid://bavxckwopedl" path="res://scripts/score.gd" id="9_m7hx3"]
 [ext_resource type="Texture2D" uid="uid://bnfkdd630vql2" path="res://Assets/Models/hexagons_medieval.png" id="13_cgc31"]
 [ext_resource type="Shape3D" uid="uid://ch7vt5r0qluk8" path="res://resources/kitchen_mesh.res" id="18_kjcd6"]
+[ext_resource type="Texture2D" uid="uid://bkekt2sqkmhk8" path="res://Assets/misc/images.jpg" id="21_66d46"]
 [ext_resource type="Texture2D" uid="uid://82gci5q8xxkq" path="res://Assets/misc/VRSwiB-2993518902.jpg" id="22_as7qb"]
 [ext_resource type="Texture2D" uid="uid://ckwrj4w1xthnd" path="res://Assets/Models/restaurantbits_texture.png" id="23_ybnlm"]
 [ext_resource type="ArrayMesh" uid="uid://biorjvmmf1krl" path="res://Assets/Models/kitchen_model.obj" id="24_66d46"]
@@ -89,7 +89,7 @@ shader_parameter/horizon_sunset = Color(0.9, 0.4, 0.2, 1)
 shader_parameter/sky_night = Color(0.02, 0.02, 0.05, 1)
 shader_parameter/horizon_night = Color(0.05, 0.05, 0.1, 1)
 shader_parameter/sun_texture = ExtResource("4_lcyuj")
-shader_parameter/moon_texture = ExtResource("5_a5tfy")
+shader_parameter/moon_texture = ExtResource("21_66d46")
 shader_parameter/cloud_texture = ExtResource("4_eednf")
 shader_parameter/sun_size = 0.8
 shader_parameter/moon_size = 0.2
@@ -475,13 +475,18 @@ environment = SubResource("Environment_xjs27")
 camera_attributes = SubResource("CameraAttributesPractical_oob7m")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="game/environment_controller" unique_id=376592696]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9388933, 0, 0.70682615)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9388933, -0.1416707, 0.70682615)
 
-[node name="nightlight" type="OmniLight3D" parent="game/environment_controller" unique_id=830527040]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8970528, 0)
-shadow_enabled = true
-shadow_caster_mask = 4293918722
-omni_range = 15.462516
+[node name="nightlight" type="AreaLight3D" parent="game/environment_controller" unique_id=1712306042]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 2.8151405, 0.019877434)
+light_energy = 0.258
+area_normalize_energy = false
+area_size = Vector2(15.611755, 4.947877)
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="game/environment_controller" unique_id=2138547466]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 17.36224, 0)
+light_color = Color(0.45440018, 0.82465273, 0.96828574, 1)
+light_energy = 0.15
 
 [node name="enemies" type="Node3D" parent="game" unique_id=2006808970]
 script = ExtResource("9_1lqda")
@@ -562,6 +567,13 @@ offset_top = 169.0
 offset_right = 90.0
 offset_bottom = 192.0
 text = "IP: hidden"
+
+[node name="Button" type="Button" parent="Pause_UI" unique_id=1521680383]
+offset_left = 2.0
+offset_top = 200.0
+offset_right = 118.0
+offset_bottom = 224.0
+text = "Return to main menu"
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1896255929]
 visible = false
@@ -696,3 +708,4 @@ text = "FPS: 240"
 [connection signal="body_exited" from="game/world/kitchen/kitchen_area" to="game/world/kitchen/kitchen_area" method="_on_body_exited"]
 [connection signal="new_day" from="game/environment_controller" to="." method="_on_environment_controller_new_day"]
 [connection signal="pressed" from="Pause_UI/copybutton" to="." method="_on_copybutton_pressed"]
+[connection signal="pressed" from="Pause_UI/Button" to="." method="burn_it_all_down"]

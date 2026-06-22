@@ -56,74 +56,54 @@ script = ExtResource("3_m76kp")
 [node name="menu_UI" type="CanvasLayer" parent="." unique_id=175713976]
 
 [node name="username" type="LineEdit" parent="menu_UI" unique_id=368585567 groups=["donthide"]]
-offset_left = 497.0
-offset_top = 290.0
-offset_right = 797.0
-offset_bottom = 350.0
+offset_left = 172.0
+offset_top = 353.0
+offset_right = 472.0
+offset_bottom = 413.0
 placeholder_text = "Enter Username"
 
-[node name="copy_code" type="LineEdit" parent="menu_UI" unique_id=1037129841 groups=["donthide"]]
-offset_left = 176.0
-offset_top = 290.0
-offset_right = 476.0
-offset_bottom = 350.0
-placeholder_text = "Paste the host IP/Port code here"
-
-[node name="enter" type="Button" parent="menu_UI" unique_id=1094319762]
-offset_left = 176.0
-offset_top = 361.0
-offset_right = 477.0
-offset_bottom = 416.0
-text = "Join game"
-
 [node name="start_menu" type="Control" parent="menu_UI" unique_id=296126113]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 667.0
 offset_bottom = 123.0
 
-[node name="LAN" type="Button" parent="menu_UI/start_menu" unique_id=1817198043]
-layout_mode = 0
-offset_left = 494.0
-offset_top = 136.0
-offset_right = 794.0
-offset_bottom = 195.99997
-text = "Play LAN (Home)"
-
-[node name="LAN2" type="Button" parent="menu_UI/start_menu" unique_id=1047029253]
-layout_mode = 0
-offset_left = 494.0
-offset_top = 216.0
-offset_right = 794.0
-offset_bottom = 276.0
-text = "Play LLAN (School)"
-
 [node name="singleplayer" type="Button" parent="menu_UI/start_menu" unique_id=1542210094]
 layout_mode = 0
-offset_left = 174.0
-offset_top = 136.0
-offset_right = 474.0
-offset_bottom = 195.99997
+offset_left = 175.0
+offset_top = 213.0
+offset_right = 475.0
+offset_bottom = 272.99997
 text = "Play Singleplayer"
 
-[node name="RTC" type="Button" parent="menu_UI/start_menu" unique_id=721291177]
+[node name="singleplayer3" type="Button" parent="menu_UI/start_menu" unique_id=1435526061]
 layout_mode = 0
-offset_left = 176.0
-offset_top = 216.0
-offset_right = 476.0
-offset_bottom = 276.0
-disabled = true
-text = "Play Cross Network
-(Sprint 2)"
+offset_left = 171.0
+offset_top = 422.0
+offset_right = 470.9996
+offset_bottom = 481.99997
+text = "Quit Game"
+
+[node name="singleplayer2" type="Button" parent="menu_UI/start_menu" unique_id=353611953]
+layout_mode = 0
+offset_left = 479.0
+offset_top = 213.0
+offset_right = 779.0
+offset_bottom = 272.99997
+text = "Play Multiplayer"
 
 [node name="Label" type="Label" parent="menu_UI/start_menu" unique_id=1466894045]
 layout_mode = 0
-offset_left = 186.0
-offset_top = 419.0
-offset_right = 963.0
-offset_bottom = 598.0
-text = "To get started, choose how to play. Web version only supports singleplayer"
+offset_left = 178.0
+offset_top = 170.0
+offset_right = 955.0
+offset_bottom = 349.0
+text = "To get started, choose how to play. Web version only supports singleplayer
+
+
+
+
+                                                                   OR"
 autowrap_mode = 3
 
 [node name="Label2" type="Label" parent="menu_UI/start_menu" unique_id=821679050]
@@ -143,6 +123,82 @@ on the admin computer.
 Singleplayer is still available
 on all computers."
 autowrap_mode = 3
+
+[node name="copy_code" type="LineEdit" parent="menu_UI/start_menu" unique_id=1037129841 groups=["donthide"]]
+layout_mode = 0
+offset_left = 478.0
+offset_top = 352.0
+offset_right = 778.0
+offset_bottom = 412.0
+placeholder_text = "Paste the host IP/Port code here"
+
+[node name="enter" type="Button" parent="menu_UI/start_menu" unique_id=1094319762]
+visible = false
+layout_mode = 0
+offset_left = 476.0
+offset_top = 423.0
+offset_right = 777.0
+offset_bottom = 478.0
+text = "Join game"
+
+[node name="multiplayer_menu" type="Control" parent="menu_UI" unique_id=740696643]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 667.0
+offset_bottom = 123.0
+
+[node name="singleplayer" type="Button" parent="menu_UI/multiplayer_menu" unique_id=1122903609]
+layout_mode = 0
+offset_left = 175.0
+offset_top = 213.0
+offset_right = 475.0
+offset_bottom = 272.99997
+disabled = true
+text = "Play Cross-Network"
+
+[node name="singleplayer2" type="Button" parent="menu_UI/multiplayer_menu" unique_id=1881063360]
+layout_mode = 0
+offset_left = 480.0
+offset_top = 213.0
+offset_right = 780.0
+offset_bottom = 272.99997
+text = "Play LAN"
+
+[node name="Label" type="Label" parent="menu_UI/multiplayer_menu" unique_id=1644389707]
+layout_mode = 0
+offset_left = 186.0
+offset_top = 419.0
+offset_right = 963.0
+offset_bottom = 598.0
+text = "To get started, choose how to play. Web version only supports singleplayer"
+autowrap_mode = 3
+
+[node name="Label2" type="Label" parent="menu_UI/multiplayer_menu" unique_id=1504206069]
+layout_mode = 0
+offset_left = 801.0
+offset_top = 99.0
+offset_right = 1152.0
+offset_bottom = 460.0
+text = "Note:
+At school LAN is blocked
+unless run through the 
+admin computer in P14.
+
+Use the LLAN mode
+on the admin computer.
+
+Singleplayer is still available
+on all computers."
+autowrap_mode = 3
+
+[node name="return" type="Button" parent="menu_UI/multiplayer_menu" unique_id=102785772]
+layout_mode = 0
+offset_left = 496.0
+offset_top = 362.0
+offset_right = 796.0
+offset_bottom = 422.0
+text = "Back to main menu"
 
 [node name="Tutorial" type="Control" parent="menu_UI" unique_id=378982451]
 layout_mode = 3
@@ -242,7 +298,17 @@ Note:
 Make sure you're all
 on the same network!"
 
+[node name="singleplayer3" type="Button" parent="menu_UI/LAN_menu" unique_id=469098920]
+layout_mode = 0
+offset_left = 182.0
+offset_top = 456.0
+offset_right = 482.0
+offset_bottom = 516.0
+text = "Press here for LLAN
+(Works at school)"
+
 [node name="LLAN_menu" type="Control" parent="menu_UI" unique_id=2103419970]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -346,14 +412,18 @@ mesh = ExtResource("11_p5qx4")
 [node name="timeout_timer" type="Timer" parent="." unique_id=1842376164]
 wait_time = 15.0
 
-[connection signal="text_changed" from="menu_UI/copy_code" to="." method="_on_copy_code_text_changed"]
-[connection signal="pressed" from="menu_UI/enter" to="." method="_on_join_pressed"]
-[connection signal="pressed" from="menu_UI/start_menu/LAN" to="." method="_on_LAN_pressed"]
-[connection signal="pressed" from="menu_UI/start_menu/LAN2" to="." method="_on_LLAN_pressed"]
 [connection signal="pressed" from="menu_UI/start_menu/singleplayer" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="menu_UI/start_menu/singleplayer3" to="." method="_on_singleplayer_3_pressed"]
+[connection signal="pressed" from="menu_UI/start_menu/singleplayer2" to="." method="_on_multiplayer_pressed"]
+[connection signal="text_changed" from="menu_UI/start_menu/copy_code" to="." method="_on_copy_code_text_changed"]
+[connection signal="pressed" from="menu_UI/start_menu/enter" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="menu_UI/multiplayer_menu/singleplayer" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="menu_UI/multiplayer_menu/singleplayer2" to="." method="_on_LAN_pressed"]
+[connection signal="pressed" from="menu_UI/multiplayer_menu/return" to="." method="start_menu"]
 [connection signal="pressed" from="menu_UI/LAN_menu/join_button" to="." method="_on_join_pressed"]
 [connection signal="pressed" from="menu_UI/LAN_menu/play_button" to="." method="_on_play_pressed"]
-[connection signal="pressed" from="menu_UI/LAN_menu/return" to="." method="start_menu"]
+[connection signal="pressed" from="menu_UI/LAN_menu/return" to="." method="_on_multiplayer_pressed"]
+[connection signal="pressed" from="menu_UI/LAN_menu/singleplayer3" to="." method="_on_LLAN_pressed"]
 [connection signal="pressed" from="menu_UI/LLAN_menu/spool_server" to="." method="_on_spool_server_pressed"]
-[connection signal="pressed" from="menu_UI/LLAN_menu/return" to="." method="start_menu"]
+[connection signal="pressed" from="menu_UI/LLAN_menu/return" to="." method="_on_multiplayer_pressed"]
 [connection signal="timeout" from="timeout_timer" to="." method="_on_timeout_timer_timeout"]

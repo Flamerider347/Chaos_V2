@@ -3,7 +3,7 @@ extends Area3D
 @onready var smoke_particle: PackedScene = preload("res://Prefabs/smoke_particle.tscn")
 
 # FIX 1: Find the game node dynamically using absolute root lookup or group fallback
-var game: Node
+@onready var game: Node = get_node("/root/main")
 
 var scores: Dictionary = {
 	"cheese": 5, "cheese_chopped": 10, "tomato": 5, "tomato_chopped": 10, "bun": 10,
@@ -13,7 +13,7 @@ var scores: Dictionary = {
 
 func _ready() -> void:
 	# Safely locate the main game script regardless of spooler hierarchy
-	game = get_node_or_null("/root/main/game")
+	game = get_node_or_null("/root/main")
 	if not game:
 		# Fallback if your root structure is named differently under headless server
 		var games_in_group = get_tree().get_nodes_in_group("game_main")

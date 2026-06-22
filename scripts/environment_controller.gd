@@ -1,11 +1,11 @@
 extends Node3D
 
-@export var day_length_seconds: float = 180.0
+@export var day_length_seconds: float = 24.0
 
 @onready var ui_time_label = get_node_or_null("/root/main/UI/day_timer")
 @onready var sun_light: DirectionalLight3D = $DirectionalLight3D
 @onready var world_env: WorldEnvironment = $WorldEnvironment
-@onready var night_light : OmniLight3D = $nightlight
+@onready var night_light = $nightlight
 @onready var ingredients = {
 	"tomato_chopped" : preload("res://Prefabs/tomato_chopped.tscn"),
 	"cheese_chopped" : preload("res://Prefabs/cheese_chopped.tscn"),
@@ -17,7 +17,7 @@ extends Node3D
 	"plate" : preload("res://Prefabs/plate.tscn")
 }
 
-var current_time: float = 0.25
+var current_time: float = 0.95
 var is_cycle_started: bool = false 
 var current_day = 0
 var changed_day = false

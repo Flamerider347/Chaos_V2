@@ -38,21 +38,16 @@ var min_spawn_bound: Vector2 = Vector2(-40, -40)
 var max_spawn_bound: Vector2 = Vector2(35, 35)
 
 # --- Gameplay Core Variables ---
-var score: int = 0:
-	set(val):
-		score = val
-		GameData.score = val
-
-var power: float = 100.0:
-	set(val):
-		power = val
-		GameData.power = round(val)
+var score: int = 0
+var power: float = 100.0
 
 var total_power_cost: int = 0
 var current_day: int = 0
 var paused: bool = false
 
 func _ready() -> void:
+	GameData.score = 0
+	GameData.power = 0
 	$Pause_UI/roomcode.text = "Port: " +str(GameData.game_port)
 	$Pause_UI/host_ip.text = "IP:" +str(GameData.room_code)
 	GameData.in_game = true
