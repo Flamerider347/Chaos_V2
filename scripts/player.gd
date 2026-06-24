@@ -93,8 +93,12 @@ func _input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	if not is_owned: return
+	if not is_on_floor():
+		velocity.y -= GRAVITY * delta
+		if position.y < -5: position = Vector3(0, 2, 0)
 	if GameData.paused:
-		velocity = Vector3.ZERO # Complete stop: no gravity buildup, no floatiness
+		velocity.x = 0
+		velocity.z = 0
 		move_and_slide()
 		return
 
@@ -106,7 +110,7 @@ func _physics_process(delta: float) -> void:
 	
 	_handle_interactions(target)
 	_handle_snapping(target)
-	_handle_movement(delta)
+	_handle_movement()
 # ---------------------------------------------------------
 # CORE LOGIC HANDLERS
 # ---------------------------------------------------------
@@ -123,11 +127,8 @@ func _update_states(delta: float) -> void:
 	if is_instance_valid(held_item):
 		if ("is_two_handed" in held_item and held_item.is_two_handed) or (held_item.is_in_group("plate") and held_item.get("stacked_items").size() > 0):
 			holding_two_handed = true
-func _handle_movement(delta: float) -> void:
-	if not is_on_floor():
-		velocity.y -= GRAVITY * delta
-		if position.y < -5: position = Vector3(0, 2, 0)
-	elif Input.is_action_pressed("ui_accept"):
+func _handle_movement() -> void:
+	if Input.is_action_pressed("ui_accept"):
 		velocity.y = JUMP_VELOCITY
 
 	var vec: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
