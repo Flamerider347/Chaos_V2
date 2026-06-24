@@ -2,10 +2,7 @@ extends RigidBody3D
 
 var type = "plate"
 var stacked_items: Array = []
-
-var is_two_handed: bool:
-	get:
-		return stacked_items.size() > 0
+var is_two_handed: bool = false
 
 func _ready() -> void:
 	pass
@@ -17,38 +14,31 @@ func stack_item(item: Node) -> void:
 	var item_cookedness = item.cookedness if "cookedness" in item else 0.0
 	var item_path = str(item.get_path())
 	
-	# 1. Execute locally immediately so it feels responsive to the player
+	# 1. Execute locally immediately
 	execute_stack(item, offset, item_state, item_cookedness)
 	
 	# 2. Tell the network
 	if multiplayer.is_server():
-		# Server tells everyone else, passing its own ID to be skipped locally
 		rpc("client_sync_stack", item_path, offset, item_state, item_cookedness, multiplayer.get_unique_id())
 	else:
-		# Client asks the server to handle it
 		rpc_id(1, "request_stack_on_server", item_path, offset, item_state, item_cookedness, multiplayer.get_unique_id())
 
 @rpc("any_peer", "reliable")
 func request_stack_on_server(item_path: String, offset: float, forced_state: String, forced_cookedness: float, sender_id: int) -> void:
-	if not multiplayer.is_server(): 
-		return
+	if not multiplayer.is_server(): return
 		
 	var item = get_node_or_null(item_path)
 	if is_instance_valid(item):
 		execute_stack(item, offset, forced_state, forced_cookedness)
-		
-	# Server relays the stack to all OTHER clients
+	
 	rpc("client_sync_stack", item_path, offset, forced_state, forced_cookedness, sender_id)
 
 @rpc("authority", "reliable")
 func client_sync_stack(item_path: String, offset: float, forced_state: String, forced_cookedness: float, sender_id: int) -> void:
-	# Skip the peer who originally started the stack, because they already ran it locally!
-	if multiplayer.get_unique_id() == sender_id:
-		return
+	if multiplayer.get_unique_id() == sender_id: return
 		
 	var item = get_node_or_null(item_path)
-	if not is_instance_valid(item):
-		return
+	if not is_instance_valid(item): return
 		
 	execute_stack(item, offset, forced_state, forced_cookedness)
 
@@ -67,8 +57,8 @@ func execute_stack(item: Node, offset: float, forced_state: String, forced_cooke
 		col.set_deferred("disabled", true)
 	
 	if not stacked_items.has(item): stacked_items.append(item)
+	is_two_handed = stacked_items.size() > 0
 	
-	# Use a RemoteTransform3D to visually attach the item without altering its scene tree path
 	var binder_name = "bind_" + item.name
 	var remote_transform = get_node_or_null(binder_name)
 	if not remote_transform:
@@ -86,7 +76,6 @@ func execute_stack(item: Node, offset: float, forced_state: String, forced_cooke
 	
 	var p = get_tree().get_first_node_in_group("player")
 	if p:
-		if p.has_method("check_two_handed_status"): p.check_two_handed_status()
 		if p.has_method("update_inventory_ui"): p.update_inventory_ui()
 
 func calculate_stack_height() -> float:

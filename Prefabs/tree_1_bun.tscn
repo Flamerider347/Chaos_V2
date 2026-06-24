@@ -11,24 +11,18 @@
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_cf1hr"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_plfi1"]
-properties/0/path = NodePath("Label3D:text")
+properties/0/path = NodePath("Tree1Bun1:visible")
 properties/0/spawn = true
 properties/0/replication_mode = 2
-properties/1/path = NodePath("Tree1Bun1:visible")
+properties/1/path = NodePath("Tree1Bun2:visible")
 properties/1/spawn = true
 properties/1/replication_mode = 2
-properties/2/path = NodePath("Tree1Bun2:visible")
+properties/2/path = NodePath("Tree1Bun3:visible")
 properties/2/spawn = true
 properties/2/replication_mode = 2
-properties/3/path = NodePath("Tree1Bun3:visible")
+properties/3/path = NodePath("Tree1Bun4:visible")
 properties/3/spawn = true
 properties/3/replication_mode = 2
-properties/4/path = NodePath("Tree1Bun4:visible")
-properties/4/spawn = true
-properties/4/replication_mode = 2
-properties/5/path = NodePath("Tree1Bun5:visible")
-properties/5/spawn = true
-properties/5/replication_mode = 2
 
 [node name="Tree1Bun1" type="StaticBody3D" unique_id=68733649 groups=["punchable"]]
 collision_layer = 7
@@ -38,11 +32,6 @@ script = ExtResource("1_dtyhy")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2071637746]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CylinderShape3D_cf1hr")
-
-[node name="Label3D" type="Label3D" parent="." unique_id=1546856357]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8490634, 0)
-billboard = 2
-text = "5"
 
 [node name="item_timer" type="Timer" parent="." unique_id=1312441818]
 one_shot = true

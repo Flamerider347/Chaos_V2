@@ -1,7 +1,7 @@
 extends Node3D
 
 # Day length updated to 24.0 for quick testing (change to 240.0 for production)
-@export var day_length_seconds: float = 24.0
+@export var day_length_seconds: float = 240.0
 
 @onready var ui_time_label = get_node_or_null("/root/main/UI/day_timer")
 @onready var sun_light: DirectionalLight3D = $DirectionalLight3D
@@ -195,24 +195,24 @@ func update_sky_and_lighting() -> void:
 	var sun_fade: float = 0.0
 	var sunset_blend: float = 0.0
 	
-	# UPDATED TIMESTAMPS:
+	# LONG TWILIGHT BUFFER:
 	# 0.25 to 0.30 -> Sunrise (6:00 AM to 7:12 AM)
-	# 0.30 to 0.875 -> Full Day (7:12 AM to 9:00 PM)
-	# 0.875 to 1.00 -> Sunset / Fading out (9:00 PM to Midnight)
+	# 0.30 to 0.75 -> Full Day (7:12 AM to 6:00 PM)
+	# 0.75 to 1.00 -> SLOW Sunset Fade (6:00 PM down to Midnight)
 	# 0.00 to 0.25 -> Pitch Black Goblin Hours (Midnight to 6:00 AM)
 	
 	if current_time >= 0.25 and current_time < 0.30:
 		# Sunrise
 		sun_fade = smoothstep(0.25, 0.30, current_time) * 1.2
 		sunset_blend = smoothstep(0.30, 0.25, current_time)
-	elif current_time >= 0.30 and current_time < 0.875:
+	elif current_time >= 0.30 and current_time < 0.75:
 		# Full Day
 		sun_fade = 1.2
 		sunset_blend = 0.0
-	elif current_time >= 0.875 and current_time <= 1.0:
-		# Sunset (Sun energy drops smoothly to 0 right at midnight)
-		sun_fade = smoothstep(1.0, 0.875, current_time) * 1.2
-		sunset_blend = smoothstep(0.875, 1.0, current_time)
+	elif current_time >= 0.75 and current_time <= 1.0:
+		# Slow Evening Transition (6 hours long)
+		sun_fade = smoothstep(1.0, 0.75, current_time) * 1.2
+		sunset_blend = smoothstep(0.75, 1.0, current_time)
 	else:
 		# Deep night (0.0 to 0.25)
 		sun_fade = 0.0
