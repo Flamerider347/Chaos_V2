@@ -1,12 +1,12 @@
 # Blender 4.5.3 LTS MTL File: 'tree1tomatoX.blend'
 # www.blender.org
 
-newmtl restaurant.001
+newmtl restaurant.045
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
+Ni 1.500000
 illum 2
-map_Kd S:/Year12Delivery/Year12Delivery/model-creation/restaurantbits_texture.png
+map_Kd S:/KayKit_Restaurant_Bits_1.0_FREE/Assets/fbx/restaurantbits_texture.png
+map_d S:/KayKit_Restaurant_Bits_1.0_FREE/Assets/fbx/restaurantbits_texture.png
