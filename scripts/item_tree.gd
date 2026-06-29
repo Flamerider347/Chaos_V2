@@ -95,7 +95,6 @@ func _on_custom_item_spawn(data: Array) -> Node:
 	item_instance.position = target_pos
 	
 	item_instance.set_multiplayer_authority(1)
-	item_instance.add_to_group("plate_stackable")
 	item_instance.add_to_group("pickupable")
 	
 	return item_instance
