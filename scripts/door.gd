@@ -35,3 +35,5 @@ func sync_open_door() -> void:
 		env_controller.start_day_cycle()
 	else:
 		print("Error: Could not find environment_controller at /root/main/environment_controller")
+	await get_tree().create_timer(1.2).timeout
+	queue_free()
