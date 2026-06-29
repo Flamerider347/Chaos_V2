@@ -6,8 +6,7 @@
 [ext_resource type="Script" uid="uid://civ4cltduy63" path="res://scripts/network/WebRTC.gd" id="3_m76kp"]
 [ext_resource type="Shader" uid="uid://b4owg11v8s30w" path="res://Assets/misc/sky_shader.gdshader" id="6_n2va3"]
 [ext_resource type="Material" uid="uid://141503k533fm" path="res://Assets/misc/mesh_colours.tres" id="10_p5qx4"]
-[ext_resource type="ArrayMesh" uid="uid://c6n236sv2ys7y" path="res://Assets/Models/basicland3.obj" id="11_ey8gg"]
-[ext_resource type="ArrayMesh" uid="uid://f5xvk66fo03e" path="res://Assets/Models/basiclandbig.obj" id="11_p5qx4"]
+[ext_resource type="ArrayMesh" uid="uid://bppmh13lttax5" path="res://Assets/Models/basiclandbig.obj" id="11_p5qx4"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_m1h1t"]
 load_path = "res://.godot/imported/PNdtb.jpg-3bf9b7b3b1afa53881adb17f05f3fa27.s3tc.ctex"
@@ -56,17 +55,19 @@ script = ExtResource("3_m76kp")
 [node name="menu_UI" type="CanvasLayer" parent="." unique_id=175713976]
 
 [node name="username" type="LineEdit" parent="menu_UI" unique_id=368585567 groups=["donthide"]]
-offset_left = 172.0
-offset_top = 353.0
-offset_right = 472.0
-offset_bottom = 413.0
+offset_left = 154.0
+offset_top = 263.0
+offset_right = 454.0
+offset_bottom = 323.0
 placeholder_text = "Enter Username"
 
 [node name="start_menu" type="Control" parent="menu_UI" unique_id=296126113]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 667.0
-offset_bottom = 123.0
+offset_left = -18.0
+offset_top = -90.0
+offset_right = 649.0
+offset_bottom = 33.0
 
 [node name="singleplayer" type="Button" parent="menu_UI/start_menu" unique_id=1542210094]
 layout_mode = 0
@@ -203,22 +204,24 @@ text = "Back to main menu"
 [node name="Tutorial" type="Control" parent="menu_UI" unique_id=378982451]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 172.0
-offset_bottom = 94.0
+offset_left = -18.0
+offset_top = -90.0
+offset_right = 154.0
+offset_bottom = 4.0
 script = ExtResource("2_7do1g")
 
 [node name="status" type="Label" parent="menu_UI" unique_id=1355674729]
-offset_left = 1186.0
-offset_top = 48.0
-offset_right = 1449.0
-offset_bottom = 119.0
+offset_left = 1168.0
+offset_top = -42.0
+offset_right = 1431.0
+offset_bottom = 29.0
 text = "Not Connected, Please wait."
 
 [node name="lobby error" type="Label" parent="menu_UI" unique_id=2141615790]
-offset_left = 1209.0
-offset_top = 225.0
-offset_right = 1472.0
-offset_bottom = 296.0
+offset_left = 1191.0
+offset_top = 135.0
+offset_right = 1454.0
+offset_bottom = 206.0
 
 [node name="LAN_menu" type="Control" parent="menu_UI" unique_id=1625941240]
 visible = false
@@ -383,8 +386,9 @@ offset_bottom = 40.0
 [node name="Node3D" type="Node3D" parent="." unique_id=1214618011]
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=560626361]
-transform = Transform3D(0.99888986, 0.01915992, 0.043033883, 0, 0.9135454, -0.40673664, -0.047106452, 0.4062851, 0.91253126, -0.3, 10.8, -13.4)
+transform = Transform3D(0.99254614, -0.04168177, -0.114519715, 0, 0.9396926, -0.3420201, 0.12186935, 0.33947074, 0.93268824, 5, 22.475, -18.545)
 current = true
+fov = 85.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=621822751]
 environment = SubResource("Environment_edmjc")
@@ -399,18 +403,13 @@ shadow_enabled = true
 shadow_caster_mask = 4293918722
 omni_range = 15.462516
 
-[node name="Basicland3" type="MeshInstance3D" parent="." unique_id=1904207430]
-transform = Transform3D(0.49999997, 0, 0.86602545, 0, 1, 0, -0.86602545, 0, 0.49999997, 18.6, 0, -5.68)
-material_override = ExtResource("10_p5qx4")
-mesh = ExtResource("11_ey8gg")
-
-[node name="Basicland2" type="MeshInstance3D" parent="." unique_id=1050057411]
-transform = Transform3D(1, 0, 0, 0, -1, 1.509958e-07, 0, -1.509958e-07, -1, -1.815, -5.03, -44.88)
-material_override = ExtResource("10_p5qx4")
-mesh = ExtResource("11_p5qx4")
-
 [node name="timeout_timer" type="Timer" parent="." unique_id=1842376164]
 wait_time = 15.0
+
+[node name="Basiclandbig" type="MeshInstance3D" parent="." unique_id=459930701]
+transform = Transform3D(-0.50000006, 0, -0.8660254, 0, 1, 0, 0.8660254, 0, -0.50000006, 0, 0, 0)
+material_override = ExtResource("10_p5qx4")
+mesh = ExtResource("11_p5qx4")
 
 [connection signal="pressed" from="menu_UI/start_menu/singleplayer" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="menu_UI/start_menu/singleplayer3" to="." method="_on_singleplayer_3_pressed"]

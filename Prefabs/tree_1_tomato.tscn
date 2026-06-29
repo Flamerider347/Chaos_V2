@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://b7v3hl5yko217"]
 
 [ext_resource type="Script" uid="uid://togfvjn4aqrk" path="res://scripts/item_tree.gd" id="1_mkai2"]
-[ext_resource type="Texture2D" uid="uid://bnfkdd630vql2" path="res://Assets/Models/hexagons_medieval.png" id="2_jn1g1"]
-[ext_resource type="ArrayMesh" uid="uid://jyccg41bp8kj" path="res://Assets/Models/tree1tomatoX.obj" id="2_wk3ir"]
+[ext_resource type="Material" uid="uid://141503k533fm" path="res://Assets/misc/mesh_colours.tres" id="2_jn1g1"]
+[ext_resource type="ArrayMesh" uid="uid://dbhw55m4ys3rb" path="res://Assets/Models/ingredients/tomato trees/tree1tomatoX.obj" id="2_wk3ir"]
 [ext_resource type="Texture2D" uid="uid://ckwrj4w1xthnd" path="res://Assets/Models/restaurantbits_texture.png" id="3_e5hxk"]
-[ext_resource type="ArrayMesh" uid="uid://bvs28ujvnj1i6" path="res://Assets/Models/tree1tomato1.obj" id="4_x0x00"]
-[ext_resource type="ArrayMesh" uid="uid://bk55tayshwrro" path="res://Assets/Models/tree1tomato2.obj" id="5_0vxj4"]
-[ext_resource type="ArrayMesh" uid="uid://ctyquof576osg" path="res://Assets/Models/tree1tomato3.obj" id="6_i0ox2"]
-[ext_resource type="ArrayMesh" uid="uid://y770xycbm6cc" path="res://Assets/Models/tree1tomato4.obj" id="7_iqm7r"]
+[ext_resource type="ArrayMesh" uid="uid://bvs28ujvnj1i6" path="res://Assets/Models/ingredients/tomato trees/tree1tomato1.obj" id="4_x0x00"]
+[ext_resource type="ArrayMesh" uid="uid://bk55tayshwrro" path="res://Assets/Models/ingredients/tomato trees/tree1tomato2.obj" id="5_0vxj4"]
+[ext_resource type="ArrayMesh" uid="uid://ctyquof576osg" path="res://Assets/Models/ingredients/tomato trees/tree1tomato3.obj" id="6_i0ox2"]
+[ext_resource type="ArrayMesh" uid="uid://y770xycbm6cc" path="res://Assets/Models/ingredients/tomato trees/tree1tomato4.obj" id="7_iqm7r"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wk3ir"]
 radius = 1.0844727
@@ -26,10 +26,6 @@ properties/2/replication_mode = 2
 properties/3/path = NodePath("Tree1Tomato4:visible")
 properties/3/spawn = true
 properties/3/replication_mode = 2
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u0o4s"]
-transparency = 1
-albedo_texture = ExtResource("2_jn1g1")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vd21m"]
 albedo_texture = ExtResource("3_e5hxk")
@@ -160,9 +156,8 @@ replication_config = SubResource("SceneReplicationConfig_soqgf")
 
 [node name="Tree1TomatoX" type="MeshInstance3D" parent="." unique_id=681818308]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9, 0)
-material_override = SubResource("StandardMaterial3D_u0o4s")
+material_override = ExtResource("2_jn1g1")
 mesh = ExtResource("2_wk3ir")
-surface_material_override/0 = SubResource("StandardMaterial3D_vd21m")
 
 [node name="Tree1Tomato1" type="MeshInstance3D" parent="." unique_id=384988498 groups=["tree_item"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.9, 0)
