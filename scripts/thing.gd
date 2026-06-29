@@ -8,7 +8,7 @@ extends Area3D
 var scores: Dictionary = {
 	"cheese": 5, "cheese_chopped": 10, "tomato": 5, "tomato_chopped": 10, "bun": 10,
 	"lettuce" : 5, "lettuce_chopped" : 10, "carrot" : 5, "carrot_chopped" : 10,
-	"bun_bottom_chopped": 10, "bun_top_chopped": 10, "meat": 20, "meat_cooked": 50
+	"bun_bottom_chopped": 10, "bun_top_chopped": 10, "meat": 20, "meat_cooked": 50, "meat_burnt" :10
 }
 
 func _ready() -> void:
