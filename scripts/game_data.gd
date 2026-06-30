@@ -40,7 +40,6 @@ func host_game() -> void:
 	peer = ENetMultiplayerPeer.new()
 	
 	var cmdline_user_args = OS.get_cmdline_user_args()
-	print(cmdline_user_args)
 	if "--port" in cmdline_user_args:
 		var port = int(cmdline_user_args[cmdline_user_args.find("--port") + 1])
 		game_port = port
