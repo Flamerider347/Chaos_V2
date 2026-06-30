@@ -55,10 +55,10 @@ script = ExtResource("3_m76kp")
 [node name="menu_UI" type="CanvasLayer" parent="." unique_id=175713976]
 
 [node name="username" type="LineEdit" parent="menu_UI" unique_id=368585567 groups=["donthide"]]
-offset_left = 154.0
-offset_top = 263.0
-offset_right = 454.0
-offset_bottom = 323.0
+offset_left = 462.0
+offset_top = 262.0
+offset_right = 762.0
+offset_bottom = 322.0
 placeholder_text = "Enter Username"
 
 [node name="start_menu" type="Control" parent="menu_UI" unique_id=296126113]
@@ -75,14 +75,14 @@ offset_left = 175.0
 offset_top = 213.0
 offset_right = 475.0
 offset_bottom = 272.99997
-text = "Play Singleplayer"
+text = "Play Singleplayer / Host LAN"
 
 [node name="singleplayer3" type="Button" parent="menu_UI/start_menu" unique_id=1435526061]
 layout_mode = 0
-offset_left = 171.0
-offset_top = 422.0
-offset_right = 470.9996
-offset_bottom = 481.99997
+offset_left = 479.0
+offset_top = 417.0
+offset_right = 778.99963
+offset_bottom = 476.99997
 text = "Quit Game"
 
 [node name="singleplayer2" type="Button" parent="menu_UI/start_menu" unique_id=353611953]
@@ -91,55 +91,54 @@ offset_left = 479.0
 offset_top = 213.0
 offset_right = 779.0
 offset_bottom = 272.99997
-text = "Play Multiplayer"
+text = "Play Multiplayer / Join World"
 
 [node name="Label" type="Label" parent="menu_UI/start_menu" unique_id=1466894045]
 layout_mode = 0
 offset_left = 178.0
 offset_top = 170.0
 offset_right = 955.0
-offset_bottom = 349.0
+offset_bottom = 548.0
 text = "To get started, choose how to play. Web version only supports singleplayer
 
 
 
 
-                                                                   OR"
-autowrap_mode = 3
+                                                                   OR
 
-[node name="Label2" type="Label" parent="menu_UI/start_menu" unique_id=821679050]
+"
+
+[node name="Label2" type="Label" parent="menu_UI/start_menu" unique_id=500899929]
 layout_mode = 0
-offset_left = 801.0
-offset_top = 99.0
-offset_right = 1152.0
-offset_bottom = 460.0
-text = "Note:
-At school LAN is blocked
-unless run through the 
-admin computer in P14.
+offset_left = 788.0
+offset_top = 224.0
+offset_right = 1565.0
+offset_bottom = 602.0
+text = "Copyable host code is found by pressing
+ \"Tab\" or \"Escape\" to open the pause menu.
 
-Use the LLAN mode
-on the admin computer.
 
-Singleplayer is still available
-on all computers."
-autowrap_mode = 3
+
+
+If the host can't share the pasted code, 
+press \"Play Multiplayer / Join World\"
+where you can enter the details manually."
 
 [node name="copy_code" type="LineEdit" parent="menu_UI/start_menu" unique_id=1037129841 groups=["donthide"]]
 layout_mode = 0
-offset_left = 478.0
-offset_top = 352.0
-offset_right = 778.0
-offset_bottom = 412.0
+offset_left = 176.0
+offset_top = 351.0
+offset_right = 476.0
+offset_bottom = 411.0
 placeholder_text = "Paste the host IP/Port code here"
 
 [node name="enter" type="Button" parent="menu_UI/start_menu" unique_id=1094319762]
 visible = false
 layout_mode = 0
-offset_left = 476.0
-offset_top = 423.0
-offset_right = 777.0
-offset_bottom = 478.0
+offset_left = 174.0
+offset_top = 416.0
+offset_right = 475.0
+offset_bottom = 471.0
 text = "Join game"
 
 [node name="multiplayer_menu" type="Control" parent="menu_UI" unique_id=740696643]
@@ -151,19 +150,19 @@ offset_bottom = 123.0
 
 [node name="singleplayer" type="Button" parent="menu_UI/multiplayer_menu" unique_id=1122903609]
 layout_mode = 0
-offset_left = 175.0
-offset_top = 213.0
-offset_right = 475.0
-offset_bottom = 272.99997
+offset_left = 157.0
+offset_top = 124.0
+offset_right = 457.0
+offset_bottom = 183.99997
 disabled = true
 text = "Play Cross-Network"
 
 [node name="singleplayer2" type="Button" parent="menu_UI/multiplayer_menu" unique_id=1881063360]
 layout_mode = 0
-offset_left = 480.0
-offset_top = 213.0
-offset_right = 780.0
-offset_bottom = 272.99997
+offset_left = 461.0
+offset_top = 124.0
+offset_right = 761.0
+offset_bottom = 183.99997
 text = "Play LAN"
 
 [node name="Label" type="Label" parent="menu_UI/multiplayer_menu" unique_id=1644389707]
@@ -173,7 +172,6 @@ offset_top = 419.0
 offset_right = 963.0
 offset_bottom = 598.0
 text = "To get started, choose how to play. Web version only supports singleplayer"
-autowrap_mode = 3
 
 [node name="Label2" type="Label" parent="menu_UI/multiplayer_menu" unique_id=1504206069]
 layout_mode = 0
@@ -191,14 +189,13 @@ on the admin computer.
 
 Singleplayer is still available
 on all computers."
-autowrap_mode = 3
 
 [node name="return" type="Button" parent="menu_UI/multiplayer_menu" unique_id=102785772]
 layout_mode = 0
-offset_left = 496.0
-offset_top = 362.0
-offset_right = 796.0
-offset_bottom = 422.0
+offset_left = 158.0
+offset_top = 261.0
+offset_right = 458.0
+offset_bottom = 321.0
 text = "Back to main menu"
 
 [node name="Tutorial" type="Control" parent="menu_UI" unique_id=378982451]
@@ -232,43 +229,43 @@ offset_bottom = 40.0
 
 [node name="join_button" type="Button" parent="menu_UI/LAN_menu" unique_id=143837695]
 layout_mode = 0
-offset_left = 176.0
-offset_top = 217.0
-offset_right = 475.99994
-offset_bottom = 277.0
+offset_left = 156.0
+offset_top = 191.0
+offset_right = 455.99994
+offset_bottom = 251.0
 text = "Join
 "
 
 [node name="join_code" type="LineEdit" parent="menu_UI/LAN_menu" unique_id=652857213]
 layout_mode = 0
-offset_left = 496.0
-offset_top = 217.0
-offset_right = 796.0
-offset_bottom = 277.0
+offset_left = 459.0
+offset_top = 124.0
+offset_right = 759.0
+offset_bottom = 184.0
 placeholder_text = "Enter Host IP"
 
 [node name="play_button" type="Button" parent="menu_UI/LAN_menu" unique_id=1225370759]
 layout_mode = 0
-offset_left = 174.0
-offset_top = 137.0
-offset_right = 473.99994
-offset_bottom = 197.0
+offset_left = 157.0
+offset_top = 123.0
+offset_right = 456.99994
+offset_bottom = 183.0
 text = "PLAY/HOST"
 
 [node name="port" type="LineEdit" parent="menu_UI/LAN_menu" unique_id=1857470254]
 layout_mode = 0
-offset_left = 496.0
-offset_top = 137.0
-offset_right = 796.0
-offset_bottom = 197.0
+offset_left = 459.0
+offset_top = 192.0
+offset_right = 759.0
+offset_bottom = 252.0
 placeholder_text = "Enter Port"
 
 [node name="return" type="Button" parent="menu_UI/LAN_menu" unique_id=1109840465]
 layout_mode = 0
-offset_left = 496.0
-offset_top = 362.0
-offset_right = 796.0
-offset_bottom = 422.0
+offset_left = 157.0
+offset_top = 261.0
+offset_right = 457.0
+offset_bottom = 321.0
 text = "Back to main menu"
 
 [node name="status" type="Label" parent="menu_UI/LAN_menu" unique_id=139176853]
@@ -303,10 +300,10 @@ on the same network!"
 
 [node name="singleplayer3" type="Button" parent="menu_UI/LAN_menu" unique_id=469098920]
 layout_mode = 0
-offset_left = 182.0
-offset_top = 456.0
-offset_right = 482.0
-offset_bottom = 516.0
+offset_left = 462.0
+offset_top = 330.0
+offset_right = 762.0
+offset_bottom = 390.0
 text = "Press here for LLAN
 (Works at school)"
 
@@ -319,44 +316,44 @@ offset_bottom = 40.0
 
 [node name="join_button" type="Button" parent="menu_UI/LLAN_menu" unique_id=1839997736]
 layout_mode = 0
-offset_left = 177.0
-offset_top = 217.0
-offset_right = 477.0
-offset_bottom = 277.0
+offset_left = 156.0
+offset_top = 191.0
+offset_right = 456.0
+offset_bottom = 251.0
 text = "Join
 "
 
 [node name="join_code" type="LineEdit" parent="menu_UI/LLAN_menu" unique_id=610350462]
 layout_mode = 0
-offset_left = 496.0
-offset_top = 139.0
-offset_right = 796.0
-offset_bottom = 199.0
+offset_left = 461.0
+offset_top = 123.0
+offset_right = 761.0
+offset_bottom = 183.0
 placeholder_text = "Enter Host (admin computer) IP"
 
 [node name="port" type="LineEdit" parent="menu_UI/LLAN_menu" unique_id=87542153]
 layout_mode = 0
-offset_left = 497.0
-offset_top = 217.0
-offset_right = 797.0
-offset_bottom = 277.0
+offset_left = 462.0
+offset_top = 192.0
+offset_right = 762.0
+offset_bottom = 252.0
 placeholder_text = "Enter Port"
 
 [node name="spool_server" type="Button" parent="menu_UI/LLAN_menu" unique_id=161786259]
 layout_mode = 0
-offset_left = 178.0
-offset_top = 138.0
-offset_right = 478.0
-offset_bottom = 198.0
+offset_left = 157.0
+offset_top = 124.0
+offset_right = 457.0
+offset_bottom = 184.0
 text = "Generate a Multiinstance
 (IP of host needs to be specified)"
 
 [node name="return" type="Button" parent="menu_UI/LLAN_menu" unique_id=1073034685]
 layout_mode = 0
-offset_left = 496.0
-offset_top = 362.0
-offset_right = 796.0
-offset_bottom = 422.0
+offset_left = 157.0
+offset_top = 261.0
+offset_right = 457.0
+offset_bottom = 321.0
 text = "Back to main menu"
 
 [node name="Label" type="Label" parent="menu_UI/LLAN_menu" unique_id=1215128647]
@@ -424,5 +421,5 @@ mesh = ExtResource("11_p5qx4")
 [connection signal="pressed" from="menu_UI/LAN_menu/return" to="." method="_on_multiplayer_pressed"]
 [connection signal="pressed" from="menu_UI/LAN_menu/singleplayer3" to="." method="_on_LLAN_pressed"]
 [connection signal="pressed" from="menu_UI/LLAN_menu/spool_server" to="." method="_on_spool_server_pressed"]
-[connection signal="pressed" from="menu_UI/LLAN_menu/return" to="." method="_on_multiplayer_pressed"]
+[connection signal="pressed" from="menu_UI/LLAN_menu/return" to="." method="_on_LAN_pressed"]
 [connection signal="timeout" from="timeout_timer" to="." method="_on_timeout_timer_timeout"]
