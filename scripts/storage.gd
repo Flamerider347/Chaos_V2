@@ -98,11 +98,13 @@ func server_spawn_item(item_type: String, requester_id: int, display_id: int) ->
 			rpc_id(requester_id, "show_plate_warning", display_id)
 
 	elif stocks.has(item_type) and stocks[item_type].size() > 0:
-		var item_to_spawn: Node3D = stocks[item_type].pop_back()
+		var item_to_spawn: RigidBody3D = stocks[item_type].pop_back()
 		
 		if is_instance_valid(item_to_spawn):
 			item_to_spawn.freeze = false
 			item_to_spawn.visible = true
+			item_to_spawn.linear_velocity = Vector3.ZERO
+			item_to_spawn.angular_velocity = Vector3.ZERO
 			item_to_spawn.set_collision_layer_value(3, true)
 			item_to_spawn.global_position = target_spawn_pos
 			item_to_spawn.set_multiplayer_authority(requester_id)
