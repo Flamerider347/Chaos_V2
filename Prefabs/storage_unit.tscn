@@ -26,6 +26,8 @@ size = Vector3(2, 2, 4)
 [sub_resource type="BoxShape3D" id="BoxShape3D_g3ifc"]
 size = Vector3(2, 1, 2)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_iw3lg"]
+
 [node name="storage_unit" type="Node3D" unique_id=932006633]
 transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 0, 0)
 script = ExtResource("1_b11uu")
@@ -269,8 +271,58 @@ one_shot = true
 spawn_path = NodePath("../../../../items")
 spawn_limit = 20
 
+[node name="drop_all" type="StaticBody3D" parent="." unique_id=1500007693 groups=["drop_all"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.23, 1.2292469, 5.995846)
+collision_layer = 7
+collision_mask = 7
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="drop_all" unique_id=1261556355]
+shape = SubResource("BoxShape3D_iw3lg")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="drop_all" unique_id=668042417]
+
+[node name="Label3D" type="Label3D" parent="drop_all" unique_id=1877160545]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.55608773, 0.041666508, 0.012580395)
+text = "RIGHT CLICK
+TO DROP ALL"
+font_size = 28
+outline_size = 10
+
+[node name="Label3D4" type="Label3D" parent="drop_all" unique_id=1697297485]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.5106287, 0.041666508, -0.012776852)
+text = "RIGHT CLICK
+TO DROP ALL"
+font_size = 28
+outline_size = 10
+
+[node name="drop_all2" type="StaticBody3D" parent="." unique_id=809747249 groups=["drop_all"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.23, 1.2292469, 16.046543)
+collision_layer = 7
+collision_mask = 7
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="drop_all2" unique_id=2044769288]
+shape = SubResource("BoxShape3D_iw3lg")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="drop_all2" unique_id=1515223398]
+
+[node name="Label3D2" type="Label3D" parent="drop_all2" unique_id=1528570397]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.55608773, 0.041666508, 0.001619339)
+text = "RIGHT CLICK
+TO DROP ALL"
+font_size = 28
+outline_size = 10
+
+[node name="Label3D3" type="Label3D" parent="drop_all2" unique_id=1908954680]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.5106287, 0.041666508, 0.001619339)
+text = "RIGHT CLICK
+TO DROP ALL"
+font_size = 28
+outline_size = 10
+
 [connection signal="body_entered" from="input/input_detection" to="." method="_on_input_body_entered"]
 [connection signal="body_entered" from="input2/input_detection" to="." method="_on_input_body_entered"]
 [connection signal="body_entered" from="input3/input_detection" to="." method="_on_input_body_entered"]
 [connection signal="body_entered" from="input4/input_detection" to="." method="_on_input_body_entered"]
 [connection signal="timeout" from="warning_timer" to="." method="_on_warning_timer_timeout"]
+[connection signal="mouse_entered" from="drop_all" to="." method="_on_drop_all_mouse_entered"]
+[connection signal="mouse_entered" from="drop_all2" to="." method="_on_drop_all_mouse_entered"]

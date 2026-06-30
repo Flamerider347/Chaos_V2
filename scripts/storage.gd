@@ -157,3 +157,37 @@ func _on_warning_timer_timeout() -> void:
 		$main_display/plate_warning.hide()
 	if has_node("main_display2/plate_warning"):
 		$main_display2/plate_warning.hide()
+
+func drop_all(player) -> void:
+	if not is_instance_valid(player):
+		return
+		
+	print("Dropping all items for player: ", player.name)
+	
+	# Loop through every inventory slot
+	for slot_key in player.inventory.keys():
+		var slot_data = player.inventory[slot_key]
+		var item_array: Array = slot_data[3]
+		
+		# Safely clear out items from back to front
+		while item_array.size() > 0:
+			# Force the player's active slot to this one so drop_object works correctly
+			player.current_slot = slot_key
+			
+			# Grab the actual item reference before dropping it
+			var item_node = item_array[-1] 
+			
+			if is_instance_valid(item_node):
+				# Update player's held item variable so drop_object knows what it's dropping
+				player.held_item = item_node
+				
+				# Let the player's native network-safe function handle the drop physics/sync
+				player.drop_object()
+				
+				# Now pass it into the stocking system input safely
+				_on_input_body_entered(item_node)
+				
+	# Reset slot back to empty hands and refresh UI locally
+	player.current_slot = "0"
+	player.held_item = null
+	player.update_inventory_ui()

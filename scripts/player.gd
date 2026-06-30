@@ -161,7 +161,8 @@ func _handle_interactions(target: Node3D) -> void:
 		elif target.is_in_group("storage_button"): target.spawn_item.emit(target.name)
 		elif target.is_in_group("pickupable") and can_pickup: pickup_object(target)
 		elif target.is_in_group("door"): target.open_door()
-
+	if Input.is_action_just_pressed("right_click") and can_pickup and target.is_in_group("drop_all"):
+		target.get_parent().drop_all(self)
 	elif Input.is_action_just_pressed("right_click"):
 		if target.is_in_group("plate") and is_instance_valid(held_item) and held_item.is_in_group("plate_stackable") and not held_item.is_in_group("plate") and can_pickup:
 			stack_object(target)
@@ -439,7 +440,7 @@ func update_inventory_ui() -> void:
 			lbl.text = "%s\nEmpty" % s
 
 		lbl.pivot_offset = lbl.size / 2.0
-		lbl.scale = Vector2(1.15, 1.15) if str(s) == current_slot else Vector2.ONE
+		lbl.scale = Vector2(1.1, 1.1) if str(s) == current_slot else Vector2.ONE
 		
 func _set_physical_item_state(item: Node3D, is_hidden: bool) -> void:
 	item.visible = not is_hidden

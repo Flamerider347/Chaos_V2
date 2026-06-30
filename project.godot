@@ -58,6 +58,7 @@ enemy=""
 storage_button=""
 tree_item=""
 storable=""
+drop_all=""
 
 [input]
 
