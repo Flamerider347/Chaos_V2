@@ -19,7 +19,7 @@ func _ready() -> void:
 	if has_node("output2/spawn_point"):
 		item_spawn_pos2 = $output2/spawn_point.global_position
 
-	# Connect Display 1 signals (pass 1 as extra argument)
+
 	for type in valid_food_types:
 		var display_node = get_node_or_null("main_display/" + type)
 		if display_node:
@@ -28,7 +28,6 @@ func _ready() -> void:
 	if plate_display:
 		plate_display.spawn_item.connect(request_spawn_item.bind(1))
 
-	# Connect Display 2 signals (pass 2 as extra argument)
 	for type in valid_food_types:
 		var display_node = get_node_or_null("main_display2/" + type)
 		if display_node:
@@ -58,7 +57,6 @@ func _on_input_body_entered(body: Node3D) -> void:
 			body.freeze = true
 			body.visible = false
 			
-			# Broadcasts to update displays globally
 			rpc("sync_display_count", type, stocks[type].size())
 		elif type == "plate" and "stacked_items" in body and body.stacked_items.size() == 0:
 			body.queue_free()
@@ -68,7 +66,6 @@ func _on_input_body_entered(body: Node3D) -> void:
 			body.linear_velocity = Vector3(randf_range(-3, 3), 4, randf_range(-3, 3))
 
 
-# Added display_id argument to catch who called it (1 or 2)
 func request_spawn_item(item_type: String, display_id: int) -> void:
 	if not GameData.closed_lobby:
 		return
@@ -82,8 +79,6 @@ func request_spawn_item(item_type: String, display_id: int) -> void:
 func server_spawn_item(item_type: String, requester_id: int, display_id: int) -> void:
 	if not multiplayer.is_server():
 		return
-
-	# Determine target spawn position based on which display requested it
 	var target_spawn_pos: Vector3 = item_spawn_pos1 if display_id == 1 else item_spawn_pos2
 
 	if item_type == "plate":
@@ -162,32 +157,23 @@ func drop_all(player) -> void:
 	if not is_instance_valid(player):
 		return
 		
-	print("Dropping all items for player: ", player.name)
-	
-	# Loop through every inventory slot
 	for slot_key in player.inventory.keys():
 		var slot_data = player.inventory[slot_key]
 		var item_array: Array = slot_data[3]
 		
-		# Safely clear out items from back to front
+
 		while item_array.size() > 0:
-			# Force the player's active slot to this one so drop_object works correctly
+
 			player.current_slot = slot_key
 			
-			# Grab the actual item reference before dropping it
 			var item_node = item_array[-1] 
 			
 			if is_instance_valid(item_node):
-				# Update player's held item variable so drop_object knows what it's dropping
+
 				player.held_item = item_node
-				
-				# Let the player's native network-safe function handle the drop physics/sync
 				player.drop_object()
-				
-				# Now pass it into the stocking system input safely
 				_on_input_body_entered(item_node)
 				
-	# Reset slot back to empty hands and refresh UI locally
 	player.current_slot = "0"
 	player.held_item = null
 	player.update_inventory_ui()

@@ -127,6 +127,8 @@ func _update_states(delta: float) -> void:
 	if is_instance_valid(held_item):
 		if ("is_two_handed" in held_item and held_item.is_two_handed) or (held_item.is_in_group("plate") and held_item.get("stacked_items").size() > 0):
 			holding_two_handed = true
+
+
 func _handle_movement() -> void:
 	if Input.is_action_pressed("ui_accept") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
@@ -145,6 +147,7 @@ func _handle_movement() -> void:
 		velocity.z = move_toward(velocity.z, 0, weighted_speed)
 
 	move_and_slide()
+
 
 func _handle_interactions(target: Node3D) -> void:
 	if holding_two_handed and Input.is_action_just_pressed("right_click"):
@@ -168,6 +171,7 @@ func _handle_interactions(target: Node3D) -> void:
 			stack_object(target)
 		elif current_slot != "0" and inventory[current_slot][2] != null and can_pickup:
 			drop_object()
+
 
 func _handle_snapping(target: Node3D) -> void:
 	if current_slot == "0" or not is_instance_valid(held_item): 
@@ -199,6 +203,7 @@ func _handle_snapping(target: Node3D) -> void:
 		visual_item.position = Vector3.ZERO
 		visual_item.rotation = Vector3.ZERO
 
+
 func _handle_slot_switching() -> void:
 	if holding_two_handed: return
 	
@@ -224,9 +229,6 @@ func _handle_slot_switching() -> void:
 		rpc("sync_active_slot", current_slot)
 		update_inventory_ui()
 
-# ---------------------------------------------------------
-# INVENTORY ACTIONS
-# ---------------------------------------------------------
 
 func pickup_object(object: Node3D) -> void:
 	var picked_up = "0"
@@ -240,8 +242,6 @@ func pickup_object(object: Node3D) -> void:
 
 	if picked_up != "0":
 		held_object_amount += 1
-		
-		# FIX: Pass the current stable global transform of the object into the hand sync
 		if inventory[picked_up][1] <= 1:
 			rpc("sync_hand_item_added", picked_up, str(object.get_path()), object.global_transform)
 			
@@ -252,7 +252,8 @@ func pickup_object(object: Node3D) -> void:
 		
 		rpc("sync_active_slot", current_slot)
 		update_inventory_ui()
-		
+
+
 func drop_object() -> void:
 	if current_slot == "0" or inventory[current_slot][2] == null or inventory[current_slot][3].is_empty(): return
 
@@ -281,6 +282,7 @@ func drop_object() -> void:
 	if multiplayer.is_server(): notify_item_dropped(str(dropped.get_path()), drop_pos, multiplayer.get_unique_id())
 	else: rpc_id(1, "notify_item_dropped", str(dropped.get_path()), drop_pos, multiplayer.get_unique_id())
 
+
 func stack_object(plate: Node3D) -> void:
 	if not is_instance_valid(held_item): return
 
@@ -301,17 +303,14 @@ func stack_object(plate: Node3D) -> void:
 	held_item = inventory[current_slot][3][-1] if inventory[current_slot][3].size() > 0 else null
 	update_inventory_ui()
 
-# ---------------------------------------------------------
-# NETWORKING & VISUAL SYNC
-# ---------------------------------------------------------
 
 @rpc("any_peer", "call_local", "reliable")
 func sync_world_item_pickup(item_path: String) -> void:
 	var item = get_node_or_null(item_path)
 	if is_instance_valid(item):
 		_set_physical_item_state(item, true)
-		# Banish item to prevent teleport flash when dropped
 		item.global_position = Vector3(0, -50, 0)
+
 
 @rpc("any_peer", "call_local", "reliable")
 func sync_active_slot(slot_key: String) -> void:
@@ -321,6 +320,7 @@ func sync_active_slot(slot_key: String) -> void:
 	if current_slot != "0":
 		var slot_node = hand.find_child("slot" + current_slot)
 		if is_instance_valid(slot_node): slot_node.show()
+
 
 @rpc("any_peer", "call_local", "reliable")
 func sync_hand_item_added(slot_key: String, item_path: String, base_transform: Transform3D) -> void:
@@ -345,9 +345,7 @@ func sync_hand_item_added(slot_key: String, item_path: String, base_transform: T
 				if is_instance_valid(item_node):
 					var item_copy = item_node.duplicate()
 					_strip_network_nodes(item_copy)
-					
-					# FIX: Use the stable snapshot transform we passed in, 
-					# NOT the world_object's current live (and potentially banished) position!
+
 					var local_offset_transform = base_transform.affine_inverse() * item_node.global_transform
 					
 					duplicate_mesh.add_child(item_copy)
@@ -356,16 +354,19 @@ func sync_hand_item_added(slot_key: String, item_path: String, base_transform: T
 					if "visible" in item_copy: item_copy.visible = true
 					item_copy.show()
 
+
 @rpc("any_peer", "call_local", "reliable")
 func sync_hand_item_removed(slot_key: String) -> void:
 	var slot_node = hand.find_child("slot" + slot_key)
 	if is_instance_valid(slot_node):
 		for child in slot_node.get_children(): child.queue_free()
 
+
 @rpc("any_peer", "reliable")
 func notify_item_dropped(item_path: String, drop_pos: Vector3, sender_id: int) -> void:
 	if not multiplayer.is_server(): return
 	rpc("sync_item_dropped", item_path, drop_pos, sender_id)
+
 
 @rpc("any_peer", "call_local", "reliable")
 func sync_item_dropped(item_path: String, drop_pos: Vector3, _sender_id: int) -> void:
@@ -384,6 +385,7 @@ func sync_item_dropped(item_path: String, drop_pos: Vector3, _sender_id: int) ->
 	item.global_rotation = mesh_item.get_child(0).global_rotation
 	_set_physical_item_state(item, false) 
 
+
 	if "stacked_items" in item:
 		for idx in range(item.stacked_items.size()):
 			var stacked_item = item.stacked_items[idx]
@@ -397,9 +399,6 @@ func sync_item_dropped(item_path: String, drop_pos: Vector3, _sender_id: int) ->
 				var s_shape: CollisionShape3D = stacked_item.find_child("CollisionShape3D")
 				if s_shape: s_shape.disabled = true 
 
-# ---------------------------------------------------------
-# UTILITY FUNCTIONS
-# ---------------------------------------------------------
 
 func update_inventory_ui() -> void:
 	if not is_owned: return
@@ -441,7 +440,8 @@ func update_inventory_ui() -> void:
 
 		lbl.pivot_offset = lbl.size / 2.0
 		lbl.scale = Vector2(1.1, 1.1) if str(s) == current_slot else Vector2.ONE
-		
+
+
 func _set_physical_item_state(item: Node3D, is_hidden: bool) -> void:
 	item.visible = not is_hidden
 	if item is RigidBody3D: item.freeze = is_hidden
@@ -451,10 +451,10 @@ func _set_physical_item_state(item: Node3D, is_hidden: bool) -> void:
 		for s_item in item.stacked_items:
 			if is_instance_valid(s_item): _set_physical_item_state(s_item, is_hidden)
 
+
 func _strip_network_nodes(node: Node) -> void:
 	if not is_instance_valid(node): return
 	
-	# Check children first to delete synchronizers safely from the bottom up
 	for child in node.get_children():
 		_strip_network_nodes(child)
 		
@@ -462,7 +462,7 @@ func _strip_network_nodes(node: Node) -> void:
 		node.name = "DELETED_NET_NODE" # Avoid path collisions
 		node.queue_free()
 		if node.get_parent():
-			node.get_parent().remove_child(node) # Force instant removal from hierarchy
+			node.get_parent().remove_child(node)
 		return
 		
 	if node is RigidBody3D:
@@ -473,22 +473,26 @@ func _strip_network_nodes(node: Node) -> void:
 		node.process_mode = Node.PROCESS_MODE_DISABLED 
 	if node is CollisionShape3D: 
 		node.disabled = true
-		
+
+
 func _update_outline(target: Node3D) -> void:
 	if target != last_highlighted_target:
 		if is_instance_valid(last_highlighted_target): _set_mesh_outline(last_highlighted_target, false)
 		if is_instance_valid(target): _set_mesh_outline(target, true)
 		last_highlighted_target = target
 
+
 func _set_mesh_outline(node: Node, active: bool) -> void:
 	if node is MeshInstance3D: node.material_overlay = outline_material if active else null
 	for child in node.get_children(): _set_mesh_outline(child, active)
+
 
 func take_damage(amount: float) -> void:
 	if not is_owned or is_dead: return
 	health -= amount
 	if ui_healthbar: ui_healthbar.value = int(health)
 	if health <= 0: die()
+
 
 func die() -> void:
 	is_dead = true; health = 0
@@ -509,6 +513,7 @@ func die() -> void:
 	update_inventory_ui()
 	rpc("sync_player_death")
 
+
 @rpc("any_peer", "call_local", "reliable")
 func sync_player_death() -> void:
 	if is_owned:
@@ -516,7 +521,10 @@ func sync_player_death() -> void:
 		health = max_health; is_dead = false
 		if ui_healthbar: ui_healthbar.value = int(health)
 
-func _on_pickup_timer_timeout() -> void: can_pickup = true
+
+func _on_pickup_timer_timeout() -> void: 
+	can_pickup = true
+
 
 @rpc("any_peer", "call_local", "reliable")
 func sync_username(target_name: String) -> void:
@@ -524,6 +532,7 @@ func sync_username(target_name: String) -> void:
 	if is_instance_valid(username_label):
 		username_label.text = target_name
 		if not is_owned: username_label.show()
+
 
 @rpc("any_peer", "reliable")
 func request_username_from_owner() -> void:
