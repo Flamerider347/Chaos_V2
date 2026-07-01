@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://bir22guquv7hn"]
+
+[ext_resource type="Script" uid="uid://cy006uvidc4y" path="res://addons/tube/tube_client.gd" id="1_xsmjp"]
+[ext_resource type="Resource" uid="uid://vfvy1kqfeb7w" path="res://addons/tube/tube_context.tres" id="2_trofg"]
+
+[node name="WebrtcClient" type="Node" unique_id=1663816403]
+script = ExtResource("1_xsmjp")
+context = ExtResource("2_trofg")
+metadata/_custom_type_script = "uid://cy006uvidc4y"

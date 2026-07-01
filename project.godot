@@ -25,6 +25,7 @@ config/icon="uid://djwvfah1ycrcy"
 
 GameData="*uid://m4y852ej0k71"
 RecipeManager="*uid://cxemb85k3ycss"
+WebrtcClient="*uid://bir22guquv7hn"
 TileRunInstancesGlobal="*uid://b6fg6pu2bfi14"
 DedicatedServerOptimiser="*uid://didffsk3uwq1x"
 
