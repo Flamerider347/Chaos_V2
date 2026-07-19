@@ -130,10 +130,10 @@ func _update_states(delta: float) -> void:
 
 
 func _handle_movement() -> void:
-	if Input.is_action_pressed("ui_accept") and is_on_floor():
+	if Input.is_action_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 
-	var vec: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	var vec: Vector2 = Input.get_vector("left", "right", "forward", "backwards")
 	speed_multiplier = 1.5 if Input.is_action_pressed("sprint") else 1.0
 	var weighted_speed: float = clampf(SPEED - (held_object_amount * 0.1), 3.0, 5.0) * speed_multiplier
 	if holding_two_handed: weighted_speed = 3.0
