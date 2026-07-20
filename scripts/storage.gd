@@ -38,7 +38,6 @@ func _ready() -> void:
 
 
 func _on_input_body_entered(body: Node3D) -> void:
-	print("I've input bod enteresd")
 	if not multiplayer.is_server():
 		return
 	if not is_instance_valid(body):
@@ -47,9 +46,7 @@ func _on_input_body_entered(body: Node3D) -> void:
 		return
 
 	var type = body.type
-	print(body)
 	if body is RigidBody3D:
-		print("rigid_check")
 		if type in valid_food_types:
 			if stocks[type].has(body):
 				return
@@ -164,24 +161,46 @@ func drop_all(player) -> void:
 		var item_array: Array = slot_data[3]
 		
 		while item_array.size() > 0:
-
 			player.current_slot = slot_key
 			var item_node = item_array[-1] 
 			if is_instance_valid(item_node):
 				player.held_item = item_node
 				player.drop_object()
+				
 				if item_node.type in valid_food_types:
-					rpc_id(1,"request_store_item",item_node.get_path())
-					_on_input_body_entered(item_node)
+					# Send request to host to process and store the food item
+					rpc_id(1, "server_process_dropped_food", item_node.get_path())
 				
 	player.current_slot = "0"
 	player.held_item = null
 	player.update_inventory_ui()
 
 
-@rpc("any_peer", "reliable")
+@rpc("any_peer", "call_local", "reliable")
+func server_process_dropped_food(item_path: String) -> void:
+	if not multiplayer.is_server():
+		return
+		
+	var item = get_node_or_null(item_path)
+	if not is_instance_valid(item) or not item is RigidBody3D:
+		return
+		
+	var type = item.type
+	if type in valid_food_types:
+		if stocks[type].has(item):
+			return
+			
+		item.set_multiplayer_authority(1)
+		stocks[type].append(item)
+		
+		rpc("store_item", item.get_path())
+		rpc("sync_display_count", type, stocks[type].size())
+
+
+@rpc("any_peer", "call_local", "reliable")
 func store_item(item_path: String) -> void:
 	var item = get_node_or_null(item_path)
 	if is_instance_valid(item):
 		item.position = Vector3(0, -50, 0)
-		print("Item successfully hidden on peers:", item.name)
+		item.freeze = true
+		item.visible = false
