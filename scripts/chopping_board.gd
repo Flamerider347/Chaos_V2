@@ -1,11 +1,11 @@
 extends StaticBody3D
 
 const CHOPPED_SCENES = {
-	"cheese": ["cheese_chopped"],
-	"tomato": ["tomato_chopped"],
+	"cheese": ["cheese_chopped","cheese_chopped"],
+	"tomato": ["tomato_chopped","tomato_chopped"],
 	"meat_chopped": ["meat_chopped"],
-	"carrot" : ["carrot_chopped"],
-	"lettuce" : ["lettuce_chopped"],
+	"carrot" : ["carrot_chopped","carrot_chopped"],
+	"lettuce" : ["lettuce_chopped","lettuce_chopped"],
 	"bun": ["bun_bottom_chopped", "bun_top_chopped"]
 }
 

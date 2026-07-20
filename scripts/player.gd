@@ -279,8 +279,8 @@ func drop_object() -> void:
 		elif col.is_in_group("delivery_area"): drop_pos = col.global_position + Vector3(0, 0.2, 0)
 		elif not col.is_in_group("chopping_board") and dropped.is_in_group("meat"): drop_pos = col.global_position + Vector3(0, 0.4, 0)
 
-	if multiplayer.is_server(): notify_item_dropped(str(dropped.get_path()), drop_pos, multiplayer.get_unique_id())
-	else: rpc_id(1, "notify_item_dropped", str(dropped.get_path()), drop_pos, multiplayer.get_unique_id())
+	if multiplayer.is_server(): notify_item_dropped(str(dropped.get_path()), drop_pos)
+	else: rpc_id(1, "notify_item_dropped", str(dropped.get_path()), drop_pos)
 
 
 func stack_object(plate: Node3D) -> void:
@@ -363,13 +363,13 @@ func sync_hand_item_removed(slot_key: String) -> void:
 
 
 @rpc("any_peer", "reliable")
-func notify_item_dropped(item_path: String, drop_pos: Vector3, sender_id: int) -> void:
+func notify_item_dropped(item_path: String, drop_pos: Vector3) -> void:
 	if not multiplayer.is_server(): return
-	rpc("sync_item_dropped", item_path, drop_pos, sender_id)
+	rpc("sync_item_dropped", item_path, drop_pos)
 
 
 @rpc("any_peer", "call_local", "reliable")
-func sync_item_dropped(item_path: String, drop_pos: Vector3, _sender_id: int) -> void:
+func sync_item_dropped(item_path: String, drop_pos: Vector3) -> void:
 	var item = get_node_or_null(item_path)
 	if not is_instance_valid(item): return
 		
@@ -381,8 +381,7 @@ func sync_item_dropped(item_path: String, drop_pos: Vector3, _sender_id: int) ->
 
 	# Set position first to avoid flash, then unhide
 	item.global_position = drop_pos
-	var mesh_item = $hand.find_child("slot" + str(current_slot))
-	item.global_rotation = mesh_item.get_child(0).global_rotation
+	item.global_rotation = self.global_rotation
 	_set_physical_item_state(item, false) 
 
 

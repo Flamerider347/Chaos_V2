@@ -38,6 +38,7 @@ func _ready() -> void:
 
 
 func _on_input_body_entered(body: Node3D) -> void:
+	print("I've input bod enteresd")
 	if not multiplayer.is_server():
 		return
 	if not is_instance_valid(body):
@@ -46,7 +47,9 @@ func _on_input_body_entered(body: Node3D) -> void:
 		return
 
 	var type = body.type
+	print(body)
 	if body is RigidBody3D:
+		print("rigid_check")
 		if type in valid_food_types:
 			if stocks[type].has(body):
 				return
@@ -102,7 +105,7 @@ func server_spawn_item(item_type: String, requester_id: int, display_id: int) ->
 			item_to_spawn.angular_velocity = Vector3.ZERO
 			item_to_spawn.set_collision_layer_value(3, true)
 			item_to_spawn.global_position = target_spawn_pos
-			item_to_spawn.set_multiplayer_authority(requester_id)
+			item_to_spawn.set_multiplayer_authority(1)
 			
 			rpc("sync_display_count", item_type, stocks[item_type].size())
 			rpc("sync_recalled_item", str(item_to_spawn.get_path()), target_spawn_pos)
@@ -146,7 +149,6 @@ func show_plate_warning(display_id: int) -> void:
 		if has_node("warning_timer"):
 			$warning_timer.start(1.5)
 
-
 func _on_warning_timer_timeout() -> void:
 	if has_node("main_display/plate_warning"):
 		$main_display/plate_warning.hide()
@@ -161,19 +163,25 @@ func drop_all(player) -> void:
 		var slot_data = player.inventory[slot_key]
 		var item_array: Array = slot_data[3]
 		
-
 		while item_array.size() > 0:
 
 			player.current_slot = slot_key
-			
 			var item_node = item_array[-1] 
-			
 			if is_instance_valid(item_node):
-
 				player.held_item = item_node
 				player.drop_object()
-				_on_input_body_entered(item_node)
+				if item_node.type in valid_food_types:
+					rpc_id(1,"request_store_item",item_node.get_path())
+					_on_input_body_entered(item_node)
 				
 	player.current_slot = "0"
 	player.held_item = null
 	player.update_inventory_ui()
+
+
+@rpc("any_peer", "reliable")
+func store_item(item_path: String) -> void:
+	var item = get_node_or_null(item_path)
+	if is_instance_valid(item):
+		item.position = Vector3(0, -50, 0)
+		print("Item successfully hidden on peers:", item.name)

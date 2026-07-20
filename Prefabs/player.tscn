@@ -43,7 +43,7 @@ properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 2
 
-[node name="player" type="CharacterBody3D" unique_id=300991191 groups=["player"]]
+[node name="player" type="CharacterBody3D" unique_id=300991191 groups=["pickupable", "plate_stackable", "player", "two_handed"]]
 process_mode = 1
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0)
 collision_layer = 2

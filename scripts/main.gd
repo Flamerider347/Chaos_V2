@@ -14,25 +14,6 @@ extends Node3D
 @onready var tree_spawner: MultiplayerSpawner = get_node_or_null("game/spawners/tree_spawner")
 @onready var item_spawner: MultiplayerSpawner = get_node_or_null("game/spawners/item_spawner")
 
-var current_trees = {
-	"Tomato" : [],
-	"Cheese" : [],
-	"Bun" : [],
-	"Meat" : [],
-	"Carrot" : [],
-	"Lettuce" : []
-}
-
-# Mapping types to their distinct variations
-var tree_prefabs = {
-	"Tomato" : ["res://Prefabs/tree_1_tomato.tscn", "res://Prefabs/tree_2_tomato.tscn", "res://Prefabs/tree_3_tomato.tscn"],
-	"Cheese" : ["res://Prefabs/tree_1_cheese.tscn"],
-	"Bun" : ["res://Prefabs/tree_1_bun.tscn","res://Prefabs/tree_2_bun_2.tscn"],
-	"Meat" : ["res://Prefabs/tree_1_meat.tscn"],
-	"Carrot" : ["res://Prefabs/tree_1_carrot_1.tscn"],
-	"Lettuce" : ["res://Prefabs/tree_1_lettuce_1.tscn"]
-}
-
 # Defined boundaries for your map positions
 var min_spawn_bound: Vector2 = Vector2(-40, -40)
 var max_spawn_bound: Vector2 = Vector2(35, 35)
@@ -76,16 +57,10 @@ func _ready() -> void:
 	
 	# Register custom spawner rules for the trees on all peers
 # Register custom spawner rules for the trees on all peers
-	if is_instance_valid(tree_spawner):
-		tree_spawner.spawn_function = _on_tree_spawn_custom
-		
 	# FIX: Bind the item spawner callable here so it is valid on frame one for everyone
 	if is_instance_valid(item_spawner):
 		item_spawner.spawn_function = _on_custom_item_spawn_shared
 		
-	if multiplayer.is_server():
-		grow_a_garden()
-	
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_TAB:
@@ -124,46 +99,7 @@ func _on_environment_controller_new_day(day: int) -> void:
 	if multiplayer.is_server():
 		if power < 0:
 			rpc("burn_it_all_down")
-		else:
-			# Automatically regenerate fallen trees at the start of a new day
-			grow_a_garden()
 
-func grow_a_garden() -> void:
-	if not multiplayer.is_server(): return
-	
-	# Define your kitchen boundaries (Adjust these vectors to fit your kitchen's size!)
-	var kitchen_min: Vector2 = Vector2(-15.0, -12.0)
-	var kitchen_max: Vector2 = Vector2(15.0, 12.0)
-	
-	for type in current_trees.keys():
-		var current_count = current_trees[type].size()
-		
-		while current_count < 4:
-			var variations = tree_prefabs[type]
-			var chosen_prefab_path = variations[randi() % variations.size()]
-			
-			var spawn_pos: Vector3 = Vector3.ZERO
-			var valid_position: bool = false
-			
-			# Keep picking a position until it lands outside the kitchen bounds
-			while not valid_position:
-				var rand_x = randf_range(min_spawn_bound.x, max_spawn_bound.x)
-				var rand_z = randf_range(min_spawn_bound.y, max_spawn_bound.y)
-				
-				# Check if the picked coordinate is inside the kitchen zone
-				if rand_x >= kitchen_min.x and rand_x <= kitchen_max.x and rand_z >= kitchen_min.y and rand_z <= kitchen_max.y:
-					continue # It's in the kitchen! Loop again to try a different spot.
-				
-				spawn_pos = Vector3(rand_x, 0.0, rand_z)
-				valid_position = true
-			
-			var unique_name = "Tree_" + type + "_" + str(randi() % 100000)
-			var data_packet = [chosen_prefab_path, spawn_pos, unique_name, type]
-			
-			if is_instance_valid(tree_spawner):
-				tree_spawner.spawn(data_packet)
-				
-			current_count += 1
 
 func _on_custom_item_spawn_shared(data: Array) -> Node:
 	if data.size() < 3: return null
@@ -184,25 +120,6 @@ func _on_custom_item_spawn_shared(data: Array) -> Node:
 	item_instance.add_to_group("pickupable")
 	
 	return item_instance
-func _on_tree_spawn_custom(data: Array) -> Node:
-	var path = data[0]
-	var pos = data[1]
-	var node_name = data[2]
-	var type = data[3]
-	
-	if not ResourceLoader.exists(path):
-		return null
-		
-	var tree_instance = load(path).instantiate()
-	tree_instance.name = node_name
-	
-	# FIXED: Changing this to local .position stops the "!is_inside_tree()" engine error
-	tree_instance.position = pos
-	
-	if not current_trees[type].has(tree_instance):
-		current_trees[type].append(tree_instance)
-		
-	return tree_instance
 
 func thing_ui_update() -> void:
 	if is_instance_valid(score_label):
