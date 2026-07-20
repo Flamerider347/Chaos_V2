@@ -15,11 +15,6 @@ func _ready() -> void:
 	else:
 		item_type_cached = self.name.substr(5).left(-1)
 	
-	var main_node = get_node_or_null("/root/main")
-	if main_node and main_node.current_trees.has(item_type_cached):
-		if not main_node.current_trees[item_type_cached].has(self):
-			main_node.current_trees[item_type_cached].append(self)
-
 	for i in self.get_children():
 		if i.is_in_group("tree_item"):
 			item_children.append(i)
@@ -67,18 +62,8 @@ func server_handle_punch(sender_id: int) -> void:
 	if is_instance_valid(item_spawner):
 		item_spawner.spawn(package)
 	
-	if item_left <= 0:
-		if has_node("AnimationPlayer"):
-			$AnimationPlayer.play("chopped")
-		
-		# Disconnect tracking references completely before freeing
-		var main_node = get_node_or_null("/root/main")
-		if main_node and main_node.current_trees.has(item_type_cached):
-			main_node.current_trees[item_type_cached].erase(self)
-			
-		await get_tree().create_timer(1.0).timeout
-		self.queue_free()
-
+	if has_node("item_timer"):
+		$item_timer.start(10)
 func _on_custom_item_spawn(data: Array) -> Node:
 	if data.size() < 3: return null
 		

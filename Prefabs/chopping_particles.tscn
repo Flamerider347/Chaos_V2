@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://bx0gd2soximxa"]
+
+[ext_resource type="Material" uid="uid://141503k533fm" path="res://Assets/misc/mesh_colours.tres" id="1_4yc75"]
+[ext_resource type="ArrayMesh" uid="uid://m1ql8ttsilmi" path="res://Assets/Models/fedora.obj" id="1_j8nxy"]
+
+[sub_resource type="Curve" id="Curve_4yc75"]
+_data = [Vector2(0, 0.012500048), 0.0, 0.0, 0, 0, Vector2(0.25663716, 1), 0.0, 0.0, 0, 0, Vector2(0.7544248, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.012500048), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[node name="chopping_particles" type="CPUParticles3D" unique_id=878471278]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 0)
+material_override = ExtResource("1_4yc75")
+amount = 25
+explosiveness = 0.8
+mesh = ExtResource("1_j8nxy")
+gravity = Vector3(0, 1, 0)
+initial_velocity_min = 0.5
+initial_velocity_max = 2.0
+linear_accel_min = -0.1
+linear_accel_max = 0.1
+scale_amount_min = 0.2
+scale_amount_curve = SubResource("Curve_4yc75")
