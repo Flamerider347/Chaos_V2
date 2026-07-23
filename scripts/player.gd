@@ -229,8 +229,8 @@ func _handle_slot_switching() -> void:
 		rpc("sync_active_slot", current_slot)
 		update_inventory_ui()
 
-
 func pickup_object(object: Node3D) -> void:
+	if not is_instance_valid(object): return
 	var picked_up = "0"
 	for i in inventory.keys():
 		if inventory[i][2] == null or inventory[i][2] == object.type:
@@ -246,13 +246,18 @@ func pickup_object(object: Node3D) -> void:
 			rpc("sync_hand_item_added", picked_up, str(object.get_path()), object.global_transform)
 			
 		rpc("sync_world_item_pickup", str(object.get_path())) 
-		
-		current_slot = picked_up
-		held_item = inventory[picked_up][3][-1]
-		
+		if is_in_kitchen:
+			current_slot = picked_up
+			held_item = inventory[picked_up][3][-1]
+			
 		rpc("sync_active_slot", current_slot)
 		update_inventory_ui()
-
+		
+@rpc("any_peer", "call_local", "reliable")
+func rpc_pickup_object(item_path: NodePath) -> void:
+	var item_node = get_node_or_null(item_path)
+	if is_instance_valid(item_node):
+		pickup_object(item_node)
 
 func drop_object() -> void:
 	if current_slot == "0" or inventory[current_slot][2] == null or inventory[current_slot][3].is_empty(): return

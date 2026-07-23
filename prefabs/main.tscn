@@ -276,7 +276,6 @@ height = 4.4560547
 
 [node name="storage_unit" parent="game/world/kitchen" unique_id=199859682 instance=ExtResource("7_ihn02")]
 transform = Transform3D(8.347416e-09, 0, -0.7, 0, 0.7, 0, 0.7, 0, 8.347416e-09, 7.7, -0.637, -4.201)
-stocks = null
 
 [node name="door" type="StaticBody3D" parent="game/world/kitchen" unique_id=1983404160 groups=["door"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.58, -5.071)
