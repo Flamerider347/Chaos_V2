@@ -431,12 +431,6 @@ camera_attributes = SubResource("CameraAttributesPractical_oob7m")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="game/environment_controller" unique_id=376592696]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9388933, -0.1416707, 0.70682615)
 
-[node name="nightlight" type="AreaLight3D" parent="game/environment_controller" unique_id=1712306042]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 2.8151405, 0.019877434)
-light_energy = 0.258
-area_normalize_energy = false
-area_size = Vector2(15.611755, 4.947877)
-
 [node name="DirectionalLight3D2" type="DirectionalLight3D" parent="game/environment_controller" unique_id=2138547466]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 17.36224, 0)
 light_color = Color(0.45440018, 0.82465273, 0.96828574, 1)
@@ -462,6 +456,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.229, 0, -19.465)
 
 [node name="Tree3Tomato1" parent="game/environment_controller" unique_id=826326260 instance=ExtResource("28_lbgj2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24, 0, -31.988)
+
+[node name="OmniLight3D" type="SpotLight3D" parent="game/environment_controller" unique_id=1083807525]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1.3545332, 3.059142, 1.2603321)
+light_energy = 0.0
+light_specular = 0.0
+spot_range = 6.7893834
+spot_angle = 53.06
 
 [node name="enemies" type="Node3D" parent="game" unique_id=2006808970]
 script = ExtResource("9_1lqda")
