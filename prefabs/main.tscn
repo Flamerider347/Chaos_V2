@@ -19,6 +19,7 @@
 [ext_resource type="ArrayMesh" uid="uid://drr4ddrh0255d" path="res://Assets/Models/kitchenfloor.obj" id="12_kjcd6"]
 [ext_resource type="ArrayMesh" uid="uid://brkgoksr1lp5h" path="res://Assets/Models/Roof_model.obj" id="13_hs76b"]
 [ext_resource type="Texture2D" uid="uid://bkekt2sqkmhk8" path="res://Assets/misc/images.jpg" id="21_66d46"]
+[ext_resource type="Texture2D" uid="uid://cysttpplh4j14" path="res://Assets/misc/icon.svg" id="21_kjcd6"]
 [ext_resource type="PackedScene" uid="uid://bdi1ju62g1fdu" path="res://Prefabs/tree_1_bun.tscn" id="22_2mmg3"]
 [ext_resource type="PackedScene" uid="uid://cq7rwbq08nlhk" path="res://Prefabs/tree_1_carrot_1.tscn" id="23_kjcd6"]
 [ext_resource type="Texture2D" uid="uid://ckwrj4w1xthnd" path="res://Assets/Models/restaurantbits_texture.png" id="23_ybnlm"]
@@ -29,6 +30,7 @@
 [ext_resource type="PackedScene" uid="uid://b7v3hl5yko217" path="res://Prefabs/tree_1_tomato.tscn" id="26_d17y0"]
 [ext_resource type="Script" uid="uid://hf56gk47qld4" path="res://scripts/tutorial.gd" id="27_iocbj"]
 [ext_resource type="PackedScene" uid="uid://77yt2amhmne4" path="res://Prefabs/tree_2_tomato.tscn" id="27_uigxe"]
+[ext_resource type="PackedScene" uid="uid://c7isve8b3s6cd" path="res://Prefabs/tree_1_meat.tscn" id="28_2mmg3"]
 [ext_resource type="PackedScene" uid="uid://cmdk146oos7fp" path="res://Prefabs/tree_3_tomato.tscn" id="28_lbgj2"]
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_a5tfy"]
@@ -336,16 +338,16 @@ collision_layer = 3
 collision_mask = 3
 
 [node name="stove" parent="game/world/kitchen/main_kitchen" unique_id=325192403 instance=ExtResource("25_66d46")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8991065, 0.06572503, 6.9658546)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8991065, 0.100421965, 9.789358)
 
 [node name="stove2" parent="game/world/kitchen/main_kitchen" unique_id=646814846 instance=ExtResource("25_66d46")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2977476, 0.06572503, 6.9658546)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2977476, 0.100421965, 9.789358)
 
 [node name="stove3" parent="game/world/kitchen/main_kitchen" unique_id=1166591113 instance=ExtResource("25_66d46")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.3002825, 0.06572503, 6.9658546)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.3002825, 0.100421965, 9.789358)
 
 [node name="stove4" parent="game/world/kitchen/main_kitchen" unique_id=418125707 instance=ExtResource("25_66d46")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.9016414, 0.06572503, 6.9658546)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.9016414, 0.100421965, 9.789358)
 
 [node name="KitchenModel" type="MeshInstance3D" parent="game/world/kitchen/main_kitchen" unique_id=651378267]
 transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, 0, -0.6009381, 2.853)
@@ -387,10 +389,10 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 9.11
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 9.11581, -1.015, -1.397)
 
 [node name="chopping_board5" parent="game/world/kitchen/main_kitchen" unique_id=461211032 instance=ExtResource("6_fpsi2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7464857, -1.015, 6.966631)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7464857, -0.98030305, 9.790134)
 
 [node name="chopping_board6" parent="game/world/kitchen/main_kitchen" unique_id=1111623570 instance=ExtResource("6_fpsi2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7385912, -1.015, 6.966631)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7385912, -0.98030305, 9.790134)
 
 [node name="Jerry_the_phantom" type="CSGBox3D" parent="game/world/kitchen" unique_id=24784073]
 transform = Transform3D(-1.0000001, 0, -8.7422784e-08, 0, 1, 0, 8.7422784e-08, 0, -1.0000001, 6.0401855, 2.4928908, -5.235066)
@@ -436,6 +438,18 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 1
 light_color = Color(0.45440018, 0.82465273, 0.96828574, 1)
 light_energy = 0.15
 
+[node name="AreaLight3D" type="AreaLight3D" parent="game/environment_controller" unique_id=962812004]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 3.7369018, 0)
+light_energy = 0.05
+light_indirect_energy = 0.4
+light_size = 1.0
+shadow_enabled = true
+area_range = 30.0
+area_attenuation = 0.0
+area_normalize_energy = false
+area_size = Vector2(10, 10)
+area_texture = ExtResource("21_kjcd6")
+
 [node name="Tree1Bun1" parent="game/environment_controller" unique_id=68733649 instance=ExtResource("22_2mmg3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -43.703, 0, 4.892)
 
@@ -457,12 +471,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.229, 0, -19.465)
 [node name="Tree3Tomato1" parent="game/environment_controller" unique_id=826326260 instance=ExtResource("28_lbgj2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24, 0, -31.988)
 
-[node name="OmniLight3D" type="SpotLight3D" parent="game/environment_controller" unique_id=1083807525]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1.3545332, 3.059142, 1.2603321)
-light_energy = 0.0
-light_specular = 0.0
-spot_range = 6.7893834
-spot_angle = 53.06
+[node name="Tree1Meat1" parent="game/environment_controller" unique_id=258808578 instance=ExtResource("28_2mmg3")]
+transform = Transform3D(0.58886224, 0, -0.80823344, 0, 1, 0, 0.80823344, 0, 0.58886224, 7.8605328, -0.09339523, -21.824041)
 
 [node name="enemies" type="Node3D" parent="game" unique_id=2006808970]
 script = ExtResource("9_1lqda")
