@@ -1,12 +1,11 @@
 extends Node3D
 
 # Day length updated to 24.0 for quick testing (change to 240.0 for production)
-@export var day_length_seconds: float = 240.0
+@export var day_length_seconds: float = 2400.0
 
 @onready var ui_time_label = get_node_or_null("/root/main/UI/day_timer")
 @onready var sun_light: DirectionalLight3D = $DirectionalLight3D
 @onready var world_env: WorldEnvironment = $WorldEnvironment
-@onready var night_light = $nightlight
 @onready var ingredients = {
 	"tomato_chopped" : preload("res://Prefabs/tomato_chopped.tscn"),
 	"cheese_chopped" : preload("res://Prefabs/cheese_chopped.tscn"),
@@ -188,48 +187,65 @@ func get_node_height(node: Node) -> float:
 	return 0.1
 
 func update_sky_and_lighting() -> void:
-	var sun_angle = (current_time * TAU) + (TAU / 4.0)
+	var sun_angle: float = 0.0
+	
+	if current_time >= 0.25 and current_time < 0.916:
+		# DAYTIME (6:00 AM to 10:00 PM -> 16 hours)
+		# Map sunrise to sunset across the top sky (PI to TAU / 180° to 360°)
+		var day_progress = (current_time - 0.25) / (0.916 - 0.25)
+		sun_angle = lerp(PI, TAU, day_progress)
+	else:
+		# NIGHTTIME (10:00 PM to 6:00 AM -> 8 hours)
+		# Map sunset to sunrise across the bottom sky (0 to PI / 0° to 180°)
+		var night_time = current_time
+		if night_time < 0.25:
+			night_time += 1.0 # Wrap past midnight
+			
+		var night_progress = (night_time - 0.916) / (1.25 - 0.916)
+		sun_angle = lerp(0.0, PI, night_progress)
+
+	# Apply rotated angle to DirectionalLight3D
 	sun_light.rotation.x = sun_angle
 	sun_light.rotation.y = deg_to_rad(25.0) 
-	
+
+	# --- TIMING & LIGHTING CALCULATIONS ---
 	var sun_fade: float = 0.0
 	var sunset_blend: float = 0.0
-	
-	# LONG TWILIGHT BUFFER:
-	# 0.25 to 0.30 -> Sunrise (6:00 AM to 7:12 AM)
-	# 0.30 to 0.75 -> Full Day (7:12 AM to 6:00 PM)
-	# 0.75 to 1.00 -> SLOW Sunset Fade (6:00 PM down to Midnight)
-	# 0.00 to 0.25 -> Pitch Black Goblin Hours (Midnight to 6:00 AM)
-	
-	if current_time >= 0.25 and current_time < 0.30:
-		# Sunrise
-		sun_fade = smoothstep(0.25, 0.30, current_time) * 1.2
-		sunset_blend = smoothstep(0.30, 0.25, current_time)
-	elif current_time >= 0.30 and current_time < 0.75:
-		# Full Day
+
+	if current_time >= 0.208 and current_time < 0.25:
+		# Dawn (5 AM to 6 AM)
+		var progress = (current_time - 0.208) / (0.25 - 0.208)
+		sun_fade = lerp(0.0, 1.2, progress)
+		sunset_blend = 0.0
+
+	elif current_time >= 0.25 and current_time < 0.916:
+		# Full Day (6 AM to 10 PM)
 		sun_fade = 1.2
 		sunset_blend = 0.0
-	elif current_time >= 0.75 and current_time <= 1.0:
-		# Slow Evening Transition (6 hours long)
-		sun_fade = smoothstep(1.0, 0.75, current_time) * 1.2
-		sunset_blend = smoothstep(0.75, 1.0, current_time)
+
+	elif current_time >= 0.916 and current_time <= 1.0:
+		# Dusk (10 PM to Midnight)
+		var progress = (current_time - 0.916) / (1.0 - 0.916)
+		sun_fade = lerp(1.2, 0.0, progress)
+		sunset_blend = sin(progress * PI)
+
 	else:
-		# Deep night (0.0 to 0.25)
+		# Deep Night (Midnight to 5 AM)
 		sun_fade = 0.0
 		sunset_blend = 0.0
 
+	# Directional Sun Lighting
 	sun_light.light_energy = sun_fade
 	sun_light.light_color = Color(0.02, 0.02, 0.08) if GameData.is_night else Color(1.0, 0.95, 0.85).lerp(Color(0.95, 0.45, 0.15), sunset_blend)
 
+	# Sky & Ambient Lighting
 	var env = world_env.environment
 	if env:
 		env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 		var night_weight = 1.0 - (sun_fade / 1.2)
-		env.ambient_light_color = Color(0.6, 0.7, 0.8).lerp(Color(0.15, 0.18, 0.25), night_weight)
-		env.ambient_light_energy = lerp(1.0, 0.3, night_weight)
+		env.ambient_light_color = Color(0.6, 0.7, 0.8).lerp(Color(0.05, 0.06, 0.12), night_weight)
+		env.ambient_light_energy = lerp(1.0, 0.1, night_weight)
 
-	if is_instance_valid(night_light):
-		night_light.light_energy = (1.0 - (sun_fade / 1.2)) * 2.0
 
 func update_ui_clock() -> void:
 	var total_minutes = int(current_time * 24.0 * 60.0)

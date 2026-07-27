@@ -75,6 +75,7 @@ func request_spawn_item(item_type: String, display_id: int) -> void:
 	server_spawn_item(item_type, 1, display_id)
 
 
+
 @rpc("any_peer", "reliable")
 func server_spawn_item(item_type: String, requester_id: int, display_id: int) -> void:
 	if not multiplayer.is_server():
@@ -107,6 +108,11 @@ func server_spawn_item(item_type: String, requester_id: int, display_id: int) ->
 			rpc("sync_display_count", item_type, stocks[item_type].size())
 			rpc("sync_recalled_item", str(item_to_spawn.get_path()), target_spawn_pos)
 			sync_recalled_item(str(item_to_spawn.get_path()), target_spawn_pos)
+			
+			
+			var player = get_node_or_null("/root/main/players/" + str(requester_id))
+			if is_instance_valid(player):
+				player.rpc_pickup_object.rpc_id(requester_id, item_to_spawn.get_path())
 		else:
 			rpc("sync_display_count", item_type, stocks[item_type].size())
 

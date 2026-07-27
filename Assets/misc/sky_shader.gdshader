@@ -33,15 +33,14 @@ float hash2d(vec2 p) {
 void sky() {
     float sun_height = LIGHT0_DIRECTION.y;
     
-    // --- FIXED: CINEMATIC SMOOTH TRANSITIONS ---
-    // Smoothstep softens the edges where gradients switch, drawing out dawn and dusk.
-    float day_weight = smoothstep(-0.1, 0.3, sun_height);
-    float night_weight = smoothstep(-0.3, 0.1, -sun_height);
+    // Day stays active while sun_height is above the horizon
+    float day_weight = smoothstep(-0.1, 0.1, sun_height);
+    float night_weight = smoothstep(0.1, -0.1, sun_height);
     
-    // Sunset peaks dynamically right as the sun touches the horizon line (0.0)
-    float sunset_weight = smoothstep(0.0, 1.0, 1.0 - abs(sun_height * 2.5));
+    // Sunset triggers when sun approaches horizon level near 10 PM
+    float sunset_weight = smoothstep(0.0, 0.2, 0.2 - abs(sun_height));
     
-    // Normalize weights to keep general sky luminance completely stable
+    // Normalize weights to keep background lighting stable
     float total_weight = day_weight + sunset_weight + night_weight;
     if (total_weight > 0.0) {
         day_weight /= total_weight;
