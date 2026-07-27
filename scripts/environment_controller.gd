@@ -1,7 +1,7 @@
 extends Node3D
 
 # Day length updated to 24.0 for quick testing (change to 240.0 for production)
-@export var day_length_seconds: float = 2400.0
+@export var day_length_seconds: float = 240.0
 
 @onready var ui_time_label = get_node_or_null("/root/main/UI/day_timer")
 @onready var sun_light: DirectionalLight3D = $DirectionalLight3D
@@ -18,7 +18,7 @@ extends Node3D
 }
 
 # Day starts at 6:00 AM (0.25)
-var current_time: float = 0.25
+var current_time: float = 0.1
 var is_cycle_started: bool = false 
 var current_day = 0
 var changed_day = false

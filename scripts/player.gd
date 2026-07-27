@@ -261,7 +261,10 @@ func rpc_pickup_object(item_path: NodePath) -> void:
 
 func drop_object() -> void:
 	if current_slot == "0" or inventory[current_slot][2] == null or inventory[current_slot][3].is_empty(): return
-
+	
+	var drop_pos: Vector3 = hand.global_position
+	var col = interact_cast.get_collider() if interact_cast.is_colliding() else null
+	if col and "current_cooking_item" in col and col.current_cooking_item != null: return
 	inventory[current_slot][1] -= 1
 	held_object_amount -= 1
 	var dropped = inventory[current_slot][3].pop_back()
@@ -273,9 +276,6 @@ func drop_object() -> void:
 
 	update_inventory_ui()
 
-	var drop_pos: Vector3 = hand.global_position
-	var col = interact_cast.get_collider() if interact_cast.is_colliding() else null
-	
 	if is_instance_valid(col) and col.is_in_group("placeable"):
 		if col.is_in_group("chopping_board") and dropped.is_in_group("choppable"): drop_pos = col.global_position + Vector3(0, 1.2, 0)
 		elif col.is_in_group("THE_THING"): 

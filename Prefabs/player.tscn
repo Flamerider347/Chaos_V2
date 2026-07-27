@@ -82,6 +82,11 @@ collision_mask = 12
 current = true
 fov = 90.0
 
+[node name="SpotLight3D" type="SpotLight3D" parent="head/camera" unique_id=142540905]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.016445637, 0.3715636)
+spot_range = 8.890251
+spot_angle = 28.379372
+
 [node name="MeshInstance3D" type="MeshInstance3D" parent="head/camera" unique_id=1450347014]
 mesh = SubResource("QuadMesh_knrd4")
 
