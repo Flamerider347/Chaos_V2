@@ -21,6 +21,10 @@ var spawn_position: Vector3
 var current_anim: String = ""
 
 func _ready() -> void:
+	set_physics_process(false)
+	await get_tree().create_timer(0.2).timeout
+	set_physics_process(true)
+	
 	add_to_group("enemy")
 	spawn_position = global_position
 	

@@ -35,7 +35,6 @@ func _spawn_night_wave() -> void:
 	if not is_instance_valid(enemy_spawner): return
 	
 	var map = get_world_3d().navigation_map
-	var spawn_parent = get_node_or_null("/root/main/game/enemies")
 	
 	for marker in spawn_points:
 		if not is_instance_valid(marker): continue
@@ -46,10 +45,7 @@ func _spawn_night_wave() -> void:
 			global_spawn_pos = closest_point
 		
 		var local_spawn_pos: Vector3 = Vector3.ZERO
-		if is_instance_valid(spawn_parent):
-			local_spawn_pos = spawn_parent.to_local(global_spawn_pos)
-		else:
-			local_spawn_pos = self.to_local(global_spawn_pos)
+		local_spawn_pos = self.to_local(global_spawn_pos)
 		
 		var enemy_id = "Goblin_" + str(randi() % 100000)
 		var package = [local_spawn_pos, enemy_id]
