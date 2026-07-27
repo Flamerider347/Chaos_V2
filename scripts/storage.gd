@@ -3,9 +3,7 @@ extends Node3D
 var valid_food_types: Array[String] = ["cheese", "tomato", "bun", "meat", "carrot", "lettuce"]
 @export var stocks: Dictionary = {}
 
-# Keep track of both spawn positions now
-var item_spawn_pos1: Vector3
-var item_spawn_pos2: Vector3
+var item_spawn_pos: Vector3
 
 @onready var item_spawner: MultiplayerSpawner = get_node("/root/main/game/spawners/item_spawner")
 
@@ -13,50 +11,32 @@ func _ready() -> void:
 	for food_type in valid_food_types:
 		stocks[food_type] = []
 
-	# Cache both spawn points safely
-	if has_node("output/spawn_point"):
-		item_spawn_pos1 = $output/spawn_point.global_position
-	if has_node("output2/spawn_point"):
-		item_spawn_pos2 = $output2/spawn_point.global_position
+	if has_node("spawn_point"):
+		item_spawn_pos = $spawn_point.global_position
 
-
+	# Connect display buttons
 	for type in valid_food_types:
 		var display_node = get_node_or_null("main_display/" + type)
 		if display_node:
-			display_node.spawn_item.connect(request_spawn_item.bind(1))
+			display_node.spawn_item.connect(request_spawn_item)
+
 	var plate_display = get_node_or_null("main_display/plate")
 	if plate_display:
-		plate_display.spawn_item.connect(request_spawn_item.bind(1))
-
-	for type in valid_food_types:
-		var display_node = get_node_or_null("main_display2/" + type)
-		if display_node:
-			display_node.spawn_item.connect(request_spawn_item.bind(2))
-	var plate_display2 = get_node_or_null("main_display2/plate")
-	if plate_display2:
-		plate_display2.spawn_item.connect(request_spawn_item.bind(2))
+		plate_display.spawn_item.connect(request_spawn_item)
 
 
 func _on_input_body_entered(body: Node3D) -> void:
-	if not multiplayer.is_server():
-		return
-	if not is_instance_valid(body):
-		return
-	if not "type" in body:
+	if not multiplayer.is_server() or not is_instance_valid(body) or not "type" in body:
 		return
 
 	var type = body.type
 	if body is RigidBody3D:
 		if type in valid_food_types:
-			if stocks[type].has(body):
-				return
-				
+			if stocks[type].has(body): return
+			
 			body.set_multiplayer_authority(1)
 			stocks[type].append(body)
-			body.position = Vector3(0, -50, 0)
-			body.freeze = true
-			body.visible = false
-			
+			rpc("store_item", body.get_path())
 			rpc("sync_display_count", type, stocks[type].size())
 		elif type == "plate" and "stacked_items" in body and body.stacked_items.size() == 0:
 			body.queue_free()
@@ -66,32 +46,28 @@ func _on_input_body_entered(body: Node3D) -> void:
 			body.linear_velocity = Vector3(randf_range(-3, 3), 4, randf_range(-3, 3))
 
 
-func request_spawn_item(item_type: String, display_id: int) -> void:
-	if not GameData.closed_lobby:
-		return
+func request_spawn_item(item_type: String) -> void:
+	if not GameData.closed_lobby: return
 	if not multiplayer.is_server():
-		rpc_id(1, "server_spawn_item", item_type, multiplayer.get_unique_id(), display_id)
+		rpc_id(1, "server_spawn_item", item_type, multiplayer.get_unique_id())
 		return
-	server_spawn_item(item_type, 1, display_id)
-
+	server_spawn_item(item_type, 1)
 
 
 @rpc("any_peer", "reliable")
-func server_spawn_item(item_type: String, requester_id: int, display_id: int) -> void:
-	if not multiplayer.is_server():
-		return
-	var target_spawn_pos: Vector3 = item_spawn_pos1 if display_id == 1 else item_spawn_pos2
+func server_spawn_item(item_type: String, requester_id: int) -> void:
+	if not multiplayer.is_server(): return
 
 	if item_type == "plate":
 		if GameData.current_plates < 20:
 			GameData.current_plates += 1
 			var unique_name: String = "plate_" + str(Time.get_ticks_msec()) + "_" + str(randi() % 10000)
-			var package: Array = ["plate", requester_id, target_spawn_pos, unique_name]
+			var package: Array = ["plate", requester_id, item_spawn_pos, unique_name]
 			if is_instance_valid(item_spawner):
 				item_spawner.spawn(package)
 			rpc("sync_display_count", "plate", 20 - GameData.current_plates)
 		else:
-			rpc_id(requester_id, "show_plate_warning", display_id)
+			rpc_id(requester_id, "show_plate_warning")
 
 	elif stocks.has(item_type) and stocks[item_type].size() > 0:
 		var item_to_spawn: RigidBody3D = stocks[item_type].pop_back()
@@ -102,65 +78,60 @@ func server_spawn_item(item_type: String, requester_id: int, display_id: int) ->
 			item_to_spawn.linear_velocity = Vector3.ZERO
 			item_to_spawn.angular_velocity = Vector3.ZERO
 			item_to_spawn.set_collision_layer_value(3, true)
-			item_to_spawn.global_position = target_spawn_pos
+			item_to_spawn.global_position = item_spawn_pos
 			item_to_spawn.set_multiplayer_authority(1)
 			
 			rpc("sync_display_count", item_type, stocks[item_type].size())
-			rpc("sync_recalled_item", str(item_to_spawn.get_path()), target_spawn_pos)
-			sync_recalled_item(str(item_to_spawn.get_path()), target_spawn_pos)
-			
+			rpc("sync_recalled_item", str(item_to_spawn.get_path()), item_spawn_pos)
+			sync_recalled_item(str(item_to_spawn.get_path()), item_spawn_pos)
 			
 			var player = get_node_or_null("/root/main/players/" + str(requester_id))
 			if is_instance_valid(player):
 				player.rpc_pickup_object.rpc_id(requester_id, item_to_spawn.get_path())
-		else:
-			rpc("sync_display_count", item_type, stocks[item_type].size())
 
 
 @rpc("any_peer", "reliable")
 func sync_recalled_item(item_path: String, pos: Vector3) -> void:
 	var item = get_node_or_null(item_path)
-	if not is_instance_valid(item):
-		return
+	if not is_instance_valid(item): return
 	item.global_position = pos
 	item.visible = true
 	item.freeze = false
 	item.set_collision_layer_value(3, true)
 	var shape: CollisionShape3D = item.find_child("CollisionShape3D")
-	if shape:
-		shape.disabled = false
+	if shape: shape.disabled = false
 
 
 @rpc("any_peer", "call_local", "reliable")
 func sync_display_count(item_type: String, count: int) -> void:
-	# FIX: Update main_display
-	var display_node1: Node = get_node_or_null("main_display/" + item_type)
-	if display_node1:
-		display_node1.stored = count
-
-	# FIX: Simultaneously update main_display2
-	var display_node2: Node = get_node_or_null("main_display2/" + item_type)
-	if display_node2:
-		display_node2.stored = count
+	var display_node: Node = get_node_or_null("main_display/" + item_type)
+	if display_node:
+		display_node.set("stored", count)
 
 
 @rpc("any_peer", "call_local", "reliable")
-func show_plate_warning(display_id: int) -> void:
-	var target_display = "main_display" if display_id == 1 else "main_display2"
-	if has_node(target_display + "/plate_warning"):
-		get_node(target_display + "/plate_warning").show()
-		if has_node("warning_timer"):
-			$warning_timer.start(1.5)
+func store_item(item_path: String) -> void:
+	var item = get_node_or_null(item_path)
+	if is_instance_valid(item):
+		item.position = Vector3(0, -50, 0)
+		item.freeze = true
+		item.visible = false
+
+
+@rpc("any_peer", "call_local", "reliable")
+func show_plate_warning() -> void:
+	if has_node("main_display/plate_warning"):
+		$main_display/plate_warning.show()
+		if has_node("warning_timer"): $warning_timer.start(1.5)
+
 
 func _on_warning_timer_timeout() -> void:
 	if has_node("main_display/plate_warning"):
 		$main_display/plate_warning.hide()
-	if has_node("main_display2/plate_warning"):
-		$main_display2/plate_warning.hide()
+
 
 func drop_all(player) -> void:
-	if not is_instance_valid(player):
-		return
+	if not is_instance_valid(player): return
 		
 	for slot_key in player.inventory.keys():
 		var slot_data = player.inventory[slot_key]
@@ -174,7 +145,6 @@ func drop_all(player) -> void:
 				player.drop_object()
 				
 				if item_node.type in valid_food_types:
-					# Send request to host to process and store the food item
 					rpc_id(1, "server_process_dropped_food", item_node.get_path())
 				
 	player.current_slot = "0"
@@ -184,29 +154,15 @@ func drop_all(player) -> void:
 
 @rpc("any_peer", "call_local", "reliable")
 func server_process_dropped_food(item_path: String) -> void:
-	if not multiplayer.is_server():
-		return
-		
+	if not multiplayer.is_server(): return
 	var item = get_node_or_null(item_path)
-	if not is_instance_valid(item) or not item is RigidBody3D:
-		return
+	if not is_instance_valid(item) or not item is RigidBody3D: return
 		
 	var type = item.type
 	if type in valid_food_types:
-		if stocks[type].has(item):
-			return
-			
+		if stocks[type].has(item): return
 		item.set_multiplayer_authority(1)
 		stocks[type].append(item)
 		
 		rpc("store_item", item.get_path())
 		rpc("sync_display_count", type, stocks[type].size())
-
-
-@rpc("any_peer", "call_local", "reliable")
-func store_item(item_path: String) -> void:
-	var item = get_node_or_null(item_path)
-	if is_instance_valid(item):
-		item.position = Vector3(0, -50, 0)
-		item.freeze = true
-		item.visible = false

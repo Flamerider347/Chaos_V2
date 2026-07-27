@@ -5,22 +5,21 @@ var max_health: float = 100.0
 var is_dead: bool = false
 var is_in_kitchen: bool = false
 var is_owned: bool = false
+var last_outline_was_valid: bool = true
 
-# Movement & Settings
+
 const SPEED: float = 5.0
 const JUMP_VELOCITY: float = 3.5
 const GRAVITY: float = 9.8
 var mouse_sensitivity: float = 0.003
 var speed_multiplier: float = 1.0
 
-# Inventory State
 var held_item = null
 var held_object_amount: int = 0
 var can_pickup: bool = true
-var current_slot: String = "1" # "0" is now used for empty hands
+var current_slot: String = "1"
 var holding_two_handed: bool = false
 
-# Format: "Slot": [UI_Label, Count, Type_String, [Array_Of_World_Nodes]]
 var inventory: Dictionary = {
 	"1": [null, 0, null, []],
 	"2": [null, 0, null, []],
@@ -28,7 +27,6 @@ var inventory: Dictionary = {
 	"4": [null, 0, null, []]
 }
 
-# Nodes
 var last_highlighted_target: Node3D = null
 var outline_material: Material = preload("res://Assets/misc/outline_shader.tres")
 
@@ -37,24 +35,21 @@ var outline_material: Material = preload("res://Assets/misc/outline_shader.tres"
 @onready var pickup_timer: Timer = $pickup_timer
 @onready var username_label: Label3D = $username
 
-# UI Nodes
 @onready var ui_colliding_label: Label = get_node_or_null("/root/main/UI/loading")
 @onready var ui_healthbar = get_node_or_null("/root/main/UI/healthbar")
 @onready var ui_sensitivity_slider: Slider = get_node_or_null("/root/main/Pause_UI/sensitivity")
 @onready var main_game_ui = get_node_or_null("/root/main/UI")
 @onready var pause_menu_ui = get_node_or_null("/root/main/Pause_UI")
 
-# ---------------------------------------------------------
-# INITIALIZATION
-# ---------------------------------------------------------
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(name.to_int())
 
+
 func _ready() -> void:
 	add_to_group("player")
 	is_owned = (name.to_int() == multiplayer.get_unique_id())
-
+	
 	if is_owned:
 		$head/camera.make_current()
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -64,65 +59,58 @@ func _ready() -> void:
 	else:
 		if is_instance_valid($head/camera): $head/camera.queue_free()
 		rpc_id.call_deferred(name.to_int(), "request_username_from_owner")
-
+		
+	global_position = Vector3(randf_range(6,4), 1, randf_range(4,-4))
 	update_inventory_ui()
 
-func _setup_ui_slots() -> void:
-	for slot_key in inventory:
-		var ui_slot: Label = get_node_or_null("/root/main/UI/item_slots/slot" + str(slot_key))
-		if ui_slot: inventory[slot_key][0] = ui_slot
-
-# ---------------------------------------------------------
-# INPUT & PROCESS
-# ---------------------------------------------------------
 
 func _input(event: InputEvent) -> void:
 	if not is_owned: return
-
+	
 	if Input.is_action_just_pressed("ui_cancel"):
 		GameData.paused = not GameData.paused
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE if GameData.paused else Input.MOUSE_MODE_CAPTURED)
 		if main_game_ui: main_game_ui.visible = not GameData.paused
 		if pause_menu_ui: pause_menu_ui.visible = GameData.paused
-
+		
 	if GameData.paused: return
-
+	
 	if event is InputEventMouseMotion:
 		rotation_degrees.y -= event.relative.x * mouse_sensitivity * 5
 		$head.rotation_degrees.x = clamp($head.rotation_degrees.x - event.relative.y * mouse_sensitivity * 5, -90, 90)
 
+
 func _physics_process(delta: float) -> void:
 	if not is_owned: return
+	
 	if not is_on_floor():
 		velocity.y -= GRAVITY * delta
 		if position.y < -5: position = Vector3(0, 2, 0)
+		
 	if GameData.paused:
 		velocity.x = 0
 		velocity.z = 0
 		move_and_slide()
 		return
-
+		
 	_update_states(delta)
 	_handle_slot_switching()
 	
 	var target = interact_cast.get_collider() if interact_cast.is_colliding() else null
 	_update_outline(target)
-	
 	_handle_interactions(target)
 	_handle_snapping(target)
 	_handle_movement()
-# ---------------------------------------------------------
-# CORE LOGIC HANDLERS
-# ---------------------------------------------------------
+
 
 func _update_states(delta: float) -> void:
 	if Input.is_action_just_pressed("debug_toggle"): GameData.is_night = true
 	if ui_sensitivity_slider: mouse_sensitivity = ui_sensitivity_slider.value
-
+	
 	if is_in_kitchen:
 		health = minf(health + (10.0 * delta), max_health)
 		if ui_healthbar: ui_healthbar.value = int(health)
-
+		
 	holding_two_handed = false
 	if is_instance_valid(held_item):
 		if ("is_two_handed" in held_item and held_item.is_two_handed) or (held_item.is_in_group("plate") and held_item.get("stacked_items").size() > 0):
@@ -130,14 +118,14 @@ func _update_states(delta: float) -> void:
 
 
 func _handle_movement() -> void:
-	if Input.is_action_pressed("jump") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-
+	if Input.is_action_pressed("jump") and is_on_floor(): velocity.y = JUMP_VELOCITY
+	
 	var vec: Vector2 = Input.get_vector("left", "right", "forward", "backwards")
 	speed_multiplier = 1.5 if Input.is_action_pressed("sprint") else 1.0
+	
 	var weighted_speed: float = clampf(SPEED - (held_object_amount * 0.1), 3.0, 5.0) * speed_multiplier
 	if holding_two_handed: weighted_speed = 3.0
-
+	
 	var dir: Vector3 = (transform.basis * Vector3(vec.x, 0, vec.y)).normalized()
 	if dir:
 		velocity.x = dir.x * weighted_speed
@@ -145,7 +133,7 @@ func _handle_movement() -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0, weighted_speed)
 		velocity.z = move_toward(velocity.z, 0, weighted_speed)
-
+		
 	move_and_slide()
 
 
@@ -153,17 +141,18 @@ func _handle_interactions(target: Node3D) -> void:
 	if holding_two_handed and Input.is_action_just_pressed("right_click"):
 		drop_object()
 		return
-
+		
 	if not is_instance_valid(target):
 		if Input.is_action_just_pressed("right_click") and current_slot != "0" and inventory[current_slot][2] != null and can_pickup:
 			drop_object()
 		return
-
+		
 	if Input.is_action_just_pressed("left_click") and not holding_two_handed:
 		if target.is_in_group("punchable"): target._on_punched()
 		elif target.is_in_group("storage_button"): target.spawn_item.emit(target.name)
 		elif target.is_in_group("pickupable") and can_pickup: pickup_object(target)
 		elif target.is_in_group("door"): target.open_door()
+		
 	if Input.is_action_just_pressed("right_click") and can_pickup and target.is_in_group("drop_all"):
 		target.get_parent().drop_all(self)
 	elif Input.is_action_just_pressed("right_click"):
@@ -174,32 +163,33 @@ func _handle_interactions(target: Node3D) -> void:
 
 
 func _handle_snapping(target: Node3D) -> void:
-	if current_slot == "0" or not is_instance_valid(held_item): 
-		return
-
+	if current_slot == "0" or not is_instance_valid(held_item): return
+	
 	var visual_slot = hand.find_child("slot" + current_slot)
 	if not is_instance_valid(visual_slot): return
-
+	
 	var visual_item = visual_slot.get_child(0) if visual_slot.get_child_count() > 0 else null
 	var is_snapping = false
-
+	
 	if is_instance_valid(visual_item) and is_instance_valid(target):
 		var snap_offset = Vector3.ZERO
 		
-		if target.is_in_group("placeable"):
-			if target.is_in_group("chopping_board") and held_item.is_in_group("choppable"): snap_offset = Vector3(0, 1.2, 0)
-			elif target.is_in_group("THE_THING") or target.is_in_group("delivery_area"): snap_offset = Vector3(0, 0.2, 0)
-			elif not target.is_in_group("chopping_board") and held_item.is_in_group("meat"): snap_offset = Vector3(0, 0.4, 0)
+		if target.is_in_group("placeable") or target.is_in_group("storage_hopper") or target.is_in_group("THE_THING"):
+			if target.is_in_group("chopping_board") and held_item.is_in_group("choppable"): 
+				snap_offset = Vector3(0, 1.2, 0)
+			elif target.is_in_group("storage_hopper") or target.is_in_group("THE_THING") or target.is_in_group("delivery_area"): 
+				snap_offset = Vector3(0, 0.2, 0)
+			elif not target.is_in_group("chopping_board") and held_item.is_in_group("meat"): 
+				snap_offset = Vector3(0, 0.4, 0)
 		elif target.is_in_group("plate") and held_item.is_in_group("plate_stackable"):
 			snap_offset = Vector3(0, target.calculate_stack_height() + 0.1, 0)
-
+			
 		if snap_offset != Vector3.ZERO:
 			visual_item.global_position = target.global_position + snap_offset
 			visual_item.global_rotation = target.global_rotation
 			is_snapping = true
-
+			
 	if is_instance_valid(visual_item) and not is_snapping:
-		# Snap back to the hand locally
 		visual_item.position = Vector3.ZERO
 		visual_item.rotation = Vector3.ZERO
 
@@ -212,25 +202,21 @@ func _handle_slot_switching() -> void:
 	elif Input.is_action_just_pressed("2"): pressed_slot = "2"
 	elif Input.is_action_just_pressed("3"): pressed_slot = "3"
 	elif Input.is_action_just_pressed("4"): pressed_slot = "4"
-
-	if pressed_slot != current_slot:
-		current_slot = pressed_slot
-	elif pressed_slot != "0" and Input.is_action_just_pressed(pressed_slot):
-		# Pressing the active slot again unequips it
-		current_slot = "0"
-
-	# Update held item data
-	if current_slot != "0":
-		held_item = inventory[current_slot][3][-1] if inventory[current_slot][3].size() > 0 else null
-	else:
-		held_item = null
-
+	
+	if pressed_slot != current_slot: current_slot = pressed_slot
+	elif pressed_slot != "0" and Input.is_action_just_pressed(pressed_slot): current_slot = "0"
+	
+	if current_slot != "0": held_item = inventory[current_slot][3][-1] if inventory[current_slot][3].size() > 0 else null
+	else: held_item = null
+	
 	if Input.is_action_just_pressed("1") or Input.is_action_just_pressed("2") or Input.is_action_just_pressed("3") or Input.is_action_just_pressed("4"):
 		rpc("sync_active_slot", current_slot)
 		update_inventory_ui()
 
+
 func pickup_object(object: Node3D) -> void:
 	if not is_instance_valid(object): return
+	
 	var picked_up = "0"
 	for i in inventory.keys():
 		if inventory[i][2] == null or inventory[i][2] == object.type:
@@ -239,25 +225,18 @@ func pickup_object(object: Node3D) -> void:
 			inventory[i][3].append(object)
 			picked_up = i
 			break
-
+			
 	if picked_up != "0":
 		held_object_amount += 1
 		if inventory[picked_up][1] <= 1:
 			rpc("sync_hand_item_added", picked_up, str(object.get_path()), object.global_transform)
-			
-		rpc("sync_world_item_pickup", str(object.get_path())) 
-		if is_in_kitchen:
-			current_slot = picked_up
-			held_item = inventory[picked_up][3][-1]
-			
+		rpc("sync_world_item_pickup", str(object.get_path()))
+#        if is_in_kitchen:
+#            current_slot = picked_up
+#            held_item = inventory[picked_up][3][-1]
 		rpc("sync_active_slot", current_slot)
 		update_inventory_ui()
-		
-@rpc("any_peer", "call_local", "reliable")
-func rpc_pickup_object(item_path: NodePath) -> void:
-	var item_node = get_node_or_null(item_path)
-	if is_instance_valid(item_node):
-		pickup_object(item_node)
+
 
 func drop_object() -> void:
 	if current_slot == "0" or inventory[current_slot][2] == null or inventory[current_slot][3].is_empty(): return
@@ -265,32 +244,37 @@ func drop_object() -> void:
 	var drop_pos: Vector3 = hand.global_position
 	var col = interact_cast.get_collider() if interact_cast.is_colliding() else null
 	if col and "current_cooking_item" in col and col.current_cooking_item != null: return
+	
 	inventory[current_slot][1] -= 1
 	held_object_amount -= 1
+	
 	var dropped = inventory[current_slot][3].pop_back()
 	held_item = inventory[current_slot][3][-1] if inventory[current_slot][3].size() > 0 else null
-
+	
 	if inventory[current_slot][1] <= 0:
 		inventory[current_slot][2] = null
 		rpc("sync_hand_item_removed", current_slot)
-
+		
 	update_inventory_ui()
-
-	if is_instance_valid(col) and col.is_in_group("placeable"):
-		if col.is_in_group("chopping_board") and dropped.is_in_group("choppable"): drop_pos = col.global_position + Vector3(0, 1.2, 0)
-		elif col.is_in_group("THE_THING"): 
+	
+	if is_instance_valid(col) and (col.is_in_group("placeable") or col.is_in_group("storage_hopper") or col.is_in_group("THE_THING") or col.is_in_group("delivery_area")):
+		if col.is_in_group("chopping_board") and dropped.is_in_group("choppable"): 
+			drop_pos = col.global_position + Vector3(0, 1.2, 0)
+		elif col.is_in_group("storage_hopper") or col.is_in_group("THE_THING") or col.is_in_group("delivery_area"):
 			drop_pos = col.global_position + Vector3(0, 0.2, 0)
-			if dropped.is_in_group("storable"): dropped.set_collision_layer_value(3, false)
-		elif col.is_in_group("delivery_area"): drop_pos = col.global_position + Vector3(0, 0.2, 0)
-		elif not col.is_in_group("chopping_board") and dropped.is_in_group("meat"): drop_pos = col.global_position + Vector3(0, 0.4, 0)
-
-	if multiplayer.is_server(): notify_item_dropped(str(dropped.get_path()), drop_pos)
-	else: rpc_id(1, "notify_item_dropped", str(dropped.get_path()), drop_pos)
+			if dropped.is_in_group("storable"): 
+				dropped.set_collision_layer_value(3, false)
+		elif not col.is_in_group("chopping_board") and dropped.is_in_group("meat"): 
+			drop_pos = col.global_position + Vector3(0, 0.4, 0)
+		
+	if multiplayer.is_server(): 
+		notify_item_dropped(str(dropped.get_path()), drop_pos)
+	else: 
+		rpc_id(1, "notify_item_dropped", str(dropped.get_path()), drop_pos)
 
 
 func stack_object(plate: Node3D) -> void:
 	if not is_instance_valid(held_item): return
-
 	if held_item.is_in_group("pickupable"): held_item.remove_from_group("pickupable")
 	
 	plate.stack_item(held_item)
@@ -304,9 +288,271 @@ func stack_object(plate: Node3D) -> void:
 	if inventory[current_slot][1] <= 0:
 		inventory[current_slot][2] = null
 		rpc("sync_hand_item_removed", current_slot)
-
+		
 	held_item = inventory[current_slot][3][-1] if inventory[current_slot][3].size() > 0 else null
 	update_inventory_ui()
+
+
+func take_damage(amount: float) -> void:
+	if not is_owned or is_dead: return
+	health -= amount
+	if ui_healthbar: ui_healthbar.value = int(health)
+	if health <= 0: die()
+
+
+func die() -> void:
+	is_dead = true; health = 0
+	var origin: Vector3 = global_position
+	
+	for s in inventory:
+		while inventory[s][3].size() > 0:
+			var angle = randf() * TAU
+			current_slot = s
+			drop_object()
+			var dropped_item = inventory[s][3][-1] if inventory[s][3].size() > 0 else null
+			if is_instance_valid(dropped_item):
+				dropped_item.global_position = origin + Vector3(cos(angle) * (randf() * 1.5), 0.5, sin(angle) * (randf() * 1.5))
+				
+	global_position = origin
+	for s in inventory: inventory[s] = [inventory[s][0], 0, null, []]
+	held_item = null
+	current_slot = "0"
+	update_inventory_ui()
+	rpc("sync_player_death")
+
+
+func update_inventory_ui() -> void:
+	if not is_owned: return
+	
+	for s in inventory:
+		var lbl: Label = inventory[s][0]
+		if not is_instance_valid(lbl): continue
+		var count: int = inventory[s][1]
+		
+		if inventory[s][2] != null and count > 0:
+			var last_item = inventory[s][3][-1] if inventory[s][3].size() > 0 else null
+			if str(inventory[s][2]) == "plate" and is_instance_valid(last_item) and "stacked_items" in last_item and last_item.stacked_items.size() > 0:
+				var item_counts: Dictionary = {}
+				for item in last_item.stacked_items:
+					if is_instance_valid(item):
+						var item_name = item.type.capitalize()
+						if item_counts.has(item_name): item_counts[item_name] += 1
+						else: item_counts[item_name] = 1
+				var formatted_contents = []
+				for item_name in item_counts:
+					var item_total = item_counts[item_name]
+					if item_total > 1: formatted_contents.append("%s x%d" % [item_name, item_total])
+					else: formatted_contents.append(item_name)
+				lbl.text = "%s\nPlate with %s" % [s, ", ".join(formatted_contents)]
+			else:
+				lbl.text = "%s\n%s%s" % [s, str(inventory[s][2]).capitalize(), " x" + str(count) if count > 1 else ""]
+		else:
+			lbl.text = "%s\nEmpty" % s
+			
+		lbl.pivot_offset = lbl.size / 2.0
+		lbl.scale = Vector2(1.1, 1.1) if str(s) == current_slot else Vector2.ONE
+
+
+func _setup_ui_slots() -> void:
+	for slot_key in inventory:
+		var ui_slot: Label = get_node_or_null("/root/main/UI/item_slots/slot" + str(slot_key))
+		if ui_slot: inventory[slot_key][0] = ui_slot
+
+
+func _set_physical_item_state(item: Node3D, is_hidden: bool) -> void:
+	item.visible = not is_hidden
+	if item is RigidBody3D: item.freeze = is_hidden
+	
+	var shape: CollisionShape3D = item.find_child("CollisionShape3D")
+	if shape: shape.disabled = is_hidden
+	
+	if "stacked_items" in item:
+		for s_item in item.stacked_items:
+			if is_instance_valid(s_item): _set_physical_item_state(s_item, is_hidden)
+
+
+func _strip_network_nodes(node: Node) -> void:
+	if not is_instance_valid(node): return
+	
+	for child in node.get_children(): _strip_network_nodes(child)
+	
+	if node is MultiplayerSynchronizer or node is MultiplayerSpawner or node is RemoteTransform3D:
+		node.name = "DELETED_NET_NODE"
+		node.queue_free()
+		if node.get_parent(): node.get_parent().remove_child(node)
+		return
+		
+	if node is RigidBody3D:
+		node.freeze = true
+		node.gravity_scale = 0.0
+		node.collision_layer = 0
+		node.collision_mask = 0
+		node.process_mode = Node.PROCESS_MODE_DISABLED
+		
+	if node is CollisionShape3D: node.disabled = true
+
+
+func _can_interact_with(target: Node3D) -> bool:
+	if not is_instance_valid(target): 
+		return false
+
+	# Helper to check if player inventory has space
+	var inventory_has_space = false
+	for slot_key in inventory:
+		var slot_type = inventory[slot_key][2]
+		if slot_type == null or (target.is_in_group("pickupable") and "type" in target and slot_type == target.type):
+			inventory_has_space = true
+			break
+
+	# 1. Trees (Always interactable)
+	if target.is_in_group("punchable"):
+		if "item_left" in target and target.item_left <= 0:
+			return false
+		return true
+
+	# 2. Storage Buttons (Always interactable)
+	if target.is_in_group("storage_button"):
+		if "stored" in target and target.stored <= 0:
+			return false
+		if "stock" in target and target.stock <= 0:
+			return false
+		return true
+
+	# 3. Ground / Pickupable Items
+	# Fails if: can't pick up, holding 2-handed item, or inventory is completely full
+	if target.is_in_group("pickupable"):
+		if not can_pickup or holding_two_handed or not inventory_has_space:
+			return false
+		return true
+
+	# 4. Doors (Always interactable)
+	if target.is_in_group("door"):
+		return true
+
+	# --- ALL CHECKS BELOW REQUIRE A HELD ITEM ---
+	if not is_instance_valid(held_item):
+		return false
+
+	# 5. Storage Hoppers & Delivery Hole (Requires storable held item)
+	if target.is_in_group("storage_hopper") or target.is_in_group("THE_THING") or target.is_in_group("delivery_area"):
+		if not held_item.is_in_group("storable"):
+			return false
+		return true
+
+	# 6. Chopping Board (Requires choppable held item)
+	if target.is_in_group("chopping_board"):
+		if not held_item.is_in_group("choppable"):
+			return false
+		return true
+
+	# 7. Cooking Stations / Stove (Requires meat held item and empty station)
+	if "current_cooking_item" in target or target.is_in_group("stove") or target.is_in_group("cooking_station"):
+		if target.get("current_cooking_item") != null:
+			return false
+		if not held_item.is_in_group("meat"):
+			return false
+		return true
+
+	# 8. Plate Stacking (Requires plate_stackable held item)
+	if target.is_in_group("plate"):
+		if not (held_item.is_in_group("plate_stackable") and not held_item.is_in_group("plate") and can_pickup):
+			return false
+		return true
+
+	# 9. Generic Placeable Surfaces
+	if target.is_in_group("placeable"):
+		return true
+
+	return false
+
+
+func _update_outline(target: Node3D) -> void:
+	# Clear outline from currently held visual item by default
+	_clear_held_item_outline()
+
+	if is_instance_valid(target):
+		var is_valid: bool = _can_interact_with(target)
+		
+		# Empty-hand target checks
+		var is_empty_hand_target = target.is_in_group("punchable") or target.is_in_group("storage_button") or target.is_in_group("pickupable") or target.is_in_group("door")
+		if not is_instance_valid(held_item) and not is_empty_hand_target:
+			if is_instance_valid(last_highlighted_target):
+				_set_mesh_outline(last_highlighted_target, false)
+				last_highlighted_target = null
+			return
+
+		# Refresh outline for target object
+		if target != last_highlighted_target or is_valid != last_outline_was_valid:
+			if is_instance_valid(last_highlighted_target):
+				_set_mesh_outline(last_highlighted_target, false)
+				
+			var color: Color = Color.GREEN if is_valid else Color.RED
+			var thickness: float = 0.005 if is_valid else 0.012
+			_set_mesh_outline(target, true, color, thickness)
+			
+			last_highlighted_target = target
+			last_outline_was_valid = is_valid
+
+		# Outline the held item ONLY when looking at a stove, chopping board, storage hopper, or placeable
+		var is_valid_surface = (
+			target.is_in_group("stove") or 
+			target.is_in_group("cooking_station") or 
+			target.is_in_group("chopping_board") or 
+			target.is_in_group("storage_hopper") or 
+			target.is_in_group("THE_THING") or 
+			target.is_in_group("delivery_area") or 
+			target.is_in_group("placeable") or 
+			target.is_in_group("plate")
+		)
+
+		if is_valid and is_valid_surface:
+			_outline_held_item(true, Color.GREEN)
+	else:
+		if is_instance_valid(last_highlighted_target):
+			_set_mesh_outline(last_highlighted_target, false)
+		last_highlighted_target = null
+
+
+func _set_mesh_outline(node: Node, active: bool, color: Color = Color.GREEN, thickness: float = 0.005) -> void:
+	# Ignore recipe meshes or any node marked in group "no_outline"
+	if node.is_in_group("no_outline"):
+		return
+
+	if node is MeshInstance3D:
+		if active:
+			var mat = outline_material.duplicate()
+			mat.set_shader_parameter("outline_color", color)
+			mat.set_shader_parameter("outline_thickness", thickness)
+			node.material_overlay = mat
+		else:
+			node.material_overlay = null
+
+	for child in node.get_children():
+		_set_mesh_outline(child, active, color, thickness)
+
+
+func _outline_held_item(active: bool, color: Color = Color.GREEN) -> void:
+	if current_slot == "0": return
+	var slot_node = hand.find_child("slot" + current_slot)
+	if is_instance_valid(slot_node):
+		_set_mesh_outline(slot_node, active, color)
+
+
+func _clear_held_item_outline() -> void:
+	if current_slot == "0": return
+	var slot_node = hand.find_child("slot" + current_slot)
+	if is_instance_valid(slot_node):
+		_set_mesh_outline(slot_node, false)
+
+
+func _on_pickup_timer_timeout() -> void:
+	can_pickup = true
+
+
+@rpc("any_peer", "call_local", "reliable")
+func rpc_pickup_object(item_path: NodePath) -> void:
+	var item_node = get_node_or_null(item_path)
+	if is_instance_valid(item_node): pickup_object(item_node)
 
 
 @rpc("any_peer", "call_local", "reliable")
@@ -334,14 +580,13 @@ func sync_hand_item_added(slot_key: String, item_path: String, base_transform: T
 	
 	if is_instance_valid(world_object) and is_instance_valid(slot_node):
 		for child in slot_node.get_children(): child.queue_free()
-			
+		
 		var duplicate_mesh = world_object.duplicate()
 		_strip_network_nodes(duplicate_mesh)
 		
 		slot_node.add_child(duplicate_mesh)
 		duplicate_mesh.position = Vector3.ZERO
 		duplicate_mesh.rotation = Vector3.ZERO
-		
 		if "visible" in duplicate_mesh: duplicate_mesh.visible = true
 		duplicate_mesh.show()
 		
@@ -350,12 +595,9 @@ func sync_hand_item_added(slot_key: String, item_path: String, base_transform: T
 				if is_instance_valid(item_node):
 					var item_copy = item_node.duplicate()
 					_strip_network_nodes(item_copy)
-
 					var local_offset_transform = base_transform.affine_inverse() * item_node.global_transform
-					
 					duplicate_mesh.add_child(item_copy)
 					item_copy.transform = local_offset_transform
-					
 					if "visible" in item_copy: item_copy.visible = true
 					item_copy.show()
 
@@ -377,157 +619,36 @@ func notify_item_dropped(item_path: String, drop_pos: Vector3) -> void:
 func sync_item_dropped(item_path: String, drop_pos: Vector3) -> void:
 	var item = get_node_or_null(item_path)
 	if not is_instance_valid(item): return
-		
+	
 	var relative_transforms = []
 	if "stacked_items" in item:
 		for stacked_item in item.stacked_items:
 			if is_instance_valid(stacked_item):
 				relative_transforms.append(item.global_transform.affine_inverse() * stacked_item.global_transform)
-
-	# Set position first to avoid flash, then unhide
+				
 	item.global_position = drop_pos
 	item.global_rotation = self.global_rotation
-	_set_physical_item_state(item, false) 
-
-
+	_set_physical_item_state(item, false)
+	
 	if "stacked_items" in item:
 		for idx in range(item.stacked_items.size()):
 			var stacked_item = item.stacked_items[idx]
 			if is_instance_valid(stacked_item) and idx < relative_transforms.size():
 				if stacked_item.is_in_group("pickupable"): stacked_item.remove_from_group("pickupable")
-				
 				stacked_item.global_transform = item.global_transform * relative_transforms[idx]
 				_set_physical_item_state(stacked_item, false)
-				stacked_item.freeze = true 
-				
+				stacked_item.freeze = true
 				var s_shape: CollisionShape3D = stacked_item.find_child("CollisionShape3D")
-				if s_shape: s_shape.disabled = true 
-
-
-func update_inventory_ui() -> void:
-	if not is_owned: return
-	for s in inventory:
-		var lbl: Label = inventory[s][0]
-		if not is_instance_valid(lbl): continue
-
-		var count: int = inventory[s][1]
-		if inventory[s][2] != null and count > 0:
-			var last_item = inventory[s][3][-1] if inventory[s][3].size() > 0 else null
-			
-			# Check if this is a plate with items stacked on it
-			if str(inventory[s][2]) == "plate" and is_instance_valid(last_item) and "stacked_items" in last_item and last_item.stacked_items.size() > 0:
-				
-				# Dictionary to store item name -> total count
-				var item_counts: Dictionary = {}
-				for item in last_item.stacked_items:
-					if is_instance_valid(item):
-						var item_name = item.type.capitalize()
-						if item_counts.has(item_name):
-							item_counts[item_name] += 1
-						else:
-							item_counts[item_name] = 1
-				
-				# Format counts into strings (e.g., "Lettuce x5" or "Tomato")
-				var formatted_contents = []
-				for item_name in item_counts:
-					var item_total = item_counts[item_name]
-					if item_total > 1:
-						formatted_contents.append("%s x%d" % [item_name, item_total])
-					else:
-						formatted_contents.append(item_name)
-				
-				lbl.text = "%s\nPlate with %s" % [s, ", ".join(formatted_contents)]
-			else:
-				lbl.text = "%s\n%s%s" % [s, str(inventory[s][2]).capitalize(), " x" + str(count) if count > 1 else ""]
-		else:
-			lbl.text = "%s\nEmpty" % s
-
-		lbl.pivot_offset = lbl.size / 2.0
-		lbl.scale = Vector2(1.1, 1.1) if str(s) == current_slot else Vector2.ONE
-
-
-func _set_physical_item_state(item: Node3D, is_hidden: bool) -> void:
-	item.visible = not is_hidden
-	if item is RigidBody3D: item.freeze = is_hidden
-	var shape: CollisionShape3D = item.find_child("CollisionShape3D")
-	if shape: shape.disabled = is_hidden
-	if "stacked_items" in item:
-		for s_item in item.stacked_items:
-			if is_instance_valid(s_item): _set_physical_item_state(s_item, is_hidden)
-
-
-func _strip_network_nodes(node: Node) -> void:
-	if not is_instance_valid(node): return
-	
-	for child in node.get_children():
-		_strip_network_nodes(child)
-		
-	if node is MultiplayerSynchronizer or node is MultiplayerSpawner or node is RemoteTransform3D:
-		node.name = "DELETED_NET_NODE" # Avoid path collisions
-		node.queue_free()
-		if node.get_parent():
-			node.get_parent().remove_child(node)
-		return
-		
-	if node is RigidBody3D:
-		node.freeze = true
-		node.gravity_scale = 0.0
-		node.collision_layer = 0
-		node.collision_mask = 0
-		node.process_mode = Node.PROCESS_MODE_DISABLED 
-	if node is CollisionShape3D: 
-		node.disabled = true
-
-
-func _update_outline(target: Node3D) -> void:
-	if target != last_highlighted_target:
-		if is_instance_valid(last_highlighted_target): _set_mesh_outline(last_highlighted_target, false)
-		if is_instance_valid(target): _set_mesh_outline(target, true)
-		last_highlighted_target = target
-
-
-func _set_mesh_outline(node: Node, active: bool) -> void:
-	if node is MeshInstance3D: node.material_overlay = outline_material if active else null
-	for child in node.get_children(): _set_mesh_outline(child, active)
-
-
-func take_damage(amount: float) -> void:
-	if not is_owned or is_dead: return
-	health -= amount
-	if ui_healthbar: ui_healthbar.value = int(health)
-	if health <= 0: die()
-
-
-func die() -> void:
-	is_dead = true; health = 0
-	var origin: Vector3 = global_position
-	for s in inventory:
-		while inventory[s][3].size() > 0:
-			var angle = randf() * TAU
-			current_slot = s
-			drop_object()
-			var dropped_item = inventory[s][3][-1] if inventory[s][3].size() > 0 else null
-			if is_instance_valid(dropped_item):
-				dropped_item.global_position = origin + Vector3(cos(angle) * (randf() * 1.5), 0.5, sin(angle) * (randf() * 1.5))
-	
-	global_position = origin
-	for s in inventory: inventory[s] = [inventory[s][0], 0, null, []]
-	held_item = null
-	current_slot = "0"
-	update_inventory_ui()
-	rpc("sync_player_death")
+				if s_shape: s_shape.disabled = true
 
 
 @rpc("any_peer", "call_local", "reliable")
 func sync_player_death() -> void:
 	if is_owned:
-		global_position = Vector3(5, 5, 0)
-		health = max_health; is_dead = false
+		global_position = Vector3(randf_range(6,4), 1, randf_range(4,-4))
+		health = max_health
+		is_dead = false
 		if ui_healthbar: ui_healthbar.value = int(health)
-
-
-func _on_pickup_timer_timeout() -> void: 
-	can_pickup = true
 
 
 @rpc("any_peer", "call_local", "reliable")

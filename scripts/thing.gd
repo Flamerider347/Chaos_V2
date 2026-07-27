@@ -75,9 +75,11 @@ func _safe_jolt_delete(node) -> void:
 @rpc("any_peer", "call_local", "reliable")
 func sync_plate_ui(current_plates: int) -> void:
 	# FIX 2: Use absolute scene path targeting for the storage unit 
-	var ui_node = get_node_or_null("/root/main/game/kitchen/storage_unit/main_display/plate")
+	var ui_node = get_node_or_null("/root/main/game/world/kitchen/storage_unit/main_display/plate")
 	if ui_node: 
 		ui_node.stored = 20 - current_plates
+		get_node("/root/main/game/world/kitchen/storage_unit").sync_display_count("plate",20 - current_plates)
+		
 
 @rpc("any_peer", "call_local", "reliable")
 func sync_delivery_effects(spawn_pos: Vector3, new_score: int) -> void:

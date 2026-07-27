@@ -39,9 +39,12 @@ size = Vector2(2, 2)
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 2
-properties/1/path = NodePath(".:rotation")
+properties/1/path = NodePath("head:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 2
+properties/2/path = NodePath(".:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 2
 
 [node name="player" type="CharacterBody3D" unique_id=300991191 groups=["pickupable", "plate_stackable", "player", "two_handed"]]
 process_mode = 1
@@ -84,6 +87,7 @@ fov = 90.0
 
 [node name="SpotLight3D" type="SpotLight3D" parent="head/camera" unique_id=142540905]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.016445637, 0.3715636)
+visible = false
 spot_range = 8.890251
 spot_angle = 28.379372
 

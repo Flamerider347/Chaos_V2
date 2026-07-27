@@ -3,15 +3,64 @@ var current_text = 0
 var max_text = 10
 var texts = [
 	"Welcome to Kitchen Chaos V2! 
-	Controls:
-	WASD/ARROW KEYS - Move
-	SPACE - JUMP
-	LEFT CLICK - PICKUP
-	RIGHT - CLICK
-	TAB - OPEN/CLOSE MENU",
-	"You can alter your sensitivity
-	 in the menu (Press TAB)",
-	"John is a nice name",
+	I'll be your guide!
+	For the next tip, press
+	The right arrow key",
+	"Nice! Use WASD and Space
+	to move and jump
+	Use a mouse/trackpad
+	to look around",
+	"Press 'Tab' to toggle pause menu, 
+	where you'll find multiplayer codes 
+	and the sensitivity changer.",
+	"When you've invited all your friends
+	(Or you're playing solo)
+	Left click the door 
+	to start the game",
+	"Once you're outside, Left Click
+	on a tree to make it drop an item
+	Left click the item again to pick 
+	the item up",
+	"In this sequel, you have 4 inventory slots,
+	which can be accessed by pressing 
+	1,2,3 and 4 on your keyboard",
+	"You can hold multiple items in each slot
+	but you move slower with more items",
+	"If you want to drop something,
+	press the corresponding slot button
+	(1,2,3,4) and then right click",
+	"To chop items, press right click
+	to drop them on the chopping board",
+	"If you're overwhelmed by items,
+	drop items into the hoppers by the door 
+	to put them into the storage system
+	for fast storage, use the drop all button",
+	"To take items out of storage, 
+	press left click on any button
+	on the machine inside. 
+	This is where plates are stored",
+	"To stack items onto a plate, 
+	hold the stackable item and press
+	Right Click. You can't pickup
+	or swap to other items while
+	holding a plate with stacked items",
+	"To submit an order, drop it in the hole
+	in the middle of the kitchen
+	you can also jump into the hole
+	to sell your inventory...",
+	"Submitting an order grants power
+	that can be used for upgrades
+	spend power wisely, because
+	there's an increasing power cost
+	each night",
+	"Hungry and evil goblins lurk in
+	the shadows at night, but they hate light
+	so you're safe in the kitchen
+	as long as you have power...",
+	"Daily recipes and power loss happens at
+	6AM everyday, when the sun rises.
+	Goblins despawn during the daytime
+	That's about it, Good Luck!"
 	
 ]
 func _ready() -> void:
@@ -21,7 +70,11 @@ func _physics_process(_delta: float) -> void:
 	if Input.is_action_just_pressed("close_tutorial"):
 		if not self.visible:
 			self.show()
+			$"../UI/Label2".text = "Press X to hide tips
+			Use arrow keys for
+			previous/next tip"
 		else:
+			$"../UI/Label2".text = "Press X to show tips"
 			self.hide()
 			
 	if self.get_parent().name == "menu_UI":

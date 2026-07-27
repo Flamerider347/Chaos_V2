@@ -18,7 +18,7 @@ extends Node3D
 }
 
 # Day starts at 6:00 AM (0.25)
-var current_time: float = 0.1
+var current_time: float = 0.25
 var is_cycle_started: bool = false 
 var current_day = 0
 var changed_day = false
@@ -136,20 +136,22 @@ func sync_daily_specials_to_all(args: Array) -> void:
 		var gap: float = 0.1 
 		
 		var plate = ingredients["plate"].instantiate()
+
 		_strip_item_interactivity(plate, "plate")
 		
 		display_node.add_child(plate)
 		plate.global_position = display_node.global_position 
 		stack_height += get_node_height(plate) + gap
-		
+		plate.add_to_group("no_outline")
+
 		var components_list: Array = data.components if data is Resource else data["components"]
 		for item_key in components_list:
 			if not ingredients.has(item_key): continue
 			var item = ingredients[item_key].instantiate()
 			item.type = item_key
-			
+
 			_strip_item_interactivity(item, "pickupable")
-			
+			item.add_to_group("no_outline")
 			display_node.add_child(item)
 			item.global_position = display_node.global_position + Vector3(0, stack_height, 0)
 			stack_height += get_node_height(item) + gap
