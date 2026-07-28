@@ -6,7 +6,7 @@ var texts = [
 	I'll be your guide!
 	For the next tip, press
 	The right arrow key",
-	"Nice! Use WASD and Space
+	"Use WASD and Space
 	to move and jump
 	Use a mouse/trackpad
 	to look around",
@@ -21,11 +21,11 @@ var texts = [
 	on a tree to make it drop an item
 	Left click the item again to pick 
 	the item up",
-	"In this sequel, you have 4 inventory slots,
+	"You have 4 inventory slots,
 	which can be accessed by pressing 
 	1,2,3 and 4 on your keyboard",
-	"You can hold multiple items in each slot
-	but you move slower with more items",
+	"Each slot holds multiple items but
+	you move slower with more items",
 	"If you want to drop something,
 	press the corresponding slot button
 	(1,2,3,4) and then right click",
@@ -53,11 +53,11 @@ var texts = [
 	spend power wisely, because
 	there's an increasing power cost
 	each night",
-	"Hungry and evil goblins lurk in
-	the shadows at night, but they hate light
+	"Hungry and evil goblins lurk in the 
+	shadows at night, but they hate light
 	so you're safe in the kitchen
 	as long as you have power...",
-	"Daily recipes and power loss happens at
+	"Daily power loss happens at
 	6AM everyday, when the sun rises.
 	Goblins despawn during the daytime
 	That's about it, Good Luck!"
@@ -85,4 +85,5 @@ func _physics_process(_delta: float) -> void:
 		
 	if Input.is_action_just_pressed("next_tutorial") and current_text < max_text:
 		current_text += 1
+	$Label2.text = str(current_text+1)+"/"+str(max_text+1)
 	$Label.text = texts[current_text]

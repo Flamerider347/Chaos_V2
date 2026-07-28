@@ -182,7 +182,7 @@ func _handle_snapping(target: Node3D) -> void:
 			elif not target.is_in_group("chopping_board") and held_item.is_in_group("meat"): 
 				snap_offset = Vector3(0, 0.4, 0)
 		elif target.is_in_group("plate") and held_item.is_in_group("plate_stackable"):
-			snap_offset = Vector3(0, target.calculate_stack_height() + 0.1, 0)
+			snap_offset = Vector3(0, target.find_child("CollisionShape3D").shape.size.y + 0.1, 0)
 			
 		if snap_offset != Vector3.ZERO:
 			visual_item.global_position = target.global_position + snap_offset
@@ -216,10 +216,12 @@ func _handle_slot_switching() -> void:
 
 func pickup_object(object: Node3D) -> void:
 	if not is_instance_valid(object): return
-	
+	var plate_fix = false
+	if object.type == "plate" and object.stacked_items != []:
+		plate_fix = true
 	var picked_up = "0"
 	for i in inventory.keys():
-		if inventory[i][2] == null or inventory[i][2] == object.type:
+		if inventory[i][2] == null or inventory[i][2] == object.type and not plate_fix:
 			inventory[i][1] += 1
 			inventory[i][2] = object.type
 			inventory[i][3].append(object)
@@ -231,9 +233,9 @@ func pickup_object(object: Node3D) -> void:
 		if inventory[picked_up][1] <= 1:
 			rpc("sync_hand_item_added", picked_up, str(object.get_path()), object.global_transform)
 		rpc("sync_world_item_pickup", str(object.get_path()))
-#        if is_in_kitchen:
-#            current_slot = picked_up
-#            held_item = inventory[picked_up][3][-1]
+		if is_in_kitchen:
+			current_slot = picked_up
+			held_item = inventory[picked_up][3][-1]
 		rpc("sync_active_slot", current_slot)
 		update_inventory_ui()
 

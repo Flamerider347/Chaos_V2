@@ -5,11 +5,12 @@ var stacked_items: Array = []
 var is_two_handed: bool = false
 
 func _ready() -> void:
-	pass
+	$CollisionShape3D.shape = $CollisionShape3D.shape.duplicate()
+	$CollisionShape3D.shape.size.y = 0.1
 
 func stack_item(item: Node) -> void:
 	if not is_instance_valid(item): return
-	var offset = calculate_stack_height()
+	var offset = calculate_stack_height(item)
 	var item_state = item.state if "state" in item else ""
 	var item_cookedness = item.cookedness if "cookedness" in item else 0.0
 	var item_path = str(item.get_path())
@@ -69,8 +70,10 @@ func execute_stack(item: Node, offset: float, forced_state: String, forced_cooke
 		add_child(remote_transform)
 	
 	remote_transform.remote_path = item.get_path()
-	remote_transform.position = Vector3(0, offset, 0)
+	remote_transform.position = Vector3(0, $CollisionShape3D.shape.size.y + offset-0.1, 0)
 	remote_transform.rotation = Vector3.ZERO
+	$CollisionShape3D.shape.size.y += offset
+	$CollisionShape3D.position.y += (offset/2)
 	
 	item.show() 
 	
@@ -78,14 +81,12 @@ func execute_stack(item: Node, offset: float, forced_state: String, forced_cooke
 	if p:
 		if p.has_method("update_inventory_ui"): p.update_inventory_ui()
 
-func calculate_stack_height() -> float:
-	var h: float = 0.05
-	for node in stacked_items:
-		if not is_instance_valid(node): continue
-		var col = node.find_child("CollisionShape3D")
-		if col and col.shape:
-			if col.shape is BoxShape3D: h += col.shape.size.y
-			elif col.shape is CylinderShape3D or col.shape is CapsuleShape3D: h += col.shape.height
-			elif col.shape is SphereShape3D: h += col.shape.radius * 2.0
-		else: h += 0.1
+func calculate_stack_height(node) -> float:
+	var h: float = 0.0
+	var col = node.find_child("CollisionShape3D")
+	if col and col.shape:
+		if col.shape is BoxShape3D: h += col.shape.size.y
+		elif col.shape is CylinderShape3D or col.shape is CapsuleShape3D: h += col.shape.height
+		elif col.shape is SphereShape3D: h += col.shape.radius * 2.0
+	else: h += 0.1
 	return h
