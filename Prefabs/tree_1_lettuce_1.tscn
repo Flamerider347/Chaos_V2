@@ -62,9 +62,6 @@ _data = {
 &"chopped": SubResource("Animation_3ivvs")
 }
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_nnydb"]
-margin = 0.0
-
 [node name="Tree1Lettuce1" type="StaticBody3D" unique_id=68733649 groups=["punchable"]]
 collision_layer = 4
 collision_mask = 4
@@ -102,25 +99,5 @@ mesh = ExtResource("2_m7wtb")
 [node name="Tree1Lettuce5" type="MeshInstance3D" parent="." unique_id=2054357708 groups=["tree_item"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5744534, -0.0052375495, 1.0326545)
 mesh = ExtResource("2_m7wtb")
-
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="." unique_id=509804186]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3345513, 0, -1.076251)
-shape = SubResource("CylinderShape3D_nnydb")
-
-[node name="CollisionShape3D3" type="CollisionShape3D" parent="." unique_id=530124340]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6950958, 0, -0.6188443)
-shape = SubResource("CylinderShape3D_nnydb")
-
-[node name="CollisionShape3D4" type="CollisionShape3D" parent="." unique_id=333635639]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2161639, 0, 1.4260328)
-shape = SubResource("CylinderShape3D_nnydb")
-
-[node name="CollisionShape3D5" type="CollisionShape3D" parent="." unique_id=191524537]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5767076, 0, 1.0654886)
-shape = SubResource("CylinderShape3D_nnydb")
-
-[node name="CollisionShape3D6" type="CollisionShape3D" parent="." unique_id=922748106]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.38745093, 0, -2.0341146)
-shape = SubResource("CylinderShape3D_nnydb")
 
 [connection signal="timeout" from="item_timer" to="." method="_on_item_timer_timeout"]

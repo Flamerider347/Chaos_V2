@@ -27,10 +27,23 @@ var inventory: Dictionary = {
 	"4": [null, 0, null, []]
 }
 
+@onready var slot_icons = {
+	"tomato" : preload("res://Assets/2D art/food icons/foodicons_tomato.png"),
+	"tomato_chopped" : preload("res://Assets/2D art/food icons/foodicons_tomato.png"),
+	"carrot" : preload("res://Assets/2D art/food icons/foodicons_carrot.png"),
+	"carrot_chopped" : preload("res://Assets/2D art/food icons/foodicons_carrot.png"),
+	"meat" : preload("res://Assets/2D art/food icons/foodicons_raw-patty.png"),
+	"meat_cooked" : preload("res://Assets/2D art/food icons/foodicons_patty.png"),
+	"meat_burnt" : preload("res://Assets/2D art/food icons/foodicons_patty.png"),
+	"cheese" : preload("res://Assets/2D art/food icons/foodicons_cheese.png"),
+	"cheese_chopped" : preload("res://Assets/2D art/food icons/foodicons_cheese.png"),
+	"bun" : preload("res://Assets/2D art/food icons/foodicons_bun.png")
+}
 var last_highlighted_target: Node3D = null
 var outline_material: Material = preload("res://Assets/misc/outline_shader.tres")
 
 @onready var interact_cast: RayCast3D = $head/interact_cast
+@onready var interact_cast2: RayCast3D = $head/interact_cast2
 @onready var hand: Node3D = $hand
 @onready var pickup_timer: Timer = $pickup_timer
 @onready var username_label: Label3D = $username
@@ -96,10 +109,14 @@ func _physics_process(delta: float) -> void:
 	_update_states(delta)
 	_handle_slot_switching()
 	
-	var target = interact_cast.get_collider() if interact_cast.is_colliding() else null
-	_update_outline(target)
-	_handle_interactions(target)
-	_handle_snapping(target)
+	var item_target = interact_cast.get_collider() if interact_cast.is_colliding() else null
+	var surface_target = interact_cast2.get_collider() if interact_cast2.is_colliding() else null
+	
+	var active_target = item_target if is_instance_valid(item_target) else surface_target
+	
+	_update_outline(active_target)
+	_handle_interactions(item_target, surface_target)
+	_handle_snapping(surface_target)
 	_handle_movement()
 
 
@@ -137,32 +154,31 @@ func _handle_movement() -> void:
 	move_and_slide()
 
 
-func _handle_interactions(target: Node3D) -> void:
+func _handle_interactions(item_target: Node3D, surface_target: Node3D) -> void:
 	if holding_two_handed and Input.is_action_just_pressed("right_click"):
-		drop_object()
-		return
-		
-	if not is_instance_valid(target):
-		if Input.is_action_just_pressed("right_click") and current_slot != "0" and inventory[current_slot][2] != null and can_pickup:
-			drop_object()
+		drop_object(surface_target)
 		return
 		
 	if Input.is_action_just_pressed("left_click") and not holding_two_handed:
-		if target.is_in_group("punchable"): target._on_punched()
-		elif target.is_in_group("storage_button"): target.spawn_item.emit(target.name)
-		elif target.is_in_group("pickupable") and can_pickup: pickup_object(target)
-		elif target.is_in_group("door"): target.open_door()
+		if is_instance_valid(item_target):
+			if item_target.is_in_group("punchable"): item_target._on_punched()
+			elif item_target.is_in_group("pickupable") and can_pickup: pickup_object(item_target)
+		elif is_instance_valid(surface_target):
+			if surface_target.is_in_group("storage_button"): surface_target.spawn_item.emit(surface_target.name)
+			elif surface_target.is_in_group("door"): surface_target.open_door()
 		
-	if Input.is_action_just_pressed("right_click") and can_pickup and target.is_in_group("drop_all"):
-		target.get_parent().drop_all(self)
-	elif Input.is_action_just_pressed("right_click"):
-		if target.is_in_group("plate") and is_instance_valid(held_item) and held_item.is_in_group("plate_stackable") and not held_item.is_in_group("plate") and can_pickup:
-			stack_object(target)
+	if Input.is_action_just_pressed("right_click"):
+		var plate_target = surface_target if is_instance_valid(surface_target) and surface_target.is_in_group("plate") else item_target
+		
+		if is_instance_valid(surface_target) and surface_target.is_in_group("drop_all"):
+			surface_target.get_parent().drop_all(self)
+		elif is_instance_valid(plate_target) and plate_target.is_in_group("plate") and is_instance_valid(held_item) and held_item.is_in_group("plate_stackable") and not held_item.is_in_group("plate") and can_pickup:
+			stack_object(plate_target)
 		elif current_slot != "0" and inventory[current_slot][2] != null and can_pickup:
-			drop_object()
+			drop_object(surface_target)
 
 
-func _handle_snapping(target: Node3D) -> void:
+func _handle_snapping(surface_target: Node3D) -> void:
 	if current_slot == "0" or not is_instance_valid(held_item): return
 	
 	var visual_slot = hand.find_child("slot" + current_slot)
@@ -171,22 +187,24 @@ func _handle_snapping(target: Node3D) -> void:
 	var visual_item = visual_slot.get_child(0) if visual_slot.get_child_count() > 0 else null
 	var is_snapping = false
 	
-	if is_instance_valid(visual_item) and is_instance_valid(target):
+	if is_instance_valid(visual_item) and is_instance_valid(surface_target):
 		var snap_offset = Vector3.ZERO
 		
-		if target.is_in_group("placeable") or target.is_in_group("storage_hopper") or target.is_in_group("THE_THING"):
-			if target.is_in_group("chopping_board") and held_item.is_in_group("choppable"): 
+		if surface_target.is_in_group("placeable") or surface_target.is_in_group("storage_hopper") or surface_target.is_in_group("THE_THING") or surface_target.is_in_group("chopping_board"):
+			if surface_target.is_in_group("chopping_board") and held_item.is_in_group("choppable"): 
 				snap_offset = Vector3(0, 1.2, 0)
-			elif target.is_in_group("storage_hopper") or target.is_in_group("THE_THING") or target.is_in_group("delivery_area"): 
+			elif surface_target.is_in_group("storage_hopper") or surface_target.is_in_group("THE_THING") or surface_target.is_in_group("delivery_area"): 
 				snap_offset = Vector3(0, 0.2, 0)
-			elif not target.is_in_group("chopping_board") and held_item.is_in_group("meat"): 
+			elif not surface_target.is_in_group("chopping_board") and held_item.is_in_group("meat"): 
 				snap_offset = Vector3(0, 0.4, 0)
-		elif target.is_in_group("plate") and held_item.is_in_group("plate_stackable"):
-			snap_offset = Vector3(0, target.find_child("CollisionShape3D").shape.size.y + 0.1, 0)
+		elif surface_target.is_in_group("plate") and held_item.is_in_group("plate_stackable"):
+			var col_shape = surface_target.find_child("CollisionShape3D")
+			var height_offset = col_shape.shape.height + 0.1 if is_instance_valid(col_shape) and "height" in col_shape.shape else 0.2
+			snap_offset = Vector3(0, height_offset, 0)
 			
 		if snap_offset != Vector3.ZERO:
-			visual_item.global_position = target.global_position + snap_offset
-			visual_item.global_rotation = target.global_rotation
+			visual_item.global_position = surface_target.global_position + snap_offset
+			visual_item.global_rotation = surface_target.global_rotation
 			is_snapping = true
 			
 	if is_instance_valid(visual_item) and not is_snapping:
@@ -221,13 +239,23 @@ func pickup_object(object: Node3D) -> void:
 		plate_fix = true
 	var picked_up = "0"
 	for i in inventory.keys():
-		if inventory[i][2] == null or inventory[i][2] == object.type and not plate_fix:
+		if inventory[i][2] == object.type and not plate_fix:
 			inventory[i][1] += 1
 			inventory[i][2] = object.type
 			inventory[i][3].append(object)
 			picked_up = i
 			break
-			
+	if picked_up == "0":
+		for i in inventory.keys():
+			if inventory[i][2] == null:
+				inventory[i][1] += 1
+				inventory[i][2] = object.type
+				inventory[i][3].append(object)
+				picked_up = i
+				if object.type in slot_icons:
+					get_node("/root/main/UI/item_slots/slot_icon"+str(i)).texture = slot_icons[object.type]
+				break
+
 	if picked_up != "0":
 		held_object_amount += 1
 		if inventory[picked_up][1] <= 1:
@@ -240,12 +268,11 @@ func pickup_object(object: Node3D) -> void:
 		update_inventory_ui()
 
 
-func drop_object() -> void:
+func drop_object(surface_target: Node3D = null) -> void:
 	if current_slot == "0" or inventory[current_slot][2] == null or inventory[current_slot][3].is_empty(): return
 	
 	var drop_pos: Vector3 = hand.global_position
-	var col = interact_cast.get_collider() if interact_cast.is_colliding() else null
-	if col and "current_cooking_item" in col and col.current_cooking_item != null: return
+	if is_instance_valid(surface_target) and "current_cooking_item" in surface_target and surface_target.current_cooking_item != null: return
 	
 	inventory[current_slot][1] -= 1
 	held_object_amount -= 1
@@ -255,19 +282,20 @@ func drop_object() -> void:
 	
 	if inventory[current_slot][1] <= 0:
 		inventory[current_slot][2] = null
+		get_node("/root/main/UI/item_slots/slot_icon"+str(current_slot)).texture = null
 		rpc("sync_hand_item_removed", current_slot)
 		
 	update_inventory_ui()
 	
-	if is_instance_valid(col) and (col.is_in_group("placeable") or col.is_in_group("storage_hopper") or col.is_in_group("THE_THING") or col.is_in_group("delivery_area")):
-		if col.is_in_group("chopping_board") and dropped.is_in_group("choppable"): 
-			drop_pos = col.global_position + Vector3(0, 1.2, 0)
-		elif col.is_in_group("storage_hopper") or col.is_in_group("THE_THING") or col.is_in_group("delivery_area"):
-			drop_pos = col.global_position + Vector3(0, 0.2, 0)
+	if is_instance_valid(surface_target) and (surface_target.is_in_group("placeable") or surface_target.is_in_group("storage_hopper") or surface_target.is_in_group("THE_THING") or surface_target.is_in_group("delivery_area") or surface_target.is_in_group("chopping_board")):
+		if surface_target.is_in_group("chopping_board") and dropped.is_in_group("choppable"): 
+			drop_pos = surface_target.global_position + Vector3(0, 1.2, 0)
+		elif surface_target.is_in_group("storage_hopper") or surface_target.is_in_group("THE_THING") or surface_target.is_in_group("delivery_area"):
+			drop_pos = surface_target.global_position + Vector3(0, 0.2, 0)
 			if dropped.is_in_group("storable"): 
 				dropped.set_collision_layer_value(3, false)
-		elif not col.is_in_group("chopping_board") and dropped.is_in_group("meat"): 
-			drop_pos = col.global_position + Vector3(0, 0.4, 0)
+		elif not surface_target.is_in_group("chopping_board") and dropped.is_in_group("meat"): 
+			drop_pos = surface_target.global_position + Vector3(0, 0.4, 0)
 		
 	if multiplayer.is_server(): 
 		notify_item_dropped(str(dropped.get_path()), drop_pos)
@@ -398,7 +426,6 @@ func _can_interact_with(target: Node3D) -> bool:
 	if not is_instance_valid(target): 
 		return false
 
-	# Helper to check if player inventory has space
 	var inventory_has_space = false
 	for slot_key in inventory:
 		var slot_type = inventory[slot_key][2]
@@ -406,13 +433,13 @@ func _can_interact_with(target: Node3D) -> bool:
 			inventory_has_space = true
 			break
 
-	# 1. Trees (Always interactable)
+	# 1. Trees
 	if target.is_in_group("punchable"):
 		if "item_left" in target and target.item_left <= 0:
 			return false
 		return true
 
-	# 2. Storage Buttons (Always interactable)
+	# 2. Storage Buttons
 	if target.is_in_group("storage_button"):
 		if "stored" in target and target.stored <= 0:
 			return false
@@ -421,47 +448,41 @@ func _can_interact_with(target: Node3D) -> bool:
 		return true
 
 	# 3. Ground / Pickupable Items
-	# Fails if: can't pick up, holding 2-handed item, or inventory is completely full
 	if target.is_in_group("pickupable"):
 		if not can_pickup or holding_two_handed or not inventory_has_space:
 			return false
 		return true
 
-	# 4. Doors (Always interactable)
+	# 4. Doors
 	if target.is_in_group("door"):
 		return true
+
+	# --- Plate Stacking Check ---
+	if target.is_in_group("plate"):
+		# Allow interaction if held_item exists, is stackable, and isn't another plate
+		if is_instance_valid(held_item) and held_item.is_in_group("plate_stackable") and not held_item.is_in_group("plate") and can_pickup:
+			return true
+		return false
 
 	# --- ALL CHECKS BELOW REQUIRE A HELD ITEM ---
 	if not is_instance_valid(held_item):
 		return false
 
-	# 5. Storage Hoppers & Delivery Hole (Requires storable held item)
+	# 5. Storage Hoppers & Delivery Hole
 	if target.is_in_group("storage_hopper") or target.is_in_group("THE_THING") or target.is_in_group("delivery_area"):
-		if not held_item.is_in_group("storable"):
-			return false
-		return true
+		return held_item.is_in_group("storable")
 
-	# 6. Chopping Board (Requires choppable held item)
+	# 6. Chopping Board
 	if target.is_in_group("chopping_board"):
-		if not held_item.is_in_group("choppable"):
-			return false
-		return true
+		return held_item.is_in_group("choppable")
 
-	# 7. Cooking Stations / Stove (Requires meat held item and empty station)
+	# 7. Cooking Stations / Stove
 	if "current_cooking_item" in target or target.is_in_group("stove") or target.is_in_group("cooking_station"):
 		if target.get("current_cooking_item") != null:
 			return false
-		if not held_item.is_in_group("meat"):
-			return false
-		return true
+		return held_item.is_in_group("meat")
 
-	# 8. Plate Stacking (Requires plate_stackable held item)
-	if target.is_in_group("plate"):
-		if not (held_item.is_in_group("plate_stackable") and not held_item.is_in_group("plate") and can_pickup):
-			return false
-		return true
-
-	# 9. Generic Placeable Surfaces
+	# 8. Generic Placeable Surfaces
 	if target.is_in_group("placeable"):
 		return true
 
@@ -469,13 +490,11 @@ func _can_interact_with(target: Node3D) -> bool:
 
 
 func _update_outline(target: Node3D) -> void:
-	# Clear outline from currently held visual item by default
 	_clear_held_item_outline()
 
 	if is_instance_valid(target):
 		var is_valid: bool = _can_interact_with(target)
 		
-		# Empty-hand target checks
 		var is_empty_hand_target = target.is_in_group("punchable") or target.is_in_group("storage_button") or target.is_in_group("pickupable") or target.is_in_group("door")
 		if not is_instance_valid(held_item) and not is_empty_hand_target:
 			if is_instance_valid(last_highlighted_target):
@@ -483,7 +502,6 @@ func _update_outline(target: Node3D) -> void:
 				last_highlighted_target = null
 			return
 
-		# Refresh outline for target object
 		if target != last_highlighted_target or is_valid != last_outline_was_valid:
 			if is_instance_valid(last_highlighted_target):
 				_set_mesh_outline(last_highlighted_target, false)
@@ -495,7 +513,7 @@ func _update_outline(target: Node3D) -> void:
 			last_highlighted_target = target
 			last_outline_was_valid = is_valid
 
-		# Outline the held item ONLY when looking at a stove, chopping board, storage hopper, or placeable
+
 		var is_valid_surface = (
 			target.is_in_group("stove") or 
 			target.is_in_group("cooking_station") or 
@@ -516,7 +534,6 @@ func _update_outline(target: Node3D) -> void:
 
 
 func _set_mesh_outline(node: Node, active: bool, color: Color = Color.GREEN, thickness: float = 0.005) -> void:
-	# Ignore recipe meshes or any node marked in group "no_outline"
 	if node.is_in_group("no_outline"):
 		return
 
