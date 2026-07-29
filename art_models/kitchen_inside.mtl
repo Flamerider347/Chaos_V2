@@ -1,25 +1,5 @@
-# Blender 4.5.3 LTS MTL File: 'KitchenV2.blend'
+# Blender 4.5.3 LTS MTL File: 'kitchen.1.blend'
 # www.blender.org
-
-newmtl Material.009
-Ns 440.413177
-Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.500000
-d 1.000000
-illum 2
-
-newmtl restaurant.001
-Ns 250.000000
-Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.500000
-illum 2
-map_Kd S:/KayKit_Restaurant_Bits_1.0_FREE/Assets/fbx/restaurantbits_texture.png
-map_d S:/KayKit_Restaurant_Bits_1.0_FREE/Assets/fbx/restaurantbits_texture.png
 
 newmtl restaurant.014
 Ns 250.000000
