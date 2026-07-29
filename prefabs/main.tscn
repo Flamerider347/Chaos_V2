@@ -17,8 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://kbccb3s4q7hh" path="res://Assets/Models/kitchenassets/restaurantbits_texture.png" id="9_2mmg3"]
 [ext_resource type="Material" uid="uid://dytu8owetceev" path="res://Assets/misc/new_standard_material_3d.tres" id="9_kjcd6"]
 [ext_resource type="Script" uid="uid://bavxckwopedl" path="res://scripts/score.gd" id="9_m7hx3"]
-[ext_resource type="ArrayMesh" uid="uid://dlf22t3hto1ax" path="res://Assets/Models/kitchenV2_model.obj" id="11_2mmg3"]
-[ext_resource type="ArrayMesh" uid="uid://cqbl3vu5hwwem" path="res://Assets/Models/KitchenV3.obj" id="12_hs76b"]
+[ext_resource type="ArrayMesh" uid="uid://de7d3cxmq8jrj" path="res://Assets/Models/kitchenV4.obj" id="12_hs76b"]
 [ext_resource type="ArrayMesh" uid="uid://brkgoksr1lp5h" path="res://Assets/Models/Roof_model.obj" id="13_hs76b"]
 [ext_resource type="Texture2D" uid="uid://bkekt2sqkmhk8" path="res://Assets/misc/images.jpg" id="21_66d46"]
 [ext_resource type="PackedScene" uid="uid://bdi1ju62g1fdu" path="res://Prefabs/tree_1_bun.tscn" id="22_2mmg3"]
@@ -399,11 +398,6 @@ material = ExtResource("9_kjcd6")
 transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, -0.185, -0.6, 2.853)
 material_override = SubResource("StandardMaterial3D_mmri0")
 mesh = ExtResource("12_hs76b")
-
-[node name="KitchenModel2" type="MeshInstance3D" parent="game/world/kitchen/main_kitchen" unique_id=1045640307]
-transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, -0.185, -0.6, 2.853)
-material_override = SubResource("StandardMaterial3D_mmri0")
-mesh = ExtResource("11_2mmg3")
 
 [node name="Kitchen_Collision" type="CollisionShape3D" parent="game/world/kitchen/main_kitchen" unique_id=1599219296]
 transform = Transform3D(-0.7, 0, -1.0569706e-07, 0, 0.7, 0, 1.0569706e-07, 0, -0.7, -0.185, -0.58980626, 2.853)

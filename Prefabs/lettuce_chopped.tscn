@@ -4,7 +4,7 @@
 [ext_resource type="ArrayMesh" uid="uid://dvmkw7ri5y6u8" path="res://Assets/Models/kitchenassets/food_ingredient_lettuce_slice.obj" id="2_afcln"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bky3v"]
-size = Vector3(0.81744385, 0.076171875, 0.8046387)
+size = Vector3(0.817, 0.075, 0.805)
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_myv00"]
 properties/0/path = NodePath(".:position")

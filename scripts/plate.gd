@@ -3,10 +3,11 @@ extends RigidBody3D
 var type = "plate"
 var stacked_items: Array = []
 var is_two_handed: bool = false
+var stacking_height = 0
 
 func _ready() -> void:
 	$CollisionShape3D.shape = $CollisionShape3D.shape.duplicate()
-	$CollisionShape3D.shape.size.y = 0.1
+	$CollisionShape3D.shape.height = 0.1
 
 func stack_item(item: Node) -> void:
 	if not is_instance_valid(item): return
@@ -59,20 +60,21 @@ func execute_stack(item: Node, offset: float, forced_state: String, forced_cooke
 	
 	if not stacked_items.has(item): stacked_items.append(item)
 	is_two_handed = stacked_items.size() > 0
+
+	# -------------------------------------------------------------
+	# Instead of reparenting, use RemoteTransform3D:
+	# -------------------------------------------------------------
+	var remote_tf = RemoteTransform3D.new()
+	add_child(remote_tf)
 	
-	var binder_name = "bind_" + item.name
-	var remote_transform = get_node_or_null(binder_name)
-	if not remote_transform:
-		remote_transform = RemoteTransform3D.new()
-		remote_transform.name = binder_name
-		remote_transform.use_global_coordinates = true
-		remote_transform.update_scale = false
-		add_child(remote_transform)
-	
-	remote_transform.remote_path = item.get_path()
-	remote_transform.position = Vector3(0, $CollisionShape3D.shape.size.y + offset-0.1, 0)
-	remote_transform.rotation = Vector3.ZERO
-	$CollisionShape3D.shape.size.y += offset
+	# Calculate offset local to the plate
+	remote_tf.position = Vector3(0, stacking_height, 0)
+	remote_tf.rotation = Vector3.ZERO
+	remote_tf.remote_path = item.get_path()
+	# -------------------------------------------------------------
+
+	$CollisionShape3D.shape.height += offset
+	stacking_height += offset
 	$CollisionShape3D.position.y += (offset/2)
 	
 	item.show() 
@@ -89,4 +91,5 @@ func calculate_stack_height(node) -> float:
 		elif col.shape is CylinderShape3D or col.shape is CapsuleShape3D: h += col.shape.height
 		elif col.shape is SphereShape3D: h += col.shape.radius * 2.0
 	else: h += 0.1
+	print(h)
 	return h
