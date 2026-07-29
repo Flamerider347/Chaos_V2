@@ -4,7 +4,7 @@
 [ext_resource type="ArrayMesh" uid="uid://b3uhykyjujrl4" path="res://Assets/Models/kitchenassets/food_ingredient_bun_top.obj" id="2_svjrd"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_svjrd"]
-height = 0.307197
+height = 0.3
 radius = 0.35
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_71dxx"]
@@ -33,7 +33,7 @@ script = ExtResource("1_svjrd")
 mesh = ExtResource("2_svjrd")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1162675359]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1536005, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
 shape = SubResource("CylinderShape3D_svjrd")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=2022258888]
