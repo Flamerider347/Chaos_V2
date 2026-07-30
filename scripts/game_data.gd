@@ -18,6 +18,7 @@ var connected: bool = false
 var is_joining: bool = false
 var in_game: bool = false
 var join_error = null
+var using_computer = false
 
 # --- Native LAN Configuration ---
 const SPOOLER_PORT := 13500

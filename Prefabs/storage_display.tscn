@@ -1,6 +1,10 @@
 [gd_scene format=3 uid="uid://b40mw3jwwby2f"]
 
 [ext_resource type="Script" uid="uid://1tm70vo1mjck" path="res://scripts/storage_display.gd" id="1_dwqd6"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://Assets/SFX/icon.svg" id="2_fnene"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fnene"]
+albedo_texture = ExtResource("2_fnene")
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_dwqd6"]
 data = PackedVector3Array(-0.05, -0.45, 0.45, -0.05, -0.45, -0.45, -0.05, 0.45, -0.45, 0.05, -0.45, -0.45, -0.05, -0.45, -0.45, -0.05, -0.45, 0.45, -0.05, 0.45, -0.45, -0.05, -0.45, -0.45, 0.05, -0.45, -0.45, -0.05, 0.45, -0.45, -0.05, 0.45, 0.45, -0.05, -0.45, 0.45, -0.05, -0.45, 0.45, -0.05, 0.45, 0.45, 0.05, 0.45, 0.45, 0.05, 0.45, 0.45, -0.05, 0.45, 0.45, -0.05, 0.45, -0.45, -0.05, -0.45, 0.45, 0.05, -0.45, 0.45, 0.05, -0.45, -0.45, 0.05, 0.45, 0.45, 0.05, -0.45, 0.45, -0.05, -0.45, 0.45, 0.05, -0.45, -0.45, 0.05, -0.45, 0.45, 0.05, 0.45, 0.45, 0.05, -0.45, -0.45, 0.05, 0.45, -0.45, -0.05, 0.45, -0.45, -0.05, 0.45, -0.45, 0.05, 0.45, -0.45, 0.05, 0.45, 0.45, 0.05, 0.45, 0.45, 0.05, 0.45, -0.45, 0.05, -0.45, -0.45)
@@ -9,18 +13,23 @@ data = PackedVector3Array(-0.05, -0.45, 0.45, -0.05, -0.45, -0.45, -0.05, 0.45, 
 collision_layer = 11
 collision_mask = 11
 script = ExtResource("1_dwqd6")
+default_texture_path = null
 
 [node name="mesh" type="CSGBox3D" parent="." unique_id=301589440]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
 size = Vector3(0.1, 0.9, 0.9)
 
+[node name="icon" type="CSGBox3D" parent="." unique_id=416657318]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.05760315, 0, 0)
+size = Vector3(0.02, 0.8, 0.8)
+material = SubResource("StandardMaterial3D_fnene")
+
 [node name="collider" type="CollisionShape3D" parent="." unique_id=1694201877]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.016911536, 0, 0)
 shape = SubResource("ConcavePolygonShape3D_dwqd6")
 
 [node name="stored" type="Label3D" parent="." unique_id=1048421593]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.06, -0.425, -0.425)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.06832184, -0.40711772, -0.38054883)
 text = "0"
 horizontal_alignment = 2
 vertical_alignment = 2
-
-[node name="item_mesh" type="MeshInstance3D" parent="." unique_id=1513333337]
-transform = Transform3D(0.01, 0, 0, 0, 1, 0, 0, 0, 1, 0.06, -0.4, 0)

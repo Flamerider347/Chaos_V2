@@ -61,6 +61,7 @@ storable=""
 drop_all=""
 storage_hopper=""
 no_outline=""
+computer=""
 
 [input]
 

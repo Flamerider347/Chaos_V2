@@ -80,12 +80,6 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if not is_owned: return
 	
-	if Input.is_action_just_pressed("ui_cancel"):
-		GameData.paused = not GameData.paused
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE if GameData.paused else Input.MOUSE_MODE_CAPTURED)
-		if main_game_ui: main_game_ui.visible = not GameData.paused
-		if pause_menu_ui: pause_menu_ui.visible = GameData.paused
-		
 	if GameData.paused: return
 	
 	if event is InputEventMouseMotion:
@@ -166,6 +160,7 @@ func _handle_interactions(item_target: Node3D, surface_target: Node3D) -> void:
 		elif is_instance_valid(surface_target):
 			if surface_target.is_in_group("storage_button"): surface_target.spawn_item.emit(surface_target.name)
 			elif surface_target.is_in_group("door"): surface_target.open_door()
+			elif surface_target.is_in_group("computer") and not GameData.using_computer: computer_UI()
 		
 	if Input.is_action_just_pressed("right_click"):
 		var plate_target = surface_target if is_instance_valid(surface_target) and surface_target.is_in_group("plate") else item_target
@@ -177,6 +172,24 @@ func _handle_interactions(item_target: Node3D, surface_target: Node3D) -> void:
 		elif current_slot != "0" and inventory[current_slot][2] != null and can_pickup:
 			drop_object(surface_target)
 
+
+func computer_UI():
+	get_node("/root/main/Computer_UI").show()
+	pause_menu_ui.hide()
+	main_game_ui.hide()
+	GameData.paused = true
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	rpc("broadcast_using_computer")
+
+@rpc("any_peer","call_local","reliable")
+func broadcast_using_computer():
+	GameData.using_computer = true
+	get_node("/root/main/game/world/kitchen/main_kitchen/appliances/Computer/in_use").show()
+
+func leave_computer_UI():
+	get_node("/root/main/Computer_UI").hide()
+	GameData.paused = false
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _handle_snapping(surface_target: Node3D) -> void:
 	if current_slot == "0" or not is_instance_valid(held_item): return
@@ -253,7 +266,7 @@ func pickup_object(object: Node3D) -> void:
 				inventory[i][3].append(object)
 				picked_up = i
 				if object.type in slot_icons:
-					get_node("/root/main/UI/item_slots/slot_icon"+str(i)).texture = slot_icons[object.type]
+					get_node("/root/main/UI/item_slots/slot"+str(i) + "/slot_icon").texture = slot_icons[object.type]
 				break
 
 	if picked_up != "0":
@@ -282,7 +295,7 @@ func drop_object(surface_target: Node3D = null) -> void:
 	
 	if inventory[current_slot][1] <= 0:
 		inventory[current_slot][2] = null
-		get_node("/root/main/UI/item_slots/slot_icon"+str(current_slot)).texture = null
+		get_node("/root/main/UI/item_slots/slot"+str(current_slot) + "/slot_icon").texture = null
 		rpc("sync_hand_item_removed", current_slot)
 		
 	update_inventory_ui()
@@ -317,6 +330,7 @@ func stack_object(plate: Node3D) -> void:
 	
 	if inventory[current_slot][1] <= 0:
 		inventory[current_slot][2] = null
+		get_node("/root/main/UI/item_slots/slot"+str(current_slot) + "/slot_icon").texture = null
 		rpc("sync_hand_item_removed", current_slot)
 		
 	held_item = inventory[current_slot][3][-1] if inventory[current_slot][3].size() > 0 else null
@@ -375,17 +389,23 @@ func update_inventory_ui() -> void:
 					else: formatted_contents.append(item_name)
 				lbl.text = "%s\nPlate with %s" % [s, ", ".join(formatted_contents)]
 			else:
-				lbl.text = "%s\n%s%s" % [s, str(inventory[s][2]).capitalize(), " x" + str(count) if count > 1 else ""]
+				lbl.text = " x" + str(count) if count > 1 else ""
 		else:
-			lbl.text = "%s\nEmpty" % s
+			lbl.text = ""
 			
-		lbl.pivot_offset = lbl.size / 2.0
-		lbl.scale = Vector2(1.1, 1.1) if str(s) == current_slot else Vector2.ONE
 
-
+		var slot_node = get_node_or_null("/root/main/UI/item_slots/slot" + str(s))
+		if is_instance_valid(slot_node):
+			if str(s) == current_slot:
+				slot_node.scale = Vector2(1.1, 1.1)
+			else:
+				slot_node.scale = Vector2.ONE
 func _setup_ui_slots() -> void:
 	for slot_key in inventory:
-		var ui_slot: Label = get_node_or_null("/root/main/UI/item_slots/slot" + str(slot_key))
+		var ui_slot = get_node_or_null("/root/main/UI/item_slots/slot" + str(slot_key) + "/slot_size")
+		var ui_slot_texture = get_node_or_null("/root/main/UI/item_slots/slot" + str(slot_key) + "/slot_icon")
+		if ui_slot_texture:
+			ui_slot_texture.texture = null
 		if ui_slot: inventory[slot_key][0] = ui_slot
 
 

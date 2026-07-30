@@ -26,6 +26,7 @@ var total_power_cost: int = 0
 var current_day: int = 0
 var paused: bool = false
 
+
 func _ready() -> void:
 	GameData.score = 0
 	GameData.power = 0
@@ -35,7 +36,7 @@ func _ready() -> void:
 	GameData.lost = false
 	paused = false
 	GameData.paused = false
-	
+	$Computer_UI.hide()
 	if is_instance_valid(pause_ui):
 		pause_ui.visible = false
 	if is_instance_valid(main_ui):
@@ -55,15 +56,13 @@ func _ready() -> void:
 	score = GameData.score
 	power = GameData.power
 	
-	# Register custom spawner rules for the trees on all peers
-# Register custom spawner rules for the trees on all peers
-	# FIX: Bind the item spawner callable here so it is valid on frame one for everyone
 	if is_instance_valid(item_spawner):
 		item_spawner.spawn_function = _on_custom_item_spawn_shared
-		
+
+
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
-		if event.keycode == KEY_TAB:
+		if event.keycode == KEY_TAB and not $Computer_UI.visible:
 			paused = !paused
 			GameData.paused = paused
 			if is_instance_valid(pause_ui): pause_ui.visible = paused
@@ -74,10 +73,33 @@ func _input(event: InputEvent) -> void:
 			else:
 				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
+
+func leave_computer() -> void:
+	$Computer_UI.hide()
+	$UI.show()
+	GameData.using_computer = false
+	
+	var player_id_str: String = str(multiplayer.get_unique_id())
+	var player = $players.get_node_or_null(player_id_str)
+	
+	if is_instance_valid(player):
+		if player.has_method("leave_computer_UI"):
+			player.leave_computer_UI()
+
+
+	rpc("broadcast_free_computer")
+
+
+@rpc("any_peer", "call_local", "reliable")
+func broadcast_free_computer() -> void:
+	GameData.using_computer = false
+	get_node("/root/main/game/world/kitchen/main_kitchen/appliances/Computer/in_use").hide()
+
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_FOCUS_IN:
 		if not GameData.paused:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
 
 func _process(_delta: float) -> void:
 	if has_node("fps"):
