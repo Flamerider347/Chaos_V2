@@ -63,6 +63,10 @@ storage_hopper=""
 no_outline=""
 computer=""
 
+[gui]
+
+theme/custom="uid://cdh073a6xnumm"
+
 [input]
 
 ui_cancel={
