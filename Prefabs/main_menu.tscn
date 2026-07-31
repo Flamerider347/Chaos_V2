@@ -4,8 +4,8 @@
 [ext_resource type="Script" uid="uid://hf56gk47qld4" path="res://scripts/tutorial.gd" id="2_7do1g"]
 [ext_resource type="Script" uid="uid://cjjsdgdx8el7h" path="res://scripts/network/LAN.gd" id="3_dgyu8"]
 [ext_resource type="Script" uid="uid://civ4cltduy63" path="res://scripts/network/WebRTC.gd" id="3_m76kp"]
+[ext_resource type="Texture2D" uid="uid://bnfkdd630vql2" path="res://Assets/Models/hexagons_medieval.png" id="6_ihwt6"]
 [ext_resource type="Shader" uid="uid://b4owg11v8s30w" path="res://Assets/misc/sky_shader.gdshader" id="6_n2va3"]
-[ext_resource type="Material" uid="uid://141503k533fm" path="res://Assets/misc/mesh_colours.tres" id="10_p5qx4"]
 [ext_resource type="ArrayMesh" uid="uid://bppmh13lttax5" path="res://Assets/Models/basiclandbig.obj" id="11_p5qx4"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_m1h1t"]
@@ -42,6 +42,9 @@ ambient_light_source = 3
 ambient_light_color = Color(0.74283826, 0.7617583, 0.93109804, 1)
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_nnf8s"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j8f7m"]
+albedo_texture = ExtResource("6_ihwt6")
 
 [node name="main_menu" type="Node" unique_id=1133928599]
 script = ExtResource("1_1n3ne")
@@ -405,7 +408,7 @@ wait_time = 15.0
 
 [node name="Basiclandbig" type="MeshInstance3D" parent="." unique_id=459930701]
 transform = Transform3D(-0.50000006, 0, -0.8660254, 0, 1, 0, 0.8660254, 0, -0.50000006, 0, 0, 0)
-material_override = ExtResource("10_p5qx4")
+material_override = SubResource("StandardMaterial3D_j8f7m")
 mesh = ExtResource("11_p5qx4")
 
 [connection signal="pressed" from="menu_UI/start_menu/singleplayer" to="." method="_on_play_pressed"]
