@@ -4,10 +4,12 @@ extends Node3D
 # Format: "UI_Node_Name": [max_daily_stock, "prefab_item_type"]
 # Easily add new items here when you duplicate nodes in your UI!
 const ITEM_DB: Dictionary = {
+	"Meat": [5, "meat"],
 	"Carrot": [5, "carrot"],
 	"Tomato": [5, "tomato"],
-	# "Potato1": [3, "potato"],
-	# "Radish1": [4, "radish"],
+	"Lettuce": [3, "lettuce"],
+	"Cheese": [4, "cheese"],
+	"Bun": [4,"bun"]
 }
 
 # Runtime tracking for stock quantities across clients
@@ -22,6 +24,9 @@ var current_stocks: Dictionary = {}
 @onready var pause_room_label: Label = $Pause_UI/roomcode
 @onready var main_ui = $UI
 @onready var thing_ui_panel: Label3D = get_node_or_null("game/world/kitchen/thing_placement/thing_UI")
+@onready var warning_container = get_node_or_null("/root/main/computer_UI/warning")
+@onready var warning_text_label: Label = get_node_or_null("/root/main/computer_UI/warning/warning_text") 
+
 
 # Dedicated MultiplayerSpawners
 @onready var tree_spawner: MultiplayerSpawner = get_node_or_null("game/spawners/tree_spawner")
@@ -49,7 +54,7 @@ func _ready() -> void:
 	GameData.lost = false
 	paused = false
 	GameData.paused = false
-	$Computer_UI.hide()
+	$computer_UI.hide()
 	
 	if is_instance_valid(pause_ui):
 		pause_ui.visible = false
@@ -77,7 +82,7 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
-		if event.keycode == KEY_TAB and not $Computer_UI.visible:
+		if event.keycode == KEY_TAB and not $computer_UI.visible:
 			paused = !paused
 			GameData.paused = paused
 			if is_instance_valid(pause_ui): pause_ui.visible = paused
@@ -90,7 +95,7 @@ func _input(event: InputEvent) -> void:
 
 
 func leave_computer() -> void:
-	$Computer_UI.hide()
+	$computer_UI.hide()
 	$UI.show()
 	GameData.using_computer = false
 	
@@ -124,7 +129,7 @@ func _process(_delta: float) -> void:
 # --- Shop UI Signal Connections ---
 
 func _setup_shop_ui_connections() -> void:
-	var items_container = $Computer_UI/PanelContainer/Items_UI
+	var items_container = $computer_UI/shop_container/Items_UI
 	
 	for item_node in items_container.get_children():
 		var node_name = item_node.name
@@ -152,7 +157,7 @@ func _on_environment_controller_new_day(day: int) -> void:
 		var new_stocks: Dictionary = {}
 		for item_key in ITEM_DB.keys():
 			var max_stock: int = ITEM_DB[item_key][0]
-			new_stocks[item_key] = randi_range(0, max_stock)
+			new_stocks[item_key] = randi_range(1, max_stock)
 		
 		rpc("sync_daily_stock", new_stocks)
 		
@@ -183,7 +188,7 @@ func request_purchase(item_node_name: String) -> void:
 	if not ITEM_DB.has(item_node_name):
 		return
 
-	var item_node = $Computer_UI/PanelContainer/Items_UI.get_node_or_null(item_node_name)
+	var item_node = $computer_UI/PanelContainer/Items_UI.get_node_or_null(item_node_name)
 	if not item_node:
 		return
 		
@@ -217,41 +222,51 @@ func sync_purchase_result(item_node_name: String, new_stock: int, new_power: int
 
 
 func spawn_supply_drop(item_type: String) -> void:
-	var crate_scene = load("res://Prefabs/supply_drop.tscn")
-	if not crate_scene:
-		push_error("Failed to load res://Prefabs/supply_drop.tscn")
+	if not multiplayer.is_server():
 		return
-		
-	var crate_instance = crate_scene.instantiate()
-	crate_instance.contents = [item_type]
-	
-	get_node("/root/main/game/world").add_child(crate_instance, true)
+
+	# Calculate a random drop position
+	var drop_position := Vector3(randf_range(-40, -14), 30, randf_range(12, -12))
+	var unique_name := "supply_drop_" + str(randi() % 100000)
+
+	# Format package data matching your _on_custom_item_spawn_shared setup:
+	# ["supply_drop", sender_id, target_pos, unique_name, contents]
+	var package: Array = ["supply_drop", multiplayer.get_unique_id(), drop_position, unique_name, [item_type]]
+
+	if is_instance_valid(item_spawner):
+		item_spawner.spawn(package)
+	else:
+		push_error("item_spawner is not valid!")
 
 
-# --- Custom Spawner Handler ---
 
 func _on_custom_item_spawn_shared(data: Array) -> Node:
-	if data.size() < 3: return null
+	if data.size() < 3: 
+		return null
 		
 	var item_type = data[0]
 	var target_pos = data[2]
 	var exact_name: String = str(data[3]) if data.size() >= 4 else str(item_type) + "_fallback_" + str(randi() % 100000)
 	
 	var item_path: String = "res://Prefabs/" + str(item_type) + ".tscn"
-	if not ResourceLoader.exists(item_path): return null
+	if not ResourceLoader.exists(item_path): 
+		return null
 		
 	var item_instance = load(item_path).instantiate()
 	item_instance.name = exact_name
-	item_instance.type = str(item_type)
 	item_instance.position = target_pos
+
+	# Set item properties if present
+	if "type" in item_instance:
+		item_instance.type = str(item_type)
+
+	# If spawning a supply drop, assign its contents payload
+	if data.size() >= 5 and "contents" in item_instance:
+		item_instance.contents = data[4]
 	
 	item_instance.set_multiplayer_authority(1)
-	item_instance.add_to_group("pickupable")
 	
 	return item_instance
-
-
-# --- UI Refresh & Utility Handlers ---
 
 func thing_ui_update() -> void:
 	if is_instance_valid(score_label):
@@ -294,22 +309,49 @@ func _on_copybutton_pressed() -> void:
 
 
 func _items_pressed() -> void:
-	$Computer_UI/computer_tabs.flip_h = true
-	$Computer_UI/PanelContainer/Items_UI.show()
-	$Computer_UI/PanelContainer/Upgrades_UI.hide()
+	$computer_UI/computer_tabs.flip_h = true
+	$computer_UI/PanelContainer/Items_UI.show()
+	$computer_UI/PanelContainer/Upgrades_UI.hide()
 
 
 func _upgrades_pressed() -> void:
-	$Computer_UI/computer_tabs.flip_h = false
-	$Computer_UI/PanelContainer/Items_UI.hide()
-	$Computer_UI/PanelContainer/Upgrades_UI.show()
+	$computer_UI/computer_tabs.flip_h = false
+	$computer_UI/PanelContainer/Items_UI.hide()
+	$computer_UI/PanelContainer/Upgrades_UI.show()
+
+func _update_power_warning() -> void:
+	if not is_instance_valid(warning_container) or not is_instance_valid(warning_text_label):
+		return
+
+	# Calculate tonight's required power (matching your day calculation logic)
+	var power_requirement: int = 10 * (current_day + 1)
+	var threshold: float = power_requirement + 50.0
+
+	# Show warning only if current power is below the threshold
+	if GameData.power < threshold:
+		warning_container.show()
+		
+		var surplus_or_deficit: float = GameData.power - power_requirement
+
+		if surplus_or_deficit >= 0:
+			# Player has enough power, but is within the warning buffer range
+			warning_text_label.text = "You need %d power \nto survive tonight, \nso spend carefully!\n(You have %d to spare)" % [power_requirement, int(surplus_or_deficit)]
+		else:
+			# Player does not have enough power
+			var power_needed: int = abs(int(surplus_or_deficit))
+			warning_text_label.text = "You need %d power \nto survive tonight,\nso spend carefully!\n(You need %d more power)" % [power_requirement, power_needed]
+	else:
+		warning_container.hide()
 
 
 func update_UI() -> void:
-	if has_node("Computer_UI/power"):
-		$Computer_UI/power.text = str(GameData.power)
+	if has_node("computer_UI/power"):
+		$computer_UI/power.text = str(GameData.power)
 	
-	var items_container = $Computer_UI/PanelContainer/Items_UI
+	# Update the power warning panel
+	_update_power_warning()
+
+	var items_container = $computer_UI/shop_container/Items_UI
 	
 	for item_node in items_container.get_children():
 		var node_name = item_node.name

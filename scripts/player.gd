@@ -160,7 +160,7 @@ func _handle_interactions(item_target: Node3D, surface_target: Node3D) -> void:
 		elif is_instance_valid(surface_target):
 			if surface_target.is_in_group("storage_button"): surface_target.spawn_item.emit(surface_target.name)
 			elif surface_target.is_in_group("door"): surface_target.open_door()
-			elif surface_target.is_in_group("computer") and not GameData.using_computer: computer_UI()
+			elif surface_target.is_in_group("computer") and not GameData.using_computer and GameData.closed_lobby: computer_UI()
 		
 	if Input.is_action_just_pressed("right_click"):
 		var plate_target = surface_target if is_instance_valid(surface_target) and surface_target.is_in_group("plate") else item_target
@@ -174,7 +174,7 @@ func _handle_interactions(item_target: Node3D, surface_target: Node3D) -> void:
 
 
 func computer_UI():
-	get_node("/root/main/Computer_UI").show()
+	get_node("/root/main/computer_UI").show()
 	pause_menu_ui.hide()
 	main_game_ui.hide()
 	GameData.paused = true
@@ -188,7 +188,7 @@ func broadcast_using_computer():
 	get_node("/root/main/game/world/kitchen/main_kitchen/appliances/Computer/in_use").show()
 
 func leave_computer_UI():
-	get_node("/root/main/Computer_UI").hide()
+	get_node("/root/main/computer_UI").hide()
 	GameData.paused = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 

@@ -43,12 +43,15 @@
 [ext_resource type="Texture2D" uid="uid://bncn505y0q6m4" path="res://Assets/UI/Icons/64px/close_icon_64px.png" id="35_thn58"]
 [ext_resource type="Texture2D" uid="uid://0bd36mxskvql" path="res://Assets/UI/Headers/header_yellow.png" id="36_7kjfp"]
 [ext_resource type="Texture2D" uid="uid://ds7joy14bd4b7" path="res://Assets/UI/Modals/modalSimple_v2.png" id="37_7kjfp"]
-[ext_resource type="Texture2D" uid="uid://b4py68oycsgeh" path="res://Assets/UI/Containers/colorContainer_black.png" id="39_31p8h"]
 [ext_resource type="Texture2D" uid="uid://1dtwoc1gscpo" path="res://Assets/UI/Buttons/button_green.png" id="39_xfyap"]
+[ext_resource type="Texture2D" uid="uid://pp5rq3qjtubw" path="res://Assets/UI/Panels/mail_cream.png" id="40_iwmkf"]
+[ext_resource type="Texture2D" uid="uid://camu73g87dn3c" path="res://Assets/2D art/food icons/foodicons_raw-patty_transparent.png" id="40_o53xi"]
 [ext_resource type="Texture2D" uid="uid://2s47jfv44xj8" path="res://Assets/2D art/food icons/foodicons_carrot_transparent.png" id="41_ikeee"]
 [ext_resource type="Texture2D" uid="uid://bdxsqwn5cojmj" path="res://Assets/UI/Buttons/button_red.png" id="42_7m1s4"]
 [ext_resource type="Texture2D" uid="uid://cq0l4njvj5uk0" path="res://Assets/UI/Labels/label_iconDefault.png" id="42_8of2g"]
 [ext_resource type="Texture2D" uid="uid://vanelsj052ea" path="res://Assets/UI/Icons/512px/energy_icon_512px.png" id="43_7m1s4"]
+[ext_resource type="Texture2D" uid="uid://d1vdo6sonuj6s" path="res://Assets/2D art/food icons/foodicons_bun_transparent.png" id="44_1jfbq"]
+[ext_resource type="Texture2D" uid="uid://kdbmr4tt8ytp" path="res://Assets/2D art/food icons/foodicons_tomato_transparent.png" id="44_iwmkf"]
 [ext_resource type="Texture2D" uid="uid://cv1fcyer5e6jt" path="res://Assets/UI/Icons/512px/warningCircle_icon_512px.png" id="46_eh8cv"]
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_a5tfy"]
@@ -164,7 +167,7 @@ ambient_light_color = Color(0.74283826, 0.7617583, 0.93109804, 1)
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_oob7m"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8of2g"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iw3lg"]
 
 [sub_resource type="Gradient" id="Gradient_cgc31"]
 offsets = PackedFloat32Array(0.33894232)
@@ -727,260 +730,346 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8867252, 4.7683716e-07, -2
 [node name="Tree1Meat1" parent="game/item_trees" unique_id=258808578 instance=ExtResource("28_2mmg3")]
 transform = Transform3D(0.58886224, 0, -0.80823344, 0, 1, 0, 0.80823344, 0, 0.58886224, 5.4379354, -0.09339571, -16.273397)
 
-[node name="Computer_UI" type="CanvasLayer" parent="." unique_id=2131990608]
+[node name="computer_UI" type="CanvasLayer" parent="." unique_id=2131990608]
 
-[node name="return" type="TextureButton" parent="Computer_UI" unique_id=1493831723]
+[node name="return" type="TextureButton" parent="computer_UI" unique_id=1493831723]
 offset_left = 811.75
 offset_top = 74.25
 offset_right = 874.75
 offset_bottom = 142.25
 texture_normal = ExtResource("35_thn58")
 
-[node name="computer_tabs" type="Sprite2D" parent="Computer_UI" unique_id=98573917]
+[node name="computer_tabs" type="Sprite2D" parent="computer_UI" unique_id=98573917]
 position = Vector2(576.25, 76.25)
 scale = Vector2(0.3415196, 0.5)
 texture = ExtResource("35_4ob7t")
 flip_h = true
 
-[node name="NotebookYellow" type="Sprite2D" parent="Computer_UI" unique_id=122329053]
+[node name="NotebookYellow" type="Sprite2D" parent="computer_UI" unique_id=122329053]
 position = Vector2(576.75, 108.25)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("36_7kjfp")
 
-[node name="ModalSimpleV2" type="Sprite2D" parent="Computer_UI" unique_id=431395383]
+[node name="ModalSimpleV2" type="Sprite2D" parent="computer_UI" unique_id=431395383]
 position = Vector2(576.75, 378.375)
 scale = Vector2(0.5, 0.44298247)
 texture = ExtResource("37_7kjfp")
 
-[node name="ModalSimpleV3" type="Sprite2D" parent="Computer_UI" unique_id=126445789]
-position = Vector2(128.99998, 365.3125)
-scale = Vector2(0.25231227, 0.35699445)
-texture = ExtResource("37_7kjfp")
-
-[node name="PanelContainer" type="Panel" parent="Computer_UI" unique_id=98899629]
+[node name="shop_container" type="ScrollContainer" parent="computer_UI" unique_id=839030244]
 clip_children = 1
 texture_filter = 1
 offset_left = 348.75
-offset_top = 142.25
+offset_top = 142.0
 offset_right = 805.75
 offset_bottom = 615.25
-theme_override_styles/panel = SubResource("StyleBoxEmpty_8of2g")
+theme_override_styles/panel = SubResource("StyleBoxFlat_iw3lg")
 
-[node name="VScrollBar" type="VScrollBar" parent="Computer_UI/PanelContainer" unique_id=1466141247]
-layout_mode = 0
-offset_left = 430.0
-offset_top = -1.0
-offset_right = 438.0
-offset_bottom = 456.0
-
-[node name="Items_UI" type="Node2D" parent="Computer_UI/PanelContainer" unique_id=1589228327]
+[node name="Items_UI" type="VBoxContainer" parent="computer_UI/shop_container" unique_id=1802276522]
+layout_mode = 2
 metadata/_edit_lock_ = true
 
-[node name="Carrot" type="Node2D" parent="Computer_UI/PanelContainer/Items_UI" unique_id=377702960]
+[node name="Meat" type="Node2D" parent="computer_UI/shop_container/Items_UI" unique_id=377702960]
 
-[node name="FoodiconsCarrotTransparent" type="Sprite2D" parent="Computer_UI/PanelContainer/Items_UI/Carrot" unique_id=1169434553]
-position = Vector2(54, 41)
+[node name="MailCream" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Meat" unique_id=1577088910]
+position = Vector2(227.25, 57.749992)
+scale = Vector2(0.4, 0.3)
+texture = ExtResource("40_iwmkf")
+
+[node name="FoodiconsCarrotTransparent" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Meat" unique_id=1169434553]
+position = Vector2(65.25, 52)
 scale = Vector2(0.02, 0.02)
-texture = ExtResource("41_ikeee")
+texture = ExtResource("40_o53xi")
 
-[node name="ColorContainerBlack" type="Sprite2D" parent="Computer_UI/PanelContainer/Items_UI/Carrot" unique_id=1368454834]
-position = Vector2(223.19843, 81.000015)
-scale = Vector2(0.27228, 0.016871592)
-texture = ExtResource("39_31p8h")
-
-[node name="ColorContainerBlack2" type="Sprite2D" parent="Computer_UI/PanelContainer/Items_UI/Carrot" unique_id=2145288793]
-position = Vector2(222.69843, 5.800003)
-scale = Vector2(0.272948, 0.016871592)
-texture = ExtResource("39_31p8h")
-
-[node name="ButtonGreen" type="Sprite2D" parent="Computer_UI/PanelContainer/Items_UI/Carrot" unique_id=108518239]
-position = Vector2(363, 43.000015)
+[node name="ButtonGreen" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Meat" unique_id=108518239]
+position = Vector2(366.25, 55.000008)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("39_xfyap")
 
-[node name="ButtonRed" type="Sprite2D" parent="Computer_UI/PanelContainer/Items_UI/Carrot" unique_id=1502614636]
-position = Vector2(363, 43.000015)
+[node name="ButtonRed" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Meat" unique_id=1502614636]
+position = Vector2(366.25, 55.000008)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("42_7m1s4")
 
-[node name="cost" type="Button" parent="Computer_UI/PanelContainer/Items_UI/Carrot" unique_id=2147187546]
-offset_left = 297.0
-offset_top = 10.000015
-offset_right = 429.0
-offset_bottom = 73.000015
+[node name="cost" type="Button" parent="computer_UI/shop_container/Items_UI/Meat" unique_id=2147187546]
+offset_left = 300.25
+offset_top = 22.000008
+offset_right = 432.25
+offset_bottom = 85.00001
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 35
-text = "1"
+text = "15"
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="Computer_UI/PanelContainer/Items_UI/Carrot" unique_id=456786361]
-offset_left = 99.0
-offset_top = 7.0000153
-offset_right = 239.0
-offset_bottom = 55.80002
-text = "Carrot"
+[node name="Label" type="Label" parent="computer_UI/shop_container/Items_UI/Meat" unique_id=456786361]
+offset_left = 103.25
+offset_top = 22.275002
+offset_right = 243.25
+offset_bottom = 71.075005
+text = "Meat"
 metadata/_edit_use_anchors_ = true
 
-[node name="Label2" type="Label" parent="Computer_UI/PanelContainer/Items_UI/Carrot" unique_id=1616762783]
-offset_left = 100.0
-offset_top = 27.000015
-offset_right = 240.0
-offset_bottom = 75.80002
-theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 9
-text = "- Orange
-- Attracts Bunnies"
-metadata/_edit_use_anchors_ = true
-
-[node name="stock" type="Label" parent="Computer_UI/PanelContainer/Items_UI/Carrot" unique_id=2112637577]
-offset_left = 205.25
-offset_top = 37.75
-offset_right = 265.25
-offset_bottom = 60.75
+[node name="stock" type="Label" parent="computer_UI/shop_container/Items_UI/Meat" unique_id=2112637577]
+offset_left = 102.25
+offset_top = 61.274994
+offset_right = 162.25
+offset_bottom = 84.274994
 text = "Stock: 3"
 
-[node name="Tomato" type="Node2D" parent="Computer_UI/PanelContainer/Items_UI" unique_id=1956804776]
-position = Vector2(0, 75.64)
+[node name="Bun" type="Node2D" parent="computer_UI/shop_container/Items_UI" unique_id=1069110970]
+position = Vector2(0, 88)
 
-[node name="FoodiconsCarrotTransparent" type="Sprite2D" parent="Computer_UI/PanelContainer/Items_UI/Tomato" unique_id=1246984780]
-position = Vector2(54, 41)
+[node name="MailCream" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Bun" unique_id=1040868872]
+position = Vector2(227.25, 57.749992)
+scale = Vector2(0.4, 0.3)
+texture = ExtResource("40_iwmkf")
+
+[node name="FoodiconsCarrotTransparent" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Bun" unique_id=1773323101]
+position = Vector2(64, 54)
 scale = Vector2(0.02, 0.02)
-texture = ExtResource("41_ikeee")
+texture = ExtResource("44_1jfbq")
 
-[node name="ColorContainerBlack" type="Sprite2D" parent="Computer_UI/PanelContainer/Items_UI/Tomato" unique_id=893896390]
-position = Vector2(223.19843, 81.000015)
-scale = Vector2(0.27228, 0.016871592)
-texture = ExtResource("39_31p8h")
-
-[node name="ColorContainerBlack2" type="Sprite2D" parent="Computer_UI/PanelContainer/Items_UI/Tomato" unique_id=820495177]
-position = Vector2(222.69843, 5.800003)
-scale = Vector2(0.272948, 0.016871592)
-texture = ExtResource("39_31p8h")
-
-[node name="ButtonGreen" type="Sprite2D" parent="Computer_UI/PanelContainer/Items_UI/Tomato" unique_id=1825758215]
-position = Vector2(363, 43.000015)
+[node name="ButtonGreen" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Bun" unique_id=782544719]
+position = Vector2(366.25, 55.000008)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("39_xfyap")
 
-[node name="ButtonRed" type="Sprite2D" parent="Computer_UI/PanelContainer/Items_UI/Tomato" unique_id=1102778829]
-position = Vector2(363, 43.000015)
+[node name="ButtonRed" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Bun" unique_id=324903406]
+position = Vector2(366.25, 55.000008)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("42_7m1s4")
 
-[node name="cost" type="Button" parent="Computer_UI/PanelContainer/Items_UI/Tomato" unique_id=2005000219]
-offset_left = 297.0
-offset_top = 10.000015
-offset_right = 429.0
-offset_bottom = 73.000015
+[node name="cost" type="Button" parent="computer_UI/shop_container/Items_UI/Bun" unique_id=1619547766]
+offset_left = 300.25
+offset_top = 22.000008
+offset_right = 432.25
+offset_bottom = 85.00001
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 35
-text = "5"
+text = "10"
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="Computer_UI/PanelContainer/Items_UI/Tomato" unique_id=1682053903]
-offset_left = 99.0
-offset_top = 7.0000153
-offset_right = 239.0
-offset_bottom = 55.80002
-text = "Carrot"
+[node name="Label" type="Label" parent="computer_UI/shop_container/Items_UI/Bun" unique_id=1662241574]
+offset_left = 103.25
+offset_top = 22.275002
+offset_right = 243.25
+offset_bottom = 71.075005
+text = "Bun"
 metadata/_edit_use_anchors_ = true
 
-[node name="Label2" type="Label" parent="Computer_UI/PanelContainer/Items_UI/Tomato" unique_id=177288908]
-offset_left = 100.0
-offset_top = 27.000015
-offset_right = 240.0
-offset_bottom = 75.80002
-theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 9
-text = "- Orange
-- Attracts Bunnies"
-metadata/_edit_use_anchors_ = true
-
-[node name="stock" type="Label" parent="Computer_UI/PanelContainer/Items_UI/Tomato" unique_id=967392825]
-offset_left = 197.25
-offset_top = 34.11
-offset_right = 257.25
-offset_bottom = 57.11
+[node name="stock" type="Label" parent="computer_UI/shop_container/Items_UI/Bun" unique_id=2083062197]
+offset_left = 102.25
+offset_top = 61.274994
+offset_right = 162.25
+offset_bottom = 84.274994
 text = "Stock: 3"
 
-[node name="Carrot3" type="Node2D" parent="Computer_UI/PanelContainer/Items_UI" unique_id=1538424427]
-position = Vector2(0, 154)
+[node name="Cheese" type="Node2D" parent="computer_UI/shop_container/Items_UI" unique_id=1535201874]
+position = Vector2(0, 176)
 
-[node name="FoodiconsCarrotTransparent" type="Sprite2D" parent="Computer_UI/PanelContainer/Items_UI/Carrot3" unique_id=1348056803]
-position = Vector2(54, 41)
+[node name="MailCream" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Cheese" unique_id=339819229]
+position = Vector2(227.25, 57.749992)
+scale = Vector2(0.4, 0.3)
+texture = ExtResource("40_iwmkf")
+
+[node name="FoodiconsCarrotTransparent" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Cheese" unique_id=1134265095]
+position = Vector2(64, 54)
 scale = Vector2(0.02, 0.02)
-texture = ExtResource("41_ikeee")
+texture = ExtResource("23_j8f7m")
 
-[node name="ColorContainerBlack" type="Sprite2D" parent="Computer_UI/PanelContainer/Items_UI/Carrot3" unique_id=1530863297]
-position = Vector2(223.19843, 81.000015)
-scale = Vector2(0.27228, 0.016871592)
-texture = ExtResource("39_31p8h")
-
-[node name="ColorContainerBlack2" type="Sprite2D" parent="Computer_UI/PanelContainer/Items_UI/Carrot3" unique_id=2063010473]
-position = Vector2(222.69843, 5.800003)
-scale = Vector2(0.272948, 0.016871592)
-texture = ExtResource("39_31p8h")
-
-[node name="ButtonGreen" type="Sprite2D" parent="Computer_UI/PanelContainer/Items_UI/Carrot3" unique_id=657692692]
-position = Vector2(363, 43.000015)
+[node name="ButtonGreen" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Cheese" unique_id=6151369]
+position = Vector2(366.25, 55.000008)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("39_xfyap")
 
-[node name="ButtonRed" type="Sprite2D" parent="Computer_UI/PanelContainer/Items_UI/Carrot3" unique_id=121770183]
-position = Vector2(363, 43.000015)
+[node name="ButtonRed" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Cheese" unique_id=7182974]
+position = Vector2(366.25, 55.000008)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("42_7m1s4")
 
-[node name="cost" type="Button" parent="Computer_UI/PanelContainer/Items_UI/Carrot3" unique_id=1229913155]
-offset_left = 297.0
-offset_top = 10.000015
-offset_right = 429.0
-offset_bottom = 73.000015
+[node name="cost" type="Button" parent="computer_UI/shop_container/Items_UI/Cheese" unique_id=1524795304]
+offset_left = 300.25
+offset_top = 22.000008
+offset_right = 432.25
+offset_bottom = 85.00001
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 35
-text = "2500"
+text = "10"
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="Computer_UI/PanelContainer/Items_UI/Carrot3" unique_id=1172426486]
-offset_left = 99.0
-offset_top = 7.0000153
-offset_right = 239.0
-offset_bottom = 55.80002
+[node name="Label" type="Label" parent="computer_UI/shop_container/Items_UI/Cheese" unique_id=1528515824]
+offset_left = 103.25
+offset_top = 22.275002
+offset_right = 243.25
+offset_bottom = 71.075005
+text = "Cheese"
+metadata/_edit_use_anchors_ = true
+
+[node name="stock" type="Label" parent="computer_UI/shop_container/Items_UI/Cheese" unique_id=574293903]
+offset_left = 102.25
+offset_top = 61.274994
+offset_right = 162.25
+offset_bottom = 84.274994
+text = "Stock: 3"
+
+[node name="Lettuce" type="Node2D" parent="computer_UI/shop_container/Items_UI" unique_id=484935113]
+position = Vector2(0, 264)
+
+[node name="MailCream" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Lettuce" unique_id=2296107]
+position = Vector2(227.25, 57.749992)
+scale = Vector2(0.4, 0.3)
+texture = ExtResource("40_iwmkf")
+
+[node name="FoodiconsCarrotTransparent" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Lettuce" unique_id=785070319]
+modulate = Color(0, 0.9811384, 0.1681759, 1)
+position = Vector2(64, 54)
+scale = Vector2(0.02, 0.02)
+texture = ExtResource("44_iwmkf")
+
+[node name="ButtonGreen" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Lettuce" unique_id=171169788]
+position = Vector2(366.25, 55.000008)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("39_xfyap")
+
+[node name="ButtonRed" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Lettuce" unique_id=1562721790]
+position = Vector2(366.25, 55.000008)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("42_7m1s4")
+
+[node name="cost" type="Button" parent="computer_UI/shop_container/Items_UI/Lettuce" unique_id=1744519956]
+offset_left = 300.25
+offset_top = 22.000008
+offset_right = 432.25
+offset_bottom = 85.00001
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 35
+text = "10"
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="computer_UI/shop_container/Items_UI/Lettuce" unique_id=1677941071]
+offset_left = 103.25
+offset_top = 22.275002
+offset_right = 243.25
+offset_bottom = 71.075005
+text = "Lettuce"
+metadata/_edit_use_anchors_ = true
+
+[node name="stock" type="Label" parent="computer_UI/shop_container/Items_UI/Lettuce" unique_id=1319890442]
+offset_left = 102.25
+offset_top = 61.274994
+offset_right = 162.25
+offset_bottom = 84.274994
+text = "Stock: 3"
+
+[node name="Carrot" type="Node2D" parent="computer_UI/shop_container/Items_UI" unique_id=1126698406]
+position = Vector2(0, 352)
+
+[node name="MailCream" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Carrot" unique_id=1382705112]
+position = Vector2(227.25, 57.749992)
+scale = Vector2(0.4, 0.3)
+texture = ExtResource("40_iwmkf")
+
+[node name="FoodiconsCarrotTransparent" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Carrot" unique_id=1237448952]
+position = Vector2(64, 54)
+scale = Vector2(0.02, 0.02)
+texture = ExtResource("41_ikeee")
+
+[node name="ButtonGreen" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Carrot" unique_id=262835866]
+position = Vector2(366.25, 55.000008)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("39_xfyap")
+
+[node name="ButtonRed" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Carrot" unique_id=1837119740]
+position = Vector2(366.25, 55.000008)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("42_7m1s4")
+
+[node name="cost" type="Button" parent="computer_UI/shop_container/Items_UI/Carrot" unique_id=134230685]
+offset_left = 300.25
+offset_top = 22.000008
+offset_right = 432.25
+offset_bottom = 85.00001
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 35
+text = "10"
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="computer_UI/shop_container/Items_UI/Carrot" unique_id=71643292]
+offset_left = 103.25
+offset_top = 22.275002
+offset_right = 243.25
+offset_bottom = 71.075005
 text = "Carrot"
 metadata/_edit_use_anchors_ = true
 
-[node name="Label2" type="Label" parent="Computer_UI/PanelContainer/Items_UI/Carrot3" unique_id=1827675035]
-offset_left = 100.0
-offset_top = 27.000015
-offset_right = 240.0
-offset_bottom = 75.80002
-theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 9
-text = "- Orange
-- Attracts Bunnies"
-metadata/_edit_use_anchors_ = true
-
-[node name="stock" type="Label" parent="Computer_UI/PanelContainer/Items_UI/Carrot3" unique_id=1648879566]
-offset_left = 205.25
-offset_top = 33.75
-offset_right = 265.25
-offset_bottom = 56.75
+[node name="stock" type="Label" parent="computer_UI/shop_container/Items_UI/Carrot" unique_id=572341097]
+offset_left = 102.25
+offset_top = 61.274994
+offset_right = 162.25
+offset_bottom = 84.274994
 text = "Stock: 3"
 
-[node name="Upgrades_UI" type="Node2D" parent="Computer_UI/PanelContainer" unique_id=495213537]
+[node name="Carrot2" type="Node2D" parent="computer_UI/shop_container/Items_UI" unique_id=368760466]
+position = Vector2(0, 440)
+
+[node name="MailCream" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Carrot2" unique_id=1773625959]
+position = Vector2(227.25, 57.749992)
+scale = Vector2(0.4, 0.3)
+texture = ExtResource("40_iwmkf")
+
+[node name="FoodiconsCarrotTransparent" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Carrot2" unique_id=1044178309]
+position = Vector2(64, 54)
+scale = Vector2(0.02, 0.02)
+texture = ExtResource("41_ikeee")
+
+[node name="ButtonGreen" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Carrot2" unique_id=1544800081]
+position = Vector2(366.25, 55.000008)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("39_xfyap")
+
+[node name="ButtonRed" type="Sprite2D" parent="computer_UI/shop_container/Items_UI/Carrot2" unique_id=2054131894]
+position = Vector2(366.25, 55.000008)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("42_7m1s4")
+
+[node name="cost" type="Button" parent="computer_UI/shop_container/Items_UI/Carrot2" unique_id=658544767]
+offset_left = 300.25
+offset_top = 22.000008
+offset_right = 432.25
+offset_bottom = 85.00001
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 35
+text = "10"
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="computer_UI/shop_container/Items_UI/Carrot2" unique_id=1630572318]
+offset_left = 103.25
+offset_top = 22.275002
+offset_right = 243.25
+offset_bottom = 71.075005
+text = "Carrot"
+metadata/_edit_use_anchors_ = true
+
+[node name="stock" type="Label" parent="computer_UI/shop_container/Items_UI/Carrot2" unique_id=1951697294]
+offset_left = 102.25
+offset_top = 61.274994
+offset_right = 162.25
+offset_bottom = 84.274994
+text = "Stock: 3"
+
+[node name="Upgrades_UI" type="Node2D" parent="computer_UI/shop_container" unique_id=495213537]
 metadata/_edit_lock_ = true
 
-[node name="LabelIconV1" type="Sprite2D" parent="Computer_UI" unique_id=14855804]
+[node name="LabelIconV1" type="Sprite2D" parent="computer_UI" unique_id=14855804]
 position = Vector2(731.7, 106.25)
 scale = Vector2(0.20529693, 0.3)
 texture = ExtResource("42_8of2g")
 
-[node name="EnergyIcon512Px" type="Sprite2D" parent="Computer_UI" unique_id=356521156]
+[node name="EnergyIcon512Px" type="Sprite2D" parent="computer_UI" unique_id=356521156]
 position = Vector2(682.75, 106.25)
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("43_7m1s4")
 
-[node name="power" type="Label" parent="Computer_UI" unique_id=721787004]
+[node name="power" type="Label" parent="computer_UI" unique_id=721787004]
 offset_left = 700.75
 offset_top = 79.25
 offset_right = 789.75
@@ -988,7 +1077,7 @@ offset_bottom = 142.25
 theme_override_font_sizes/font_size = 36
 text = "100K"
 
-[node name="Label" type="Label" parent="Computer_UI" unique_id=1599711053]
+[node name="Label" type="Label" parent="computer_UI" unique_id=1599711053]
 offset_left = 586.75
 offset_top = 17.25
 offset_right = 765.75
@@ -997,7 +1086,7 @@ theme_override_font_sizes/font_size = 36
 text = "Upgrades"
 horizontal_alignment = 1
 
-[node name="Label2" type="Label" parent="Computer_UI" unique_id=693065684]
+[node name="Label2" type="Label" parent="computer_UI" unique_id=693065684]
 offset_left = 387.75
 offset_top = 19.25
 offset_right = 566.75
@@ -1006,27 +1095,54 @@ theme_override_font_sizes/font_size = 36
 text = "Items"
 horizontal_alignment = 1
 
-[node name="items" type="Button" parent="Computer_UI" unique_id=1612916117]
+[node name="items" type="Button" parent="computer_UI" unique_id=1612916117]
 offset_left = 382.75
 offset_top = 11.25
 offset_right = 569.75
 offset_bottom = 71.25
 
-[node name="upgrades" type="Button" parent="Computer_UI" unique_id=744889369]
+[node name="upgrades" type="Button" parent="computer_UI" unique_id=744889369]
 offset_left = 581.75
 offset_top = 11.25
 offset_right = 768.75
 offset_bottom = 72.25
 
-[node name="warning_circle" type="Sprite2D" parent="Computer_UI" unique_id=34885250]
-position = Vector2(201, 211)
-scale = Vector2(0.1, 0.1)
+[node name="warning" type="Node2D" parent="computer_UI" unique_id=56928796]
+visible = false
+
+[node name="ModalSimpleV3" type="Sprite2D" parent="computer_UI/warning" unique_id=126445789]
+position = Vector2(128.99998, 365.3125)
+scale = Vector2(0.25231227, 0.35699445)
+texture = ExtResource("37_7kjfp")
+
+[node name="warning_circle" type="Sprite2D" parent="computer_UI/warning" unique_id=34885250]
+position = Vector2(215, 199.99998)
+scale = Vector2(0.09, 0.09)
 texture = ExtResource("46_eh8cv")
 
-[node name="warning_circle2" type="Sprite2D" parent="Computer_UI" unique_id=89576521]
-position = Vector2(52.000015, 211)
-scale = Vector2(0.1, 0.1)
+[node name="warning_circle3" type="Sprite2D" parent="computer_UI/warning" unique_id=2029612073]
+position = Vector2(43, 200)
+scale = Vector2(0.09, 0.09)
 texture = ExtResource("46_eh8cv")
+
+[node name="Label3" type="Label" parent="computer_UI/warning" unique_id=1838702666]
+offset_left = 71.0
+offset_top = 182.0
+offset_right = 194.0
+offset_bottom = 217.0
+theme_override_font_sizes/font_size = 25
+text = "WARNING"
+
+[node name="warning_text" type="Label" parent="computer_UI/warning" unique_id=588870664]
+offset_left = 23.0
+offset_top = 225.0
+offset_right = 241.0
+offset_bottom = 297.0
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 15
+text = "You need 20 power to survive
+tonight, so spend carefully!
+(You have __ to spare)"
 
 [node name="Pause_UI" type="CanvasLayer" parent="." unique_id=516443905]
 visible = false
@@ -1078,6 +1194,7 @@ offset_bottom = 224.0
 text = "Return to main menu"
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1896255929]
+visible = false
 
 [node name="fps" type="Label" parent="UI" unique_id=1827639193]
 offset_left = 6.0
@@ -1298,8 +1415,8 @@ libraries/ = SubResource("AnimationLibrary_i6w6j")
 [connection signal="body_entered" from="game/world/kitchen/main_kitchen/kitchen_area" to="game/world/kitchen/main_kitchen/kitchen_area" method="_on_body_entered"]
 [connection signal="body_exited" from="game/world/kitchen/main_kitchen/kitchen_area" to="game/world/kitchen/main_kitchen/kitchen_area" method="_on_body_exited"]
 [connection signal="new_day" from="game/environment_controller" to="." method="_on_environment_controller_new_day"]
-[connection signal="pressed" from="Computer_UI/return" to="." method="leave_computer"]
-[connection signal="pressed" from="Computer_UI/items" to="." method="_items_pressed"]
-[connection signal="pressed" from="Computer_UI/upgrades" to="." method="_upgrades_pressed"]
+[connection signal="pressed" from="computer_UI/return" to="." method="leave_computer"]
+[connection signal="pressed" from="computer_UI/items" to="." method="_items_pressed"]
+[connection signal="pressed" from="computer_UI/upgrades" to="." method="_upgrades_pressed"]
 [connection signal="pressed" from="Pause_UI/copybutton" to="." method="_on_copybutton_pressed"]
 [connection signal="pressed" from="Pause_UI/Button" to="." method="burn_it_all_down"]

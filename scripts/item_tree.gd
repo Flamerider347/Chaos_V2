@@ -42,7 +42,7 @@ func _on_item_timer_timeout() -> void:
 		
 	if item_left < max_item_left:
 		if has_node("item_timer"):
-			$item_timer.start(10)
+			$item_timer.start(60)
 
 @rpc("any_peer", "reliable")
 func server_handle_punch(sender_id: int) -> void:
@@ -63,4 +63,4 @@ func server_handle_punch(sender_id: int) -> void:
 		item_spawner.spawn(package)
 	
 	if has_node("item_timer"):
-		$item_timer.start(10)
+		$item_timer.start(60)

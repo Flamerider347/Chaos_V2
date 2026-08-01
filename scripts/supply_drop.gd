@@ -1,6 +1,5 @@
 extends CharacterBody3D
 
-
 var contents: Array = []
 
 @onready var item_spawner: MultiplayerSpawner = get_node_or_null("/root/main/game/spawners/item_spawner")
@@ -9,7 +8,7 @@ var contents: Array = []
 var has_landed: bool = false
 
 func _ready() -> void:
-	self.global_position = Vector3(randf_range(-40, -14), 30, randf_range(12, -12))
+	# Position is managed by MultiplayerSpawner / custom spawn handler
 	$CSGBakedMeshInstance3D2.hide()
 	$CSGBakedMeshInstance3D.show()
 	$Label3D2.show()
