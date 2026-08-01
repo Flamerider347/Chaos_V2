@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bjhjffvx6tlwv"]
+
+[ext_resource type="Texture2D" uid="uid://d3u6bnjjf0srd" path="res://Assets/UI/Headers/notebook_yellow.png" id="1_liw3c"]
+[ext_resource type="Texture2D" uid="uid://ds7joy14bd4b7" path="res://Assets/UI/Modals/modalSimple_v2.png" id="2_0p3l4"]
+
+[node name="recipe_base" type="Node2D" unique_id=2090600419]
+
+[node name="NotebookYellow" type="Sprite2D" parent="." unique_id=1658625070]
+position = Vector2(608, 102)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_liw3c")
+
+[node name="ModalSimpleV2" type="Sprite2D" parent="." unique_id=688649935]
+position = Vector2(608, 372.125)
+scale = Vector2(0.5, 0.44298247)
+texture = ExtResource("2_0p3l4")
