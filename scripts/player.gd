@@ -180,6 +180,7 @@ func computer_UI():
 	GameData.paused = true
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	rpc("broadcast_using_computer")
+	get_node("/root/main").update_UI()
 
 @rpc("any_peer","call_local","reliable")
 func broadcast_using_computer():

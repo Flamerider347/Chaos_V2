@@ -19,8 +19,8 @@ var min_spawn_bound: Vector2 = Vector2(-40, -40)
 var max_spawn_bound: Vector2 = Vector2(35, 35)
 
 # --- Gameplay Core Variables ---
-var score: int = 0
-var power: float = 100.0
+var score: int = GameData.score
+var power: float = GameData.power
 
 var total_power_cost: int = 0
 var current_day: int = 0
@@ -29,7 +29,7 @@ var paused: bool = false
 
 func _ready() -> void:
 	GameData.score = 0
-	GameData.power = 0
+	GameData.power = 20
 	$Pause_UI/roomcode.text = "Port: " +str(GameData.game_port)
 	$Pause_UI/host_ip.text = "IP:" +str(GameData.room_code)
 	GameData.in_game = true
@@ -52,10 +52,7 @@ func _ready() -> void:
 		if is_instance_valid(status_label): status_label.text = "Match Active \nPort: " +str(GameData.game_port)
 	else:
 		if is_instance_valid(status_label): status_label.text = "Local Match"
-		
-	score = GameData.score
-	power = GameData.power
-	
+
 	if is_instance_valid(item_spawner):
 		item_spawner.spawn_function = _on_custom_item_spawn_shared
 
@@ -103,7 +100,7 @@ func _notification(what: int) -> void:
 
 func _process(_delta: float) -> void:
 	if has_node("fps"):
-		$fps.text = "FPS: " + str(Engine.get_frames_per_second())
+		$UI/fps.text = "FPS: " + str(Engine.get_frames_per_second())
 
 # --- Day Cycle & Survival Math Logic ---
 
@@ -114,12 +111,13 @@ func _on_environment_controller_new_day(day: int) -> void:
 		
 	if day != 1:
 		total_power_cost += 10 * day 
-	
-	power = 20 + score - total_power_cost
+
+	GameData.power = 20 + GameData.score - total_power_cost
 	thing_ui_update()
+	update_UI()
 	
 	if multiplayer.is_server():
-		if power < 0:
+		if GameData.power < 0:
 			rpc("burn_it_all_down")
 
 
@@ -145,23 +143,23 @@ func _on_custom_item_spawn_shared(data: Array) -> Node:
 
 func thing_ui_update() -> void:
 	if is_instance_valid(score_label):
-		score_label.text = "Score: " + str(score)
+		score_label.text = "Score: " + str(GameData.score)
 		
 	if is_instance_valid(thing_ui_panel):
 		var next_night_cost = 10 * (current_day + 1)
-		var power_req = power - next_night_cost
+		var power_req = GameData.power - next_night_cost
 		
 		if power_req < 0:
 			power_req = abs(power_req)
-			thing_ui_panel.text = "\nScore: " + str(score) + \
-			 "\nPower left: " + str(power) + \
+			thing_ui_panel.text = "\nScore: " + str(GameData.score) + \
+			 "\nPower left: " + str(GameData.power) + \
 			 "\nPower Requirement for today: " + str(next_night_cost) + \
 			 "\nYou need " + str(power_req) + " more Power to survive tonight"
 
 		else:
 			power_req = 0
-			thing_ui_panel.text = "\nScore: " + str(score) + \
-			 "\nPower left: " + str(power) + \
+			thing_ui_panel.text = "\nScore: " + str(GameData.score) + \
+			 "\nPower left: " + str(GameData.power) + \
 			 "\nPower Requirement for today: " + str(next_night_cost) + \
 			 "\nYou will survive tonight"
 
@@ -181,3 +179,21 @@ func _on_copybutton_pressed() -> void:
 	if GameData.room_code and GameData.game_port:
 		var copy_code = str(GameData.room_code) + "///" + str(GameData.game_port)
 		DisplayServer.clipboard_set(copy_code)
+
+
+func _items_pressed() -> void:
+	$Computer_UI/computer_tabs.flip_h = true
+	$Computer_UI/PanelContainer/Items_UI.show()
+	$Computer_UI/PanelContainer/Upgrades_UI.hide()
+func _upgrades_pressed() -> void:
+	$Computer_UI/computer_tabs.flip_h = false
+	$Computer_UI/PanelContainer/Items_UI.hide()
+	$Computer_UI/PanelContainer/Upgrades_UI.show()
+
+func update_UI():
+	$Computer_UI/power.text = str(GameData.power)
+	for i in $Computer_UI/PanelContainer/Items_UI.get_children():
+		if int(i.find_child("cost").text) > GameData.power:
+			i.find_child("ButtonRed").show()
+		else:
+			i.find_child("ButtonRed").hide()

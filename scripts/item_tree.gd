@@ -64,22 +64,3 @@ func server_handle_punch(sender_id: int) -> void:
 	
 	if has_node("item_timer"):
 		$item_timer.start(10)
-func _on_custom_item_spawn(data: Array) -> Node:
-	if data.size() < 3: return null
-		
-	var item_type = data[0]
-	var target_pos = data[2]
-	var exact_name: String = str(data[3]) if data.size() >= 4 else str(item_type) + "_fallback_" + str(randi() % 100000)
-	
-	var item_path: String = "res://Prefabs/" + str(item_type) + ".tscn"
-	if not ResourceLoader.exists(item_path): return null
-		
-	var item_instance = load(item_path).instantiate()
-	item_instance.name = exact_name
-	item_instance.type = str(item_type)
-	item_instance.position = target_pos
-	
-	item_instance.set_multiplayer_authority(1)
-	item_instance.add_to_group("pickupable")
-	
-	return item_instance

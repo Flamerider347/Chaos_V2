@@ -1,4 +1,4 @@
 extends Label
 
 func _process(_delta: float) -> void:
-	self.text = "Score: " + str($"../..".score)
+	self.text = "Score: " + str(GameData.score)

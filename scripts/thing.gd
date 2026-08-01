@@ -47,13 +47,12 @@ func _on_body_entered(body: Node) -> void:
 		is_valid_delivery = true
 		
 	if is_valid_delivery and is_instance_valid(game):
-		game.score += score_to_add
-		game.power += score_to_add
-		
+		GameData.score += score_to_add
+		GameData.power += score_to_add
 		if multiplayer.multiplayer_peer:
-			rpc("sync_delivery_effects", body.global_position, game.score)
+			rpc("sync_delivery_effects", body.global_position, GameData.score, GameData.power)
 		else:
-			sync_delivery_effects(body.global_position, game.score)
+			sync_delivery_effects(body.global_position, GameData.score,GameData.power)
 		
 		if "stacked_items" in body:
 			for item in body.stacked_items:
@@ -82,11 +81,13 @@ func sync_plate_ui(current_plates: int) -> void:
 		
 
 @rpc("any_peer", "call_local", "reliable")
-func sync_delivery_effects(spawn_pos: Vector3, new_score: int) -> void:
+func sync_delivery_effects(spawn_pos: Vector3, new_score: int, new_power:int) -> void:
 	if is_instance_valid(game):
-		game.score = new_score
+		GameData.score = new_score
+		GameData.power = new_power
 		if game.has_method("thing_ui_update"): 
 			game.thing_ui_update()
+			game.update_UI()
 	_spawn_smoke(spawn_pos)
 
 func _calculate_plate_score(plate_node: Node) -> int:
