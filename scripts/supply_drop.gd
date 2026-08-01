@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
-# You can pass simple names like ["carrot"] or full paths like ["res://Prefabs/carrot.tscn"]
-var contents: Array = ["carrot"]
+
+var contents: Array = []
 
 @onready var item_spawner: MultiplayerSpawner = get_node_or_null("/root/main/game/spawners/item_spawner")
 
