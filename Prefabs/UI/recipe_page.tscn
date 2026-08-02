@@ -1,3 +1,105 @@
 [gd_scene format=3 uid="uid://fy11457awq7l"]
 
+[ext_resource type="Script" uid="uid://cd3a8ejv4avpw" path="res://scripts/ui/recipe_page.gd" id="1_7o5b1"]
+[ext_resource type="Texture2D" uid="uid://ds7joy14bd4b7" path="res://Assets/UI/Modals/modalSimple_v2.png" id="1_m2s0b"]
+[ext_resource type="Theme" uid="uid://cdh073a6xnumm" path="res://resources/Default_theme.theme" id="2_xrb5n"]
+
+[sub_resource type="Animation" id="Animation_55j1a"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("page:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_7o5b1"]
+resource_name = "despawn"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("page:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 6.9643984),
+"update": 0,
+"values": [0.0, 1.5707963267948966]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_55j1a"]
+_data = {
+&"RESET": SubResource("Animation_55j1a"),
+&"despawn": SubResource("Animation_7o5b1")
+}
+
 [node name="recipe_page" type="Node2D" unique_id=1836809507]
+script = ExtResource("1_7o5b1")
+
+[node name="page" type="Sprite2D" parent="." unique_id=83172785]
+position = Vector2(378.25, 133.865)
+scale = Vector2(0.5, 0.44)
+texture = ExtResource("1_m2s0b")
+offset = Vector2(459.5, 546.52)
+
+[node name="info_list" type="VBoxContainer" parent="page" unique_id=874121039]
+offset_left = 53.5
+offset_top = 32.125004
+offset_right = 863.5
+offset_bottom = 734.125
+
+[node name="title" type="Label" parent="page/info_list" unique_id=2087690047]
+layout_mode = 2
+theme = ExtResource("2_xrb5n")
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 80
+text = "Test"
+autowrap_mode = 3
+
+[node name="value" type="Label" parent="page/info_list" unique_id=33634928]
+layout_mode = 2
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 80
+text = "Value: 123"
+
+[node name="components" type="Label" parent="page/info_list" unique_id=703455683]
+layout_mode = 2
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 60
+text = "Components:
+tests"
+autowrap_mode = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=958230558]
+libraries/ = SubResource("AnimationLibrary_55j1a")

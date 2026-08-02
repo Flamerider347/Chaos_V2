@@ -1,4 +1,5 @@
 extends CharacterBody3D
+class_name Player
 
 var health: float = 100.0
 var max_health: float = 100.0
@@ -53,6 +54,7 @@ var outline_material: Material = preload("res://Assets/misc/outline_shader.tres"
 @onready var ui_sensitivity_slider: Slider = get_node_or_null("/root/main/Pause_UI/sensitivity")
 @onready var main_game_ui = get_node_or_null("/root/main/UI")
 @onready var pause_menu_ui = get_node_or_null("/root/main/Pause_UI")
+@onready var recipe_book_ui = get_node_or_null("/root/main/Recipe_UI")
 
 
 func _enter_tree() -> void:
@@ -93,7 +95,10 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= GRAVITY * delta
 		if position.y < -5: position = Vector3(0, 2, 0)
-		
+	
+	if Input.is_action_just_pressed("recipe"): # DO SOMETHING TO ENSURE THAT YOU CAN'T OVERIDE COMPUTER, PROBABLY NEED A DEDICATED FUNCTION TO HANDLE UI STATESa
+		toggle_recipe_book()
+	
 	if GameData.paused:
 		velocity.x = 0
 		velocity.z = 0
@@ -190,6 +195,25 @@ func leave_computer_UI():
 	get_node("/root/main/Computer_UI").hide()
 	GameData.paused = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+
+func toggle_recipe_book():
+	recipe_book_ui.toggle()
+
+	if GameData.using_computer:
+		return
+	elif pause_menu_ui.visible:
+		main_game_ui.visible = false
+		pause_menu_ui.visible = false
+	else:
+		GameData.paused = !GameData.paused
+		main_game_ui.visible = !GameData.paused
+		pause_menu_ui.visible = false
+	if GameData.paused:
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	else:
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
 
 func _handle_snapping(surface_target: Node3D) -> void:
 	if current_slot == "0" or not is_instance_valid(held_item): return
