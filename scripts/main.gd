@@ -160,14 +160,19 @@ func _setup_upgrade_ui_connections() -> void:
 
 func calculate_daily_power_cost(day: int) -> int:
 	if day <= 1:
-		return 0
+		return 0 # Day 1 Grace Period
 	
-	var x: float = float(day - 1)
-	var min_cost: float = 10.0
-	var max_cap: float = 2000.0
+	var base_cost: float = 200.0
+	var growth_rate: float = 1.35
 	
-	var cost: float = min_cost + (max_cap - min_cost) * (pow(x, 3.0) / (220.0 + pow(x, 3.0))) + 1
-	return int(cost)
+	# Exponential growth starting from Day 2
+	var raw_tax: float = base_cost * pow(growth_rate, float(day - 2))
+	
+	var diff_mult: float = GameData.get_difficulty_multiplier() # 0.6x Easy, 1.0x Normal, 2.0x Hard
+	var player_mult: float = 1.0 + ((GameData.get_player_count() - 1) * 0.50) # +50% per teammate
+	
+	return int(raw_tax * diff_mult * player_mult)
+
 
 
 func _on_environment_controller_new_day(day: int) -> void:
@@ -175,9 +180,9 @@ func _on_environment_controller_new_day(day: int) -> void:
 	if is_instance_valid(current_day_label):
 		current_day_label.text = "Day: " + str(current_day)
 		
-	if day > 0:
-		var todays_tax: int = calculate_daily_power_cost(day)
-		GameData.power -= todays_tax
+	# Deduct daily tax (Returns 0 on Day 1)
+	var todays_tax: int = calculate_daily_power_cost(day)
+	GameData.power -= todays_tax
 	
 	if multiplayer.is_server():
 		var new_stocks: Dictionary = {}
@@ -187,7 +192,8 @@ func _on_environment_controller_new_day(day: int) -> void:
 		
 		rpc("sync_daily_stock", new_stocks)
 		
-		if day > 0 and GameData.power < 0:
+		# Only check lose condition starting on Day 2
+		if day > 1 and GameData.power < 0:
 			rpc("burn_it_all_down")
 	
 	thing_ui_update()
@@ -258,19 +264,19 @@ func request_upgrade_purchase(upgrade_node_name: String) -> void:
 		rpc("sync_upgrade_result", upgrade_node_name, GameData.upgrade_levels[upgrade_node_name], GameData.power)
 
 
+
 @rpc("authority", "call_local", "reliable")
 func sync_upgrade_result(upgrade_node_name: String, new_level: int, new_power: int) -> void:
 	GameData.upgrade_levels[upgrade_node_name] = new_level
 	GameData.power = new_power
 	
-	if upgrade_node_name == "artificial_sun" and new_level >= 4:
+	# Ensure victory checks for "sun_stage" max_level (Stage 3)
+	if upgrade_node_name == "sun_stage" and new_level >= 3:
 		_trigger_victory()
-		
 	else:
 		update_UI()
-	
-
 		_refresh_players_after_upgrade()
+
 
 
 func _refresh_players_after_upgrade() -> void:

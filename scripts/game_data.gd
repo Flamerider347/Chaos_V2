@@ -1,6 +1,7 @@
 extends Node
 
 signal dedicated_server_setup
+signal upgrade_purchased(upgrade_name, new_level)
 
 var score: int = 0
 var power: int = 0
@@ -25,45 +26,54 @@ var game_port: int = 0
 var peer = ENetMultiplayerPeer.new()
 var difficulty = "easy"
 
+const DIFFICULTY_MULTIPLIERS: Dictionary = {
+	"medium_rare": 0.6, # Easy (0.6x multiplier)
+	"easy": 0.6,
+	"well_done": 1.0,   # Normal (1.0x multiplier)
+	"normal": 1.0,
+	"medium": 1.0,
+	"charred": 2.0,     # Hard (2.0x multiplier)
+	"hard": 2.0
+}
+
 const UPGRADES_DB: Dictionary = {
 	"drop_chance": {
 		"id": "drop_chance",
 		"max_level": 5,
-		"base_cost": 20,
-		"cost_multiplier": 1.5,
+		"base_cost": 250,
+		"cost_multiplier": 1.4,
 		"base_value": 0.0,
 		"increment": 0.10
 	},
 	"chop_chance": {
 		"id": "chop_chance",
 		"max_level": 5,
-		"base_cost": 20,
-		"cost_multiplier": 1.5,
+		"base_cost": 250,
+		"cost_multiplier": 1.4,
 		"base_value": 0.0,
 		"increment": 0.10
 	},
 	"stack_size": {
 		"id": "stack_size",
 		"max_level": 7,
-		"base_cost": 25,
-		"cost_multiplier": 1.8,
+		"base_cost": 150,
+		"cost_multiplier": 1.3,
 		"base_value": 3.0,
 		"increment": 1.0
 	},
 	"daily_recipe_buff": {
 		"id": "daily_recipe_buff",
 		"max_level": 4,
-		"base_cost": 30,
-		"cost_multiplier": 2.0,
+		"base_cost": 600,
+		"cost_multiplier": 1.6,
 		"base_value": 2.0,
 		"increment": 0.5
 	},
-	"artificial_sun": {
-		"id": "artificial_sun",
-		"max_level": 4,
-		"base_cost": 5000,
-		"cost_multiplier": 1.0,
-		"base_value": 0.0,
+	"sun_stage": {
+		"id": "sun_stage",
+		"max_level": 3,
+		"stage_costs": [500, 1500, 3000], # Easy Base Costs
+		"base_value": 1.0,
 		"increment": 1.0
 	}
 }
@@ -73,7 +83,7 @@ var upgrade_levels: Dictionary = {
 	"chop_chance": 0,
 	"stack_size": 0,
 	"daily_recipe_buff": 0,
-	"artificial_sun": 0
+	"sun_stage": 0
 }
 
 
@@ -211,12 +221,55 @@ func recieve_redirect(target_port: int) -> void:
 	join_game(spooler_ip, target_port)
 
 
+func get_difficulty_multiplier() -> float:
+	return DIFFICULTY_MULTIPLIERS.get(difficulty.to_lower(), 1.0)
+
+
+func get_player_count() -> int:
+	var players = get_tree().get_nodes_in_group("player")
+	return max(1, players.size())
+
+
 func get_upgrade_cost(upgrade_name: String) -> int:
 	if not UPGRADES_DB.has(upgrade_name):
 		return 0
+		
+	var db_entry: Dictionary = UPGRADES_DB[upgrade_name]
+	var current_lvl: int = upgrade_levels.get(upgrade_name, 0)
+	var raw_cost: float = 0.0
+
+	# Check for custom stage costs array
+	if db_entry.has("stage_costs"):
+		if current_lvl < db_entry["stage_costs"].size():
+			raw_cost = db_entry["stage_costs"][current_lvl]
+	else:
+		var base_cost: float = db_entry["base_cost"]
+		var mult: float = db_entry["cost_multiplier"]
+		raw_cost = base_cost * pow(mult, current_lvl)
+
+	# Multipliers
+	var player_mult: float = 1.0 + ((get_player_count() - 1) * 0.50)
+	var diff_mult: float = get_difficulty_multiplier()
+	
+	# Override diff_mult for Sun Stage to scale relative to custom Easy base
+	if upgrade_name == "sun_stage":
+		match difficulty.to_lower():
+			"medium_rare", "easy":
+				diff_mult = 1.0
+			"well_done", "normal", "medium":
+				diff_mult = 1.5
+			"charred", "hard":
+				diff_mult = 2.0
+
+	return int(raw_cost * player_mult * diff_mult)
+
+
+func get_upgrade_value(upgrade_name: String) -> float:
+	if not UPGRADES_DB.has(upgrade_name):
+		return 0.0
 	var data: Dictionary = UPGRADES_DB[upgrade_name]
 	var level: int = upgrade_levels.get(upgrade_name, 0)
-	return int(data["base_cost"] * pow(data["cost_multiplier"], level))
+	return data["base_value"] + (level * data["increment"])
 
 
 func get_upgrade_value_text(upgrade_name: String) -> String:
@@ -234,8 +287,6 @@ func get_upgrade_value_text(upgrade_name: String) -> String:
 	
 	return "%s -> %s" % [current_val, next_val]
 
-# Add a signal so local UI nodes can listen for upgrade changes automatically
-signal upgrade_purchased(upgrade_name, new_level)
 
 func purchase_upgrade(upgrade_name: String) -> bool:
 	if not UPGRADES_DB.has(upgrade_name):
@@ -245,15 +296,11 @@ func purchase_upgrade(upgrade_name: String) -> bool:
 	var current_lvl = upgrade_levels.get(upgrade_name, 0)
 	var max_lvl = UPGRADES_DB[upgrade_name]["max_level"]
 	
-	# Check affordability and level cap
 	if score >= cost and current_lvl < max_lvl:
 		score -= cost
 		upgrade_levels[upgrade_name] = current_lvl + 1
 		
-		# Emit local signal
 		upgrade_purchased.emit(upgrade_name, upgrade_levels[upgrade_name])
-		
-		# Notify the main game loop to update UI elements
 		refresh_game_ui()
 		return true
 		
@@ -268,7 +315,6 @@ func refresh_game_ui() -> void:
 		if main_node.has_method("thing_ui_update"):
 			main_node.thing_ui_update()
 
-	# Synchronize active player inventory/limits if local player exists
 	var players = get_tree().get_nodes_in_group("player")
 	for player in players:
 		if player.is_multiplayer_authority() if player.has_method("is_multiplayer_authority") else true:
@@ -287,27 +333,12 @@ func get_upgrade_value_at_level(upgrade_name: String, level: int) -> String:
 
 	match upgrade_name:
 		"drop_chance", "chop_chance":
-			# Formats decimal to percentage (e.g., 0.10 -> 10%)
 			return str(int(total_val * 100)) + "%"
-			
 		"stack_size":
-			# Formats integer stack size
 			return str(int(total_val))
-			
 		"daily_recipe_buff":
-			# Formats multiplier (e.g., 2.5x)
 			return str(total_val) + "x"
-			
-		"artificial_sun":
-			# Displays stage level
+		"sun_stage":
 			return "Stage " + str(int(total_val))
-			
 		_:
 			return str(total_val)
-
-func get_upgrade_value(upgrade_name: String) -> float:
-	if not UPGRADES_DB.has(upgrade_name):
-		return 0.0
-	var data: Dictionary = UPGRADES_DB[upgrade_name]
-	var level: int = upgrade_levels.get(upgrade_name, 0)
-	return data["base_value"] + (level * data["increment"])

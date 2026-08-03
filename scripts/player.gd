@@ -163,7 +163,9 @@ func _handle_interactions(item_target: Node3D, surface_target: Node3D) -> void:
 			if item_target.is_in_group("punchable"): item_target._on_punched()
 			elif item_target.is_in_group("pickupable") and can_pickup: pickup_object(item_target)
 		elif is_instance_valid(surface_target):
-			if surface_target.is_in_group("storage_button"): surface_target.spawn_item.emit(surface_target.name)
+			if surface_target.is_in_group("difficulty_button") and not GameData.closed_lobby:
+				rpc("change_difficulty",str(surface_target.name))
+			elif surface_target.is_in_group("storage_button"): surface_target.spawn_item.emit(surface_target.name)
 			elif surface_target.is_in_group("door"): surface_target.open_door()
 			elif surface_target.is_in_group("computer") and not GameData.using_computer and GameData.closed_lobby: computer_UI()
 		
@@ -188,6 +190,13 @@ func computer_UI() -> void:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		rpc("broadcast_using_computer")
 		main_node.update_UI()
+
+@rpc ("any_peer","call_local","reliable")
+func change_difficulty(difficulty):
+	GameData.difficulty = difficulty.to_lower().to_snake_case()
+	print(GameData.difficulty)
+	get_node("/root/main/game/world/kitchen/main_kitchen/appliances/current_difficulty/difficulty").text = difficulty
+	get_node("/root/main/game/world/kitchen/main_kitchen/appliances/current_difficulty").material = get_node("/root/main/game/world/kitchen/main_kitchen/appliances/difficulty_table").find_child(difficulty).material
 
 @rpc("any_peer", "call_local", "reliable")
 func broadcast_using_computer() -> void:

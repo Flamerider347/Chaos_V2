@@ -27,6 +27,7 @@ func sync_open_door() -> void:
 	
 	# Trigger the local animation using an absolute path to prevent hierarchy breaks
 	var anim_player = get_node_or_null("/root/main/door_animation_player") 
+	$"../main_kitchen/appliances/difficulty_table".call_deferred("queue_free")
 	# Note: If your door_animation_player is inside another folder, update this string path!
 	if anim_player:
 		anim_player.play("door_open")

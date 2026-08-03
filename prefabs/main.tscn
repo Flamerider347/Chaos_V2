@@ -18,6 +18,7 @@
 [ext_resource type="Script" uid="uid://bavxckwopedl" path="res://scripts/score.gd" id="9_m7hx3"]
 [ext_resource type="ArrayMesh" uid="uid://ttmxxag5bbki" path="res://Assets/Models/Hayden_Kitchen.obj" id="10_kjcd6"]
 [ext_resource type="ArrayMesh" uid="uid://brkgoksr1lp5h" path="res://Assets/Models/Roof_model.obj" id="13_hs76b"]
+[ext_resource type="ArrayMesh" uid="uid://gjadf83xkhat" path="res://Assets/Models/kitchenassets/kitchentable_A_large.obj" id="14_rx2bs"]
 [ext_resource type="PackedScene" uid="uid://p1hhewtk3wmp" path="res://Assets/Models/hayden_computer.tscn" id="17_d17y0"]
 [ext_resource type="ArrayMesh" uid="uid://clb6b847k0tlf" path="res://Assets/Models/kitchenassets/pillar_A.obj" id="18_lbgj2"]
 [ext_resource type="Material" uid="uid://141503k533fm" path="res://Assets/misc/mesh_colours.tres" id="19_pet1o"]
@@ -137,6 +138,29 @@ albedo_color = Color(0, 0, 0, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_iocbj"]
 size = Vector3(19.915184, 2.506958, 15.770504)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_32250"]
+albedo_color = Color(0, 1, 0.10980392, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_tnwyx"]
+material = SubResource("StandardMaterial3D_32250")
+size = Vector3(1.4, 0.05, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rx2bs"]
+material = SubResource("StandardMaterial3D_32250")
+size = Vector3(0.5, 0.05, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_iw3lg"]
+size = Vector3(0.5, 0.05, 0.3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tnwyx"]
+albedo_color = Color(1, 1, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6ritx"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rx2bs"]
+size = Vector3(3, 1.003752, 2)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jlmk8"]
 albedo_texture = ExtResource("9_2mmg3")
@@ -499,6 +523,80 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17557147, 0.753479, 2.8004
 shape = SubResource("BoxShape3D_iocbj")
 
 [node name="appliances" type="Node3D" parent="game/world/kitchen/main_kitchen" unique_id=1896586051]
+
+[node name="current_difficulty" type="CSGMesh3D" parent="game/world/kitchen/main_kitchen/appliances" unique_id=310299244]
+transform = Transform3D(2, 0, 0, 0, -8.742278e-08, -2, 0, 2, -8.742278e-08, -0.19, 2.2, -4.919)
+mesh = SubResource("BoxMesh_tnwyx")
+
+[node name="difficulty" type="Label3D" parent="game/world/kitchen/main_kitchen/appliances/current_difficulty" unique_id=1626418057]
+transform = Transform3D(0.70000005, 0, 0, 0, -3.0597974e-08, 0.70000005, 0, -0.70000005, -3.0597974e-08, 0, 0.027433634, 0)
+text = "Medium Rare"
+
+[node name="difficulty_table" type="StaticBody3D" parent="game/world/kitchen/main_kitchen/appliances" unique_id=876586629]
+collision_layer = 3
+collision_mask = 3
+
+[node name="Medium Rare" type="CSGMesh3D" parent="game/world/kitchen/main_kitchen/appliances/difficulty_table" unique_id=35144868 groups=["difficulty_button"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.92999995, 0.074, -1.3397937)
+use_collision = true
+collision_layer = 9
+collision_mask = 9
+mesh = SubResource("BoxMesh_rx2bs")
+
+[node name="medium_rare" type="Label3D" parent="game/world/kitchen/main_kitchen/appliances/difficulty_table/Medium Rare" unique_id=277432902]
+transform = Transform3D(0.70000005, 0, 0, 0, -3.0597974e-08, 0.70000005, 0, -0.70000005, -3.0597974e-08, 0, 0.027433634, 0)
+text = "Easy"
+
+[node name="Well Done" type="CSGMesh3D" parent="game/world/kitchen/main_kitchen/appliances/difficulty_table" unique_id=777979768 groups=["difficulty_button"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.92999995, 0.074, -0.989794)
+use_collision = true
+collision_layer = 9
+collision_mask = 9
+mesh = SubResource("BoxMesh_iw3lg")
+material = SubResource("StandardMaterial3D_tnwyx")
+
+[node name="well_done" type="Label3D" parent="game/world/kitchen/main_kitchen/appliances/difficulty_table/Well Done" unique_id=72653966]
+transform = Transform3D(0.70000005, 0, 0, 0, -3.0597974e-08, 0.70000005, 0, -0.70000005, -3.0597974e-08, 0, 0.027433634, 0)
+text = "Normal"
+
+[node name="CHARRED" type="CSGMesh3D" parent="game/world/kitchen/main_kitchen/appliances/difficulty_table" unique_id=118682669 groups=["difficulty_button"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.92999995, 0.074, -0.6397939)
+use_collision = true
+collision_layer = 9
+collision_mask = 9
+mesh = SubResource("BoxMesh_iw3lg")
+material = SubResource("StandardMaterial3D_6ritx")
+
+[node name="hard" type="Label3D" parent="game/world/kitchen/main_kitchen/appliances/difficulty_table/CHARRED" unique_id=1363825639]
+transform = Transform3D(0.70000005, 0, 0, 0, -3.0597974e-08, 0.70000005, 0, -0.70000005, -3.0597974e-08, 0, 0.027433634, 0)
+text = "Hard"
+
+[node name="KitchentableALarge" type="MeshInstance3D" parent="game/world/kitchen/main_kitchen/appliances/difficulty_table" unique_id=1449678788]
+transform = Transform3D(0.69999915, 0, -0.001084412, 0, 0.7, 0, 0.001084412, 0, 0.69999915, -0.18529764, -0.602, -0.98797774)
+mesh = ExtResource("14_rx2bs")
+
+[node name="Label3D" type="Label3D" parent="game/world/kitchen/main_kitchen/appliances/difficulty_table/KitchentableALarge" unique_id=1083132090]
+transform = Transform3D(1.0000001, 2.3283064e-10, 6.938894e-18, 0, -4.3711392e-08, 1.0000001, 2.3283064e-10, -1.0000001, -4.3711395e-08, 0.39717844, 1.0111403, -0.5602832)
+text = "Set game difficulty here
+"
+font_size = 37
+outline_size = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="game/world/kitchen/main_kitchen/appliances/difficulty_table" unique_id=1429237279]
+transform = Transform3D(0.69999915, 0, -0.001084412, 0, 0.7, 0, 0.001084412, 0, 0.69999915, -0.18529764, -0.2533132, -0.98797774)
+shape = SubResource("BoxShape3D_rx2bs")
+
+[node name="difficulty2" type="Label3D" parent="game/world/kitchen/main_kitchen/appliances/difficulty_table" unique_id=1516896849 groups=["difficulty_button"]]
+transform = Transform3D(0.70000005, 0, 0, 0, -3.0597974e-08, 0.70000005, 0, -0.70000005, -3.0597974e-08, -0.645342, 0.101442456, -1.2398906)
+text = "Changing difficulty increases
+upgrade cost and power 
+requirements, so harder levels
+will take longer to complete.
+"
+font_size = 28
+outline_size = 8
+horizontal_alignment = 0
+vertical_alignment = 0
 
 [node name="chopping_board" parent="game/world/kitchen/main_kitchen/appliances" unique_id=1185969342 instance=ExtResource("6_fpsi2")]
 transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, -9.10625, -0.98, 5.642437)
@@ -1419,31 +1517,31 @@ text = "2 > 2.5x"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="artificial_sun" type="Control" parent="computer_UI/shop_container/UI_margins/Upgrades_UI" unique_id=213701468]
+[node name="sun_stage" type="Control" parent="computer_UI/shop_container/UI_margins/Upgrades_UI" unique_id=213701468]
 layout_mode = 2
 
-[node name="MailCream" type="Sprite2D" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/artificial_sun" unique_id=418714888]
+[node name="MailCream" type="Sprite2D" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=418714888]
 position = Vector2(227, 57.75)
 scale = Vector2(0.4, 0.3)
 texture = ExtResource("40_iwmkf")
 
-[node name="FoodiconsCarrotTransparent" type="Sprite2D" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/artificial_sun" unique_id=1102649160]
+[node name="FoodiconsCarrotTransparent" type="Sprite2D" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=1102649160]
 visible = false
 position = Vector2(64, 54)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("40_1jfbq")
 
-[node name="ButtonGreen" type="Sprite2D" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/artificial_sun" unique_id=1281044428]
+[node name="ButtonGreen" type="Sprite2D" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=1281044428]
 position = Vector2(366.25, 55.000008)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("39_xfyap")
 
-[node name="ButtonRed" type="Sprite2D" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/artificial_sun" unique_id=551015719]
+[node name="ButtonRed" type="Sprite2D" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=551015719]
 position = Vector2(366.25, 55.000008)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("42_7m1s4")
 
-[node name="cost" type="Button" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/artificial_sun" unique_id=1969327039]
+[node name="cost" type="Button" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=1969327039]
 layout_mode = 0
 offset_left = 300.25
 offset_top = 22.000008
@@ -1454,7 +1552,7 @@ theme_override_font_sizes/font_size = 35
 text = "20"
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/artificial_sun" unique_id=583159227]
+[node name="Label" type="Label" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=583159227]
 layout_mode = 0
 offset_left = 106.0
 offset_top = 20.000006
@@ -1462,7 +1560,7 @@ offset_right = 264.99963
 offset_bottom = 68.80001
 text = "Flashlight damage"
 
-[node name="Label2" type="Label" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/artificial_sun" unique_id=1852836994]
+[node name="Label2" type="Label" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=1852836994]
 layout_mode = 0
 offset_left = 106.0
 offset_top = 40.000008
@@ -1474,7 +1572,7 @@ theme_override_font_sizes/font_size = 12
 text = "Increase damage done to goblins by flashlight"
 autowrap_mode = 2
 
-[node name="stock" type="Label" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/artificial_sun" unique_id=1010993747]
+[node name="stock" type="Label" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=1010993747]
 layout_mode = 0
 offset_left = 21.4
 offset_top = 22.8
