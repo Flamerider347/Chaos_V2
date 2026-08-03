@@ -18,7 +18,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
-		velocity.y -= 9.8 * delta
+		velocity.y -= delta
 	elif not has_landed:
 		land()
 
@@ -26,7 +26,7 @@ func _physics_process(delta: float) -> void:
 
 func land() -> void:
 	has_landed = true
-	
+	$despawn_timer.start(15)
 	# Swap visual meshes and collision shapes
 	$CSGBakedMeshInstance3D2.show()
 	$CSGBakedMeshInstance3D.hide()
@@ -61,3 +61,7 @@ func land() -> void:
 		
 		if is_instance_valid(item_spawner):
 			item_spawner.spawn(package)
+
+
+func _on_despawn_timer_timeout() -> void:
+	self.call_deferred("queue_free")

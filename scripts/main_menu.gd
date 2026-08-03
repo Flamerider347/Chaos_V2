@@ -1,7 +1,7 @@
 extends Node
 
 @onready var menu_ui = $menu_UI
-@onready var username_input: LineEdit = $menu_UI/username
+@onready var username_input: LineEdit = $menu_UI/LAN_menu/username
 @onready var join_code_input: LineEdit = $menu_UI/LAN_menu/join_code
 @onready var status_label: Label = $menu_UI/status
 @onready var lobby_error_label: Label = $"menu_UI/lobby error"

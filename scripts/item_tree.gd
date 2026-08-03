@@ -26,11 +26,13 @@ func _ready() -> void:
 	if has_node("Label3D"):
 		$Label3D.text = str(item_left)
 
+
 func _on_punched() -> void:
 	if not multiplayer.is_server():
 		rpc_id(1, "server_handle_punch", multiplayer.get_unique_id())
 		return
 	server_handle_punch(1)
+
 
 func _on_item_timer_timeout() -> void:
 	if not multiplayer.is_server(): return
@@ -44,15 +46,30 @@ func _on_item_timer_timeout() -> void:
 		if has_node("item_timer"):
 			$item_timer.start(60)
 
+
 @rpc("any_peer", "reliable")
 func server_handle_punch(sender_id: int) -> void:
 	if not multiplayer.is_server() or item_left <= 0: return
 
-	# FIX: Instead of hunting by node string names, hide by index directly from our array!
 	if item_left <= item_children.size():
 		item_children[item_left - 1].hide()
 
 	item_left -= 1
+	
+	# Determine base spawns + bonus drops from drop_chance
+	var drop_count: int = 1
+	var bonus_chance: float = GameData.get_upgrade_value("drop_chance")
+	if randf() < bonus_chance:
+		drop_count += 1
+
+	for i in range(drop_count):
+		_spawn_single_item(sender_id)
+	
+	if has_node("item_timer"):
+		$item_timer.start(60)
+
+
+func _spawn_single_item(sender_id: int) -> void:
 	var item_name_prefix: String = item_type_cached.to_lower()
 	var angle: float = randf_range(0, 2 * PI)
 	var spawn_pos: Vector3 = global_position + Vector3(sin(angle), 0.2, cos(angle)) * randf_range(1, 3)
@@ -61,6 +78,3 @@ func server_handle_punch(sender_id: int) -> void:
 	
 	if is_instance_valid(item_spawner):
 		item_spawner.spawn(package)
-	
-	if has_node("item_timer"):
-		$item_timer.start(60)

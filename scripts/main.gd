@@ -1,21 +1,28 @@
 extends Node3D
 
-# --- Tileable Shop Item Database ---
-# Format: "UI_Node_Name": [max_daily_stock, "prefab_item_type"]
-# Easily add new items here when you duplicate nodes in your UI!
+# Base costs mapped for each item type
+const ITEM_PRICES: Dictionary = {
+	"Meat": 15,
+	"Carrot": 10,
+	"Tomato": 10,
+	"Lettuce": 10,
+	"Cheese": 10,
+	"Bun": 15,
+	"Flashlight": 20
+}
+
 const ITEM_DB: Dictionary = {
 	"Meat": [5, "meat"],
 	"Carrot": [5, "carrot"],
 	"Tomato": [5, "tomato"],
 	"Lettuce": [3, "lettuce"],
 	"Cheese": [4, "cheese"],
-	"Bun": [4,"bun"]
+	"Bun": [4, "bun"],
+	"Flashlight": [5, "flashlight"]
 }
 
-# Runtime tracking for stock quantities across clients
 var current_stocks: Dictionary = {}
 
-# --- UI Onready Variables ---
 @onready var score_label: Label = get_node_or_null("/root/main/UI/score_label")
 @onready var day_timer_label: Label = get_node_or_null("/root/main/UI/day_timer")
 @onready var current_day_label: Label = get_node_or_null("/root/main/UI/current_day")
@@ -27,27 +34,21 @@ var current_stocks: Dictionary = {}
 @onready var warning_container = get_node_or_null("/root/main/computer_UI/warning")
 @onready var warning_text_label: Label = get_node_or_null("/root/main/computer_UI/warning/warning_text") 
 
-
-# Dedicated MultiplayerSpawners
 @onready var tree_spawner: MultiplayerSpawner = get_node_or_null("game/spawners/tree_spawner")
 @onready var item_spawner: MultiplayerSpawner = get_node_or_null("game/spawners/item_spawner")
 
-# Defined boundaries for map positions
 var min_spawn_bound: Vector2 = Vector2(-40, -40)
 var max_spawn_bound: Vector2 = Vector2(35, 35)
 
-# --- Gameplay Core Variables ---
 var score: int = GameData.score
 var power: float = GameData.power
-
-var total_power_cost: int = 0
 var current_day: int = 0
 var paused: bool = false
 
 
 func _ready() -> void:
 	GameData.score = 0
-	GameData.power = 20
+	GameData.power = 200000
 	$Pause_UI/roomcode.text = "Port: " + str(GameData.game_port)
 	$Pause_UI/host_ip.text = "IP:" + str(GameData.room_code)
 	GameData.in_game = true
@@ -78,6 +79,7 @@ func _ready() -> void:
 		item_spawner.spawn_function = _on_custom_item_spawn_shared
 
 	_setup_shop_ui_connections()
+	_setup_upgrade_ui_connections()
 
 
 func _input(event: InputEvent) -> void:
@@ -126,11 +128,11 @@ func _process(_delta: float) -> void:
 		$UI/fps.text = "FPS: " + str(Engine.get_frames_per_second())
 
 
-# --- Shop UI Signal Connections ---
-
 func _setup_shop_ui_connections() -> void:
-	var items_container = $computer_UI/shop_container/Items_UI
-	
+	var items_container = get_node_or_null("computer_UI/shop_container/UI_margins/Items_UI")
+	if not items_container:
+		return
+
 	for item_node in items_container.get_children():
 		var node_name = item_node.name
 		if ITEM_DB.has(node_name):
@@ -140,19 +142,43 @@ func _setup_shop_ui_connections() -> void:
 					button.pressed.connect(_on_buy_button_pressed.bind(node_name))
 
 
-# --- Day Cycle & Survival Math Logic ---
+func _setup_upgrade_ui_connections() -> void:
+	var upgrades_container = get_node_or_null("computer_UI/shop_container/UI_margins/Upgrades_UI")
+
+	if not upgrades_container:
+		return
+
+	for upgrade_node in upgrades_container.get_children():
+		var node_name = upgrade_node.name
+		if GameData.UPGRADES_DB.has(node_name):
+			var button = upgrade_node.get_node_or_null("cost")
+			if button and button is Button:
+				if not button.pressed.is_connected(_on_upgrade_button_pressed.bind(node_name)):
+					button.pressed.connect(_on_upgrade_button_pressed.bind(node_name))
+
+
+
+func calculate_daily_power_cost(day: int) -> int:
+	if day <= 1:
+		return 0
+	
+	var x: float = float(day - 1)
+	var min_cost: float = 10.0
+	var max_cap: float = 2000.0
+	
+	var cost: float = min_cost + (max_cap - min_cost) * (pow(x, 3.0) / (220.0 + pow(x, 3.0))) + 1
+	return int(cost)
+
 
 func _on_environment_controller_new_day(day: int) -> void:
 	current_day = day
 	if is_instance_valid(current_day_label):
 		current_day_label.text = "Day: " + str(current_day)
 		
-	if day != 1:
-		total_power_cost += 10 * day 
-
-	GameData.power = 20 + GameData.score - total_power_cost
+	if day > 0:
+		var todays_tax: int = calculate_daily_power_cost(day)
+		GameData.power -= todays_tax
 	
-	# Host randomizes daily stock per ITEM_DB max ranges and syncs to all clients
 	if multiplayer.is_server():
 		var new_stocks: Dictionary = {}
 		for item_key in ITEM_DB.keys():
@@ -161,7 +187,7 @@ func _on_environment_controller_new_day(day: int) -> void:
 		
 		rpc("sync_daily_stock", new_stocks)
 		
-		if GameData.power < 0:
+		if day > 0 and GameData.power < 0:
 			rpc("burn_it_all_down")
 	
 	thing_ui_update()
@@ -173,8 +199,6 @@ func sync_daily_stock(new_stocks: Dictionary) -> void:
 	current_stocks = new_stocks
 	update_UI()
 
-
-# --- Purchasing & Supply Drop Logic ---
 
 func _on_buy_button_pressed(item_node_name: String) -> void:
 	rpc_id(1, "request_purchase", item_node_name)
@@ -188,29 +212,16 @@ func request_purchase(item_node_name: String) -> void:
 	if not ITEM_DB.has(item_node_name):
 		return
 
-	var item_node = $computer_UI/PanelContainer/Items_UI.get_node_or_null(item_node_name)
-	if not item_node:
-		return
-		
-	var cost_node = item_node.find_child("cost")
-	if not cost_node:
-		return
-		
-	var item_cost: int = int(cost_node.text)
+	var item_cost: int = ITEM_PRICES.get(item_node_name, 10)
 	var stock_available: int = current_stocks.get(item_node_name, 0)
 	
-	# Verify user has required Power and stock is remaining
 	if GameData.power >= item_cost and stock_available > 0:
 		current_stocks[item_node_name] -= 1
 		GameData.power -= item_cost
 		
-		# Retrieve item prefab string identifier from ITEM_DB array slot 1
 		var item_spawn_type: String = ITEM_DB[item_node_name][1]
-		
-		# Summon Supply Drop Crate on server
 		spawn_supply_drop(item_spawn_type)
 		
-		# Update power and stock on all peers
 		rpc("sync_purchase_result", item_node_name, current_stocks[item_node_name], GameData.power)
 
 
@@ -221,23 +232,72 @@ func sync_purchase_result(item_node_name: String, new_stock: int, new_power: int
 	update_UI()
 
 
+func _on_upgrade_button_pressed(upgrade_node_name: String) -> void:
+	rpc_id(1, "request_upgrade_purchase", upgrade_node_name)
+
+
+@rpc("any_peer", "call_local", "reliable")
+func request_upgrade_purchase(upgrade_node_name: String) -> void:
+	if not multiplayer.is_server():
+		return
+
+	if not GameData.UPGRADES_DB.has(upgrade_node_name):
+		return
+
+	var current_lvl: int = GameData.upgrade_levels.get(upgrade_node_name, 0)
+	var max_lvl: int = GameData.UPGRADES_DB[upgrade_node_name]["max_level"]
+
+	if current_lvl >= max_lvl:
+		return
+
+	var cost: int = GameData.get_upgrade_cost(upgrade_node_name)
+
+	if GameData.power >= cost:
+		GameData.power -= cost
+		GameData.upgrade_levels[upgrade_node_name] += 1
+		rpc("sync_upgrade_result", upgrade_node_name, GameData.upgrade_levels[upgrade_node_name], GameData.power)
+
+
+@rpc("authority", "call_local", "reliable")
+func sync_upgrade_result(upgrade_node_name: String, new_level: int, new_power: int) -> void:
+	GameData.upgrade_levels[upgrade_node_name] = new_level
+	GameData.power = new_power
+	
+	if upgrade_node_name == "artificial_sun" and new_level >= 4:
+		_trigger_victory()
+		
+	else:
+		update_UI()
+	
+
+		_refresh_players_after_upgrade()
+
+
+func _refresh_players_after_upgrade() -> void:
+	# Update every local player instance on this peer
+	var players = get_tree().get_nodes_in_group("player")
+	for player in players:
+		if player.has_method("update_inventory_ui"):
+			player.update_inventory_ui()
+
+func _trigger_victory() -> void:
+	GameData.in_game = false
+	print("Artificial Sun Ignition Complete! Victory!")
+	get_tree().change_scene_to_file("res://Prefabs/victory_screen.tscn")
+
+
 func spawn_supply_drop(item_type: String) -> void:
 	if not multiplayer.is_server():
 		return
 
-	# Calculate a random drop position
 	var drop_position := Vector3(randf_range(-40, -14), 30, randf_range(12, -12))
 	var unique_name := "supply_drop_" + str(randi() % 100000)
-
-	# Format package data matching your _on_custom_item_spawn_shared setup:
-	# ["supply_drop", sender_id, target_pos, unique_name, contents]
 	var package: Array = ["supply_drop", multiplayer.get_unique_id(), drop_position, unique_name, [item_type]]
 
 	if is_instance_valid(item_spawner):
 		item_spawner.spawn(package)
 	else:
 		push_error("item_spawner is not valid!")
-
 
 
 func _on_custom_item_spawn_shared(data: Array) -> Node:
@@ -256,24 +316,22 @@ func _on_custom_item_spawn_shared(data: Array) -> Node:
 	item_instance.name = exact_name
 	item_instance.position = target_pos
 
-	# Set item properties if present
 	if "type" in item_instance:
 		item_instance.type = str(item_type)
 
-	# If spawning a supply drop, assign its contents payload
 	if data.size() >= 5 and "contents" in item_instance:
 		item_instance.contents = data[4]
 	
 	item_instance.set_multiplayer_authority(1)
-	
 	return item_instance
+
 
 func thing_ui_update() -> void:
 	if is_instance_valid(score_label):
 		score_label.text = "Score: " + str(GameData.score)
 		
 	if is_instance_valid(thing_ui_panel):
-		var next_night_cost = 10 * (current_day + 1)
+		var next_night_cost = calculate_daily_power_cost(current_day + 1)
 		var power_req = GameData.power - next_night_cost
 		
 		if power_req < 0:
@@ -283,7 +341,6 @@ func thing_ui_update() -> void:
 			 "\nPower Requirement for today: " + str(next_night_cost) + \
 			 "\nYou need " + str(power_req) + " more Power to survive tonight"
 		else:
-			power_req = 0
 			thing_ui_panel.text = "\nScore: " + str(GameData.score) + \
 			 "\nPower left: " + str(GameData.power) + \
 			 "\nPower Requirement for today: " + str(next_night_cost) + \
@@ -292,9 +349,11 @@ func thing_ui_update() -> void:
 
 @rpc("authority", "call_local", "reliable")
 func burn_it_all_down() -> void:
+	if current_day == 1: 
+		return
 	GameData.lost = true
 	GameData.in_game = false
-	
+
 	if multiplayer.multiplayer_peer:
 		multiplayer.multiplayer_peer.close()
 		multiplayer.multiplayer_peer = null
@@ -310,34 +369,30 @@ func _on_copybutton_pressed() -> void:
 
 func _items_pressed() -> void:
 	$computer_UI/computer_tabs.flip_h = true
-	$computer_UI/PanelContainer/Items_UI.show()
-	$computer_UI/PanelContainer/Upgrades_UI.hide()
+	$computer_UI/shop_container/UI_margins/Items_UI.show()
+	$computer_UI/shop_container/UI_margins/Upgrades_UI.hide()
 
 
 func _upgrades_pressed() -> void:
 	$computer_UI/computer_tabs.flip_h = false
-	$computer_UI/PanelContainer/Items_UI.hide()
-	$computer_UI/PanelContainer/Upgrades_UI.show()
+	$computer_UI/shop_container/UI_margins/Items_UI.hide()
+	$computer_UI/shop_container/UI_margins/Upgrades_UI.show()
+
 
 func _update_power_warning() -> void:
 	if not is_instance_valid(warning_container) or not is_instance_valid(warning_text_label):
 		return
 
-	# Calculate tonight's required power (matching your day calculation logic)
-	var power_requirement: int = 10 * (current_day + 1)
+	var power_requirement: int = calculate_daily_power_cost(current_day + 1)
 	var threshold: float = power_requirement + 50.0
 
-	# Show warning only if current power is below the threshold
 	if GameData.power < threshold:
 		warning_container.show()
-		
 		var surplus_or_deficit: float = GameData.power - power_requirement
 
 		if surplus_or_deficit >= 0:
-			# Player has enough power, but is within the warning buffer range
-			warning_text_label.text = "You need %d power \nto survive tonight, \nso spend carefully!\n(You have %d to spare)" % [power_requirement, int(surplus_or_deficit)]
+			warning_text_label.text = "You need %d power \nto survive tonight, \nso spend carefully!\n(You have %d spare)" % [power_requirement, int(surplus_or_deficit)]
 		else:
-			# Player does not have enough power
 			var power_needed: int = abs(int(surplus_or_deficit))
 			warning_text_label.text = "You need %d power \nto survive tonight,\nso spend carefully!\n(You need %d more power)" % [power_requirement, power_needed]
 	else:
@@ -348,11 +403,42 @@ func update_UI() -> void:
 	if has_node("computer_UI/power"):
 		$computer_UI/power.text = str(GameData.power)
 	
-	# Update the power warning panel
 	_update_power_warning()
-
-	var items_container = $computer_UI/shop_container/Items_UI
+	update_items_UI()
+	update_upgrades_UI()
 	
+	# Direct path recipe label refresh
+	_update_3d_recipe_labels_direct()
+
+
+func _update_3d_recipe_labels_direct() -> void:
+	var buff_multiplier: float = GameData.get_upgrade_value("daily_recipe_buff")
+	if buff_multiplier <= 0.0:
+		buff_multiplier = 1.5
+
+	var lbl1 = get_node_or_null("game/world/kitchen/thing_placement/recipe_of_the_day")
+	var lbl2 = get_node_or_null("game/world/kitchen/thing_placement/recipe_of_the_day2")
+
+	var r1 = RecipeManager.recipe_of_the_day
+	var r2 = RecipeManager.recipe_of_the_day2
+
+	# Check that r1 is not null and is a valid key before querying the dictionary
+	if is_instance_valid(lbl1) and r1 != null and RecipeManager.recipes.has(r1):
+		var data1 = RecipeManager.recipes[r1]
+		var val1 = int(int(data1.get("value", 0)) * buff_multiplier)
+		lbl1.text = "RECIPE OF THE DAY:\n%s ($%d)" % [data1.get("display_name", "Unknown"), val1]
+
+	# Check that r2 is not null and is a valid key before querying the dictionary
+	if is_instance_valid(lbl2) and r2 != null and RecipeManager.recipes.has(r2):
+		var data2 = RecipeManager.recipes[r2]
+		var val2 = int(int(data2.get("value", 0)) * buff_multiplier)
+		lbl2.text = "RECIPE OF THE DAY:\n%s ($%d)" % [data2.get("display_name", "Unknown"), val2]
+
+func update_items_UI() -> void:
+	var items_container = get_node_or_null("computer_UI/shop_container/UI_margins/Items_UI")
+	if not items_container:
+		return
+		
 	for item_node in items_container.get_children():
 		var node_name = item_node.name
 		if not ITEM_DB.has(node_name):
@@ -363,16 +449,69 @@ func update_UI() -> void:
 		var button_red = item_node.find_child("ButtonRed")
 		var button_green = item_node.find_child("ButtonGreen")
 		
+		var cost: int = ITEM_PRICES.get(node_name, 10)
+		var stock: int = current_stocks.get(node_name, 0)
+		
+		if stock_node:
+			stock_node.text = "Stock: " + str(stock)
+			
+		var locked: bool = (cost > GameData.power) or (stock <= 0)
+		
 		if cost_node:
-			var cost: int = int(cost_node.text)
-			var stock: int = current_stocks.get(node_name, 0)
-			
-			if stock_node:
-				stock_node.text = "Stock: " + str(stock)
-			
-			var locked: bool = (cost > GameData.power) or (stock <= 0)
-			
-			if button_red:
-				button_red.visible = locked
-			if button_green and button_green is Button:
-				button_green.disabled = locked
+			if cost_node is Button:
+				cost_node.text = "-" if stock <= 0 else str(cost)
+			elif cost_node is Label:
+				cost_node.text = "-" if stock <= 0 else str(cost)
+
+		if button_red:
+			button_red.visible = locked
+		if button_green:
+			button_green.visible = not locked
+
+
+
+func update_upgrades_UI() -> void:
+	var upgrades_container = get_node_or_null("computer_UI/shop_container/UI_margins/Upgrades_UI")
+	if not upgrades_container:
+		return
+
+	for upgrade_node in upgrades_container.get_children():
+		var node_name = upgrade_node.name
+		if not GameData.UPGRADES_DB.has(node_name):
+			continue
+
+		var current_lvl: int = GameData.upgrade_levels.get(node_name, 0)
+		var max_lvl: int = GameData.UPGRADES_DB[node_name]["max_level"]
+		var is_maxed: bool = current_lvl >= max_lvl
+		var cost: int = GameData.get_upgrade_cost(node_name)
+
+		var cost_button = upgrade_node.get_node_or_null("cost")
+		var level_label = upgrade_node.get_node_or_null("level")
+		
+		# Find the label where the upgrade values will be displayed
+		var value_label = upgrade_node.get_node_or_null("stock")
+		if not value_label:
+			value_label = upgrade_node.get_node_or_null("stat_label") # Alternative fallback name
+
+		var button_red = upgrade_node.find_child("ButtonRed")
+		var button_green = upgrade_node.find_child("ButtonGreen")
+
+		var locked: bool = is_maxed or (cost > GameData.power)
+
+		# 1. Update Level Display
+		if level_label and level_label is Label:
+			level_label.text = "MAX" if is_maxed else "Lvl " + str(current_lvl)
+
+		# 2. Update Upgrade Stat Display (e.g. "0% -> 10%")
+		if value_label and value_label is Label:
+			value_label.text = GameData.get_upgrade_value_text(node_name)
+
+		# 3. Update Purchase Button Text
+		if cost_button and cost_button is Button:
+			cost_button.text = "MAX" if is_maxed else str(cost)
+
+		# 4. Toggle Button State Visuals
+		if button_red:
+			button_red.visible = locked
+		if button_green:
+			button_green.visible = not locked

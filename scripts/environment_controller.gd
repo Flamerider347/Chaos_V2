@@ -112,6 +112,7 @@ func sync_day_increment(day_num: int) -> void:
 	var day_lbl = get_node_or_null("/root/main/UI/current_day")
 	if day_lbl: day_lbl.text = "Day: " + str(current_day)
 
+
 @rpc("authority", "call_local", "reliable")
 func sync_daily_specials_to_all(args: Array) -> void:
 	RecipeManager.recipe_of_the_day = args[0]
@@ -123,6 +124,11 @@ func sync_daily_specials_to_all(args: Array) -> void:
 		{"disp": get_node_or_null("../world/kitchen/thing_placement/daily_recipe"), "lbl": get_node_or_null("../world/kitchen/thing_placement/recipe_of_the_day"), "data": RecipeManager.recipes.get(args[0])},
 		{"disp": get_node_or_null("../world/kitchen/thing_placement/daily_recipe2"), "lbl": get_node_or_null("../world/kitchen/thing_placement/recipe_of_the_day2"), "data": RecipeManager.recipes.get(args[1])}
 	]
+
+	# Dynamic upgrade multiplier fallback
+	var buff_multiplier: float = GameData.get_upgrade_value("daily_recipe_buff")
+	if buff_multiplier <= 0.0:
+		buff_multiplier = 1.5
 
 	for setup in setups:
 		var display_node = setup["disp"]
@@ -157,7 +163,9 @@ func sync_daily_specials_to_all(args: Array) -> void:
 			stack_height += get_node_height(item) + gap
 
 		if is_instance_valid(recipe_label):
-			recipe_label.text = "RECIPE OF THE DAY:\n%s ($%d)" % [data.get("display_name", "Unknown"), int(data.get("value", 0)) * 1.5]
+			var base_val: int = int(data.get("value", 0))
+			var final_val: int = int(base_val * buff_multiplier)
+			recipe_label.text = "RECIPE OF THE DAY:\n%s ($%d)" % [data.get("display_name", "Unknown"), final_val]
 			recipe_label.global_position = display_node.global_position + Vector3(0, stack_height + 0.6, 0)
 
 func _strip_item_interactivity(node: Node, group_to_remove: String) -> void:

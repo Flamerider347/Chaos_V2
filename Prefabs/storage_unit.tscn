@@ -154,7 +154,7 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.00
 material = SubResource("StandardMaterial3D_6yt78")
 
 [node name="stored" parent="main_display/plate" index="3" unique_id=1048421593]
-text = "20"
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.04200554, -0.40711784, -0.006251812)
 
 [node name="Label3D" type="Label3D" parent="main_display/plate" unique_id=528815305]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.050318718, 0, 0)
@@ -188,7 +188,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 0.5181847, 2.4500008)
 material_override = SubResource("StandardMaterial3D_g1a3s")
 
 [node name="plate_warning" type="Label3D" parent="main_display" unique_id=1013549238]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1.1018305, 1.775246, 0.45463622)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1.1010438, 1.775246, 0.45463622)
 visible = false
 text = "STOP 
 SPAWNING 

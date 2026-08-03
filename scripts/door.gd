@@ -16,6 +16,8 @@ func open_door() -> void:
 
 @rpc("any_peer", "call_local", "reliable")
 func sync_open_door() -> void:
+	if multiplayer.get_unique_id() == 1:
+		multiplayer.multiplayer_peer.refuse_new_connections = true
 	# Double-check state on all peers to prevent double-triggers
 	if is_open: 
 		return

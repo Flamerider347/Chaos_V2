@@ -57,14 +57,8 @@ script = ExtResource("3_m76kp")
 
 [node name="menu_UI" type="CanvasLayer" parent="." unique_id=175713976]
 
-[node name="username" type="LineEdit" parent="menu_UI" unique_id=368585567 groups=["donthide"]]
-offset_left = 462.0
-offset_top = 262.0
-offset_right = 762.0
-offset_bottom = 322.0
-placeholder_text = "Enter Username"
-
 [node name="start_menu" type="Control" parent="menu_UI" unique_id=296126113]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = -18.0
@@ -74,66 +68,36 @@ offset_bottom = 33.0
 
 [node name="singleplayer" type="Button" parent="menu_UI/start_menu" unique_id=1542210094]
 layout_mode = 0
-offset_left = 175.0
-offset_top = 213.0
-offset_right = 475.0
-offset_bottom = 272.99997
-text = "Play Singleplayer / Host LAN"
+offset_left = 396.0
+offset_top = 214.0
+offset_right = 696.0
+offset_bottom = 273.99997
+text = "Singleplayer / Host LAN"
 
 [node name="singleplayer3" type="Button" parent="menu_UI/start_menu" unique_id=1435526061]
 layout_mode = 0
-offset_left = 479.0
-offset_top = 417.0
-offset_right = 778.99963
-offset_bottom = 476.99997
+offset_left = 406.0
+offset_top = 361.0
+offset_right = 705.99963
+offset_bottom = 420.99997
 text = "Quit Game"
 
 [node name="singleplayer2" type="Button" parent="menu_UI/start_menu" unique_id=353611953]
 layout_mode = 0
-offset_left = 479.0
-offset_top = 213.0
-offset_right = 779.0
-offset_bottom = 272.99997
-text = "Play Multiplayer / Join World"
+offset_left = 399.0
+offset_top = 288.0
+offset_right = 699.0
+offset_bottom = 347.99997
+text = "Multiplayer / Join World"
 
 [node name="Label" type="Label" parent="menu_UI/start_menu" unique_id=1466894045]
 layout_mode = 0
-offset_left = 178.0
-offset_top = 170.0
-offset_right = 955.0
-offset_bottom = 548.0
+offset_left = 248.0
+offset_top = 449.0
+offset_right = 1025.0
+offset_bottom = 827.0
 text = "To get started, choose how to play. Web version only supports singleplayer
-
-
-
-
-                                                                   OR
-
 "
-
-[node name="Label2" type="Label" parent="menu_UI/start_menu" unique_id=500899929]
-layout_mode = 0
-offset_left = 788.0
-offset_top = 224.0
-offset_right = 1565.0
-offset_bottom = 602.0
-text = "Copyable host code is found by pressing
- \"Tab\" or \"Escape\" to open the pause menu.
-
-
-
-
-If the host can't share the pasted code, 
-press \"Play Multiplayer / Join World\"
-where you can enter the details manually."
-
-[node name="copy_code" type="LineEdit" parent="menu_UI/start_menu" unique_id=1037129841 groups=["donthide"]]
-layout_mode = 0
-offset_left = 176.0
-offset_top = 351.0
-offset_right = 476.0
-offset_bottom = 411.0
-placeholder_text = "Paste the host IP/Port code here"
 
 [node name="enter" type="Button" parent="menu_UI/start_menu" unique_id=1094319762]
 visible = false
@@ -230,37 +194,37 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
+[node name="username" type="LineEdit" parent="menu_UI/LAN_menu" unique_id=368585567 groups=["donthide"]]
+layout_mode = 0
+offset_left = 144.0
+offset_top = 199.0
+offset_right = 444.0
+offset_bottom = 259.0
+placeholder_text = "Enter Username"
+
 [node name="join_button" type="Button" parent="menu_UI/LAN_menu" unique_id=143837695]
 layout_mode = 0
-offset_left = 156.0
-offset_top = 191.0
-offset_right = 455.99994
-offset_bottom = 251.0
+offset_left = 459.0
+offset_top = 193.0
+offset_right = 758.99994
+offset_bottom = 253.0
 text = "Join
 "
 
 [node name="join_code" type="LineEdit" parent="menu_UI/LAN_menu" unique_id=652857213]
 layout_mode = 0
-offset_left = 459.0
-offset_top = 124.0
-offset_right = 759.0
-offset_bottom = 184.0
+offset_left = 145.0
+offset_top = 130.0
+offset_right = 445.0
+offset_bottom = 190.0
 placeholder_text = "Enter Host IP"
-
-[node name="play_button" type="Button" parent="menu_UI/LAN_menu" unique_id=1225370759]
-layout_mode = 0
-offset_left = 157.0
-offset_top = 123.0
-offset_right = 456.99994
-offset_bottom = 183.0
-text = "PLAY/HOST"
 
 [node name="port" type="LineEdit" parent="menu_UI/LAN_menu" unique_id=1857470254]
 layout_mode = 0
-offset_left = 459.0
-offset_top = 192.0
-offset_right = 759.0
-offset_bottom = 252.0
+offset_left = 458.0
+offset_top = 128.0
+offset_right = 758.0
+offset_bottom = 188.0
 placeholder_text = "Enter Port"
 
 [node name="return" type="Button" parent="menu_UI/LAN_menu" unique_id=1109840465]
@@ -271,14 +235,6 @@ offset_right = 457.0
 offset_bottom = 321.0
 text = "Back to main menu"
 
-[node name="status" type="Label" parent="menu_UI/LAN_menu" unique_id=139176853]
-layout_mode = 0
-offset_left = 174.0
-offset_top = 96.0
-offset_right = 523.0
-offset_bottom = 167.0
-text = "If you're hosting a LAN world, just press PLAY"
-
 [node name="status2" type="Label" parent="menu_UI/LAN_menu" unique_id=1824787667]
 layout_mode = 0
 offset_left = 808.0
@@ -286,16 +242,12 @@ offset_top = 134.0
 offset_right = 1157.0
 offset_bottom = 443.0
 text = "If you're joining a LAN world, 
-enter the port and the host IP 
-(In the top left corner of the host screen)
+enter the Host IP and Port
+(In pause menu, get Host to press \"Tab\")
 
 
 Then press Join
 
-
-Alternatively, you can cut and paste
-the code into the bottom left box
-if the host sends you it!
 
 Note:
 Make sure you're all
@@ -311,7 +263,6 @@ text = "Press here for LLAN
 (Works at school)"
 
 [node name="LLAN_menu" type="Control" parent="menu_UI" unique_id=2103419970]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -361,20 +312,23 @@ text = "Back to main menu"
 
 [node name="Label" type="Label" parent="menu_UI/LLAN_menu" unique_id=1215128647]
 layout_mode = 0
-offset_left = 802.0
-offset_top = 139.0
-offset_right = 842.0
-offset_bottom = 162.0
-text = "School LLAN is more difficult, 
-but still possible!
-
-First open the admin computer and run the
+offset_left = 767.0
+offset_top = 124.0
+offset_right = 1178.0
+offset_bottom = 329.0
+text = "First open an admin computer and run the
 \"multi_spooler\" in the school_LLAN folder
 
-Then enter admin computer IP
-Then press \"Generate a Multiinstance\"
+Enter the IP of the admin computer in the 
+top box, then press \"Generate a Multiinstance\"
 
-Other players can then join :)"
+Other players can then join 
+on school computers :)
+
+Note:
+Only school computers connected to
+Ethernet will work with this method
+"
 
 [node name="RTC_menu" type="Control" parent="menu_UI" unique_id=1341687830]
 visible = false
@@ -414,13 +368,11 @@ mesh = ExtResource("11_p5qx4")
 [connection signal="pressed" from="menu_UI/start_menu/singleplayer" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="menu_UI/start_menu/singleplayer3" to="." method="_on_singleplayer_3_pressed"]
 [connection signal="pressed" from="menu_UI/start_menu/singleplayer2" to="." method="_on_multiplayer_pressed"]
-[connection signal="text_changed" from="menu_UI/start_menu/copy_code" to="." method="_on_copy_code_text_changed"]
 [connection signal="pressed" from="menu_UI/start_menu/enter" to="." method="_on_join_pressed"]
 [connection signal="pressed" from="menu_UI/multiplayer_menu/singleplayer" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="menu_UI/multiplayer_menu/singleplayer2" to="." method="_on_LAN_pressed"]
 [connection signal="pressed" from="menu_UI/multiplayer_menu/return" to="." method="start_menu"]
 [connection signal="pressed" from="menu_UI/LAN_menu/join_button" to="." method="_on_join_pressed"]
-[connection signal="pressed" from="menu_UI/LAN_menu/play_button" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="menu_UI/LAN_menu/return" to="." method="_on_multiplayer_pressed"]
 [connection signal="pressed" from="menu_UI/LAN_menu/singleplayer3" to="." method="_on_LLAN_pressed"]
 [connection signal="pressed" from="menu_UI/LLAN_menu/spool_server" to="." method="_on_spool_server_pressed"]

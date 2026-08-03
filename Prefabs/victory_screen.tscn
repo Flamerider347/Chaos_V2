@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://c5bdx4lhc7rsj"]
+
+[ext_resource type="PackedScene" uid="uid://v4cl026q4w1w" path="res://Prefabs/tree_1_lettuce_1.tscn" id="1_vpxgv"]
+
+[node name="victory_screen" type="Node3D" unique_id=1659066682]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1876324905]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.2532886)
+
+[node name="Tree1Lettuce1" parent="." unique_id=68733649 instance=ExtResource("1_vpxgv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.48340797, 0, -1.6537242)

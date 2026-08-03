@@ -8,7 +8,7 @@ extends Area3D
 var scores: Dictionary = {
 	"cheese": 5, "cheese_chopped": 10, "tomato": 5, "tomato_chopped": 10, "bun": 10,
 	"lettuce" : 5, "lettuce_chopped" : 10, "carrot" : 5, "carrot_chopped" : 10,
-	"bun_bottom_chopped": 10, "bun_top_chopped": 10, "meat": 20, "meat_cooked": 50, "meat_burnt" :10
+	"bun_bottom_chopped": 10, "bun_top_chopped": 10, "meat": 20, "meat_cooked": 50, "meat_burnt" :10, "flashlight" :0
 }
 
 func _ready() -> void:
@@ -91,11 +91,13 @@ func sync_delivery_effects(spawn_pos: Vector3, new_score: int, new_power:int) ->
 	_spawn_smoke(spawn_pos)
 
 func _calculate_plate_score(plate_node: Node) -> int:
-	if not is_instance_valid(plate_node) or not "stacked_items" in plate_node: return 0
+	if not is_instance_valid(plate_node) or not "stacked_items" in plate_node: 
+		return 0
 		
 	var items: Array = []
 	for item in plate_node.stacked_items:
-		if is_instance_valid(item) and "type" in item: items.append(item.type)
+		if is_instance_valid(item) and "type" in item: 
+			items.append(item.type)
 		
 	var valid_burger = items.has("bun_bottom_chopped") and items.has("bun_top_chopped")
 	items.sort()
@@ -109,11 +111,22 @@ func _calculate_plate_score(plate_node: Node) -> int:
 			var base_value = recipe_data["value"]
 			var is_special = ("recipe_of_the_day" in RecipeManager and RecipeManager.recipe_of_the_day == key_name) or \
 							 ("recipe_of_the_day2" in RecipeManager and RecipeManager.recipe_of_the_day2 == key_name)
-			return int(base_value * 1.5) if is_special else base_value
+			
+			if is_special:
+				# Get the upgrade buff value from GameData
+				var buff_multiplier = GameData.get_upgrade_value("daily_recipe_buff")
+				# If unupgraded or returned 0, default to the base multiplier (e.g., 1.5x or 2.0x)
+				if buff_multiplier <= 0.0:
+					buff_multiplier = 1.5
+				
+				return int(base_value * buff_multiplier)
+			
+			return base_value
 
 	var fallback_score = 0
 	for item_name in items:
-		if scores.has(item_name): fallback_score += scores[item_name]
+		if scores.has(item_name): 
+			fallback_score += scores[item_name]
 	return fallback_score
 
 func _spawn_smoke(spawn_pos: Vector3) -> void:
