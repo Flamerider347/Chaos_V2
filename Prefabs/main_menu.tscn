@@ -227,7 +227,7 @@ offset_bottom = 371.0
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_ihwt6")
 
-[node name="TextEdit" type="TextEdit" parent="menu_UI/multiplayer_menu/ip" unique_id=741499418]
+[node name="LineEdit" type="LineEdit" parent="menu_UI/multiplayer_menu/ip" unique_id=1303552663]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -249,7 +249,7 @@ offset_bottom = 523.0
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_ihwt6")
 
-[node name="TextEdit" type="TextEdit" parent="menu_UI/multiplayer_menu/port" unique_id=2057781938]
+[node name="LineEdit" type="LineEdit" parent="menu_UI/multiplayer_menu/port" unique_id=653376802]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -271,7 +271,7 @@ offset_bottom = 640.0
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_ihwt6")
 
-[node name="TextEdit" type="TextEdit" parent="menu_UI/multiplayer_menu/username" unique_id=520031610]
+[node name="LineEdit" type="LineEdit" parent="menu_UI/multiplayer_menu/username" unique_id=1339979639]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -283,6 +283,33 @@ offset_bottom = 40.5
 grow_vertical = 2
 theme_override_font_sizes/font_size = 50
 placeholder_text = "Username"
+
+[node name="back" type="TextureButton" parent="menu_UI/multiplayer_menu" unique_id=2118982793]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = 444.0
+offset_bottom = 225.95001
+scale = Vector2(0.5, 0.5)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("3_ihwt6")
+
+[node name="Label" type="Label" parent="menu_UI/multiplayer_menu/back" unique_id=1516113811]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -44.5
+offset_top = -11.5
+offset_right = 44.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 40
+text = "Back"
 
 [node name="Tutorial" type="Control" parent="menu_UI" unique_id=378982451]
 layout_mode = 3
@@ -479,10 +506,11 @@ material_override = SubResource("StandardMaterial3D_geclh")
 size = Vector3(200, 1, 200)
 
 [connection signal="pressed" from="menu_UI/title_screen/singeplayer" to="." method="_play_singleplayer"]
-[connection signal="pressed" from="menu_UI/title_screen/multiplayer" to="." method="_multiplayer_join"]
+[connection signal="pressed" from="menu_UI/title_screen/multiplayer" to="." method="_multiplayer_button"]
 [connection signal="pressed" from="menu_UI/title_screen/quit" to="." method="_quit"]
 [connection signal="pressed" from="menu_UI/multiplayer_menu/host" to="." method="_host_LAN"]
 [connection signal="pressed" from="menu_UI/multiplayer_menu/join" to="." method="_join_LAN"]
+[connection signal="pressed" from="menu_UI/multiplayer_menu/back" to="." method="_multiplayer_back"]
 [connection signal="pressed" from="menu_UI/LAN_menu/join_button" to="." method="_on_join_pressed"]
 [connection signal="pressed" from="menu_UI/LAN_menu/return" to="." method="_on_multiplayer_pressed"]
 [connection signal="pressed" from="menu_UI/LAN_menu/singleplayer3" to="." method="_on_LLAN_pressed"]

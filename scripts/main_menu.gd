@@ -1,8 +1,6 @@
 extends Node
 
 @onready var menu_ui = $menu_UI
-@onready var username_input: LineEdit = $menu_UI/LAN_menu/username
-@onready var join_code_input: LineEdit = $menu_UI/LAN_menu/join_code
 @onready var lobby_error_label: Label = $"menu_UI/lobby error"
 
 # --- Sky Shader & Lighting Additions ---
@@ -28,6 +26,10 @@ func _ready() -> void:
 
 	update_sky_and_lighting()
 
+
+func _quit():
+	get_tree().quit()
+
 # --- Process Loop for Menu Sky Shader ---
 func _process(delta: float) -> void:
 	# Advance time smoothly for the menu preview loop
@@ -50,12 +52,14 @@ func _on_network_join_fail() -> void:
 
 
 # --- UI Helpers ---
-func _assign_username() -> void:
-	var cleaned_name = username_input.text.strip_edges()
+func _assign_username(username_loc) -> void:
+	var cleaned_name = ""
+	if username_loc:
+		cleaned_name = username_loc.text.strip_edges()
 	
 	# If empty, visually display "Player" in the line edit box and assign it globally
 	if cleaned_name == "":
-		username_input.text = "Player"
+		username_loc.text = "Player"
 		GameData.username = "Player"
 	else:
 		GameData.username = cleaned_name
@@ -149,24 +153,32 @@ func _play_singleplayer() -> void:
 
 
 func _multiplayer_button() -> void:
-	$menu_UI/title_screen.visble = false
-	$menu_UI/title_screen/singleplayer.disabled = true
-	$menu_UI/title_screen/multiplayer.disabled = true
-	$menu_UI/title_screen/quit.disabled = true
-
-	$menu_UI/menu_UI/multiplayer_menu.visible = true
-	$menu_UI/menu_UI/multiplayer_menu/host.disabled = false
-	$menu_UI/menu_UI/multiplayer_menu/join.disabled = false
-	
+	$menu_UI/title_screen.visible = false
+	$menu_UI/multiplayer_menu.visible = true
 
 func _host_LAN() -> void:
-	_assign_username()
-	$LAN_starter.start_client()
+	_assign_username(get_node_or_null("menu_UI/multiplayer_menu/username/LineEdit"))
+	$LAN_starter.start_server()
 	get_tree().change_scene_to_file("res://Prefabs/main.tscn")
 
 
 func _join_LAN() -> void:
-	_assign_username()
-
+	var ip_input = get_node_or_null("menu_UI/multiplayer_menu/ip/LineEdit")
+	var ip = ""
+	var port = ""
+	if ip_input:
+		ip = ip_input.text.strip_edges()
+	
+	var port_input = get_node_or_null("Menu_UI/mutliplayer_menu/port/LineEdit")
+	if port_input:
+		port = port_input.text.strip_edges()
+	
+	_assign_username(get_node_or_null("menu_UI/multiplayer_menu/username/LineEdit"))
+	$LAN_starter.start_client(ip, port)
 	
 	get_tree().change_scene_to_file("res://Prefabs/main.tscn")
+
+
+func _multiplayer_back():
+	$menu_UI/multiplayer_menu.visible = false
+	$menu_UI/title_screen.visible = true

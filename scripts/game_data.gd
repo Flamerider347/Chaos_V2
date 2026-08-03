@@ -110,14 +110,12 @@ func host_game() -> void:
 		next_available_port = port + 1
 		var error = peer.create_server(port, 3)
 		if error != OK:
-			_update_status_ui("Failed to host on port " + str(port))
 			return
 
 	multiplayer.multiplayer_peer = peer
 	connected = true
 	in_game = true
 	room_code = get_local_ip()
-	_update_status_ui("Hosting! IP: " + room_code)
 
 
 func join_game(target_ip: String, port: int) -> void:
@@ -125,7 +123,6 @@ func join_game(target_ip: String, port: int) -> void:
 		target_ip = "127.0.0.1" 
 
 	is_joining = true
-	_update_status_ui("Connecting...")
 	
 	peer = ENetMultiplayerPeer.new()
 	
@@ -150,7 +147,6 @@ func _on_connected_to_server() -> void:
 	is_joining = false
 	in_game = true
 	join_error = null
-	_update_status_ui("Connected!")
 	
 	var join_btn = get_node_or_null("/root/main_menu/menu_UI/join_button")
 	if join_btn: 
@@ -162,7 +158,6 @@ func _on_connection_failed() -> void:
 	connected = false
 	is_joining = false
 	join_error = "Could not connect to host"
-	_update_status_ui("Unable to join lobby :(")
 	get_tree().change_scene_to_file("res://Prefabs/main_menu.tscn")
 
 
@@ -170,14 +165,7 @@ func _on_server_disconnected() -> void:
 	peer.close()
 	connected = false
 	in_game = false
-	_update_status_ui("Server disconnected.")
 	get_tree().change_scene_to_file("res://Prefabs/main_menu.tscn")
-
-
-func _update_status_ui(text_message: String) -> void:
-	var status_node = get_node_or_null("/root/main_menu/menu_UI/status")
-	if status_node: 
-		status_node.text = text_message
 
 
 func get_local_ip() -> String:
