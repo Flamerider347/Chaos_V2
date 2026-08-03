@@ -42,8 +42,10 @@
 [ext_resource type="Texture2D" uid="uid://chwxc4mcrrna" path="res://Assets/UI/Labels/wood_labelTabv1.png" id="35_4ob7t"]
 [ext_resource type="Texture2D" uid="uid://bncn505y0q6m4" path="res://Assets/UI/Icons/64px/close_icon_64px.png" id="35_thn58"]
 [ext_resource type="Texture2D" uid="uid://0bd36mxskvql" path="res://Assets/UI/Headers/header_yellow.png" id="36_7kjfp"]
+[ext_resource type="PackedScene" uid="uid://dy0rsrhv0n7ck" path="res://Prefabs/tree_3_bun_3.tscn" id="36_32250"]
 [ext_resource type="Texture2D" uid="uid://ds7joy14bd4b7" path="res://Assets/UI/Modals/modalSimple_v2.png" id="37_7kjfp"]
 [ext_resource type="Texture2D" uid="uid://d3e6f2ls4642b" path="res://Assets/UI/Containers/cardContainer_yellow.png" id="37_610xf"]
+[ext_resource type="PackedScene" uid="uid://c56c10cwa8tcx" path="res://Prefabs/tree_2_bun_2.tscn" id="37_tnwyx"]
 [ext_resource type="Texture2D" uid="uid://1dtwoc1gscpo" path="res://Assets/UI/Buttons/button_green.png" id="39_xfyap"]
 [ext_resource type="Texture2D" uid="uid://djwvfah1ycrcy" path="res://Assets/misc/temp_icon.png" id="40_1jfbq"]
 [ext_resource type="Texture2D" uid="uid://pp5rq3qjtubw" path="res://Assets/UI/Panels/mail_cream.png" id="40_iwmkf"]
@@ -195,6 +197,12 @@ ambient_light_color = Color(0.74283826, 0.7617583, 0.93109804, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iw3lg"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ritx"]
+bg_color = Color(0.6, 0.6, 0.6, 0.74509805)
+
+[sub_resource type="Theme" id="Theme_32250"]
+Button/styles/normal = SubResource("StyleBoxFlat_6ritx")
+
 [sub_resource type="Gradient" id="Gradient_cgc31"]
 offsets = PackedFloat32Array(0.33894232)
 colors = PackedColorArray(0, 0, 0, 1)
@@ -309,6 +317,20 @@ shape = SubResource("ConcavePolygonShape3D_a5tfy")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.0367243, 0)
 material_override = SubResource("StandardMaterial3D_rmtss")
 mesh = ExtResource("4_a5tfy")
+
+[node name="Label3D" type="Label3D" parent="game/world/Background_world" unique_id=1445427988]
+transform = Transform3D(-4.371139e-08, -1, 0, -4.371139e-08, 1.9106855e-15, 1, -1, 4.371139e-08, -4.371139e-08, -35, -0.035369396, 0)
+text = "Item Delivery
+Drop Zone
+"
+font_size = 802
+outline_size = 120
+
+[node name="CSGBox3D" type="CSGBox3D" parent="game/world/Background_world" unique_id=1585667191]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35, -0.55115414, 0)
+use_collision = true
+collision_layer = 3
+size = Vector3(33, 1, 27)
 
 [node name="kitchen" type="Node3D" parent="game/world" unique_id=1556216379]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.011, 0.52, -1.404)
@@ -790,10 +812,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.193832, -9.536743e-07, -2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.046373, -9.536743e-07, 7.1406946)
 
 [node name="Marker3D7" type="Marker3D" parent="game/navigation_nodes" unique_id=941330813]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40.584446, -9.536743e-07, 3.4409075)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.85022, 0, -15.257762)
 
 [node name="Marker3D8" type="Marker3D" parent="game/navigation_nodes" unique_id=846189681]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.788, -9.536743e-07, -25.370466)
+
+[node name="Marker3D9" type="Marker3D" parent="game/navigation_nodes" unique_id=295454810]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40.563232, -9.536743e-07, -24.710558)
+
+[node name="Marker3D10" type="Marker3D" parent="game/navigation_nodes" unique_id=1400666986]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.277107, -9.536743e-07, 17.633589)
 
 [node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="game/navigation_nodes" unique_id=393619447]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -24.61, 0)
@@ -803,29 +831,68 @@ affect_navigation_mesh = true
 
 [node name="item_trees" type="Node3D" parent="game" unique_id=818857422]
 
-[node name="Tree1Bun1" parent="game/item_trees" unique_id=68733649 instance=ExtResource("22_2mmg3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.082027435, 0, -15.280075)
+[node name="Tree1Bun3" parent="game/item_trees" unique_id=853183447 instance=ExtResource("22_2mmg3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.970524, 0, 27.45122)
+
+[node name="Tree1Bun2" parent="game/item_trees" unique_id=1473943762 instance=ExtResource("22_2mmg3")]
+transform = Transform3D(-0.07601555, 0, -0.9971066, 0, 1, 0, 0.9971066, 0, -0.07601555, 21.889534, 0, 3.303615)
 
 [node name="Tree1Carrot1" parent="game/item_trees" unique_id=157266925 instance=ExtResource("23_kjcd6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.810909, 0, -13.348219)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.537854, -0.12, -14.658593)
+
+[node name="Tree1Carrot2" parent="game/item_trees" unique_id=604711304 instance=ExtResource("23_kjcd6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0366592, -0.12000095, 19.967205)
+
+[node name="Tree1Carrot3" parent="game/item_trees" unique_id=68733649 instance=ExtResource("23_kjcd6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.830475, -0.12000095, -4.9823976)
 
 [node name="Tree1Cheese1" parent="game/item_trees" unique_id=735406454 instance=ExtResource("24_hs76b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.135244, -9.536743e-07, -16.15474)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.760206, -9.536743e-07, -19.90247)
+
+[node name="Tree1Cheese2" parent="game/item_trees" unique_id=1332779908 instance=ExtResource("24_hs76b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.6663227, -9.536743e-07, -20.71089)
+
+[node name="Tree1Cheese3" parent="game/item_trees" unique_id=780540823 instance=ExtResource("24_hs76b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.499155, -9.536743e-07, -38.576992)
 
 [node name="Tree1Lettuce1" parent="game/item_trees" unique_id=1814791660 instance=ExtResource("25_jlmk8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.031608, 4.7683716e-07, -13.289728)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.951614, -0.12012732, -26.098972)
+
+[node name="Tree1Lettuce4" parent="game/item_trees" unique_id=1464155234 instance=ExtResource("25_jlmk8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.14856, -0.12012732, 20.105145)
+
+[node name="Tree1Lettuce2" parent="game/item_trees" unique_id=1467686735 instance=ExtResource("25_jlmk8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.3257828, -0.12012732, -37.863567)
+
+[node name="Tree1Lettuce3" parent="game/item_trees" unique_id=870072361 instance=ExtResource("25_jlmk8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.7337513, -0.12012732, 25.295979)
 
 [node name="Tree1Tomato1" parent="game/item_trees" unique_id=603790348 instance=ExtResource("26_d17y0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.57, 0, -30.669)
 
+[node name="Tree1Tomato2" parent="game/item_trees" unique_id=1915645622 instance=ExtResource("26_d17y0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.599937, 0, -15.490335)
+
 [node name="Tree2Tomato1" parent="game/item_trees" unique_id=867058749 instance=ExtResource("27_uigxe")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.875533, -4.7683716e-07, -14.763247)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.4418335, -4.7683716e-07, -49.959007)
+
+[node name="Tree2Tomato2" parent="game/item_trees" unique_id=2098723720 instance=ExtResource("27_uigxe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.384773, -4.7683716e-07, 22.836044)
 
 [node name="Tree3Tomato1" parent="game/item_trees" unique_id=826326260 instance=ExtResource("28_lbgj2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8867252, 4.7683716e-07, -21.505787)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5714197, 4.7683716e-07, -30.834925)
 
 [node name="Tree1Meat1" parent="game/item_trees" unique_id=258808578 instance=ExtResource("28_2mmg3")]
-transform = Transform3D(0.58886224, 0, -0.80823344, 0, 1, 0, 0.80823344, 0, 0.58886224, 5.4379354, -0.09339571, -16.273397)
+transform = Transform3D(0.58886224, 0, -0.80823344, 0, 1, 0, 0.80823344, 0, 0.58886224, 16.288715, -0.09339571, -21.104132)
+
+[node name="Tree1Meat2" parent="game/item_trees" unique_id=1306362727 instance=ExtResource("28_2mmg3")]
+transform = Transform3D(0.58886224, 0, -0.80823344, 0, 1, 0, 0.80823344, 0, 0.58886224, -6.3959537, -0.09339571, -25.51834)
+
+[node name="Tree3Bun3" parent="game/item_trees" unique_id=707697154 instance=ExtResource("36_32250")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.580477, -0.09362793, -39.658016)
+
+[node name="Tree2Bun2" parent="game/item_trees" unique_id=1559047047 instance=ExtResource("37_tnwyx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.86096, -0.09338379, -48.363605)
 
 [node name="computer_UI" type="CanvasLayer" parent="." unique_id=2131990608]
 visible = false
@@ -1690,7 +1757,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Pause_UI" type="CanvasLayer" parent="." unique_id=516443905]
-visible = false
 
 [node name="roomcode" type="Label" parent="Pause_UI" unique_id=1665139751]
 offset_left = 10.0
@@ -1698,14 +1764,6 @@ offset_top = 140.0
 offset_right = 261.0
 offset_bottom = 163.0
 text = "Port: 13501"
-
-[node name="copybutton" type="Button" parent="Pause_UI" unique_id=2034908009]
-offset_left = 12.0
-offset_top = 18.0
-offset_right = 197.0
-offset_bottom = 68.000015
-text = "Copy Port & IP
-to clipboard"
 
 [node name="sensitivity" type="HSlider" parent="Pause_UI" unique_id=1522102959]
 offset_left = 10.0
@@ -1732,13 +1790,15 @@ offset_bottom = 192.0
 text = "IP: hidden"
 
 [node name="Button" type="Button" parent="Pause_UI" unique_id=1521680383]
-offset_left = 2.0
-offset_top = 200.0
-offset_right = 118.0
-offset_bottom = 224.0
+offset_left = 8.0
+offset_top = 17.0
+offset_right = 207.0
+offset_bottom = 73.0
+theme = SubResource("Theme_32250")
 text = "Return to main menu"
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1896255929]
+visible = false
 
 [node name="fps" type="Label" parent="UI" unique_id=1827639193]
 offset_left = -173.0
@@ -1913,16 +1973,16 @@ horizontal_alignment = 1
 [node name="score" type="Label" parent="UI" unique_id=1003719063]
 offset_left = 10.0
 offset_top = 40.0
-offset_right = 129.00003
+offset_right = 129.0001
 offset_bottom = 63.999992
 text = "Score: 60"
 script = ExtResource("9_m7hx3")
 
 [node name="power_needed" type="Label" parent="UI" unique_id=1055245929]
 visible = false
-offset_left = 8.0
+offset_left = 10.0
 offset_top = 68.0
-offset_right = 127.00003
+offset_right = 132.00003
 offset_bottom = 91.99999
 text = "Power Needed: "
 script = ExtResource("9_m7hx3")
@@ -1930,7 +1990,7 @@ script = ExtResource("9_m7hx3")
 [node name="power_req" type="Label" parent="UI" unique_id=1474763150]
 offset_left = 10.0
 offset_top = 10.0
-offset_right = 129.00003
+offset_right = 145.0
 offset_bottom = 33.999992
 text = "Daily Power Cost:"
 script = ExtResource("9_m7hx3")
@@ -2015,5 +2075,4 @@ libraries/ = SubResource("AnimationLibrary_i6w6j")
 [connection signal="pressed" from="computer_UI/return" to="." method="leave_computer"]
 [connection signal="pressed" from="computer_UI/items" to="." method="_items_pressed"]
 [connection signal="pressed" from="computer_UI/upgrades" to="." method="_upgrades_pressed"]
-[connection signal="pressed" from="Pause_UI/copybutton" to="." method="_on_copybutton_pressed"]
 [connection signal="pressed" from="Pause_UI/Button" to="." method="burn_it_all_down"]

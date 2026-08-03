@@ -326,7 +326,7 @@ func spawn_supply_drop(item_type: String) -> void:
 	if not multiplayer.is_server():
 		return
 
-	var drop_position := Vector3(randf_range(-40, -14), 30, randf_range(12, -12))
+	var drop_position := Vector3(randf_range(-50, -20), 30, randf_range(12, -12))
 	var unique_name := "supply_drop_" + str(randi() % 100000)
 	var package: Array = ["supply_drop", multiplayer.get_unique_id(), drop_position, unique_name, [item_type]]
 
@@ -388,8 +388,6 @@ func thing_ui_update() -> void:
 
 @rpc("authority", "call_local", "reliable")
 func burn_it_all_down() -> void:
-	if current_day == 1: 
-		return
 	GameData.lost = true
 	GameData.in_game = false
 

@@ -81,23 +81,23 @@ replication_config = SubResource("SceneReplicationConfig_soqgf")
 libraries/ = SubResource("AnimationLibrary_uym7u")
 
 [node name="Tree1Lettuce1" type="MeshInstance3D" parent="." unique_id=1499631619 groups=["tree_item"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.33836743, -0.0052375495, -2.0244422)
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.33836743, -0.0052375495, -2.0244422)
 mesh = ExtResource("2_m7wtb")
 
 [node name="Tree1Lettuce2" type="MeshInstance3D" parent="." unique_id=1978257543 groups=["tree_item"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2179232, -0.0052375495, 1.3998475)
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 1.2179232, -0.0052375495, 1.3998475)
 mesh = ExtResource("2_m7wtb")
 
 [node name="Tree1Lettuce3" type="MeshInstance3D" parent="." unique_id=667910940 groups=["tree_item"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6875888, -0.0052375495, -0.62398446)
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 1.6875888, -0.0052375495, -0.62398446)
 mesh = ExtResource("2_m7wtb")
 
 [node name="Tree1Lettuce4" type="MeshInstance3D" parent="." unique_id=1832359318 groups=["tree_item"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3268108, -0.0052375495, -1.0594926)
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, -1.3268108, -0.0052375495, -1.0594926)
 mesh = ExtResource("2_m7wtb")
 
 [node name="Tree1Lettuce5" type="MeshInstance3D" parent="." unique_id=2054357708 groups=["tree_item"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5744534, -0.0052375495, 1.0326545)
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, -1.5744534, -0.0052375495, 1.0326545)
 mesh = ExtResource("2_m7wtb")
 
 [connection signal="timeout" from="item_timer" to="." method="_on_item_timer_timeout"]
