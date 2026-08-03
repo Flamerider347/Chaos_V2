@@ -52,7 +52,10 @@ func create_page(recipe_info):
 	page.components.text = format_components(recipe_info["components"])
 	page.name = str(recipe_pointer)
 	if current_page:
-		current_page.despawn()
+		if int(current_page.name) > recipe_pointer:
+			current_page.despawn_right()
+		else:
+			current_page.despawn_left()
 	current_page = page
 
 

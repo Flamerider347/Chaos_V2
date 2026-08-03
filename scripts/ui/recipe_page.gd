@@ -6,7 +6,13 @@ class_name RecipePage
 @onready var components: Label = $page/info_list/components
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
 
-func despawn():
-	anim_player.play("despawn")
+
+func despawn_left():
+	anim_player.play("despawn_left")
+	await anim_player.animation_finished
+	queue_free()
+
+func despawn_right():
+	anim_player.play("despawn_right")
 	await anim_player.animation_finished
 	queue_free()
