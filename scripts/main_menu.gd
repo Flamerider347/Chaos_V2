@@ -20,7 +20,7 @@ func _ready() -> void:
 	for i in $menu_UI.get_children():
 		if not i.is_in_group("donthide"):
 			i.hide()
-	$menu_UI/start_menu.show()
+	$menu_UI/title_screen.show()
 	
 	# Connect to GameData's native signals to listen for live updates
 	GameData.multiplayer.connected_to_server.connect(_on_network_join_success)

@@ -27,12 +27,12 @@ var peer = ENetMultiplayerPeer.new()
 var difficulty = "easy"
 
 const DIFFICULTY_MULTIPLIERS: Dictionary = {
-	"medium_rare": 0.6, # Easy (0.6x multiplier)
+	"medium_rare": 0.6, # Easy
 	"easy": 0.6,
-	"well_done": 1.0,   # Normal (1.0x multiplier)
+	"well_done": 1.0,   # Normal
 	"normal": 1.0,
 	"medium": 1.0,
-	"charred": 2.0,     # Hard (2.0x multiplier)
+	"charred": 2.0,     # Hard
 	"hard": 2.0
 }
 
@@ -72,7 +72,7 @@ const UPGRADES_DB: Dictionary = {
 	"sun_stage": {
 		"id": "sun_stage",
 		"max_level": 3,
-		"stage_costs": [500, 1500, 3000], # Easy Base Costs
+		"stage_costs": [500, 1500, 3000],
 		"base_value": 1.0,
 		"increment": 1.0
 	}
@@ -238,7 +238,6 @@ func get_upgrade_cost(upgrade_name: String) -> int:
 	var current_lvl: int = upgrade_levels.get(upgrade_name, 0)
 	var raw_cost: float = 0.0
 
-	# Check for custom stage costs array
 	if db_entry.has("stage_costs"):
 		if current_lvl < db_entry["stage_costs"].size():
 			raw_cost = db_entry["stage_costs"][current_lvl]
@@ -247,19 +246,17 @@ func get_upgrade_cost(upgrade_name: String) -> int:
 		var mult: float = db_entry["cost_multiplier"]
 		raw_cost = base_cost * pow(mult, current_lvl)
 
-	# Multipliers
 	var player_mult: float = 1.0 + ((get_player_count() - 1) * 0.50)
 	var diff_mult: float = get_difficulty_multiplier()
 	
-	# Override diff_mult for Sun Stage to scale relative to custom Easy base
 	if upgrade_name == "sun_stage":
 		match difficulty.to_lower():
 			"medium_rare", "easy":
-				diff_mult = 1.0
+				diff_mult = 0.8
 			"well_done", "normal", "medium":
-				diff_mult = 1.5
+				diff_mult = 1.0
 			"charred", "hard":
-				diff_mult = 2.0
+				diff_mult = 1.2
 
 	return int(raw_cost * player_mult * diff_mult)
 
@@ -285,7 +282,15 @@ func get_upgrade_value_text(upgrade_name: String) -> String:
 	var current_val = get_upgrade_value_at_level(upgrade_name, current_lvl)
 	var next_val = get_upgrade_value_at_level(upgrade_name, current_lvl + 1)
 	
-	return "%s -> %s" % [current_val, next_val]
+	# Strip trailing units from left side for clean 'X > Y%' format
+	if upgrade_name in ["drop_chance", "chop_chance"]:
+		current_val = current_val.replace("%", "")
+	elif upgrade_name == "daily_recipe_buff":
+		current_val = current_val.replace("x", "")
+	elif upgrade_name == "sun_stage":
+		return get_upgrade_value_at_level(upgrade_name, current_lvl)
+	
+	return "%s > %s" % [current_val, next_val]
 
 
 func purchase_upgrade(upgrade_name: String) -> bool:

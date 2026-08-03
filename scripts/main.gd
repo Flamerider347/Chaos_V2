@@ -31,11 +31,10 @@ var current_stocks: Dictionary = {}
 @onready var pause_room_label: Label = $Pause_UI/roomcode
 @onready var main_ui = $UI
 @onready var thing_ui_panel: Label3D = get_node_or_null("game/world/kitchen/thing_placement/thing_UI")
-@onready var warning_container = get_node_or_null("/root/main/computer_UI/warning")
-@onready var warning_text_label: Label = get_node_or_null("/root/main/computer_UI/warning/warning_text") 
 
 @onready var tree_spawner: MultiplayerSpawner = get_node_or_null("game/spawners/tree_spawner")
 @onready var item_spawner: MultiplayerSpawner = get_node_or_null("game/spawners/item_spawner")
+@onready var power_toggle = get_node_or_null("/root/main/computer_UI/power_toggle")
 
 var min_spawn_bound: Vector2 = Vector2(-40, -40)
 var max_spawn_bound: Vector2 = Vector2(35, 35)
@@ -48,7 +47,7 @@ var paused: bool = false
 
 func _ready() -> void:
 	GameData.score = 0
-	GameData.power = 200000
+	GameData.power = 100
 	$Pause_UI/roomcode.text = "Port: " + str(GameData.game_port)
 	$Pause_UI/host_ip.text = "IP:" + str(GameData.room_code)
 	GameData.in_game = true
@@ -78,8 +77,23 @@ func _ready() -> void:
 	if is_instance_valid(item_spawner):
 		item_spawner.spawn_function = _on_custom_item_spawn_shared
 
+	if is_instance_valid(power_toggle):
+		if not power_toggle.toggled.is_connected(_on_power_toggle_toggled):
+			power_toggle.toggled.connect(_on_power_toggle_toggled)
+
 	_setup_shop_ui_connections()
 	_setup_upgrade_ui_connections()
+
+
+func _on_power_toggle_toggled(_button_pressed: bool) -> void:
+	update_UI()
+
+
+func get_effective_power() -> int:
+	if is_instance_valid(power_toggle) and power_toggle.button_pressed:
+		var tonight_tax: int = calculate_daily_power_cost(current_day + 1)
+		return max(0, GameData.power - tonight_tax)
+	return GameData.power
 
 
 func _input(event: InputEvent) -> void:
@@ -157,22 +171,31 @@ func _setup_upgrade_ui_connections() -> void:
 					button.pressed.connect(_on_upgrade_button_pressed.bind(node_name))
 
 
-
 func calculate_daily_power_cost(day: int) -> int:
 	if day <= 1:
 		return 0 # Day 1 Grace Period
 	
-	var base_cost: float = 200.0
-	var growth_rate: float = 1.35
+	var diff_str: String = GameData.difficulty.to_lower()
 	
-	# Exponential growth starting from Day 2
+	var base_cost: float = 150.0
+	var growth_rate: float = 1.32
+	
+	# Custom exponential growth rate curves per difficulty
+	match diff_str:
+		"medium_rare", "easy":
+			base_cost = 100.0
+			growth_rate = 1.22  # Grows gently (~600 power by Day 10)
+		"well_done", "normal", "medium":
+			base_cost = 150.0
+			growth_rate = 1.35  # Moderate curve (~2,200 power by Day 10)
+		"charred", "hard":
+			base_cost = 220.0
+			growth_rate = 1.48  # Aggressive exponential curve (~5,000 power by Day 10)
+	
 	var raw_tax: float = base_cost * pow(growth_rate, float(day - 2))
+	var player_mult: float = 1.0 + ((GameData.get_player_count() - 1) * 0.50)
 	
-	var diff_mult: float = GameData.get_difficulty_multiplier() # 0.6x Easy, 1.0x Normal, 2.0x Hard
-	var player_mult: float = 1.0 + ((GameData.get_player_count() - 1) * 0.50) # +50% per teammate
-	
-	return int(raw_tax * diff_mult * player_mult)
-
+	return int(raw_tax * player_mult)
 
 
 func _on_environment_controller_new_day(day: int) -> void:
@@ -180,7 +203,6 @@ func _on_environment_controller_new_day(day: int) -> void:
 	if is_instance_valid(current_day_label):
 		current_day_label.text = "Day: " + str(current_day)
 		
-	# Deduct daily tax (Returns 0 on Day 1)
 	var todays_tax: int = calculate_daily_power_cost(day)
 	GameData.power -= todays_tax
 	
@@ -192,7 +214,6 @@ func _on_environment_controller_new_day(day: int) -> void:
 		
 		rpc("sync_daily_stock", new_stocks)
 		
-		# Only check lose condition starting on Day 2
 		if day > 1 and GameData.power < 0:
 			rpc("burn_it_all_down")
 	
@@ -207,11 +228,12 @@ func sync_daily_stock(new_stocks: Dictionary) -> void:
 
 
 func _on_buy_button_pressed(item_node_name: String) -> void:
-	rpc_id(1, "request_purchase", item_node_name)
+	var restrict_to_spare: bool = is_instance_valid(power_toggle) and power_toggle.button_pressed
+	rpc_id(1, "request_purchase", item_node_name, restrict_to_spare)
 
 
 @rpc("any_peer", "call_local", "reliable")
-func request_purchase(item_node_name: String) -> void:
+func request_purchase(item_node_name: String, restrict_to_spare: bool = false) -> void:
 	if not multiplayer.is_server():
 		return
 		
@@ -221,7 +243,12 @@ func request_purchase(item_node_name: String) -> void:
 	var item_cost: int = ITEM_PRICES.get(item_node_name, 10)
 	var stock_available: int = current_stocks.get(item_node_name, 0)
 	
-	if GameData.power >= item_cost and stock_available > 0:
+	var available_funds: int = GameData.power
+	if restrict_to_spare:
+		var tonight_tax: int = calculate_daily_power_cost(current_day + 1)
+		available_funds = max(0, GameData.power - tonight_tax)
+	
+	if available_funds >= item_cost and stock_available > 0:
 		current_stocks[item_node_name] -= 1
 		GameData.power -= item_cost
 		
@@ -239,11 +266,12 @@ func sync_purchase_result(item_node_name: String, new_stock: int, new_power: int
 
 
 func _on_upgrade_button_pressed(upgrade_node_name: String) -> void:
-	rpc_id(1, "request_upgrade_purchase", upgrade_node_name)
+	var restrict_to_spare: bool = is_instance_valid(power_toggle) and power_toggle.button_pressed
+	rpc_id(1, "request_upgrade_purchase", upgrade_node_name, restrict_to_spare)
 
 
 @rpc("any_peer", "call_local", "reliable")
-func request_upgrade_purchase(upgrade_node_name: String) -> void:
+func request_upgrade_purchase(upgrade_node_name: String, restrict_to_spare: bool = false) -> void:
 	if not multiplayer.is_server():
 		return
 
@@ -257,12 +285,16 @@ func request_upgrade_purchase(upgrade_node_name: String) -> void:
 		return
 
 	var cost: int = GameData.get_upgrade_cost(upgrade_node_name)
+	
+	var available_funds: int = GameData.power
+	if restrict_to_spare:
+		var tonight_tax: int = calculate_daily_power_cost(current_day + 1)
+		available_funds = max(0, GameData.power - tonight_tax)
 
-	if GameData.power >= cost:
+	if available_funds >= cost:
 		GameData.power -= cost
 		GameData.upgrade_levels[upgrade_node_name] += 1
 		rpc("sync_upgrade_result", upgrade_node_name, GameData.upgrade_levels[upgrade_node_name], GameData.power)
-
 
 
 @rpc("authority", "call_local", "reliable")
@@ -270,7 +302,6 @@ func sync_upgrade_result(upgrade_node_name: String, new_level: int, new_power: i
 	GameData.upgrade_levels[upgrade_node_name] = new_level
 	GameData.power = new_power
 	
-	# Ensure victory checks for "sun_stage" max_level (Stage 3)
 	if upgrade_node_name == "sun_stage" and new_level >= 3:
 		_trigger_victory()
 	else:
@@ -278,13 +309,12 @@ func sync_upgrade_result(upgrade_node_name: String, new_level: int, new_power: i
 		_refresh_players_after_upgrade()
 
 
-
 func _refresh_players_after_upgrade() -> void:
-	# Update every local player instance on this peer
 	var players = get_tree().get_nodes_in_group("player")
 	for player in players:
 		if player.has_method("update_inventory_ui"):
 			player.update_inventory_ui()
+
 
 func _trigger_victory() -> void:
 	GameData.in_game = false
@@ -385,36 +415,19 @@ func _upgrades_pressed() -> void:
 	$computer_UI/shop_container/UI_margins/Upgrades_UI.show()
 
 
-func _update_power_warning() -> void:
-	if not is_instance_valid(warning_container) or not is_instance_valid(warning_text_label):
-		return
-
-	var power_requirement: int = calculate_daily_power_cost(current_day + 1)
-	var threshold: float = power_requirement + 50.0
-
-	if GameData.power < threshold:
-		warning_container.show()
-		var surplus_or_deficit: float = GameData.power - power_requirement
-
-		if surplus_or_deficit >= 0:
-			warning_text_label.text = "You need %d power \nto survive tonight, \nso spend carefully!\n(You have %d spare)" % [power_requirement, int(surplus_or_deficit)]
-		else:
-			var power_needed: int = abs(int(surplus_or_deficit))
-			warning_text_label.text = "You need %d power \nto survive tonight,\nso spend carefully!\n(You need %d more power)" % [power_requirement, power_needed]
-	else:
-		warning_container.hide()
-
-
 func update_UI() -> void:
 	if has_node("computer_UI/power"):
-		$computer_UI/power.text = str(GameData.power)
+		var displayed_power = get_effective_power()
+		$computer_UI/power.text = str(displayed_power)
+	if $computer_UI/power_toggle.button_pressed:
+		$computer_UI/power_type.text = "Spare power:"
+	else:
+		$computer_UI/power_type.text = "Total power:"
 	
-	_update_power_warning()
 	update_items_UI()
 	update_upgrades_UI()
-	
-	# Direct path recipe label refresh
 	_update_3d_recipe_labels_direct()
+	thing_ui_update()
 
 
 func _update_3d_recipe_labels_direct() -> void:
@@ -428,23 +441,24 @@ func _update_3d_recipe_labels_direct() -> void:
 	var r1 = RecipeManager.recipe_of_the_day
 	var r2 = RecipeManager.recipe_of_the_day2
 
-	# Check that r1 is not null and is a valid key before querying the dictionary
 	if is_instance_valid(lbl1) and r1 != null and RecipeManager.recipes.has(r1):
 		var data1 = RecipeManager.recipes[r1]
 		var val1 = int(int(data1.get("value", 0)) * buff_multiplier)
 		lbl1.text = "RECIPE OF THE DAY:\n%s ($%d)" % [data1.get("display_name", "Unknown"), val1]
 
-	# Check that r2 is not null and is a valid key before querying the dictionary
 	if is_instance_valid(lbl2) and r2 != null and RecipeManager.recipes.has(r2):
 		var data2 = RecipeManager.recipes[r2]
 		var val2 = int(int(data2.get("value", 0)) * buff_multiplier)
 		lbl2.text = "RECIPE OF THE DAY:\n%s ($%d)" % [data2.get("display_name", "Unknown"), val2]
+
 
 func update_items_UI() -> void:
 	var items_container = get_node_or_null("computer_UI/shop_container/UI_margins/Items_UI")
 	if not items_container:
 		return
 		
+	var usable_power = get_effective_power()
+	
 	for item_node in items_container.get_children():
 		var node_name = item_node.name
 		if not ITEM_DB.has(node_name):
@@ -461,7 +475,7 @@ func update_items_UI() -> void:
 		if stock_node:
 			stock_node.text = "Stock: " + str(stock)
 			
-		var locked: bool = (cost > GameData.power) or (stock <= 0)
+		var locked: bool = (cost > usable_power) or (stock <= 0)
 		
 		if cost_node:
 			if cost_node is Button:
@@ -475,11 +489,12 @@ func update_items_UI() -> void:
 			button_green.visible = not locked
 
 
-
 func update_upgrades_UI() -> void:
 	var upgrades_container = get_node_or_null("computer_UI/shop_container/UI_margins/Upgrades_UI")
 	if not upgrades_container:
 		return
+
+	var usable_power = get_effective_power()
 
 	for upgrade_node in upgrades_container.get_children():
 		var node_name = upgrade_node.name
@@ -491,32 +506,44 @@ func update_upgrades_UI() -> void:
 		var is_maxed: bool = current_lvl >= max_lvl
 		var cost: int = GameData.get_upgrade_cost(node_name)
 
+		# Safe node fetching without 'or' expression evaluation bugs
 		var cost_button = upgrade_node.get_node_or_null("cost")
-		var level_label = upgrade_node.get_node_or_null("level")
 		
-		# Find the label where the upgrade values will be displayed
-		var value_label = upgrade_node.get_node_or_null("stock")
-		if not value_label:
-			value_label = upgrade_node.get_node_or_null("stat_label") # Alternative fallback name
+		var level_label = upgrade_node.get_node_or_null("level")
+		if level_label == null:
+			level_label = upgrade_node.get_node_or_null("stock")
+
+		var title_label = upgrade_node.get_node_or_null("title")
+		if title_label == null:
+			title_label = upgrade_node.get_node_or_null("name")
+
+		var stat_label = upgrade_node.get_node_or_null("stat_label")
+		if stat_label == null:
+			stat_label = upgrade_node.get_node_or_null("value")
 
 		var button_red = upgrade_node.find_child("ButtonRed")
 		var button_green = upgrade_node.find_child("ButtonGreen")
 
-		var locked: bool = is_maxed or (cost > GameData.power)
+		var locked: bool = is_maxed or (cost > usable_power)
 
-		# 1. Update Level Display
+		# Title handling
+		if title_label and title_label is Label:
+			if node_name == "sun_stage":
+				title_label.text = "Artificial Sun (%d/%d)" % [current_lvl + 1, max_lvl]
+
+		# Level label handling (Lvl 1, Lvl 2, MAX)
 		if level_label and level_label is Label:
 			level_label.text = "MAX" if is_maxed else "Lvl " + str(current_lvl)
 
-		# 2. Update Upgrade Stat Display (e.g. "0% -> 10%")
-		if value_label and value_label is Label:
-			value_label.text = GameData.get_upgrade_value_text(node_name)
+		# Stat transition formatting (e.g., 10% > 20%)
+		if stat_label and stat_label is Label:
+			stat_label.text = GameData.get_upgrade_value_text(node_name)
 
-		# 3. Update Purchase Button Text
+		# Cost button text handling
 		if cost_button and cost_button is Button:
 			cost_button.text = "MAX" if is_maxed else str(cost)
 
-		# 4. Toggle Button State Visuals
+		# Button UI color toggle
 		if button_red:
 			button_red.visible = locked
 		if button_green:

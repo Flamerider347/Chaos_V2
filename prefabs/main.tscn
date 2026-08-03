@@ -54,7 +54,6 @@
 [ext_resource type="Texture2D" uid="uid://vanelsj052ea" path="res://Assets/UI/Icons/512px/energy_icon_512px.png" id="43_7m1s4"]
 [ext_resource type="Texture2D" uid="uid://d1vdo6sonuj6s" path="res://Assets/2D art/food icons/foodicons_bun_transparent.png" id="44_1jfbq"]
 [ext_resource type="Texture2D" uid="uid://kdbmr4tt8ytp" path="res://Assets/2D art/food icons/foodicons_tomato_transparent.png" id="44_iwmkf"]
-[ext_resource type="Texture2D" uid="uid://cv1fcyer5e6jt" path="res://Assets/UI/Icons/512px/warningCircle_icon_512px.png" id="46_eh8cv"]
 [ext_resource type="Texture2D" uid="uid://bje8itfv38vck" path="res://Assets/UI/Modals/modal_frame.png" id="49_1jfbq"]
 [ext_resource type="Texture2D" uid="uid://xjynvh2r1x8y" path="res://Assets/UI/Headers/header_purple.png" id="50_833dr"]
 
@@ -576,7 +575,7 @@ transform = Transform3D(0.69999915, 0, -0.001084412, 0, 0.7, 0, 0.001084412, 0, 
 mesh = ExtResource("14_rx2bs")
 
 [node name="Label3D" type="Label3D" parent="game/world/kitchen/main_kitchen/appliances/difficulty_table/KitchentableALarge" unique_id=1083132090]
-transform = Transform3D(1.0000001, 2.3283064e-10, 6.938894e-18, 0, -4.3711392e-08, 1.0000001, 2.3283064e-10, -1.0000001, -4.3711395e-08, 0.39717844, 1.0111403, -0.5602832)
+transform = Transform3D(1.0000001, 2.3283064e-10, 6.938894e-18, 0, -4.3711392e-08, 1.0000001, 2.3283064e-10, -1.0000001, -4.3711395e-08, 0.39732948, 1.0111403, -0.46281242)
 text = "Set game difficulty here
 "
 font_size = 37
@@ -587,7 +586,7 @@ transform = Transform3D(0.69999915, 0, -0.001084412, 0, 0.7, 0, 0.001084412, 0, 
 shape = SubResource("BoxShape3D_rx2bs")
 
 [node name="difficulty2" type="Label3D" parent="game/world/kitchen/main_kitchen/appliances/difficulty_table" unique_id=1516896849 groups=["difficulty_button"]]
-transform = Transform3D(0.70000005, 0, 0, 0, -3.0597974e-08, 0.70000005, 0, -0.70000005, -3.0597974e-08, -0.645342, 0.101442456, -1.2398906)
+transform = Transform3D(0.70000005, 0, 0, 0, -3.0597974e-08, 0.70000005, 0, -0.70000005, -3.0597974e-08, -0.645342, 0.101442456, -1.0702124)
 text = "Changing difficulty increases
 upgrade cost and power 
 requirements, so harder levels
@@ -829,6 +828,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8867252, 4.7683716e-07, -2
 transform = Transform3D(0.58886224, 0, -0.80823344, 0, 1, 0, 0.80823344, 0, 0.58886224, 5.4379354, -0.09339571, -16.273397)
 
 [node name="computer_UI" type="CanvasLayer" parent="." unique_id=2131990608]
+visible = false
 
 [node name="return" type="TextureButton" parent="computer_UI" unique_id=1493831723]
 offset_left = 811.75
@@ -859,6 +859,113 @@ position = Vector2(576.75, 378.375)
 scale = Vector2(0.5, 0.44298247)
 texture = ExtResource("37_7kjfp")
 
+[node name="power_toggle" type="CheckButton" parent="computer_UI" unique_id=44855735]
+texture_filter = 1
+offset_left = 277.0
+offset_top = 29.0
+offset_right = 352.0
+offset_bottom = 97.0
+scale = Vector2(2, 2)
+button_pressed = true
+
+[node name="power_type" type="Label" parent="computer_UI" unique_id=1463303745]
+offset_left = 436.0
+offset_top = 74.0
+offset_right = 625.0
+offset_bottom = 139.0
+theme_override_font_sizes/font_size = 30
+text = "Spare Power:"
+
+[node name="LabelIconV1" type="Sprite2D" parent="computer_UI" unique_id=14855804]
+position = Vector2(716.2, 106)
+scale = Vector2(0.20930977, 0.3)
+texture = ExtResource("42_8of2g")
+
+[node name="EnergyIcon512Px" type="Sprite2D" parent="computer_UI" unique_id=356521156]
+position = Vector2(655, 106)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("43_7m1s4")
+
+[node name="power" type="Label" parent="computer_UI" unique_id=721787004]
+offset_left = 650.655
+offset_top = 79.38
+offset_right = 779.655
+offset_bottom = 142.38065
+theme_override_font_sizes/font_size = 36
+text = "8888"
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="computer_UI" unique_id=1599711053]
+offset_left = 586.75
+offset_top = 17.25
+offset_right = 765.75
+offset_bottom = 80.25
+theme_override_font_sizes/font_size = 36
+text = "Upgrades"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="computer_UI" unique_id=693065684]
+offset_left = 387.75
+offset_top = 19.25
+offset_right = 566.75
+offset_bottom = 82.25
+theme_override_font_sizes/font_size = 36
+text = "Items"
+horizontal_alignment = 1
+
+[node name="items" type="Button" parent="computer_UI" unique_id=1612916117]
+offset_left = 382.75
+offset_top = 11.25
+offset_right = 569.75
+offset_bottom = 71.25
+
+[node name="upgrades" type="Button" parent="computer_UI" unique_id=744889369]
+offset_left = 581.75
+offset_top = 11.25
+offset_right = 768.75
+offset_bottom = 72.25
+
+[node name="ModalSimpleV3" type="Sprite2D" parent="computer_UI" unique_id=688618628]
+position = Vector2(576.75, 378.375)
+scale = Vector2(0.5, 0.44298247)
+texture = ExtResource("49_1jfbq")
+metadata/_edit_lock_ = true
+
+[node name="warning" type="Node2D" parent="computer_UI" unique_id=56928796]
+position = Vector2(860, 24.925)
+
+[node name="HeaderPurple" type="Sprite2D" parent="computer_UI/warning" unique_id=12684839]
+position = Vector2(125.000015, 152)
+scale = Vector2(0.34602833, 0.295)
+texture = ExtResource("50_833dr")
+
+[node name="ModalSimpleV3" type="Sprite2D" parent="computer_UI/warning/HeaderPurple" unique_id=126445789]
+position = Vector2(-0.00024414063, 403.51694)
+scale = Vector2(0.9999997, 0.63876253)
+texture = ExtResource("37_7kjfp")
+
+[node name="warning_text" type="Label" parent="computer_UI/warning" unique_id=588870664]
+offset_left = -18.0
+offset_top = 171.075
+offset_right = 276.0
+offset_bottom = 700.075
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "You can toggle between total power and spare power, because each day has a power requirement. Spend total power carefully, if you have insufficient power at 6AM, YOU WILL LOSE!
+
+Item stocks reset daily
+Complete the Artificial Sun to win!"
+autowrap_mode = 2
+
+[node name="Label4" type="Label" parent="computer_UI" unique_id=2143415792]
+offset_left = 829.0
+offset_top = 149.0
+offset_right = 1141.0
+offset_bottom = 214.0
+theme_override_font_sizes/font_size = 30
+text = "Shop Information"
+horizontal_alignment = 1
+
 [node name="shop_container" type="ScrollContainer" parent="computer_UI" unique_id=2143075752]
 clip_children = 1
 texture_filter = 1
@@ -886,7 +993,6 @@ theme_override_constants/margin_top = -15
 theme_override_constants/margin_bottom = 97
 
 [node name="Items_UI" type="VBoxContainer" parent="computer_UI/shop_container/UI_margins" unique_id=1808969368]
-visible = false
 layout_mode = 2
 layout_direction = 2
 theme_override_constants/separation = 88
@@ -1251,10 +1357,76 @@ offset_bottom = 84.274994
 text = "Stock: 3"
 
 [node name="Upgrades_UI" type="VBoxContainer" parent="computer_UI/shop_container/UI_margins" unique_id=491731244]
+visible = false
 layout_mode = 2
 layout_direction = 2
 theme_override_constants/separation = 88
 metadata/_edit_lock_ = true
+
+[node name="sun_stage" type="Control" parent="computer_UI/shop_container/UI_margins/Upgrades_UI" unique_id=213701468]
+layout_mode = 2
+
+[node name="MailCream" type="Sprite2D" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=418714888]
+position = Vector2(227, 57.75)
+scale = Vector2(0.4, 0.3)
+texture = ExtResource("40_iwmkf")
+
+[node name="FoodiconsCarrotTransparent" type="Sprite2D" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=1102649160]
+visible = false
+position = Vector2(64, 54)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("40_1jfbq")
+
+[node name="ButtonGreen" type="Sprite2D" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=1281044428]
+position = Vector2(366.25, 55.000008)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("39_xfyap")
+
+[node name="ButtonRed" type="Sprite2D" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=551015719]
+position = Vector2(366.25, 55.000008)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("42_7m1s4")
+
+[node name="cost" type="Button" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=1969327039]
+layout_mode = 0
+offset_left = 300.25
+offset_top = 22.000008
+offset_right = 432.25
+offset_bottom = 85.00001
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 35
+text = "20"
+metadata/_edit_use_anchors_ = true
+
+[node name="title" type="Label" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=583159227]
+layout_mode = 0
+offset_left = 106.0
+offset_top = 20.000006
+offset_right = 264.99963
+offset_bottom = 68.80001
+text = "Artificial Sun 1/3"
+
+[node name="Label" type="Label" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=1852836994]
+layout_mode = 0
+offset_left = 106.0
+offset_top = 40.000008
+offset_right = 281.195
+offset_bottom = 89.00001
+theme_override_constants/line_spacing = -1
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Construct an artificial sun to create a renewable energy source (win the game)"
+autowrap_mode = 2
+
+[node name="value" type="Label" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=1010993747]
+layout_mode = 0
+offset_left = 21.4
+offset_top = 22.8
+offset_right = 107.4
+offset_bottom = 84.000015
+text = "10 > 20"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="drop_chance" type="Control" parent="computer_UI/shop_container/UI_margins/Upgrades_UI" unique_id=269692154]
 layout_mode = 2
@@ -1311,7 +1483,7 @@ theme_override_font_sizes/font_size = 12
 text = "Increase chance of dropping multiple items from trees"
 autowrap_mode = 2
 
-[node name="stock" type="Label" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/drop_chance" unique_id=2132628324]
+[node name="value" type="Label" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/drop_chance" unique_id=2132628324]
 layout_mode = 0
 offset_left = 21.4
 offset_top = 22.8
@@ -1376,7 +1548,7 @@ theme_override_font_sizes/font_size = 12
 text = "Increase chance of dropping multiple items when using the chopping board"
 autowrap_mode = 2
 
-[node name="stock" type="Label" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/chop_chance" unique_id=1188795535]
+[node name="value" type="Label" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/chop_chance" unique_id=1188795535]
 layout_mode = 0
 offset_left = 21.4
 offset_top = 22.8
@@ -1441,7 +1613,7 @@ theme_override_font_sizes/font_size = 12
 text = "Increase amount of storable items per inventory slot"
 autowrap_mode = 2
 
-[node name="stock" type="Label" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/stack_size" unique_id=269248980]
+[node name="value" type="Label" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/stack_size" unique_id=269248980]
 layout_mode = 0
 offset_left = 21.4
 offset_top = 22.8
@@ -1507,7 +1679,7 @@ text = "Increase bonus money earned from succesfully making
 a recipe of the day"
 autowrap_mode = 2
 
-[node name="stock" type="Label" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/daily_recipe_buff" unique_id=1481764808]
+[node name="value" type="Label" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/daily_recipe_buff" unique_id=1481764808]
 layout_mode = 0
 offset_left = 21.4
 offset_top = 22.8
@@ -1516,170 +1688,6 @@ offset_bottom = 84.000015
 text = "2 > 2.5x"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="sun_stage" type="Control" parent="computer_UI/shop_container/UI_margins/Upgrades_UI" unique_id=213701468]
-layout_mode = 2
-
-[node name="MailCream" type="Sprite2D" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=418714888]
-position = Vector2(227, 57.75)
-scale = Vector2(0.4, 0.3)
-texture = ExtResource("40_iwmkf")
-
-[node name="FoodiconsCarrotTransparent" type="Sprite2D" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=1102649160]
-visible = false
-position = Vector2(64, 54)
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("40_1jfbq")
-
-[node name="ButtonGreen" type="Sprite2D" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=1281044428]
-position = Vector2(366.25, 55.000008)
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("39_xfyap")
-
-[node name="ButtonRed" type="Sprite2D" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=551015719]
-position = Vector2(366.25, 55.000008)
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("42_7m1s4")
-
-[node name="cost" type="Button" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=1969327039]
-layout_mode = 0
-offset_left = 300.25
-offset_top = 22.000008
-offset_right = 432.25
-offset_bottom = 85.00001
-theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 35
-text = "20"
-metadata/_edit_use_anchors_ = true
-
-[node name="Label" type="Label" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=583159227]
-layout_mode = 0
-offset_left = 106.0
-offset_top = 20.000006
-offset_right = 264.99963
-offset_bottom = 68.80001
-text = "Artificial Sun 1/3"
-
-[node name="Label2" type="Label" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=1852836994]
-layout_mode = 0
-offset_left = 106.0
-offset_top = 40.000008
-offset_right = 281.195
-offset_bottom = 89.00001
-theme_override_constants/line_spacing = -1
-theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 12
-text = "Construct an artificial sun to create a renewable energy source (win the game)"
-autowrap_mode = 2
-
-[node name="stock" type="Label" parent="computer_UI/shop_container/UI_margins/Upgrades_UI/sun_stage" unique_id=1010993747]
-layout_mode = 0
-offset_left = 21.4
-offset_top = 22.8
-offset_right = 107.4
-offset_bottom = 84.000015
-text = "10 > 20"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="LabelIconV1" type="Sprite2D" parent="computer_UI" unique_id=14855804]
-position = Vector2(716.2, 106)
-scale = Vector2(0.20930977, 0.3)
-texture = ExtResource("42_8of2g")
-
-[node name="EnergyIcon512Px" type="Sprite2D" parent="computer_UI" unique_id=356521156]
-position = Vector2(655, 106)
-scale = Vector2(0.1, 0.1)
-texture = ExtResource("43_7m1s4")
-
-[node name="power" type="Label" parent="computer_UI" unique_id=721787004]
-offset_left = 649.0
-offset_top = 79.0
-offset_right = 780.0
-offset_bottom = 142.0
-theme_override_font_sizes/font_size = 36
-text = "20"
-horizontal_alignment = 1
-
-[node name="Label" type="Label" parent="computer_UI" unique_id=1599711053]
-offset_left = 586.75
-offset_top = 17.25
-offset_right = 765.75
-offset_bottom = 80.25
-theme_override_font_sizes/font_size = 36
-text = "Upgrades"
-horizontal_alignment = 1
-
-[node name="Label2" type="Label" parent="computer_UI" unique_id=693065684]
-offset_left = 387.75
-offset_top = 19.25
-offset_right = 566.75
-offset_bottom = 82.25
-theme_override_font_sizes/font_size = 36
-text = "Items"
-horizontal_alignment = 1
-
-[node name="items" type="Button" parent="computer_UI" unique_id=1612916117]
-offset_left = 382.75
-offset_top = 11.25
-offset_right = 569.75
-offset_bottom = 71.25
-
-[node name="upgrades" type="Button" parent="computer_UI" unique_id=744889369]
-offset_left = 581.75
-offset_top = 11.25
-offset_right = 768.75
-offset_bottom = 72.25
-
-[node name="ModalSimpleV3" type="Sprite2D" parent="computer_UI" unique_id=688618628]
-position = Vector2(576.75, 378.375)
-scale = Vector2(0.5, 0.44298247)
-texture = ExtResource("49_1jfbq")
-metadata/_edit_lock_ = true
-
-[node name="warning" type="Node2D" parent="computer_UI" unique_id=56928796]
-position = Vector2(860, 24.925)
-
-[node name="HeaderPurple" type="Sprite2D" parent="computer_UI/warning" unique_id=12684839]
-position = Vector2(125.000015, 152)
-scale = Vector2(0.34602833, 0.295)
-texture = ExtResource("50_833dr")
-
-[node name="ModalSimpleV3" type="Sprite2D" parent="computer_UI/warning/HeaderPurple" unique_id=126445789]
-position = Vector2(-0.00024414063, 403.51694)
-scale = Vector2(0.9999997, 0.63876253)
-texture = ExtResource("37_7kjfp")
-
-[node name="warning_circle" type="Sprite2D" parent="computer_UI/warning" unique_id=34885250]
-position = Vector2(232, 158)
-scale = Vector2(0.09, 0.09)
-texture = ExtResource("46_eh8cv")
-
-[node name="warning_circle3" type="Sprite2D" parent="computer_UI/warning" unique_id=2029612073]
-position = Vector2(18, 158)
-scale = Vector2(0.09, 0.09)
-texture = ExtResource("46_eh8cv")
-
-[node name="Label3" type="Label" parent="computer_UI/warning" unique_id=1838702666]
-offset_left = 40.0
-offset_top = 134.0
-offset_right = 210.0
-offset_bottom = 169.0
-theme_override_font_sizes/font_size = 25
-text = "WARNING"
-horizontal_alignment = 1
-
-[node name="warning_text" type="Label" parent="computer_UI/warning" unique_id=588870664]
-offset_left = -16.0
-offset_top = 185.0
-offset_right = 268.0
-offset_bottom = 342.0
-theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 25
-text = "You need 8000 power
-to survive tonight, 
-so spend carefully!
-(You have 8000 spare)"
 
 [node name="Pause_UI" type="CanvasLayer" parent="." unique_id=516443905]
 visible = false
@@ -1731,7 +1739,6 @@ offset_bottom = 224.0
 text = "Return to main menu"
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1896255929]
-visible = false
 
 [node name="fps" type="Label" parent="UI" unique_id=1827639193]
 offset_left = 6.0
@@ -1759,6 +1766,15 @@ offset_left = 381.0
 offset_top = 575.0
 offset_right = 421.0
 offset_bottom = 615.0
+
+[node name="item" type="Label" parent="UI/item_slots/slot1" unique_id=911065558]
+layout_mode = 0
+offset_left = -53.0
+offset_top = -11.0
+offset_right = 34.0
+offset_bottom = 38.0
+horizontal_alignment = 1
+autowrap_mode = 2
 
 [node name="slot_icon" type="Sprite2D" parent="UI/item_slots/slot1" unique_id=1741082089]
 position = Vector2(-10, 0)
@@ -1789,6 +1805,15 @@ offset_top = 575.0
 offset_right = 541.0
 offset_bottom = 615.0
 
+[node name="item" type="Label" parent="UI/item_slots/slot2" unique_id=1194648642]
+layout_mode = 0
+offset_left = -44.0
+offset_top = -11.0
+offset_right = 44.0
+offset_bottom = 38.0
+horizontal_alignment = 1
+autowrap_mode = 2
+
 [node name="slot_icon" type="Sprite2D" parent="UI/item_slots/slot2" unique_id=434587595]
 scale = Vector2(0.025, 0.025)
 texture = ExtResource("32_uigxe")
@@ -1817,6 +1842,15 @@ offset_top = 575.0
 offset_right = 671.0
 offset_bottom = 615.0
 
+[node name="item" type="Label" parent="UI/item_slots/slot3" unique_id=23324753]
+layout_mode = 0
+offset_left = -44.0
+offset_top = -11.0
+offset_right = 44.0
+offset_bottom = 38.0
+horizontal_alignment = 1
+autowrap_mode = 2
+
 [node name="slot_icon" type="Sprite2D" parent="UI/item_slots/slot3" unique_id=1480139332]
 scale = Vector2(0.025, 0.025)
 texture = ExtResource("32_uigxe")
@@ -1844,6 +1878,15 @@ offset_left = 631.0
 offset_top = 575.0
 offset_right = 671.0
 offset_bottom = 615.0
+
+[node name="item" type="Label" parent="UI/item_slots/slot4" unique_id=43969761]
+layout_mode = 0
+offset_left = 86.0
+offset_top = -11.0
+offset_right = 174.0
+offset_bottom = 38.0
+horizontal_alignment = 1
+autowrap_mode = 2
 
 [node name="slot_icon" type="Sprite2D" parent="UI/item_slots/slot4" unique_id=1104716246]
 position = Vector2(130, 0)

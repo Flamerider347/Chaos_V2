@@ -31,14 +31,14 @@ var ui_slot_icons: Dictionary = {}
 
 @onready var slot_icons = {
 	"tomato" : preload("res://Assets/2D art/food icons/foodicons_tomato.png"),
-	"tomato_chopped" : preload("res://Assets/2D art/food icons/foodicons_tomato.png"),
+	#"tomato_chopped" : preload("res://Assets/2D art/food icons/foodicons_tomato.png"),
 	"carrot" : preload("res://Assets/2D art/food icons/foodicons_carrot.png"),
-	"carrot_chopped" : preload("res://Assets/2D art/food icons/foodicons_carrot.png"),
+	#"carrot_chopped" : preload("res://Assets/2D art/food icons/foodicons_carrot.png"),
 	"meat" : preload("res://Assets/2D art/food icons/foodicons_raw-patty.png"),
 	"meat_cooked" : preload("res://Assets/2D art/food icons/foodicons_patty.png"),
-	"meat_burnt" : preload("res://Assets/2D art/food icons/foodicons_patty.png"),
+	#"meat_burnt" : preload("res://Assets/2D art/food icons/foodicons_patty.png"),
 	"cheese" : preload("res://Assets/2D art/food icons/foodicons_cheese.png"),
-	"cheese_chopped" : preload("res://Assets/2D art/food icons/foodicons_cheese.png"),
+	#"cheese_chopped" : preload("res://Assets/2D art/food icons/foodicons_cheese.png"),
 	"bun" : preload("res://Assets/2D art/food icons/foodicons_bun.png")
 }
 
@@ -275,9 +275,8 @@ func pickup_object(object: Node3D) -> void:
 		plate_fix = true
 		
 	var picked_up = "0"
-	var current_limit = get_stack_limit() # Fetch current max stack limit from GameData
+	var current_limit = get_stack_limit()
 	
-	# 1. Try to add to an existing slot of the same type that hasn't reached current_limit
 	for i in inventory.keys():
 		if inventory[i][2] == object.get("type") and inventory[i][1] < current_limit and not plate_fix:
 			inventory[i][1] += 1
@@ -285,7 +284,6 @@ func pickup_object(object: Node3D) -> void:
 			picked_up = i
 			break
 			
-	# 2. If all matching slots are full (or none exists), put it into an empty slot
 	if picked_up == "0":
 		for i in inventory.keys():
 			if inventory[i][2] == null:
@@ -293,8 +291,18 @@ func pickup_object(object: Node3D) -> void:
 				inventory[i][2] = object.get("type")
 				inventory[i][3].append(object)
 				picked_up = i
+				
+				# UPDATE ICON OR FALLBACK LABEL
+				var item_label = get_node_or_null("/root/main/UI/item_slots/slot" + str(picked_up) + "/item")
 				if object.get("type") in slot_icons and ui_slot_icons.has(str(i)):
 					ui_slot_icons[str(i)].texture = slot_icons[object.get("type")]
+					if is_instance_valid(item_label): item_label.text = ""
+				else:
+					if is_instance_valid(item_label):
+						if object.get("type") == "plate":
+							item_label.text = _get_plate_display_name(object)
+						else:
+							item_label.text = object.type.replace("_", " ").capitalize()
 				break
 
 	if picked_up != "0":
@@ -309,7 +317,30 @@ func pickup_object(object: Node3D) -> void:
 		rpc("sync_active_slot", current_slot)
 		update_inventory_ui()
 
+func _get_plate_display_name(plate_item: Node3D) -> String:
+	if not is_instance_valid(plate_item) or not ("stacked_items" in plate_item):
+		return "Plate"
 
+	# Collect raw types directly (e.g., ["bun", "meat_cooked"])
+	var raw_contents: Array = []
+	for item in plate_item.stacked_items:
+		if is_instance_valid(item) and "type" in item:
+			raw_contents.append(item.type)
+
+	# 1. Check if the stacked items match a completed recipe
+	var rm = get_node_or_null("/root/RecipeManager")
+	if is_instance_valid(rm) and rm.has_method("get_matching_recipe"):
+		var recipe_name = rm.get_matching_recipe(raw_contents)
+		if recipe_name != "":
+			return recipe_name
+
+	# 2. Fallback to "Incomplete Order" if items exist on the plate but match no recipe
+	if raw_contents.size() > 0:
+		return "Incomplete Order"
+
+	return "Plate"
+	
+	
 func drop_object(surface_target: Node3D = null) -> void:
 	if current_slot == "0" or inventory[current_slot][2] == null or inventory[current_slot][3].is_empty(): return
 	
@@ -328,6 +359,7 @@ func drop_object(surface_target: Node3D = null) -> void:
 	if inventory[current_slot][1] <= 0:
 		inventory[current_slot][2] = null
 		if ui_slot_icons.has(str(current_slot)): ui_slot_icons[str(current_slot)].texture = null
+		get_node_or_null("/root/main/UI/item_slots/slot" + str(current_slot) + "/item").text = ""
 		rpc("sync_hand_item_removed", current_slot)
 		
 	update_inventory_ui()
@@ -362,10 +394,19 @@ func stack_object(plate: Node3D) -> void:
 	
 	if inventory[current_slot][1] <= 0:
 		inventory[current_slot][2] = null
+		get_node_or_null("/root/main/UI/item_slots/slot" + str(current_slot) + "/item").text = ""
 		if ui_slot_icons.has(str(current_slot)): ui_slot_icons[str(current_slot)].texture = null
 		rpc("sync_hand_item_removed", current_slot)
 		
 	held_item = inventory[current_slot][3][-1] if inventory[current_slot][3].size() > 0 else null
+	
+	# Update label of the plate being built if it is currently in inventory
+	for slot_key in inventory:
+		if inventory[slot_key][3].has(plate):
+			var item_label = get_node_or_null("/root/main/UI/item_slots/slot" + str(slot_key) + "/item")
+			if is_instance_valid(item_label):
+				item_label.text = _get_plate_display_name(plate)
+				
 	update_inventory_ui()
 
 
@@ -402,29 +443,16 @@ func update_inventory_ui() -> void:
 	
 	for s in inventory:
 		var lbl: Label = inventory[s][0]
-		if not is_instance_valid(lbl): continue
 		var count: int = inventory[s][1]
 		
-		if inventory[s][2] != null and count > 0:
-			var last_item = inventory[s][3][-1] if inventory[s][3].size() > 0 else null
-			if str(inventory[s][2]) == "plate" and is_instance_valid(last_item) and "stacked_items" in last_item and last_item.stacked_items.size() > 0:
-				var item_counts: Dictionary = {}
-				for item in last_item.stacked_items:
-					if is_instance_valid(item):
-						var item_name = item.type.capitalize()
-						item_counts[item_name] = item_counts.get(item_name, 0) + 1
-						
-				var formatted_contents = []
-				for item_name in item_counts:
-					var item_total = item_counts[item_name]
-					if item_total > 1: formatted_contents.append("%s x%d" % [item_name, item_total])
-					else: formatted_contents.append(item_name)
-				lbl.text = "%s\nPlate with %s" % [s, ", ".join(formatted_contents)]
+		# Update quantity label (displays "x2", "x3", etc., or empty if 1 or less)
+		if is_instance_valid(lbl):
+			if inventory[s][2] != null and count > 1:
+				lbl.text = "x" + str(count)
 			else:
-				lbl.text = " x" + str(count) if count > 1 else ""
-		else:
-			lbl.text = ""
-			
+				lbl.text = ""
+		
+		# Update selected slot visual scale
 		var slot_node = get_node_or_null("/root/main/UI/item_slots/slot" + str(s))
 		if is_instance_valid(slot_node):
 			slot_node.scale = Vector2(1.1, 1.1) if str(s) == current_slot else Vector2.ONE
