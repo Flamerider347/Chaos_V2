@@ -3,17 +3,15 @@ extends Node
 @onready var menu_ui = $menu_UI
 @onready var username_input: LineEdit = $menu_UI/LAN_menu/username
 @onready var join_code_input: LineEdit = $menu_UI/LAN_menu/join_code
-@onready var status_label: Label = $menu_UI/status
 @onready var lobby_error_label: Label = $"menu_UI/lobby error"
 
 # --- Sky Shader & Lighting Additions ---
 @export var day_length_seconds: float = 30.0
 @onready var sun_light: DirectionalLight3D = $DirectionalLight3D
 @onready var world_env: WorldEnvironment = $WorldEnvironment
-@onready var night_light: OmniLight3D = $nightlight
 
 var current_time: float = 0.25
-# --------------------------------------
+
 
 func _ready() -> void:
 	$Camera3D.current = true
@@ -23,17 +21,11 @@ func _ready() -> void:
 		if not i.is_in_group("donthide"):
 			i.hide()
 	$menu_UI/start_menu.show()
-	# TESTING QUALITY OF LIFE: Automatically fill IP with localhost loopback
-	#join_code_input.text = "127.0.0.1"
 	
 	# Connect to GameData's native signals to listen for live updates
 	GameData.multiplayer.connected_to_server.connect(_on_network_join_success)
 	GameData.multiplayer.connection_failed.connect(_on_network_join_fail)
-	
-	if GameData.lost:
-		status_label.text = "Game lost! Please relaunch the game to host a new match."
-		
-	# Initial background shader frame setup
+
 	update_sky_and_lighting()
 
 # --- Process Loop for Menu Sky Shader ---
@@ -44,59 +36,18 @@ func _process(delta: float) -> void:
 		current_time = 0.0
 		
 	update_sky_and_lighting()
-	if Input.is_action_just_pressed("ui_cancel"):
-		if $menu_UI/multiplayer_menu.visible:
-			start_menu()
-		elif $menu_UI/LAN_menu.visible:
-			_on_multiplayer_pressed()
-		elif $menu_UI/LLAN_menu.visible:
-			_on_LAN_pressed()
-	if Input.is_action_just_pressed("backspace"):
-		if $menu_UI/start_menu/copy_code.has_focus():
-			$menu_UI/start_menu/copy_code.text = ""
-
-func _on_lan_check_toggled(toggled_on: bool) -> void:
-	if toggled_on:
-		status_label.text = "LAN Mode Active. Enter Host IP to Join."
-		join_code_input.placeholder_text = "Enter Host IP (e.g. 192.168.1.5)"
-	else:
-		status_label.text = "Online Mode Active. Enter Room Code to Join."
-		join_code_input.placeholder_text = "Enter Online Room Code"
-
-
-func _on_LAN_pressed() -> void:
-	$menu_UI/LAN_menu.show()
-	$menu_UI/start_menu.hide()
-	$menu_UI/LLAN_menu.hide()
-	$menu_UI/multiplayer_menu.hide()
-
-
-func _on_play_pressed() -> void:
-	_assign_username()
-	
-	$LAN_starter.start_server()
-	get_tree().change_scene_to_file("res://Prefabs/main.tscn")
-
-func _on_join_pressed() -> void:
-	_assign_username()
-	status_label.text = "Connecting to lobby..."
-	$menu_UI/LAN_menu/join_button.disabled = true
-	$timeout_timer.start(15)
-
-	$LAN_starter.start_client($menu_UI/LAN_menu/port.text.strip_edges(),$menu_UI/LAN_menu/join_code.text.strip_edges())
 
 # --- Network Callback Triggers ---
-
 func _on_network_join_success() -> void:
 	# Stop the timer so it doesn't trigger a failure after we successfully connect
 	$timeout_timer.stop()
-	status_label.text = "Connected! Loading world..."
 	get_tree().change_scene_to_file("res://Prefabs/main.tscn")
+
 
 func _on_network_join_fail() -> void:
 	$timeout_timer.stop()
-	status_label.text = "Connection failed."
 	lobby_error_label.text = "Could not reach the host machine. Double-check the IP address."
+
 
 # --- UI Helpers ---
 func _assign_username() -> void:
@@ -109,6 +60,7 @@ func _assign_username() -> void:
 	else:
 		GameData.username = cleaned_name
 
+
 func _on_spool_server_pressed():
 	var target_code_node = $menu_UI/LLAN_menu/join_code
 	if not target_code_node: return
@@ -117,6 +69,7 @@ func _on_spool_server_pressed():
 	print(target_ip)
 	GameData.request_spooled_instance(target_ip)
 	
+
 # --- Background Sky/Lighting Driver Function ---
 func update_sky_and_lighting() -> void:
 	if not is_instance_valid(sun_light) or not is_instance_valid(world_env): return
@@ -155,8 +108,8 @@ func update_sky_and_lighting() -> void:
 		env.ambient_light_color = Color(0.6, 0.7, 0.8).lerp(Color(0.2, 0.25, 0.35), night_weight)
 		env.ambient_light_energy = lerp(1.0, 0.6, night_weight)
 
-	if is_instance_valid(night_light):
-		night_light.light_energy = (1.0 - (sun_fade / 1.2)) * 2.0
+	#if is_instance_valid(night_light):
+		#night_light.light_energy = (1.0 - (sun_fade / 1.2)) * 2.0
 
 
 func _on_timeout_timer_timeout() -> void:
@@ -165,22 +118,7 @@ func _on_timeout_timer_timeout() -> void:
 		multiplayer.multiplayer_peer = null
 		
 	$menu_UI/join_button.disabled = false
-	status_label.text = "Connection failed."
 	lobby_error_label.text = "Connection timed out after 15 seconds."
-
-
-func start_menu() -> void:
-	$menu_UI/LAN_menu.hide()
-	$menu_UI/LLAN_menu.hide()
-	$menu_UI/start_menu.show()
-	$menu_UI/multiplayer_menu.hide()
-
-
-func _on_LLAN_pressed() -> void:
-	$menu_UI/LLAN_menu.show()
-	$menu_UI/start_menu.hide()
-	$menu_UI/LAN_menu.hide()
-	$menu_UI/multiplayer_menu.hide()
 
 
 func _on_copy_code_text_changed(new_text: String) -> void:
@@ -206,12 +144,29 @@ func _on_copy_code_text_changed(new_text: String) -> void:
 		$menu_UI/start_menu/enter.hide()
 
 
-func _on_multiplayer_pressed() -> void:
-	$menu_UI/multiplayer_menu.show()
-	$menu_UI/LAN_menu.hide()
-	$menu_UI/LLAN_menu.hide()
-	$menu_UI/start_menu.hide()
+func _play_singleplayer() -> void:
+	get_tree().change_scene_to_file("res://Prefabs/main.tscn")
 
 
-func _on_singleplayer_3_pressed() -> void:
-	get_tree().quit()
+func _multiplayer_button() -> void:
+	$menu_UI/title_screen.visble = false
+	$menu_UI/title_screen/singleplayer.disabled = true
+	$menu_UI/title_screen/multiplayer.disabled = true
+	$menu_UI/title_screen/quit.disabled = true
+
+	$menu_UI/menu_UI/multiplayer_menu.visible = true
+	$menu_UI/menu_UI/multiplayer_menu/host.disabled = false
+	$menu_UI/menu_UI/multiplayer_menu/join.disabled = false
+	
+
+func _host_LAN() -> void:
+	_assign_username()
+	$LAN_starter.start_client()
+	get_tree().change_scene_to_file("res://Prefabs/main.tscn")
+
+
+func _join_LAN() -> void:
+	_assign_username()
+
+	
+	get_tree().change_scene_to_file("res://Prefabs/main.tscn")
