@@ -1741,10 +1741,10 @@ text = "Return to main menu"
 [node name="UI" type="CanvasLayer" parent="." unique_id=1896255929]
 
 [node name="fps" type="Label" parent="UI" unique_id=1827639193]
-offset_left = 6.0
-offset_top = 22.0
-offset_right = 94.0
-offset_bottom = 54.0
+offset_left = -173.0
+offset_top = 74.0
+offset_right = -85.0
+offset_bottom = 106.0
 text = "FPS: 240"
 
 [node name="status" type="Label" parent="UI" unique_id=1196367339]
@@ -1911,11 +1911,28 @@ text = "4"
 horizontal_alignment = 1
 
 [node name="score" type="Label" parent="UI" unique_id=1003719063]
-offset_left = 6.0
-offset_top = 4.0
-offset_right = 125.0
-offset_bottom = 27.999992
+offset_left = 10.0
+offset_top = 40.0
+offset_right = 129.00003
+offset_bottom = 63.999992
 text = "Score: 60"
+script = ExtResource("9_m7hx3")
+
+[node name="power_needed" type="Label" parent="UI" unique_id=1055245929]
+visible = false
+offset_left = 8.0
+offset_top = 68.0
+offset_right = 127.00003
+offset_bottom = 91.99999
+text = "Power Needed: "
+script = ExtResource("9_m7hx3")
+
+[node name="power_req" type="Label" parent="UI" unique_id=1474763150]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 129.00003
+offset_bottom = 33.999992
+text = "Daily Power Cost:"
 script = ExtResource("9_m7hx3")
 
 [node name="day_timer" type="Label" parent="UI" unique_id=1922941794]

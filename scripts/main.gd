@@ -369,18 +369,21 @@ func thing_ui_update() -> void:
 	if is_instance_valid(thing_ui_panel):
 		var next_night_cost = calculate_daily_power_cost(current_day + 1)
 		var power_req = GameData.power - next_night_cost
-		
+		$UI/power_req.text = "Daily Power Cost: " + str(next_night_cost)
 		if power_req < 0:
 			power_req = abs(power_req)
 			thing_ui_panel.text = "\nScore: " + str(GameData.score) + \
 			 "\nPower left: " + str(GameData.power) + \
 			 "\nPower Requirement for today: " + str(next_night_cost) + \
 			 "\nYou need " + str(power_req) + " more Power to survive tonight"
+			$UI/power_needed.show()
+			$UI/power_needed.text = "Power Needed: " + str(power_req)
 		else:
 			thing_ui_panel.text = "\nScore: " + str(GameData.score) + \
 			 "\nPower left: " + str(GameData.power) + \
 			 "\nPower Requirement for today: " + str(next_night_cost) + \
 			 "\nYou will survive tonight"
+			$UI/power_needed.hide()
 
 
 @rpc("authority", "call_local", "reliable")

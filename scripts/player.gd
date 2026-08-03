@@ -99,6 +99,10 @@ func _physics_process(delta: float) -> void:
 	if is_instance_valid(held_item) and held_item.get("type") == "flashlight":
 		held_item.using = true
 		held_item.drain_battery(delta)
+		var item_label = get_node_or_null("/root/main/UI/item_slots/slot" + str(current_slot) + "/item")
+		item_label.text = "Flashlight " + str(int(held_item.charge)) + "%"
+		
+		
 		rpc("sync_flashlight_state", current_slot, held_item.charge, held_item.is_active())
 
 	if GameData.paused:
@@ -301,6 +305,8 @@ func pickup_object(object: Node3D) -> void:
 					if is_instance_valid(item_label):
 						if object.get("type") == "plate":
 							item_label.text = _get_plate_display_name(object)
+						elif object.type == "flashlight":
+							item_label.text = "Flashlight " + str(int(round(object.charge))) + "%"
 						else:
 							item_label.text = object.type.replace("_", " ").capitalize()
 				break

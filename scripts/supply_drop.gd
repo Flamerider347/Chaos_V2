@@ -50,7 +50,7 @@ func land() -> void:
 		item_name = item_name.to_lower()
 
 		# Scatter within +/- 1 unit offset on X and Z
-		var offset: Vector3 = Vector3(randf_range(-1.0, 1.0), 0.5, randf_range(-1.0, 1.0))
+		var offset: Vector3 = Vector3(randf_range(-0.1, 0.1), 0.5, randf_range(0.1, 0.1))
 		var spawn_pos: Vector3 = global_position + offset
 		
 		var unique_name: String = item_name + "_" + str(randi() % 100000)
