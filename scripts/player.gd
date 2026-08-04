@@ -142,17 +142,15 @@ func _handle_movement() -> void:
 	
 	var vec: Vector2 = Input.get_vector("left", "right", "forward", "backwards")
 	speed_multiplier = 1.5 if Input.is_action_pressed("sprint") else 1.0
-	
-	var weighted_speed: float = clampf(SPEED - (held_object_amount * 0.1), 3.0, 5.0) * speed_multiplier
-	if holding_two_handed: weighted_speed = 3.0
-	
+	var actual_speed = SPEED * speed_multiplier
+
 	var dir: Vector3 = (transform.basis * Vector3(vec.x, 0, vec.y)).normalized()
 	if dir:
-		velocity.x = dir.x * weighted_speed
-		velocity.z = dir.z * weighted_speed
+		velocity.x = dir.x * actual_speed
+		velocity.z = dir.z * actual_speed
 	else:
-		velocity.x = move_toward(velocity.x, 0, weighted_speed)
-		velocity.z = move_toward(velocity.z, 0, weighted_speed)
+		velocity.x = move_toward(velocity.x, 0, actual_speed)
+		velocity.z = move_toward(velocity.z, 0, actual_speed)
 		
 	move_and_slide()
 
@@ -198,7 +196,6 @@ func computer_UI() -> void:
 @rpc ("any_peer","call_local","reliable")
 func change_difficulty(difficulty):
 	GameData.difficulty = difficulty.to_lower().to_snake_case()
-	print(GameData.difficulty)
 	get_node("/root/main/game/world/kitchen/main_kitchen/appliances/current_difficulty/difficulty").text = difficulty
 	get_node("/root/main/game/world/kitchen/main_kitchen/appliances/current_difficulty").material = get_node("/root/main/game/world/kitchen/main_kitchen/appliances/difficulty_table").find_child(difficulty).material
 

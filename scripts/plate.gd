@@ -91,5 +91,4 @@ func calculate_stack_height(node) -> float:
 		elif col.shape is CylinderShape3D or col.shape is CapsuleShape3D: h += col.shape.height
 		elif col.shape is SphereShape3D: h += col.shape.radius * 2.0
 	else: h += 0.1
-	print(h)
 	return h
