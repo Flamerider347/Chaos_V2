@@ -368,11 +368,11 @@ offset_left = 767.0
 offset_top = 124.0
 offset_right = 1131.0
 offset_bottom = 329.0
-text = "This menu is only used on restricted (Client Isolated) neworks such as school networks where you have access to only one machine to host games.
+text = "This menu is only used on restricted (Client Isolated) neworks such as school networks. IF YOU ARE NOT ON A SCHOOL NETWORK, DO NOT USE THIS. This system requires that you  have access to one machine with firewall permissions to make LAN connections. This will require additional setup if no prior arrangement has been made with IT.
 
 This requires extra program files and should not be used outisde of these situations. It does not allow cross-network play.
 
-To use this, first download the second zip from the itch page titled "
+To use this, first download the second zip from the itch page titled multi_instancer.zip and run the file called multiinstancer.exe. This will have the required IP to form and host lobbies."
 autowrap_mode = 2
 
 [node name="back" type="TextureButton" parent="menu_UI/restricted_LAN" unique_id=1003735617]
@@ -429,7 +429,7 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 40
 text = "Join"
 
-[node name="generate" type="TextureButton" parent="menu_UI/restricted_LAN" unique_id=231333418]
+[node name="request" type="TextureButton" parent="menu_UI/restricted_LAN" unique_id=231333418]
 layout_mode = 0
 offset_left = 291.0
 offset_top = 125.0
@@ -440,7 +440,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 texture_normal = ExtResource("3_ihwt6")
 
-[node name="Label" type="Label" parent="menu_UI/restricted_LAN/generate" unique_id=990764823]
+[node name="Label" type="Label" parent="menu_UI/restricted_LAN/request" unique_id=990764823]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -454,9 +454,9 @@ offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 40
-text = "Generate Server"
+text = "Request Server"
 
-[node name="port2" type="TextureRect" parent="menu_UI/restricted_LAN" unique_id=78951704]
+[node name="port" type="TextureRect" parent="menu_UI/restricted_LAN" unique_id=78951704]
 layout_mode = 0
 offset_left = 535.0
 offset_top = 269.0
@@ -465,7 +465,7 @@ offset_bottom = 488.0
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_ihwt6")
 
-[node name="LineEdit" type="LineEdit" parent="menu_UI/restricted_LAN/port2" unique_id=1777736738]
+[node name="LineEdit" type="LineEdit" parent="menu_UI/restricted_LAN/port" unique_id=1777736738]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -522,6 +522,21 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 50
 placeholder_text = "Username"
 
+[node name="Label2" type="Label" parent="menu_UI/restricted_LAN" unique_id=205142842]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 145.0
+offset_right = 225.0
+offset_bottom = 610.0
+text = "To request a server:
+1. Enter the IP for the host computer.
+ 2. Press Request Server
+
+To join a server:
+1. Enter the IP for the host computer and the port. This port is visible to any players in the game in the pause menu (Press TAB).
+2. Press Join "
+autowrap_mode = 2
+
 [node name="Node3D" type="Node3D" parent="." unique_id=1214618011]
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=560626361]
@@ -565,5 +580,6 @@ size = Vector3(200, 1, 200)
 [connection signal="pressed" from="menu_UI/multiplayer_menu/back" to="." method="_multiplayer_back"]
 [connection signal="pressed" from="menu_UI/multiplayer_menu/restricted" to="." method="_restricted_menu"]
 [connection signal="pressed" from="menu_UI/restricted_LAN/back" to="." method="_restricted_menu_back"]
-[connection signal="pressed" from="menu_UI/restricted_LAN/generate" to="." method="_on_spool_server_pressed"]
+[connection signal="pressed" from="menu_UI/restricted_LAN/join" to="." method="_restricted_join"]
+[connection signal="pressed" from="menu_UI/restricted_LAN/request" to="." method="_on_spool_server_pressed"]
 [connection signal="timeout" from="timeout_timer" to="." method="_on_timeout_timer_timeout"]
