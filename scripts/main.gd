@@ -41,7 +41,7 @@ var max_spawn_bound: Vector2 = Vector2(35, 35)
 
 var score: int = GameData.score
 var power: float = GameData.power
-var current_day: int = 0
+var current_day: int = -1
 var paused: bool = false
 
 
@@ -50,7 +50,6 @@ func _ready() -> void:
 	GameData.power = 100
 	$Pause_UI/roomcode.text = "Port: " + str(GameData.game_port)
 	$Pause_UI/host_ip.text = "IP:" + str(GameData.room_code)
-	GameData.in_game = true
 	GameData.lost = false
 	paused = false
 	GameData.paused = false

@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://banusvtnmwu18"]
 
 [ext_resource type="Script" uid="uid://b5o36fv0otbm2" path="res://scripts/main_menu.gd" id="1_1n3ne"]
-[ext_resource type="Script" uid="uid://hf56gk47qld4" path="res://scripts/tutorial.gd" id="2_7do1g"]
 [ext_resource type="Script" uid="uid://cjjsdgdx8el7h" path="res://scripts/network/LAN.gd" id="3_dgyu8"]
 [ext_resource type="Texture2D" uid="uid://c2kngo4h11iya" path="res://Assets/UI/Buttons/button_yellow.png" id="3_ihwt6"]
 [ext_resource type="Texture2D" uid="uid://bnfkdd630vql2" path="res://Assets/Models/hexagons_medieval.png" id="6_ihwt6"]
@@ -161,16 +160,15 @@ theme_override_font_sizes/font_size = 40
 text = "Quit"
 
 [node name="multiplayer_menu" type="Control" parent="menu_UI" unique_id=740696643]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 
 [node name="host" type="TextureButton" parent="menu_UI/multiplayer_menu" unique_id=1067552900]
 layout_mode = 0
-offset_left = 252.0
+offset_left = 253.0
 offset_top = 148.0
-offset_right = 690.0
-offset_bottom = 367.95
+offset_right = 691.0
+offset_bottom = 368.0
 scale = Vector2(0.5, 0.5)
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -197,7 +195,7 @@ layout_mode = 0
 offset_left = 253.0
 offset_top = 297.0
 offset_right = 691.0
-offset_bottom = 516.95
+offset_bottom = 517.0
 scale = Vector2(0.5, 0.5)
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -219,38 +217,16 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 40
 text = "Join"
 
-[node name="ip" type="TextureRect" parent="menu_UI/multiplayer_menu" unique_id=1386929967]
-layout_mode = 0
-offset_left = 508.0
-offset_top = 152.0
-offset_right = 946.0
-offset_bottom = 371.0
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("3_ihwt6")
-
-[node name="LineEdit" type="LineEdit" parent="menu_UI/multiplayer_menu/ip" unique_id=1303552663]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 34.0
-offset_top = -43.5
-offset_right = 408.0
-offset_bottom = 40.5
-grow_vertical = 2
-theme_override_font_sizes/font_size = 50
-placeholder_text = "IP"
-
-[node name="port" type="TextureRect" parent="menu_UI/multiplayer_menu" unique_id=22619604]
+[node name="port" type="TextureRect" parent="menu_UI/multiplayer_menu" unique_id=1386929967]
 layout_mode = 0
 offset_left = 507.0
-offset_top = 304.0
+offset_top = 148.0
 offset_right = 945.0
-offset_bottom = 523.0
+offset_bottom = 368.0
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_ihwt6")
 
-[node name="LineEdit" type="LineEdit" parent="menu_UI/multiplayer_menu/port" unique_id=653376802]
+[node name="LineEdit" type="LineEdit" parent="menu_UI/multiplayer_menu/port" unique_id=1303552663]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -262,6 +238,28 @@ offset_bottom = 40.5
 grow_vertical = 2
 theme_override_font_sizes/font_size = 50
 placeholder_text = "Port"
+
+[node name="ip" type="TextureRect" parent="menu_UI/multiplayer_menu" unique_id=22619604]
+layout_mode = 0
+offset_left = 507.0
+offset_top = 297.0
+offset_right = 945.0
+offset_bottom = 517.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_ihwt6")
+
+[node name="LineEdit" type="LineEdit" parent="menu_UI/multiplayer_menu/ip" unique_id=653376802]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 34.0
+offset_top = -43.5
+offset_right = 408.0
+offset_bottom = 40.5
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+placeholder_text = "IP"
 
 [node name="username" type="TextureRect" parent="menu_UI/multiplayer_menu" unique_id=1825371991]
 layout_mode = 0
@@ -341,15 +339,6 @@ text = "LAN on Restricted
 Networks"
 horizontal_alignment = 1
 
-[node name="Tutorial" type="Control" parent="menu_UI" unique_id=378982451]
-layout_mode = 3
-anchors_preset = 0
-offset_left = -18.0
-offset_top = -90.0
-offset_right = 154.0
-offset_bottom = 4.0
-script = ExtResource("2_7do1g")
-
 [node name="lobby error" type="Label" parent="menu_UI" unique_id=2141615790]
 offset_left = 1191.0
 offset_top = 135.0
@@ -357,6 +346,7 @@ offset_right = 1454.0
 offset_bottom = 206.0
 
 [node name="restricted_LAN" type="Control" parent="menu_UI" unique_id=2103419970]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -456,7 +446,7 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 40
 text = "Request Server"
 
-[node name="port" type="TextureRect" parent="menu_UI/restricted_LAN" unique_id=78951704]
+[node name="ip" type="TextureRect" parent="menu_UI/restricted_LAN" unique_id=78951704]
 layout_mode = 0
 offset_left = 535.0
 offset_top = 269.0
@@ -465,29 +455,7 @@ offset_bottom = 488.0
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_ihwt6")
 
-[node name="LineEdit" type="LineEdit" parent="menu_UI/restricted_LAN/port" unique_id=1777736738]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 34.0
-offset_top = -43.5
-offset_right = 408.0
-offset_bottom = 40.5
-grow_vertical = 2
-theme_override_font_sizes/font_size = 50
-placeholder_text = "Port"
-
-[node name="ip" type="TextureRect" parent="menu_UI/restricted_LAN" unique_id=450751643]
-layout_mode = 0
-offset_left = 534.0
-offset_top = 129.0
-offset_right = 972.0
-offset_bottom = 348.0
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("3_ihwt6")
-
-[node name="LineEdit" type="LineEdit" parent="menu_UI/restricted_LAN/ip" unique_id=1613182115]
+[node name="LineEdit" type="LineEdit" parent="menu_UI/restricted_LAN/ip" unique_id=1777736738]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -499,6 +467,28 @@ offset_bottom = 40.5
 grow_vertical = 2
 theme_override_font_sizes/font_size = 50
 placeholder_text = "IP"
+
+[node name="port" type="TextureRect" parent="menu_UI/restricted_LAN" unique_id=450751643]
+layout_mode = 0
+offset_left = 534.0
+offset_top = 129.0
+offset_right = 972.0
+offset_bottom = 348.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_ihwt6")
+
+[node name="LineEdit" type="LineEdit" parent="menu_UI/restricted_LAN/port" unique_id=1613182115]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 34.0
+offset_top = -43.5
+offset_right = 408.0
+offset_bottom = 40.5
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+placeholder_text = "Port"
 
 [node name="username" type="TextureRect" parent="menu_UI/restricted_LAN" unique_id=1695784403]
 layout_mode = 0
@@ -552,7 +542,7 @@ camera_attributes = SubResource("CameraAttributesPractical_nnf8s")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9388933, 0, 0.70682615)
 
 [node name="timeout_timer" type="Timer" parent="." unique_id=1842376164]
-wait_time = 15.0
+wait_time = 10.0
 
 [node name="worlds" type="Node3D" parent="." unique_id=1854754370]
 transform = Transform3D(-0.50000006, 0, 0.8660254, 0, 1, 0, -0.8660254, 0, -0.50000006, 0, 0, 0)

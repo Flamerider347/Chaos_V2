@@ -66,7 +66,6 @@ var texts = [
 func _ready() -> void:
 	max_text = texts.size() -1
 func _physics_process(_delta: float) -> void:
-	
 	if Input.is_action_just_pressed("close_tutorial"):
 		if not self.visible:
 			self.show()
