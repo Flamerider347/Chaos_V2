@@ -149,6 +149,7 @@ func _on_copy_code_text_changed(new_text: String) -> void:
 
 
 func _play_singleplayer() -> void:
+	$LAN_starter.start_server()
 	get_tree().change_scene_to_file("res://Prefabs/main.tscn")
 
 
@@ -182,3 +183,13 @@ func _join_LAN() -> void:
 func _multiplayer_back():
 	$menu_UI/multiplayer_menu.visible = false
 	$menu_UI/title_screen.visible = true
+
+
+func _restricted_menu():
+	$menu_UI/multiplayer_menu.visible = false
+	$menu_UI/restricted_LAN.visible = true
+
+
+func _restricted_menu_back():
+	$menu_UI/multiplayer_menu.visible = true
+	$menu_UI/restricted_LAN.visible = false

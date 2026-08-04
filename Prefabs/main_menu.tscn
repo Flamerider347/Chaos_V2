@@ -161,6 +161,7 @@ theme_override_font_sizes/font_size = 40
 text = "Quit"
 
 [node name="multiplayer_menu" type="Control" parent="menu_UI" unique_id=740696643]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 
@@ -311,6 +312,35 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 40
 text = "Back"
 
+[node name="restricted" type="TextureButton" parent="menu_UI/multiplayer_menu" unique_id=743115063]
+layout_mode = 0
+offset_left = 922.0
+offset_top = 2.0
+offset_right = 1360.0
+offset_bottom = 221.95001
+scale = Vector2(0.5, 0.5)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("3_ihwt6")
+
+[node name="Label" type="Label" parent="menu_UI/multiplayer_menu/restricted" unique_id=1395920770]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -44.5
+offset_top = -11.5
+offset_right = 44.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 40
+text = "LAN on Restricted 
+Networks"
+horizontal_alignment = 1
+
 [node name="Tutorial" type="Control" parent="menu_UI" unique_id=378982451]
 layout_mode = 3
 anchors_preset = 0
@@ -326,149 +356,171 @@ offset_top = 135.0
 offset_right = 1454.0
 offset_bottom = 206.0
 
-[node name="LAN_menu" type="Control" parent="menu_UI" unique_id=1625941240]
-visible = false
+[node name="restricted_LAN" type="Control" parent="menu_UI" unique_id=2103419970]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="username" type="LineEdit" parent="menu_UI/LAN_menu" unique_id=368585567 groups=["donthide"]]
-layout_mode = 0
-offset_left = 144.0
-offset_top = 199.0
-offset_right = 444.0
-offset_bottom = 259.0
-placeholder_text = "Enter Username"
-
-[node name="join_button" type="Button" parent="menu_UI/LAN_menu" unique_id=143837695]
-layout_mode = 0
-offset_left = 459.0
-offset_top = 193.0
-offset_right = 758.99994
-offset_bottom = 253.0
-text = "Join
-"
-
-[node name="join_code" type="LineEdit" parent="menu_UI/LAN_menu" unique_id=652857213]
-layout_mode = 0
-offset_left = 145.0
-offset_top = 130.0
-offset_right = 445.0
-offset_bottom = 190.0
-placeholder_text = "Enter Host IP"
-
-[node name="port" type="LineEdit" parent="menu_UI/LAN_menu" unique_id=1857470254]
-layout_mode = 0
-offset_left = 458.0
-offset_top = 128.0
-offset_right = 758.0
-offset_bottom = 188.0
-placeholder_text = "Enter Port"
-
-[node name="return" type="Button" parent="menu_UI/LAN_menu" unique_id=1109840465]
-layout_mode = 0
-offset_left = 157.0
-offset_top = 261.0
-offset_right = 457.0
-offset_bottom = 321.0
-text = "Back to main menu"
-
-[node name="status2" type="Label" parent="menu_UI/LAN_menu" unique_id=1824787667]
-layout_mode = 0
-offset_left = 808.0
-offset_top = 134.0
-offset_right = 1157.0
-offset_bottom = 443.0
-text = "If you're joining a LAN world, 
-enter the Host IP and Port
-(In pause menu, get Host to press \"Tab\")
-
-
-Then press Join
-
-
-Note:
-Make sure you're all
-on the same network!"
-
-[node name="singleplayer3" type="Button" parent="menu_UI/LAN_menu" unique_id=469098920]
-layout_mode = 0
-offset_left = 462.0
-offset_top = 330.0
-offset_right = 762.0
-offset_bottom = 390.0
-text = "Press here for LLAN
-(Works at school)"
-
-[node name="LLAN_menu" type="Control" parent="menu_UI" unique_id=2103419970]
-visible = false
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="join_button" type="Button" parent="menu_UI/LLAN_menu" unique_id=1839997736]
-layout_mode = 0
-offset_left = 156.0
-offset_top = 191.0
-offset_right = 456.0
-offset_bottom = 251.0
-text = "Join
-"
-
-[node name="join_code" type="LineEdit" parent="menu_UI/LLAN_menu" unique_id=610350462]
-layout_mode = 0
-offset_left = 461.0
-offset_top = 123.0
-offset_right = 761.0
-offset_bottom = 183.0
-placeholder_text = "Enter Host (admin computer) IP"
-
-[node name="port" type="LineEdit" parent="menu_UI/LLAN_menu" unique_id=87542153]
-layout_mode = 0
-offset_left = 462.0
-offset_top = 192.0
-offset_right = 762.0
-offset_bottom = 252.0
-placeholder_text = "Enter Port"
-
-[node name="spool_server" type="Button" parent="menu_UI/LLAN_menu" unique_id=161786259]
-layout_mode = 0
-offset_left = 157.0
-offset_top = 124.0
-offset_right = 457.0
-offset_bottom = 184.0
-text = "Generate a Multiinstance
-(IP of host needs to be specified)"
-
-[node name="return" type="Button" parent="menu_UI/LLAN_menu" unique_id=1073034685]
-layout_mode = 0
-offset_left = 157.0
-offset_top = 261.0
-offset_right = 457.0
-offset_bottom = 321.0
-text = "Back to main menu"
-
-[node name="Label" type="Label" parent="menu_UI/LLAN_menu" unique_id=1215128647]
+[node name="Label" type="Label" parent="menu_UI/restricted_LAN" unique_id=1215128647]
 layout_mode = 0
 offset_left = 767.0
 offset_top = 124.0
-offset_right = 1178.0
+offset_right = 1131.0
 offset_bottom = 329.0
-text = "First open an admin computer and run the
-\"multi_spooler\" in the school_LLAN folder
+text = "This menu is only used on restricted (Client Isolated) neworks such as school networks where you have access to only one machine to host games.
 
-Enter the IP of the admin computer in the 
-top box, then press \"Generate a Multiinstance\"
+This requires extra program files and should not be used outisde of these situations. It does not allow cross-network play.
 
-Other players can then join 
-on school computers :)
+To use this, first download the second zip from the itch page titled "
+autowrap_mode = 2
 
-Note:
-Only school computers connected to
-Ethernet will work with this method
-"
+[node name="back" type="TextureButton" parent="menu_UI/restricted_LAN" unique_id=1003735617]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = 444.0
+offset_bottom = 225.95001
+scale = Vector2(0.5, 0.5)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("3_ihwt6")
+
+[node name="Label" type="Label" parent="menu_UI/restricted_LAN/back" unique_id=1602716843]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -44.5
+offset_top = -11.5
+offset_right = 44.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 40
+text = "Back"
+
+[node name="join" type="TextureButton" parent="menu_UI/restricted_LAN" unique_id=1519577412]
+layout_mode = 0
+offset_left = 288.0
+offset_top = 277.0
+offset_right = 726.0
+offset_bottom = 496.95
+scale = Vector2(0.5, 0.5)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("3_ihwt6")
+
+[node name="Label" type="Label" parent="menu_UI/restricted_LAN/join" unique_id=102463458]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -44.5
+offset_top = -11.5
+offset_right = 44.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 40
+text = "Join"
+
+[node name="generate" type="TextureButton" parent="menu_UI/restricted_LAN" unique_id=231333418]
+layout_mode = 0
+offset_left = 291.0
+offset_top = 125.0
+offset_right = 729.0
+offset_bottom = 344.95
+scale = Vector2(0.5, 0.5)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("3_ihwt6")
+
+[node name="Label" type="Label" parent="menu_UI/restricted_LAN/generate" unique_id=990764823]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -44.5
+offset_top = -11.5
+offset_right = 44.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 40
+text = "Generate Server"
+
+[node name="port2" type="TextureRect" parent="menu_UI/restricted_LAN" unique_id=78951704]
+layout_mode = 0
+offset_left = 535.0
+offset_top = 269.0
+offset_right = 973.0
+offset_bottom = 488.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_ihwt6")
+
+[node name="LineEdit" type="LineEdit" parent="menu_UI/restricted_LAN/port2" unique_id=1777736738]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 34.0
+offset_top = -43.5
+offset_right = 408.0
+offset_bottom = 40.5
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+placeholder_text = "Port"
+
+[node name="ip" type="TextureRect" parent="menu_UI/restricted_LAN" unique_id=450751643]
+layout_mode = 0
+offset_left = 534.0
+offset_top = 129.0
+offset_right = 972.0
+offset_bottom = 348.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_ihwt6")
+
+[node name="LineEdit" type="LineEdit" parent="menu_UI/restricted_LAN/ip" unique_id=1613182115]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 34.0
+offset_top = -43.5
+offset_right = 408.0
+offset_bottom = 40.5
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+placeholder_text = "IP"
+
+[node name="username" type="TextureRect" parent="menu_UI/restricted_LAN" unique_id=1695784403]
+layout_mode = 0
+offset_left = 387.0
+offset_top = 421.0
+offset_right = 825.0
+offset_bottom = 640.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_ihwt6")
+
+[node name="LineEdit" type="LineEdit" parent="menu_UI/restricted_LAN/username" unique_id=1393616286]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 34.0
+offset_top = -43.5
+offset_right = 408.0
+offset_bottom = 40.5
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+placeholder_text = "Username"
 
 [node name="Node3D" type="Node3D" parent="." unique_id=1214618011]
 
@@ -511,9 +563,7 @@ size = Vector3(200, 1, 200)
 [connection signal="pressed" from="menu_UI/multiplayer_menu/host" to="." method="_host_LAN"]
 [connection signal="pressed" from="menu_UI/multiplayer_menu/join" to="." method="_join_LAN"]
 [connection signal="pressed" from="menu_UI/multiplayer_menu/back" to="." method="_multiplayer_back"]
-[connection signal="pressed" from="menu_UI/LAN_menu/join_button" to="." method="_on_join_pressed"]
-[connection signal="pressed" from="menu_UI/LAN_menu/return" to="." method="_on_multiplayer_pressed"]
-[connection signal="pressed" from="menu_UI/LAN_menu/singleplayer3" to="." method="_on_LLAN_pressed"]
-[connection signal="pressed" from="menu_UI/LLAN_menu/spool_server" to="." method="_on_spool_server_pressed"]
-[connection signal="pressed" from="menu_UI/LLAN_menu/return" to="." method="_on_LAN_pressed"]
+[connection signal="pressed" from="menu_UI/multiplayer_menu/restricted" to="." method="_restricted_menu"]
+[connection signal="pressed" from="menu_UI/restricted_LAN/back" to="." method="_restricted_menu_back"]
+[connection signal="pressed" from="menu_UI/restricted_LAN/generate" to="." method="_on_spool_server_pressed"]
 [connection signal="timeout" from="timeout_timer" to="." method="_on_timeout_timer_timeout"]
