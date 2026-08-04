@@ -110,7 +110,7 @@ func _physics_process(delta: float) -> void:
 		rpc("sync_flashlight_state", current_slot, held_item.charge, held_item.is_active())
 
 	
-	if Input.is_action_just_pressed("recipe"): # DO SOMETHING TO ENSURE THAT YOU CAN'T OVERIDE COMPUTER, PROBABLY NEED A DEDICATED FUNCTION TO HANDLE UI STATESa
+	if Input.is_action_just_pressed("recipe") and not get_node("/root/main/Pause_UI").visible and not get_node("/root/main/computer_UI").visible:
 		toggle_recipe_book()
 	
 	if GameData.paused:
@@ -177,7 +177,9 @@ func _handle_interactions(item_target: Node3D, surface_target: Node3D) -> void:
 				rpc("change_difficulty",str(surface_target.name))
 			elif surface_target.is_in_group("storage_button"): surface_target.spawn_item.emit(surface_target.name)
 			elif surface_target.is_in_group("door"): surface_target.open_door()
-			elif surface_target.is_in_group("computer") and not GameData.using_computer and GameData.closed_lobby: computer_UI()
+			elif surface_target.is_in_group("computer") and not GameData.using_computer and GameData.closed_lobby and not get_node("/root/main/Recipe_UI").visible: computer_UI()
+			elif surface_target.is_in_group("recipe_book") and not get_node("/root/main/Pause_UI").visible and not get_node("/root/main/computer_UI").visible and not GameData.paused:
+				toggle_recipe_book()
 		
 	if Input.is_action_just_pressed("right_click"):
 		var plate_target = surface_target if is_instance_valid(surface_target) and surface_target.is_in_group("plate") else item_target

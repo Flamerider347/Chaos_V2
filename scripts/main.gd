@@ -92,7 +92,7 @@ func get_effective_power() -> int:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
-		if event.keycode == KEY_TAB and not $computer_UI.visible:
+		if event.keycode == KEY_TAB and not $computer_UI.visible and not $Recipe_UI.visible:
 			paused = !paused
 			GameData.paused = paused
 			if is_instance_valid(pause_ui): pause_ui.visible = paused
