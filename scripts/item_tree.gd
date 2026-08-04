@@ -26,11 +26,13 @@ func _ready() -> void:
 	if has_node("Label3D"):
 		$Label3D.text = str(item_left)
 
+
 func _on_punched() -> void:
 	if not multiplayer.is_server():
 		rpc_id(1, "server_handle_punch", multiplayer.get_unique_id())
 		return
 	server_handle_punch(1)
+
 
 func _on_item_timer_timeout() -> void:
 	if not multiplayer.is_server(): return
@@ -42,17 +44,32 @@ func _on_item_timer_timeout() -> void:
 		
 	if item_left < max_item_left:
 		if has_node("item_timer"):
-			$item_timer.start(10)
+			$item_timer.start(120)
+
 
 @rpc("any_peer", "reliable")
 func server_handle_punch(sender_id: int) -> void:
 	if not multiplayer.is_server() or item_left <= 0: return
 
-	# FIX: Instead of hunting by node string names, hide by index directly from our array!
 	if item_left <= item_children.size():
 		item_children[item_left - 1].hide()
 
 	item_left -= 1
+	
+	# Determine base spawns + bonus drops from drop_chance
+	var drop_count: int = 1
+	var bonus_chance: float = GameData.get_upgrade_value("drop_chance")
+	if randf() < bonus_chance:
+		drop_count += 1
+
+	for i in range(drop_count):
+		_spawn_single_item(sender_id)
+	
+	if has_node("item_timer"):
+		$item_timer.start(120)
+
+
+func _spawn_single_item(sender_id: int) -> void:
 	var item_name_prefix: String = item_type_cached.to_lower()
 	var angle: float = randf_range(0, 2 * PI)
 	var spawn_pos: Vector3 = global_position + Vector3(sin(angle), 0.2, cos(angle)) * randf_range(1, 3)
@@ -61,25 +78,3 @@ func server_handle_punch(sender_id: int) -> void:
 	
 	if is_instance_valid(item_spawner):
 		item_spawner.spawn(package)
-	
-	if has_node("item_timer"):
-		$item_timer.start(10)
-func _on_custom_item_spawn(data: Array) -> Node:
-	if data.size() < 3: return null
-		
-	var item_type = data[0]
-	var target_pos = data[2]
-	var exact_name: String = str(data[3]) if data.size() >= 4 else str(item_type) + "_fallback_" + str(randi() % 100000)
-	
-	var item_path: String = "res://Prefabs/" + str(item_type) + ".tscn"
-	if not ResourceLoader.exists(item_path): return null
-		
-	var item_instance = load(item_path).instantiate()
-	item_instance.name = exact_name
-	item_instance.type = str(item_type)
-	item_instance.position = target_pos
-	
-	item_instance.set_multiplayer_authority(1)
-	item_instance.add_to_group("pickupable")
-	
-	return item_instance

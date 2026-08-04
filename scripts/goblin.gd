@@ -4,11 +4,20 @@ extends CharacterBody3D
 @onready var attack_zone: Area3D = $attack_zone
 @onready var anim_player: AnimationPlayer = $goblin/AnimationPlayer
 
-const SPEED = 4.0
-const WANDER_SPEED = 3.0
+# Baseline speeds (Hard / Baseline difficulty values)
+const BASE_SPEED = 5.0          # Normal chase speed
+const BASE_ATTACK_SPEED = 7.5   # Lunge attack speed
+const BASE_WANDER_SPEED = 3.0   # Wandering speed
+
+# Actual speeds applied after difficulty multiplier calculation
+var move_speed: float = BASE_SPEED
+var attack_speed: float = BASE_ATTACK_SPEED
+var wander_speed: float = BASE_WANDER_SPEED
+
 const DAMAGE = 20.0
 const ATTACK_COOLDOWN = 1.5
-const DETECTION_RADIUS = 7.5
+const DETECTION_RADIUS = 10.0
+const DAMAGE_RADIUS = 3.5
 
 enum State { WANDER, CHASE, ATTACKING }
 var current_state: State = State.WANDER
@@ -22,6 +31,19 @@ var current_anim: String = ""
 
 func _ready() -> void:
 	set_physics_process(false)
+	
+	# Fetch difficulty multiplier from global game data singleton
+	var diff_mult: float = 1.0
+	if Engine.has_singleton("GameData") or get_node_or_null("/root/GameData"):
+		var game_data = get_node("/root/GameData")
+		if game_data.has_method("get_difficulty_multiplier"):
+			diff_mult = game_data.get_difficulty_multiplier()
+	
+	# Apply difficulty scaling to goblin movement speeds
+	move_speed = BASE_SPEED * diff_mult
+	attack_speed = BASE_ATTACK_SPEED * diff_mult
+	wander_speed = BASE_WANDER_SPEED * diff_mult
+
 	await get_tree().create_timer(0.2).timeout
 	set_physics_process(true)
 	
@@ -59,7 +81,7 @@ func _physics_process(delta: float) -> void:
 				current_state = State.CHASE
 			elif nav_agent.is_navigation_finished():
 				_play_anim("Idle1")
-			_handle_movement(WANDER_SPEED)
+			_handle_movement(wander_speed)
 
 		State.CHASE:
 			if not is_instance_valid(target_player):
@@ -67,29 +89,37 @@ func _physics_process(delta: float) -> void:
 				_pick_new_wander_target()
 			elif cooldown_timer <= 0.0 and attack_zone.overlaps_body(target_player):
 				current_state = State.ATTACKING
-				state_timer = 0.666 # Total duration of Attack2 animation
+				state_timer = 0.666 # Duration of Attack2 animation
 				damage_dealt_this_attack = false
 				cooldown_timer = ATTACK_COOLDOWN
 				_play_anim("Attack2")
-				velocity.x = 0.0
-				velocity.z = 0.0
 			else:
 				nav_agent.target_position = target_player.global_position
 				_play_anim("Run")
-				_handle_movement(SPEED)
+				_handle_movement(move_speed)
 
 		State.ATTACKING:
 			state_timer -= delta
-			velocity.x = 0.0
-			velocity.z = 0.0
 			
-			# Check for the strike frame at precisely 0.45 seconds into the animation
-			# (0.666 total - 0.45 strike time = 0.216 remaining on clock)
+			# Lunge directly toward player using difficulty-adjusted attack_speed
+			if is_instance_valid(target_player):
+				var dir = (target_player.global_position - global_position)
+				dir.y = 0.0
+				dir = dir.normalized() * attack_speed
+				velocity.x = dir.x
+				velocity.z = dir.z
+			else:
+				velocity.x = 0.0
+				velocity.z = 0.0
+			
+			# Check strike frame timing
 			if state_timer <= 0.216 and not damage_dealt_this_attack:
 				damage_dealt_this_attack = true
-				if is_instance_valid(target_player) and attack_zone.overlaps_body(target_player):
-					if not target_player.get("is_dead") and not target_player.get("is_in_kitchen"):
-						rpc("sync_attack_player", target_player.get_path(), DAMAGE)
+				if is_instance_valid(target_player):
+					var dist_to_player = global_position.distance_to(target_player.global_position)
+					if dist_to_player <= DAMAGE_RADIUS:
+						if not target_player.get("is_dead") and not target_player.get("is_in_kitchen"):
+							rpc("sync_attack_player", target_player.get_path(), DAMAGE)
 			
 			if state_timer <= 0.0:
 				current_anim = "" 
@@ -97,7 +127,7 @@ func _physics_process(delta: float) -> void:
 				if current_state == State.WANDER:
 					_pick_new_wander_target()
 
-	# Handle smooth spatial rotation
+	# Handle smooth rotation
 	var look_target = target_player.global_position if is_instance_valid(target_player) else nav_agent.get_next_path_position()
 	var look_vector = Vector3(look_target.x, global_position.y, look_target.z)
 	if global_position.distance_to(look_vector) > 0.2:
@@ -105,10 +135,10 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
-func _handle_movement(move_speed: float) -> void:
+func _handle_movement(speed_to_use: float) -> void:
 	if not nav_agent.is_navigation_finished():
 		var next_path = nav_agent.get_next_path_position()
-		var dir = (next_path - global_position).normalized() * move_speed
+		var dir = (next_path - global_position).normalized() * speed_to_use
 		velocity.x = dir.x
 		velocity.z = dir.z
 	else:

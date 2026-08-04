@@ -1,23 +1,52 @@
 extends Node
 
-var recipes: Dictionary[String, Dictionary] = {}
-var recipe_key_lookup: Dictionary[String, String] = {}
+var recipes: Dictionary = {}
+var recipe_key_lookup: Dictionary = {}
 var recipe_of_the_day = null
 var recipe_of_the_day2 = null
+
 func _ready():
 	load_all_recipes_from_folder("res://resources/recipes/")
+
+func get_matching_recipe(components: Array) -> String:
+	if components.is_empty():
+		return ""
+
+	# 1. Normalize components to match resource formatting (lowercase, snake_case)
+	var cleaned_components: Array[String] = []
+	for comp in components:
+		var raw_name = str(comp).to_lower().replace(" ", "_")
+		cleaned_components.append(raw_name)
+
+	# 2. Sort components
+	cleaned_components.sort()
+
+	# 3. Build lookup key (e.g. "bun,meat_cooked")
+	var key_parsed: String = ",".join(cleaned_components)
+
+	# 4. Look up in dictionary and return display_name
+	if recipe_key_lookup.has(key_parsed):
+		var internal_name = recipe_key_lookup[key_parsed]
+		if recipes.has(internal_name):
+			return recipes[internal_name].get("display_name", internal_name)
+		return internal_name
+
+	return ""
 
 func load_all_recipes_from_folder(path: String) -> void:
 	var resources: PackedStringArray = ResourceLoader.list_directory(path)
 	for resource in resources:
 		if resource.ends_with(".tres"):
-			var loaded_resource: RecipeData = ResourceLoader.load(path+resource)
-			var key_parsed: String = ""
-			var sorted_components = loaded_resource.components.duplicate()
+			var loaded_resource: RecipeData = ResourceLoader.load(path + resource)
+			
+			# Normalize resource components upon loading
+			var sorted_components: Array = []
+			for comp in loaded_resource.components:
+				sorted_components.append(str(comp).to_lower().replace(" ", "_"))
 			sorted_components.sort()
-			for component in sorted_components:
-				key_parsed += component + ","
-			key_parsed = key_parsed.rstrip(",")
+
+			var key_parsed: String = ",".join(sorted_components)
+			
 			recipe_key_lookup[key_parsed] = loaded_resource.recipe_internal
 			recipes[loaded_resource.recipe_internal] = {
 				"internal_name": loaded_resource.recipe_internal,

@@ -62,6 +62,8 @@ drop_all=""
 storage_hopper=""
 no_outline=""
 computer=""
+difficulty_button=""
+recipe_book=""
 
 [gui]
 
