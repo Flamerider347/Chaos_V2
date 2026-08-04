@@ -55,11 +55,6 @@ func _ready() -> void:
 	GameData.paused = false
 	$computer_UI.hide()
 	
-	if is_instance_valid(pause_ui):
-		pause_ui.visible = false
-	if is_instance_valid(main_ui):
-		main_ui.visible = true
-		
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 	var env_controller = get_node_or_null("environment_controller")
@@ -547,3 +542,10 @@ func update_upgrades_UI() -> void:
 			button_red.visible = locked
 		if button_green:
 			button_green.visible = not locked
+
+
+func _on_connection_timer_timeout() -> void:
+	if $players.get_child_count() == 1:
+		$Pause_UI/incorrect.show()
+	else:
+		$connection_timer.queue_free()

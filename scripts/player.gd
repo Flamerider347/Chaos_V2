@@ -79,7 +79,9 @@ func _ready() -> void:
 		
 	global_position = Vector3(randf_range(6,4), 1, randf_range(4,-4))
 	update_inventory_ui()
-
+	get_node("/root/main/Pause_UI/incorrect").hide()
+	get_node("/root/main/UI").show()
+	get_node("/root/main/Pause_UI").hide()
 
 func _input(event: InputEvent) -> void:
 	if not is_owned or GameData.paused: return

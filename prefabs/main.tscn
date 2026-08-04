@@ -1799,6 +1799,21 @@ offset_bottom = 73.0
 theme = SubResource("Theme_32250")
 text = "Return to main menu"
 
+[node name="incorrect" type="Label" parent="Pause_UI" unique_id=840165037]
+offset_left = 275.0
+offset_top = 180.0
+offset_right = 775.0
+offset_bottom = 411.0
+text = "If you see this message, the server hasn't connected properly
+Please check the IP and Port is entered correctly.
+
+If the game has started (the door has opened)
+you cannot join late, so the host must leave and make new lobby
+you will automatically return to lobby in ~30 seconds,
+or you can press the button in the top right to return now
+
+Apologies for any inconvenience caused"
+
 [node name="UI" type="CanvasLayer" parent="." unique_id=1896255929]
 visible = false
 
@@ -2070,6 +2085,11 @@ horizontal_alignment = 2
 [node name="door_animation_player" type="AnimationPlayer" parent="." unique_id=670073892]
 libraries/ = SubResource("AnimationLibrary_i6w6j")
 
+[node name="connection_timer" type="Timer" parent="." unique_id=1857884555]
+wait_time = 2.0
+one_shot = true
+autostart = true
+
 [connection signal="body_entered" from="game/world/kitchen/thing" to="game/world/kitchen/thing" method="_on_body_entered"]
 [connection signal="body_entered" from="game/world/kitchen/main_kitchen/kitchen_area" to="game/world/kitchen/main_kitchen/kitchen_area" method="_on_body_entered"]
 [connection signal="body_exited" from="game/world/kitchen/main_kitchen/kitchen_area" to="game/world/kitchen/main_kitchen/kitchen_area" method="_on_body_exited"]
@@ -2078,3 +2098,4 @@ libraries/ = SubResource("AnimationLibrary_i6w6j")
 [connection signal="pressed" from="computer_UI/items" to="." method="_items_pressed"]
 [connection signal="pressed" from="computer_UI/upgrades" to="." method="_upgrades_pressed"]
 [connection signal="pressed" from="Pause_UI/Button" to="." method="burn_it_all_down"]
+[connection signal="timeout" from="connection_timer" to="." method="_on_connection_timer_timeout"]
