@@ -318,7 +318,6 @@ func _refresh_players_after_upgrade() -> void:
 
 func _trigger_victory() -> void:
 	GameData.in_game = false
-	print("Artificial Sun Ignition Complete! Victory!")
 	get_tree().change_scene_to_file("res://Prefabs/victory_screen.tscn")
 
 

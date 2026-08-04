@@ -70,7 +70,6 @@ func _on_spool_server_pressed():
 	if not target_code_node: return
 
 	var target_ip: String = target_code_node.text.strip_edges()
-	print(target_ip)
 	GameData.request_spooled_instance(target_ip)
 	
 
