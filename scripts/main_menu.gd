@@ -135,7 +135,7 @@ func _join_LAN() -> void:
 	if ip_input:
 		ip = ip_input.text.strip_edges()
 	
-	var port_input = get_node_or_null("Menu_UI/mutliplayer_menu/port/LineEdit")
+	var port_input = $menu_UI/multiplayer_menu/port/LineEdit
 	if port_input:
 		port = port_input.text.strip_edges()
 	
@@ -161,7 +161,7 @@ func _restricted_join() -> void:
 	if ip_input:
 		ip = ip_input.text.strip_edges()
 	
-	var port_input = get_node_or_null("Menu_UI/restricted_LAN/port/LineEdit")
+	var port_input = $menu_UI/restricted_LAN/port/LineEdit
 	if port_input:
 		port = port_input.text.strip_edges()
 	

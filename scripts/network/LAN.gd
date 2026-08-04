@@ -11,6 +11,7 @@ func start_client(ip: String, port) -> void:
 
 	if ip == "":
 		ip = "127.0.0.1"
+	print(port)
 
 	GameData.room_code = ip
 	GameData.join_game(ip, port)
