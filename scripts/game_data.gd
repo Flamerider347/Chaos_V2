@@ -17,7 +17,8 @@ var connected: bool = false
 var is_joining: bool = false
 var in_game: bool = false
 var join_error = null
-var using_computer: bool = false
+var using_computer = false
+var in_recipe_book: bool = false
 
 const SPOOLER_PORT := 13500
 var spooler_ip := ""
