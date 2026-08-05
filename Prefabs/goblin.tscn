@@ -2952,7 +2952,7 @@ properties/2/path = NodePath("goblin/AnimationPlayer:current_animation")
 properties/2/spawn = true
 properties/2/replication_mode = 2
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_iw3lg"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_q2wu0"]
 viewport_path = NodePath("SubViewport")
 
 [node name="goblin" type="CharacterBody3D" unique_id=1456164154]
@@ -3258,16 +3258,17 @@ replication_config = SubResource("SceneReplicationConfig_vj773")
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=258643926]
 transparent_bg = true
-size = Vector2i(200, 37)
+size = Vector2i(100, 37)
 
 [node name="ProgressBar" type="ProgressBar" parent="SubViewport" unique_id=891067758]
-offset_right = 200.0
+offset_right = 100.0
 offset_bottom = 27.0
 
 [node name="Sprite3D" type="Sprite3D" parent="." unique_id=1310385032]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8682061, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9444214, 0)
+visibility_range_end = 5.0
 billboard = 2
-texture = SubResource("ViewportTexture_iw3lg")
+texture = SubResource("ViewportTexture_q2wu0")
 
 [connection signal="body_entered" from="attack_zone" to="." method="_on_attack_zone_body_entered"]
 [connection signal="body_exited" from="attack_zone" to="." method="_on_attack_zone_body_exited"]

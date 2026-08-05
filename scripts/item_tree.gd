@@ -44,7 +44,7 @@ func _on_item_timer_timeout() -> void:
 		
 	if item_left < max_item_left:
 		if has_node("item_timer"):
-			$item_timer.start(120)
+			$item_timer.start(96)
 
 
 @rpc("any_peer", "reliable")
@@ -64,9 +64,8 @@ func server_handle_punch(sender_id: int) -> void:
 
 	for i in range(drop_count):
 		_spawn_single_item(sender_id)
-	
-	if has_node("item_timer"):
-		$item_timer.start(120)
+	if has_node("item_timer") and $item_timer.time_left == 0:
+		$item_timer.start(96)
 
 
 func _spawn_single_item(sender_id: int) -> void:
