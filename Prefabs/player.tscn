@@ -46,6 +46,9 @@ properties/2/path = NodePath(".:rotation")
 properties/2/spawn = true
 properties/2/replication_mode = 2
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_knrd4"]
+size = Vector3(2.8354492, 1, 3.2192383)
+
 [node name="player" type="CharacterBody3D" unique_id=300991191 groups=["pickupable", "plate_stackable", "player", "two_handed"]]
 process_mode = 1
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0)
@@ -116,4 +119,14 @@ one_shot = true
 replication_interval = 0.1
 replication_config = SubResource("SceneReplicationConfig_knrd4")
 
+[node name="light" type="Area3D" parent="." unique_id=147775854]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.789, -1.915)
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="light" unique_id=1201394967]
+shape = SubResource("BoxShape3D_knrd4")
+
 [connection signal="timeout" from="pickup_timer" to="." method="_on_pickup_timer_timeout"]
+[connection signal="body_entered" from="light" to="." method="_on_light_body_entered"]
+[connection signal="body_exited" from="light" to="." method="_on_light_body_exited"]

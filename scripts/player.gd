@@ -1,6 +1,12 @@
 extends CharacterBody3D
 class_name Player
 
+@export_group("Torch Settings")
+@export var max_damage_per_sec: float = 40.0   # DPS when enemy is right next to light/torch
+@export var min_damage_per_sec: float = 5.0    # DPS when enemy is at outer edge of light
+@export var max_light_distance: float = 5.0
+
+var active_enemies_in_light: Array[Node3D] = []
 var health: float = 100.0
 var max_health: float = 100.0
 var is_dead: bool = false
@@ -103,6 +109,8 @@ func _physics_process(delta: float) -> void:
 	if is_instance_valid(held_item) and held_item.get("type") == "flashlight":
 		held_item.using = true
 		held_item.drain_battery(delta)
+		if held_item.charge > 0:
+			_process_torch_damage(delta)
 		var item_label = get_node_or_null("/root/main/UI/item_slots/slot" + str(current_slot) + "/item")
 		item_label.text = "Flashlight " + str(int(held_item.charge)) + "%"
 		
@@ -787,3 +795,31 @@ func sync_flashlight_state(slot_key: String, current_charge: float, active: bool
 func request_username_from_owner() -> void:
 	if not is_inside_tree(): await get_tree().process_frame
 	if is_owned: rpc("sync_username", GameData.username if GameData.username != "" else "Player")
+
+
+func _process_torch_damage(delta: float) -> void:
+	# Filter out any goblins that died or were freed while in the light
+	active_enemies_in_light = active_enemies_in_light.filter(func(e): return is_instance_valid(e))
+
+	for enemy in active_enemies_in_light:
+		if enemy.has_method("take_damage"):
+			# Measure distance from player/light origin to enemy
+			var distance: float = global_position.distance_to(enemy.global_position)
+			var clamped_dist: float = clamp(distance, 0.0, max_light_distance)
+
+			# Calculate damage per second based on distance
+			var dps: float = remap(clamped_dist, 0.0, max_light_distance, max_damage_per_sec, min_damage_per_sec)
+
+			# Apply damage scaled by frame time
+			enemy.take_damage(dps * delta)
+
+
+func _on_light_body_entered(body: Node3D) -> void:
+	if body.is_in_group("enemy"):
+		if not active_enemies_in_light.has(body):
+			active_enemies_in_light.append(body)
+
+
+func _on_light_body_exited(body: Node3D) -> void:
+	if body.is_in_group("enemy"):
+		active_enemies_in_light.erase(body)

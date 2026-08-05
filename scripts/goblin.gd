@@ -4,10 +4,21 @@ extends CharacterBody3D
 @onready var attack_zone: Area3D = $attack_zone
 @onready var anim_player: AnimationPlayer = $goblin/AnimationPlayer
 
+# UI Reference
+@onready var health_bar = get_node_or_null("SubViewport/ProgressBar")
+
+# Spawner Reference
+@onready var item_spawner: MultiplayerSpawner = get_node_or_null("/root/main/game/spawners/item_spawner")
+
 # Baseline speeds (Hard / Baseline difficulty values)
-const BASE_SPEED = 3.5        # Normal chase speed
-const BASE_ATTACK_SPEED = 5   # Lunge attack speed
+const BASE_SPEED = 3.25        # Normal chase speed
+const BASE_ATTACK_SPEED = 3.5   # Lunge attack speed
 const BASE_WANDER_SPEED = 3.0   # Wandering speed
+
+# Health Settings
+const MAX_HEALTH: float = 100.0
+var current_health: float = MAX_HEALTH
+var is_dead: bool = false
 
 # Actual speeds applied after difficulty multiplier calculation
 var move_speed: float = BASE_SPEED
@@ -50,7 +61,9 @@ func _ready() -> void:
 	add_to_group("enemy")
 	spawn_position = global_position
 	
+	_update_health_bar()
 	_play_anim("GetUp")
+	
 	if not multiplayer.is_server():
 		set_physics_process(false)
 		return
@@ -61,6 +74,9 @@ func _ready() -> void:
 	_pick_new_wander_target()
 
 func _physics_process(delta: float) -> void:
+	if is_dead:
+		return
+
 	if cooldown_timer > 0.0:
 		cooldown_timer -= delta
 
@@ -135,6 +151,58 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
+# --- DAMAGE & HEALTH SYSTEM ---
+func take_damage(amount: float) -> void:
+	if is_dead:
+		return
+		
+	# Request server to process damage if client is calling this
+	if not multiplayer.is_server():
+		rpc_id(1, "server_handle_damage", amount)
+		return
+		
+	server_handle_damage(amount)
+
+@rpc("any_peer", "call_local", "reliable")
+func server_handle_damage(amount: float) -> void:
+	if not multiplayer.is_server() or is_dead:
+		return
+		
+	rpc("sync_take_damage", amount)
+
+@rpc("any_peer", "call_local", "reliable")
+func sync_take_damage(amount: float) -> void:
+	if is_dead:
+		return
+
+	current_health = clamp(current_health - amount, 0.0, MAX_HEALTH)
+	_update_health_bar()
+
+	if current_health <= 0.0:
+		die()
+
+func _spawn_meat_drops() -> void:
+	if not multiplayer.is_server():
+		return
+		
+	var drop_count: int = randi_range(1, 3)
+	for i in range(drop_count):
+		var angle: float = randf_range(0, 2 * PI)
+		var spawn_pos: Vector3 = global_position + Vector3(sin(angle), 0.2, cos(angle)) * randf_range(0.5, 1.5)
+		var unique_name: String = "meat_" + str(randi() % 100000)
+		
+		# Spawns meat using item_spawner matching your tree item structure
+		# package array format: [item_type, sender_id, position, unique_name]
+		var package: Array = ["meat", 1, spawn_pos, unique_name]
+		
+		if is_instance_valid(item_spawner):
+			item_spawner.spawn(package)
+
+func _update_health_bar() -> void:
+	if is_instance_valid(health_bar):
+		health_bar.value = (current_health / MAX_HEALTH) * 100.0
+
+# --- NAVIGATION & UTILITY ---
 func _handle_movement(speed_to_use: float) -> void:
 	if not nav_agent.is_navigation_finished():
 		var next_path = nav_agent.get_next_path_position()
@@ -146,7 +214,7 @@ func _handle_movement(speed_to_use: float) -> void:
 		velocity.z = 0.0
 
 func _pick_new_wander_target() -> void:
-	if current_anim == "FallOver": return
+	if current_anim == "FallOver" or is_dead: return
 	var offset = Vector3(randf_range(-10, 10), 0, randf_range(-10, 10))
 	var target = spawn_position + offset
 	var closest_point = NavigationServer3D.map_get_closest_point(get_world_3d().navigation_map, target)
@@ -156,10 +224,10 @@ func _pick_new_wander_target() -> void:
 		_play_anim("Run")
 
 func _on_target_reached() -> void:
-	if current_state == State.CHASE or is_instance_valid(target_player): return
+	if current_state == State.CHASE or is_instance_valid(target_player) or is_dead: return
 	_play_anim("Idle1")
 	await get_tree().create_timer(5.0).timeout
-	if not is_instance_valid(target_player) and current_state == State.WANDER:
+	if not is_instance_valid(target_player) and current_state == State.WANDER and not is_dead:
 		_pick_new_wander_target()
 
 func _find_closest_player() -> void:
@@ -175,14 +243,40 @@ func _find_closest_player() -> void:
 				
 	target_player = closest_player
 
+func die() -> void:
+	if is_dead:
+		return
+	is_dead = true
+	set_physics_process(false)
+	
+	# Turn off collisions so it doesn't trigger extra hits while dying
+	$CollisionShape3D.set_deferred("disabled", true)
+	if is_instance_valid(attack_zone):
+		attack_zone.set_deferred("monitoring", false)
+		attack_zone.set_deferred("monitorable", false)
+		
+	_spawn_meat_drops()
+	start_despawn_sequence()
+
 func start_despawn_sequence() -> void:
-	if current_anim == "FallOver": return
-	_play_anim("FallOver")
+	# Avoid repeating the animation if already falling over
+	if current_anim != "FallOver":
+		_play_anim("FallOver")
+		
 	current_state = State.WANDER
 	velocity = Vector3.ZERO
-	await get_tree().create_timer(2.0).timeout
-	if multiplayer.is_server():
-		queue_free()
+	
+	# Safe timer check using the scene tree directly
+	var tree = get_tree()
+	if not tree:
+		return
+		
+	await tree.create_timer(2.0).timeout
+	
+	# Verify node and multiplayer peer are still valid before freeing
+	if is_instance_valid(self) and is_inside_tree():
+		if multiplayer and multiplayer.is_server():
+			queue_free()
 
 func _play_anim(anim_name: String) -> void:
 	if current_anim == anim_name: return

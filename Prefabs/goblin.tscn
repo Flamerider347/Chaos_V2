@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cj6gj7p2q8bd1" path="res://Assets/Models/simple_goblin_0.png" id="3_uv6ck"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vvrc6"]
-radius = 0.33642578
+radius = 0.5024414
 height = 1.8100586
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vj773"]
@@ -2952,6 +2952,9 @@ properties/2/path = NodePath("goblin/AnimationPlayer:current_animation")
 properties/2/spawn = true
 properties/2/replication_mode = 2
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_iw3lg"]
+viewport_path = NodePath("SubViewport")
+
 [node name="goblin" type="CharacterBody3D" unique_id=1456164154]
 collision_layer = 2
 collision_mask = 2
@@ -3252,6 +3255,19 @@ libraries/ = SubResource("AnimationLibrary_qibn7")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=365054815]
 replication_config = SubResource("SceneReplicationConfig_vj773")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=258643926]
+transparent_bg = true
+size = Vector2i(200, 37)
+
+[node name="ProgressBar" type="ProgressBar" parent="SubViewport" unique_id=891067758]
+offset_right = 200.0
+offset_bottom = 27.0
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1310385032]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8682061, 0)
+billboard = 2
+texture = SubResource("ViewportTexture_iw3lg")
 
 [connection signal="body_entered" from="attack_zone" to="." method="_on_attack_zone_body_entered"]
 [connection signal="body_exited" from="attack_zone" to="." method="_on_attack_zone_body_exited"]
