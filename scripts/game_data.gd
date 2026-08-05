@@ -103,6 +103,7 @@ func reset_game_data() -> void:
 	closed_lobby = false
 	paused = false
 	lost = false
+	difficulty = "easy"
 
 	# Reset upgrade levels
 	for key in upgrade_levels.keys():
@@ -146,6 +147,7 @@ func join_game(target_ip: String, port: int) -> void:
 	if error != OK:
 		_on_connection_failed()
 		return
+	GameData.ip = target_ip
 	game_port = port
 	multiplayer.multiplayer_peer = peer
 

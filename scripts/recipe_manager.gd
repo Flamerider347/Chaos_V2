@@ -1,6 +1,6 @@
 extends Node
 
-var recipes: Dictionary = {}
+var recipes: Dictionary[String, Dictionary] = {}
 var recipe_key_lookup: Dictionary = {}
 var recipe_of_the_day = null
 var recipe_of_the_day2 = null

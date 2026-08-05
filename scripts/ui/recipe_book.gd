@@ -44,6 +44,7 @@ func update_display():
 
 	
 func create_page(recipe_info):
+	recipe_info = recipe_info.duplicate_deep()
 	var page: RecipePage = page_template.instantiate()
 	add_child(page)
 	page.title.text = recipe_info["display_name"]
