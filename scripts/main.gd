@@ -76,8 +76,25 @@ func _ready() -> void:
 		if not power_toggle.toggled.is_connected(_on_power_toggle_toggled):
 			power_toggle.toggled.connect(_on_power_toggle_toggled)
 
+	GameData.initial_state_recieved.connect(apply_initial_setup)
+	if GameData.initial_state:
+		apply_initial_setup()
+
 	_setup_shop_ui_connections()
 	_setup_upgrade_ui_connections()
+
+
+func apply_initial_setup():
+	var difficulty_display = get_node("/root/main/game/world/kitchen/main_kitchen/appliances/current_difficulty/difficulty")
+	var difficulty: String = GameData.initial_state["difficulty"]
+	if difficulty == "charred" or difficulty == "hard": difficulty_display.text = difficulty.to_upper()
+	else: difficulty_display.text = difficulty.capitalize()
+	var color: Color = Color("#000000")
+	if difficulty == "easy" or difficulty == "medium_rare": color = Color("#00ff1c")
+	if difficulty == "medium" or difficulty == "normal" or difficulty == "well_done": color = Color("#ffff00")
+	if difficulty == "hard" or difficulty == "charred": color = Color("#ff0000")
+	var difficulty_sign = get_node("/root/main/game/world/kitchen/main_kitchen/appliances/current_difficulty") #.material.albedo_color = color
+	difficulty_sign.material.albedo_color = color
 
 
 func _on_power_toggle_toggled(_button_pressed: bool) -> void:

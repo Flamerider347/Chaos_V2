@@ -136,12 +136,14 @@ albedo_color = Color(0, 0, 0, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_iocbj"]
 size = Vector3(19.915184, 2.506958, 15.770504)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_32250"]
+[sub_resource type="BoxMesh" id="BoxMesh_tnwyx"]
+size = Vector3(1.4, 0.05, 0.3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k13ew"]
 albedo_color = Color(0, 1, 0.10980392, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_tnwyx"]
-material = SubResource("StandardMaterial3D_32250")
-size = Vector3(1.4, 0.05, 0.3)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_32250"]
+albedo_color = Color(0, 1, 0.10980392, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_rx2bs"]
 material = SubResource("StandardMaterial3D_32250")
@@ -547,6 +549,7 @@ shape = SubResource("BoxShape3D_iocbj")
 [node name="current_difficulty" type="CSGMesh3D" parent="game/world/kitchen/main_kitchen/appliances" unique_id=310299244]
 transform = Transform3D(2, 0, 0, 0, -8.742278e-08, -2, 0, 2, -8.742278e-08, -0.19, 2.2, -4.919)
 mesh = SubResource("BoxMesh_tnwyx")
+material = SubResource("StandardMaterial3D_k13ew")
 
 [node name="difficulty" type="Label3D" parent="game/world/kitchen/main_kitchen/appliances/current_difficulty" unique_id=1626418057]
 transform = Transform3D(0.70000005, 0, 0, 0, -3.0597974e-08, 0.70000005, 0, -0.70000005, -3.0597974e-08, 0, 0.027433634, 0)

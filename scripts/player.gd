@@ -40,7 +40,7 @@ var ui_slot_icons: Dictionary = {}
 	"tomato" : preload("res://Assets/2D art/food icons/foodicons_tomato_transparent.png"),
 	#"tomato_chopped" : preload("res://Assets/2D art/food icons/foodicons_tomato.png"),
 	"carrot" : preload("res://Assets/2D art/food icons/foodicons_carrot_transparent.png"),
-	#"carrot_chopped" : preload("res://Assets/2D art/food icons/foodicons_carrot.png"),
+	"carrot_chopped" : preload("res://Assets/2D art/food icons/foodicons_carrot.png"),
 	"meat" : preload("res://Assets/2D art/food icons/foodicons_raw-patty_transparent.png"),
 	"meat_cooked" : preload("res://Assets/2D art/food icons/foodicons_patty_transparent.png"),
 	"lettuce" : preload("res://Assets/2D art/food icons/foodicons_lettuce_transparent.png"),
@@ -74,7 +74,7 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	add_to_group("player")
 	is_owned = (name.to_int() == multiplayer.get_unique_id())
-	
+
 	if is_owned:
 		$head/camera.make_current()
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -90,6 +90,7 @@ func _ready() -> void:
 	get_node("/root/main/Pause_UI/incorrect").hide()
 	get_node("/root/main/UI").show()
 	get_node("/root/main/Pause_UI").hide()
+
 
 func _input(event: InputEvent) -> void:
 	if not is_owned or GameData.paused: return
@@ -422,6 +423,7 @@ func drop_object(surface_target: Node3D = null) -> void:
 func stack_object(plate: Node3D) -> void:
 	if not is_instance_valid(held_item): return
 	if held_item.is_in_group("pickupable"): held_item.remove_from_group("pickupable")
+	if plate.stacked_items.size() >= 9: return
 	
 	plate.stack_item(held_item)
 	can_pickup = false

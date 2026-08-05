@@ -88,7 +88,7 @@ material_override = SubResource("StandardMaterial3D_hck1p")
 mesh = ExtResource("3_2nftw")
 
 [node name="face" type="MeshInstance3D" parent="head" unique_id=893005727]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.13169393)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.23)
 mesh = SubResource("BoxMesh_knrd4")
 
 [node name="camera" type="Camera3D" parent="head" unique_id=237419948]

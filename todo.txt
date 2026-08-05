@@ -1,7 +1,0 @@
-- 96 seconds per item respawn
-- goblin preloader
-
-plate stack limit
-reset not worky - lose bug (not a loot bug)
-globlin health bar?
-difficulty syncing

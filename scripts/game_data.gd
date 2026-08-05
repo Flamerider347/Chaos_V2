@@ -19,6 +19,7 @@ var in_game: bool = false
 var join_error = null
 var using_computer = false
 var in_recipe_book: bool = false
+var initial_state: Dictionary
 
 const SPOOLER_PORT := 13500
 var spooler_ip := ""
@@ -87,6 +88,8 @@ var upgrade_levels: Dictionary = {
 	"sun_stage": 0
 }
 
+signal initial_state_recieved
+
 
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_player_connected)
@@ -147,12 +150,24 @@ func join_game(target_ip: String, port: int) -> void:
 	if error != OK:
 		_on_connection_failed()
 		return
+	room_code = target_ip
 	game_port = port
 	multiplayer.multiplayer_peer = peer
 
 
 func _on_player_connected(id: int) -> void:
 	print("Player connected with network ID: ", id)
+	var game_state = {
+		"difficulty": GameData.difficulty,
+	}
+	if multiplayer.is_server():
+		rpc_id(id, "_recieve_inital_state", game_state)
+
+
+@rpc("authority", "reliable")
+func _recieve_inital_state(data: Dictionary):
+	GameData.initial_state = data
+	initial_state_recieved.emit()
 
 
 func _on_player_disconnected(id: int) -> void:
