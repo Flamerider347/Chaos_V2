@@ -48,7 +48,7 @@ var paused: bool = false
 func _ready() -> void:
 	GameData.reset_game_data()
 	GameData.score = 0
-	GameData.power = 10000
+	GameData.power = 100
 	$Pause_UI/roomcode.text = "Port: " + str(GameData.game_port)
 	$Pause_UI/host_ip.text = "IP:" + str(GameData.room_code)
 	GameData.lost = false

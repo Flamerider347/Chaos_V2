@@ -18,7 +18,7 @@ extends Node3D
 }
 
 # Day starts at 6:00 AM (0.25)
-var current_time: float = 0.95
+var current_time: float = 0.25
 var is_cycle_started: bool = false 
 var current_day = -1
 var changed_day = false

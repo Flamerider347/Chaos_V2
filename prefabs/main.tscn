@@ -909,7 +909,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.580477, -0.09362793, -39.
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.86096, -0.09338379, -48.363605)
 
 [node name="computer_UI" type="CanvasLayer" parent="." unique_id=2131990608]
-visible = false
 
 [node name="computer_tabs" type="Sprite2D" parent="computer_UI" unique_id=1956578126]
 position = Vector2(576, 78)
@@ -1119,7 +1118,7 @@ offset_left = 103.25
 offset_top = 22.275002
 offset_right = 243.25
 offset_bottom = 71.075005
-text = "Flashlight"
+text = "Flashlight / Goblin Killer"
 metadata/_edit_use_anchors_ = true
 
 [node name="stock" type="Label" parent="computer_UI/shop_container/UI_margins/Items_UI/Flashlight" unique_id=2144951617]
@@ -1129,6 +1128,18 @@ offset_top = 61.274994
 offset_right = 162.25
 offset_bottom = 84.274994
 text = "Stock: 3"
+
+[node name="Label2" type="Label" parent="computer_UI/shop_container/UI_margins/Items_UI/Flashlight" unique_id=482535140]
+layout_mode = 0
+offset_left = 103.19501
+offset_top = 46.000008
+offset_right = 285.1947
+offset_bottom = 95.00001
+theme_override_constants/line_spacing = -1
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "Goblins hate light..."
+autowrap_mode = 2
 
 [node name="Meat" type="Control" parent="computer_UI/shop_container/UI_margins/Items_UI" unique_id=373604753]
 layout_mode = 2
@@ -1170,7 +1181,7 @@ offset_left = 103.25
 offset_top = 22.275002
 offset_right = 243.25
 offset_bottom = 71.075005
-text = "Meat"
+text = "Goblin Meat"
 metadata/_edit_use_anchors_ = true
 
 [node name="stock" type="Label" parent="computer_UI/shop_container/UI_margins/Items_UI/Meat" unique_id=2112637577]
@@ -1877,6 +1888,7 @@ or you can press the button in the top right to return now
 Apologies for any inconvenience caused"
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1896255929]
+visible = false
 
 [node name="fps" type="Label" parent="UI" unique_id=1827639193]
 offset_left = -173.0

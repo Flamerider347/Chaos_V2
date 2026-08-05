@@ -45,7 +45,7 @@ var ui_slot_icons: Dictionary = {}
 	"meat_cooked" : preload("res://Assets/2D art/food icons/foodicons_patty_transparent.png"),
 	"lettuce" : preload("res://Assets/2D art/food icons/foodicons_lettuce_transparent.png"),
 	"cheese" : preload("res://Assets/2D art/food icons/foodicons_cheese_transparent.png"),
-	#"cheese_chopped" : preload("res://Assets/2D art/food icons/foodicons_cheese.png"),
+	"cheese_chopped" : preload("res://Assets/2D art/food icons/foodicons_cheese_cut_transparent.png"),
 	"bun" : preload("res://Assets/2D art/food icons/foodicons_bun_transparent.png")
 }
 

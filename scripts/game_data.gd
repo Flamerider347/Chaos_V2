@@ -147,7 +147,6 @@ func join_game(target_ip: String, port: int) -> void:
 	if error != OK:
 		_on_connection_failed()
 		return
-	GameData.ip = target_ip
 	game_port = port
 	multiplayer.multiplayer_peer = peer
 
