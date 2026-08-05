@@ -1,7 +1,7 @@
 # Multi Instancer Guide
 
 ## When to use the Mutli Instancer
-This is only really useful in one case, running the game on client isolated (from now on reffered to as restritected) networks. Restricted networks block direct client to client communication and many of the elements often used in WebRTC multiplayer connections. In any other situation, using the normal LAN mode or WebRTC (Introduced in the Sprint 2 release) will yeild better results for less effort.
+This is only really useful in one case, running the game on client isolated (from now on reffered to as restritected) networks. Restricted networks block direct client to client communication such as the LAN connections used in the multiplayer mode. In any other situation, using the normal LAN mode will yeild better results for less effort.
 
 ## Requirements for use
 The only requirements for using the multi instancer is a moderately capable host machine which has the ability to form connections on the local network. All connecting computers must be part of the same network and be able to communicate with the host machine. If this is not an option for security or practicality, multiplayer will not work on the network at all.
