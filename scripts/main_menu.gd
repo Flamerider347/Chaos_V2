@@ -12,6 +12,7 @@ var current_time: float = 0.25
 
 
 func _ready() -> void:
+	GameData.using_computer = false
 	$Camera3D.current = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	lobby_error_label.text = ""

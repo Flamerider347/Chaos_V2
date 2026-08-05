@@ -73,7 +73,7 @@ const UPGRADES_DB: Dictionary = {
 	"sun_stage": {
 		"id": "sun_stage",
 		"max_level": 3,
-		"stage_costs": [500, 1500, 3000],
+		"stage_costs": [500, 1500, 5000],
 		"base_value": 1.0,
 		"increment": 1.0
 	}
@@ -95,6 +95,21 @@ func _ready() -> void:
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 
+func reset_game_data() -> void:
+	score = 0
+	power = 0
+	current_plates = 0
+	is_night = false
+	closed_lobby = false
+	paused = false
+	lost = false
+
+	# Reset upgrade levels
+	for key in upgrade_levels.keys():
+		upgrade_levels[key] = 0
+
+	# Refresh UI if needed
+	refresh_game_ui()
 
 func host_game() -> void:
 	peer = ENetMultiplayerPeer.new()
@@ -241,7 +256,7 @@ func get_upgrade_cost(upgrade_name: String) -> int:
 	if upgrade_name == "sun_stage":
 		match difficulty.to_lower():
 			"medium_rare", "easy":
-				diff_mult = 0.8
+				diff_mult = 0.75
 			"well_done", "normal", "medium":
 				diff_mult = 1.0
 			"charred", "hard":

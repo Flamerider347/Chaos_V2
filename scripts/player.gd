@@ -31,16 +31,16 @@ var inventory: Dictionary = {
 var ui_slot_icons: Dictionary = {}
 
 @onready var slot_icons = {
-	"tomato" : preload("res://Assets/2D art/food icons/foodicons_tomato.png"),
+	"tomato" : preload("res://Assets/2D art/food icons/foodicons_tomato_transparent.png"),
 	#"tomato_chopped" : preload("res://Assets/2D art/food icons/foodicons_tomato.png"),
-	"carrot" : preload("res://Assets/2D art/food icons/foodicons_carrot.png"),
+	"carrot" : preload("res://Assets/2D art/food icons/foodicons_carrot_transparent.png"),
 	#"carrot_chopped" : preload("res://Assets/2D art/food icons/foodicons_carrot.png"),
-	"meat" : preload("res://Assets/2D art/food icons/foodicons_raw-patty.png"),
-	"meat_cooked" : preload("res://Assets/2D art/food icons/foodicons_patty.png"),
+	"meat" : preload("res://Assets/2D art/food icons/foodicons_raw-patty_transparent.png"),
+	"meat_cooked" : preload("res://Assets/2D art/food icons/foodicons_patty_transparent.png"),
 	#"meat_burnt" : preload("res://Assets/2D art/food icons/foodicons_patty.png"),
-	"cheese" : preload("res://Assets/2D art/food icons/foodicons_cheese.png"),
+	"cheese" : preload("res://Assets/2D art/food icons/foodicons_cheese_transparent.png"),
 	#"cheese_chopped" : preload("res://Assets/2D art/food icons/foodicons_cheese.png"),
-	"bun" : preload("res://Assets/2D art/food icons/foodicons_bun.png")
+	"bun" : preload("res://Assets/2D art/food icons/foodicons_bun_transparent.png")
 }
 
 var last_highlighted_target: Node3D = null

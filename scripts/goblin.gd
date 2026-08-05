@@ -5,8 +5,8 @@ extends CharacterBody3D
 @onready var anim_player: AnimationPlayer = $goblin/AnimationPlayer
 
 # Baseline speeds (Hard / Baseline difficulty values)
-const BASE_SPEED = 5.0          # Normal chase speed
-const BASE_ATTACK_SPEED = 7.5   # Lunge attack speed
+const BASE_SPEED = 3.5        # Normal chase speed
+const BASE_ATTACK_SPEED = 5   # Lunge attack speed
 const BASE_WANDER_SPEED = 3.0   # Wandering speed
 
 # Actual speeds applied after difficulty multiplier calculation
