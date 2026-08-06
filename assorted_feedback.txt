@@ -1,0 +1,47 @@
+Sensitiviy slider
+ - too wide of a range
+ - name should include mouse sens and contain something to make it more clear
+
+Tips
+ - Make them auto hide on right click if empty
+ - Add a note about golbins being scared of light
+ - Update for newer features
+ - Add something for how to close tips in the tips window (probably early)
+ - Add note about recipe book
+ - Add note about computer
+ - maybe change tree info to be about "shaking" trees indicating that clicking anywhere would work
+ - something about hiding items
+ - recipe order doesn't matter
+ - no notes on difficulty
+ - note on menu hiding (or bright flashing arrows on close menu) Maybe do automatic closing on right arrow on page 16
+ - no sprint
+ - storage only for raw ingredients
+
+General
+ - Lettuce doublespawn
+ - Gluten-fee burger is confusing, change name to lettuce burger or something
+ - make no change of daily recipe on day 1 for easy mode
+ - food item clarity isn't the best
+ - Use a different symbol to money
+ - Information overloads
+ - Inventory ui uses bad texture
+ - side quest idea: feed da globlins
+ - tab as pause menu is bad
+ - Stronger indicator for inventory slot is required
+ - health bar bad (make it red)
+ - stuff around the hole
+ - on resource collect hide what you're holding?
+ - people struggled with controls
+ - flashlight not on autopickup
+ - arrow characters in shops (maybe do +1 or or +10% instead of current arrow)
+ - tab focusing on radio button in shop
+ - add a lose screen
+ - stove has default state (stove) and real blank state (empty)
+
+
+My Notes:
+ - being able to re add cooked patties is unintuitive
+ - make main UI look #cool
+
+Bugs:
+ - Clicking easy doesn't apply green, WHY DO I TEST PROPERLY
